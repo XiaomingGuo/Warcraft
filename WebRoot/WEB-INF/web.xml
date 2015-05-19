@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <servlet>
+    <servlet-name>GetApplicationComboxOptions</servlet-name>
+    <display-name>This is my output  picture</display-name>
+    <description>This is a picture output servlet</description>
+    <servlet-class>com.combox.GetApplicationComboxOptions</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>GetApplicationComboxOptions</servlet-name>
+    <url-pattern>/servlet/GetApplicationComboxOptions</url-pattern>
+  </servlet-mapping>
+
+</web-app>
