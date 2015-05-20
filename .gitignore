@@ -177,3 +177,4 @@ vermentino_final_test/bench/EquipCtrlModule.py
 ## For JSP
 #################
 *.class
+WEB-INF/classes
