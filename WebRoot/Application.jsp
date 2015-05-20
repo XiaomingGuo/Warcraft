@@ -72,29 +72,15 @@ for(int i = 0; i < product_type.size(); i++)
 				var $product_info = $('#product_info');
 				
 				$product_type.change(function(){
-					$product_info.append('<option value="22">22</option>');
+					$product_info.empty();
+					var $pro_info_content = <%=hDBHandle.GetProductInfo(product_type)%>;
+					alert($("#product_type").find("option:selected").text());
+					$product_info.append('<option value="22">--请选择--</option>');
 				});
 			});
 			//alert($("#product_type").find("option:selected").text());
 		</script>
-		<select class="sub">
-		  	<option value = 0>--请选择--</option>
-		</select>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$("#product_type").change(function(){
-					$("#product_type option").each(function(i,o){
-						if($(this).prop("selected"))
-						{
-							$(".sub").hide();
-							$(".sub").eq(i).show();
-						}
-					});
-				});
-				$("#product_type").change();
-			});
-		</script>
-		<div id="pro_info"></div>
+	<br><br>
 		<input name="commit" type=submit value="提交">
   	</center>
   	</form>
