@@ -172,3 +172,8 @@ vermentino_final_test/temp
 vermentino_final_test/bench/EQUIP_DEFINE.py
 vermentino_final_test/bench/EquipCheck.py
 vermentino_final_test/bench/EquipCtrlModule.py
+
+#################
+## For JSP
+#################
+*.class
