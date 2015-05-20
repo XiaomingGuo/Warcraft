@@ -35,32 +35,23 @@
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<script src="JS/selectcustomer.js"></script>
+	<style type="text/css">
+		.sub{display:none;}
+	</style>
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$("#product_type").change(function(){
-				$("#product_type option").each(function(i,o){
-					if($(this).prop("selected"))
-					{
-						$(".sub").hide();
-						$(".sub").eq(i).show();
-					}
-				});
-			});
-			$("#product_type").change();
-		});
-	</script>
+
   <body>
     <jsp:include page="MainPage.jsp"/>
   	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
   	<center>
   	<br><br><br>
-	  	<select id="product_type" onchange="searchProduct_info(document.AppContent.product_type.options[document.AppContent.product_type.selectedIndex].text)">
+	  	<select name="product_type" id="product_type">
+	  	<!-- <select id="product_type" onchange="searchProduct_info(document.AppContent.product_type.options[document.AppContent.product_type.selectedIndex].text)"> -->
 		  	<option value = 0>--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
@@ -72,25 +63,37 @@ for(int i = 0; i < product_type.size(); i++)
 %>
 	  	</select>
 	<br><br>
+		<select name="product_info" id="product_info">
+		  	<option value = "">--请选择--</option>
+		</select>
+		<script type="text/javascript">
+			$(function(){
+				var $product_type = $('#product_type');
+				var $product_info = $('#product_info');
+				
+				$product_type.change(function(){
+					$product_info.append('<option value="22">22</option>');
+				});
+			});
+			//alert($("#product_type").find("option:selected").text());
+		</script>
 		<select class="sub">
 		  	<option value = 0>--请选择--</option>
 		</select>
-<%
-for(int i = 0; i < product_type.size(); i++)
-{
-%>
-<script type="text/javascript">
-		alert("");
-</script>
-<%
-		product_info = hDBHandle.GetProductInfo("name");
-%>
-		<select class="sub">
-		  	<option value = 0>--请选择--</option>
-		</select>
-<%
-}
-%>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#product_type").change(function(){
+					$("#product_type option").each(function(i,o){
+						if($(this).prop("selected"))
+						{
+							$(".sub").hide();
+							$(".sub").eq(i).show();
+						}
+					});
+				});
+				$("#product_type").change();
+			});
+		</script>
 		<div id="pro_info"></div>
 		<input name="commit" type=submit value="提交">
   	</center>
