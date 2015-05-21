@@ -160,4 +160,26 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public List<String> GetAllDBColumnsByList(List<String> colNames)
+	{
+		List<String> rtnRst = new ArrayList<String>();
+		try
+		{
+			result.first();
+			do
+			{
+				String tempString = result.getString("name");
+				rtnRst.add(tempString);
+			} while (result.next());
+			this.CloseDatabase();
+		}
+		catch(SQLException e)
+		{
+			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
+			this.CloseDatabase();
+			return null;
+		}
+		return rtnRst;
+	}
 }
