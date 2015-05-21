@@ -1,5 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
+<%!
+	DatabaseConn hDBHandle = new DatabaseConn();
+	List<String> product_type = null, product_info = null;
+%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null){
@@ -31,6 +36,37 @@
   
   <body>
     <jsp:include page="MainPage.jsp"/>
+    <center>
+    	<table border="1">
+    	<tr>
+<%
+for(int iCol = 1; iCol < 10; iCol++)
+{
+%>
+	   	<th>Header<%= iCol%><th>
+<%
+}
+%>
+    	</tr>
+<%
+for(int iRow = 1; iRow < 10; iRow++)
+{
+%>
+    		<tr>
+	<%
+	for(int iCol = 1; iCol < 10; iCol++)
+	{
+	%>
+    			<td>Row<%= iRow%>, cell<%= iCol%></td>
+    <%
+    }
+    %>
+    		</tr>
+<%
+}
+%>
+    	</table>
+    </center>
   </body>
 </html>
 <%

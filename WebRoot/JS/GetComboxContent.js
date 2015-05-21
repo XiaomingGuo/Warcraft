@@ -2,7 +2,7 @@
  * 
  */
 var xmlHttp;
-function searchProduct_info(str)
+function searchComboxOption(str)
 {
 	xmlHttp=GetXmlHttpObject();
 	if(xmlHttp==null)

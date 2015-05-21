@@ -85,6 +85,25 @@ public class DatabaseConn
 		return true;
 	}
 	
+	public boolean execUpate(String sql)
+	{
+		try
+		{
+			if (InitConnect())
+			{
+				int rtnRst = Stmt.executeUpdate(sql);
+			}
+		}
+		catch(SQLException e)
+		{
+			ErrorMsg = "Error in QueryDataBase Detail info:" + e.getMessage();
+			this.CloseDatabase();
+			return false;
+		}
+		
+		return true;
+	}
+
 	public void CloseDatabase()
 	{
 		try
@@ -94,7 +113,7 @@ public class DatabaseConn
 		}
 		catch (SQLException e)
 		{
-			ErrorMsg = "Error in QueryDataBase Detail info:" + e.getMessage();
+			ErrorMsg = "Error in CloseDatabase Detail info:" + e.getMessage();
 		}
 	}
 	

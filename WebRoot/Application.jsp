@@ -27,31 +27,26 @@
 <html>
   <head>
     <base href="<%=basePath%>">
-	<script src="JS/GetComboxContent.js"></script>
     <title>申领</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<script src="JS/selectcustomer.js"></script>
-	<style type="text/css">
-		.sub{display:none;}
-	</style>
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-
+	<script src="JS/GetComboxContent.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
-  	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
+  	<form name="AppContent" action = "SubmitApplication.jsp" method = "post" >
   	<center>
   	<br><br><br>
+  		<label>类别:</label>
 	  	<select name="product_type" id="product_type">
-	  	<!-- <select id="product_type" onchange="searchProduct_info(document.AppContent.product_type.options[document.AppContent.product_type.selectedIndex].text)"> -->
 		  	<option value = 0>--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
@@ -63,22 +58,50 @@ for(int i = 0; i < product_type.size(); i++)
 %>
 	  	</select>
 	<br><br>
+		<label>类型:</label>
 		<select name="product_info" id="product_info">
 		  	<option value = "">--请选择--</option>
 		</select>
-		<script type="text/javascript">
+	<br><br>
+		<label>名称:</label>
+		<select name="product_name" id="product_name">
+		  	<option value = "">--请选择--</option>
+		</select>
+	<br><br>
+		<label>数量:</label>
+		<select name="QTY" id="QTY">
+<%
+for(int i = 1; i <= 10; i++)
+{
+%>
+		  	<option value = <%=i%>><%=i%></option>
+<%
+}
+%>		
+		</select>
+			<script type="text/javascript">
 			$(function(){
 				var $product_type = $('#product_type');
 				var $product_info = $('#product_info');
+				var $product_name = $('#product_name');
 				
 				$product_type.change(function(){
 					$product_info.empty();
-					var $pro_info_content = <%=hDBHandle.GetProductInfo(product_type)%>;
-					alert($("#product_type").find("option:selected").text());
-					$product_info.append('<option value="22">--请选择--</option>');
+					$product_name.empty();
+					$product_info.append('<option value="请选择">--请选择--</option>');
+					$product_name.append('<option value="请选择">--请选择--</option>');
+					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus){
+						if (textStatus = "success") {
+							var pro_list = data.split("$");
+							for (var i = 0; i < pro_list.length - 1; i++) {
+								var newOption = $("<option >" + pro_list[i] + "</option>");
+								$(newOption).val(pro_list[i]);
+								$("#product_name").append(newOption);
+							}
+						}
+					});
 				});
 			});
-			//alert($("#product_type").find("option:selected").text());
 		</script>
 	<br><br>
 		<input name="commit" type=submit value="提交">
