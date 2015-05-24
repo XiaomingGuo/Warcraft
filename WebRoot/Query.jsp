@@ -3,6 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
+	String[] keyList = {"id", "proposer", "material_name", "QTY", "create_date", "isApprove"};
+	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
@@ -14,7 +16,10 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		String sql = "select * from material_record";
-		hDBHandle.QueryDataBase(sql);
+		if (hDBHandle.QueryDataBase(sql))
+		{
+			recordList = hDBHandle.GetAllDBColumnsByList(keyList);
+		}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -39,30 +44,31 @@
     <jsp:include page="MainPage.jsp"/>
     <center>
     	<table border="1">
-    	<tr>
+    		<tr>
 <%
-for(int iCol = 1; iCol < 10; iCol++)
+for(int iCol = 1; iCol <= keyList.length; iCol++)
 {
 %>
-	   	<th>Header<%= iCol%><th>
+	   			<th><%= keyList[iCol-1]%></th>
 <%
 }
 %>
-    	</tr>
+    		</tr>
+ 
 <%
-for(int iRow = 1; iRow < 10; iRow++)
+for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 {
 %>
-    		<tr>
-	<%
-	for(int iCol = 1; iCol < 10; iCol++)
+  			<tr>
+  	<%
+	for(int iCol = 1; iCol <= recordList.size(); iCol++)
 	{
 	%>
-    			<td>Row<%= iRow%>, cell<%= iCol%></td>
+    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
     <%
     }
     %>
-    		</tr>
+			</tr>
 <%
 }
 %>

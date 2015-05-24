@@ -161,17 +161,26 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public List<String> GetAllDBColumnsByList(List<String> colNames)
+	public List<List<String>> GetAllDBColumnsByList(String[] colNames)
 	{
-		List<String> rtnRst = new ArrayList<String>();
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		try
 		{
-			result.first();
-			do
+			result.last();
+			if (result.getRow() > 0)
 			{
-				String tempString = result.getString("name");
-				rtnRst.add(tempString);
-			} while (result.next());
+				for(int i = 0; i < colNames.length; i++)
+				{
+					List<String> tempList = new ArrayList<String>();
+					result.first();
+					do
+					{
+						String tempString = result.getString(colNames[i]);
+						tempList.add(tempString);
+					} while (result.next());
+					rtnRst.add(tempList);
+				}
+			}
 			this.CloseDatabase();
 		}
 		catch(SQLException e)

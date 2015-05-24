@@ -8,10 +8,13 @@
 	String sql=(String)request.getParameter("FilterKey1");
 	String rtnRst = "";
 	proInfo = hDBHandle.GetProductInfo(sql);
-	for(int i = 0; i < proInfo.size(); i++)
+	if (proInfo != null)
 	{
-		rtnRst += proInfo.get(i);
-		rtnRst += '$';
+		for(int i = 0; i < proInfo.size(); i++)
+		{
+			rtnRst += proInfo.get(i);
+			rtnRst += '$';
+		}
 	}
 	out.write(rtnRst);
 %>
