@@ -3,6 +3,7 @@ package com.safe.UserLogon;
 public class DoyouLogon {
 	private String username="";
 	private String userpassword="";
+	private int userright=0;
 	private Checkstr check=new Checkstr();
 	public DoyouLogon(){}
 	public void setUsername(String username){
@@ -16,6 +17,12 @@ public class DoyouLogon {
 	}
 	public String getUserpassword(){
 		return this.userpassword;
+	}
+	public void setUserRight(int userright){
+		this.userright=userright;
+	}
+	public int getUserRight(){
+		return this.userright;
 	}
 	public String checkuser(){
 		String backstr="";

@@ -6,6 +6,7 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String KeyWord = "";
+	int userRight = 0;
 	boolean bLoginSuccessful = false;
 %>
 
@@ -22,11 +23,15 @@
 	else
 	{
 		String sql = "select password from user_info where name=\"" + name +"\"" ;
-		boolean a = hDBHandle.QueryDataBase(sql);
+		hDBHandle.QueryDataBase(sql);
 		KeyWord = hDBHandle.GetSingleString("password");
 	
+		sql = "select right from user_info where name=\"" + name +"\"" ;
+		hDBHandle.QueryDataBase(sql);
+		userRight = hDBHandle.GetSingleByte("right");
 		mylogon.setUsername(name);
 		mylogon.setUserpassword(KeyWord);
+		mylogon.setUserRight(userRight);
 		String mess = mylogon.checkuser();
 		
 		if (KeyWord != null && KeyWord.equals(request.getParameter("key")))

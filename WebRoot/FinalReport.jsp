@@ -16,33 +16,21 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>首页</title>
+    <title>汇总</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+
   </head>
   
   <body>
-  	<h2>您好！<jsp:getProperty property="username" name="mylogon"/></b>！欢迎登录！</h2>
-  	<center>
-  		<h1>
-		    <nav>
-		    	<ul>
-		    		<li><a href="MainPage.jsp">首页</a></li>
-		    		<li><a href="Application.jsp">申领</a></li>
-		    		<li><a href="Query.jsp">查询</a></li>
-		    		<li><a href="Checkin.jsp">录入</a></li>
-		    		<li><a href="FinalReport.jsp">报表</a></li>
-		    		<li><a href="Summary.jsp">余量汇总</a></li>
-		    		<li><a href="Quit.jsp">退出</a></li>
-		    	</ul>
-		    </nav>
-	    </h1>
-    </center>
+    <jsp:include page="MainPage.jsp"/>
   </body>
 </html>
 <%

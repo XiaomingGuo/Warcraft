@@ -139,6 +139,28 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
+	public int GetSingleByte(String keyWord)
+	{
+		byte rtnRst = 0;
+		try
+		{
+			result.last();
+			if (result.getRow() > 0)
+			{
+				result.first();
+				rtnRst = result.getByte(keyWord);
+			}
+			this.CloseDatabase();
+		}
+		catch(SQLException e)
+		{
+			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
+			this.CloseDatabase();
+			return 1023;
+		}
+		return rtnRst;
+	}
+	
 	public List<String> GetAllStringValue(String colName)
 	{
 		List<String> rtnRst = new ArrayList<String>();
