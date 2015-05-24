@@ -63,9 +63,18 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
   	<%
 	for(int iCol = 1; iCol <= recordList.size(); iCol++)
 	{
+		if(keyList[iCol-1] != "isApprove")
+		{
 	%>
     			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
     <%
+    	}
+    	else
+    	{
+  	%>
+    			<td><%= (recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1")) ? "Yes" :"No" %></td>
+	<%
+		}
     }
     %>
 			</tr>
