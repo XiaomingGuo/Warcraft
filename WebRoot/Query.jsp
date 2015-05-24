@@ -71,7 +71,7 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
     	}
     	else
     	{
-  	%>
+	%>
     			<td><%= (recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1")) ? "Yes" :"No" %></td>
 	<%
 		}
