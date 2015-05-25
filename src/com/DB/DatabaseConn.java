@@ -91,7 +91,7 @@ public class DatabaseConn
 		{
 			if (InitConnect())
 			{
-				int rtnRst = Stmt.executeUpdate(sql);
+				Stmt.executeUpdate(sql);
 			}
 		}
 		catch(SQLException e)
@@ -139,16 +139,16 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public int GetSingleByte(String keyWord)
+	public int GetSingleInt(String keyWord)
 	{
-		byte rtnRst = 0;
+		int rtnRst = 0;
 		try
 		{
 			result.last();
 			if (result.getRow() > 0)
 			{
 				result.first();
-				rtnRst = result.getByte(keyWord);
+				rtnRst = result.getInt(keyWord);
 			}
 			this.CloseDatabase();
 		}
@@ -156,7 +156,7 @@ public class DatabaseConn
 		{
 			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
 			this.CloseDatabase();
-			return 1023;
+			return 0;
 		}
 		return rtnRst;
 	}

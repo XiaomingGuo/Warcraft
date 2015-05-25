@@ -26,9 +26,9 @@
 		hDBHandle.QueryDataBase(sql);
 		KeyWord = hDBHandle.GetSingleString("password");
 	
-		sql = "select right from user_info where name=\"" + name +"\"" ;
+		sql = "select permission from user_info where name=\"" + name +"\"" ;
 		hDBHandle.QueryDataBase(sql);
-		userRight = hDBHandle.GetSingleByte("right");
+		userRight = hDBHandle.GetSingleInt("permission");
 		mylogon.setUsername(name);
 		mylogon.setUserpassword(KeyWord);
 		mylogon.setUserRight(userRight);
@@ -54,23 +54,21 @@
 			<body>
 				<div align="center">
 					<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-					<form>
-						<fieldset style='width: 500'>
-			  				<legend><font  SIZE="+2" style="font-weight:bold;">登陆失败</font></legend><br><br>
-			  				<table align="center" width="400">
-			  					<tr>
-			  						<td>
-			  							您的用户名或密码有错误！！！
-			  						</td>
-			  					</tr>
-			  					<tr>
-			  						<td>
-							  			<br><br><input type='button' onclick="history.go(-1);" value='返回' class="button">
-			  						</td>
-			  					</tr>
-			  				</table>
-						</fieldset>
-					</form>
+					<fieldset style='width: 500'>
+		  				<legend><font  SIZE="+2" style="font-weight:bold;">登陆失败</font></legend><br><br>
+		  				<table align="center" width="400">
+		  					<tr>
+		  						<td>
+		  							您的用户名或密码有错误！！！
+		  						</td>
+		  					</tr>
+		  					<tr>
+		  						<td>
+						  			<br><br><input type='button' onclick="history.go(-1);" value='返回' class="button">
+		  						</td>
+		  					</tr>
+		  				</table>
+					</fieldset>
 				</div>
 			</body>
 		</html>

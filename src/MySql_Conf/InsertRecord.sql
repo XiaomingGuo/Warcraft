@@ -1,6 +1,6 @@
 -- Create user_info records
-INSERT INTO `earthquake`.`user_info` (`name`,`password`,`department`,`right`) VALUES ("wallace.guo","123456","人事部",1);
-INSERT INTO `earthquake`.`user_info` (`name`,`password`,`department`,`right`) VALUES ('郭晓明', 'abc@123', '生产一部',2);
+INSERT INTO `earthquake`.`user_info` (`name`,`password`,`department`,`right`) VALUES ("wallace.guo","123456","人事部",0);
+INSERT INTO `earthquake`.`user_info` (`name`,`password`,`department`,`right`) VALUES ('郭晓明', 'abc@123', '生产一部',0);
 INSERT INTO `earthquake`.`product_type` (`name`) VALUES ("文具");
 INSERT INTO `earthquake`.`product_type` (`name`) VALUES ("物料");
 INSERT INTO `earthquake`.`product_type` (`name`) VALUES ("耗材");

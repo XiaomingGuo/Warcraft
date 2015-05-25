@@ -57,11 +57,12 @@ for(int i = 0; i < product_type.size(); i++)
 }
 %>
 	  	</select>
-	<br><br>
+<!-- <br><br>
 		<label>类型:</label>
 		<select name="product_info" id="product_info">
 		  	<option value = "">--请选择--</option>
 		</select>
+-->
 	<br><br>
 		<label>名称:</label>
 		<select name="product_name" id="product_name">

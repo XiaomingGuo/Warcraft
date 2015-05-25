@@ -33,11 +33,12 @@
 		    <nav>
 		    	<ul>
 		    		<li><a href="MainPage.jsp">首页</a></li>
-		    		<li><a href="Application.jsp">申领</a></li>
+		    		<li><a href="Application.jsp">申请</a></li>
 		    		<li><a href="Query.jsp">查询</a></li>
+		    		<li><a href="Approve.jsp">批准</a></li>
 		    		<li><a href="Checkin.jsp">录入</a></li>
 		    		<li><a href="FinalReport.jsp">报表</a></li>
-		    		<li><a href="Summary.jsp">余量汇总</a></li>
+		    		<li><a href="Summary.jsp">库存</a></li>
 		    		<li><a href="Quit.jsp">退出</a></li>
 		    	</ul>
 		    </nav>

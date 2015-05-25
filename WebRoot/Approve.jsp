@@ -15,7 +15,7 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from material_record";
+		String sql = "select * from material_record where isApprove=0";
 		if (hDBHandle.QueryDataBase(sql))
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(keyList);
@@ -71,9 +71,16 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
     	}
     	else
     	{
+    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
+    		{
 	%>
-    			<td><%= (recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
+    			<td>
+    			<from>
+    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)%> id="receive" onclick="change(this)"></center>
+    			</from>
+    			</td>
 	<%
+			}
 		}
     }
     %>
@@ -83,6 +90,12 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 %>
     	</table>
     </center>
+		<script type="text/javascript">
+			function change(obj)
+			{
+				alert(obj.name);
+			}
+		</script>
   </body>
 </html>
 <%
