@@ -95,6 +95,28 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 			{
 				alert(obj.name);
 			}
+			$(function(){
+				var $product_type = $('#product_type');
+				var $product_info = $('#product_info');
+				var $product_name = $('#product_name');
+				
+				$product_type.change(function(){
+					$product_info.empty();
+					$product_name.empty();
+					$product_info.append('<option value="请选择">--请选择--</option>');
+					$product_name.append('<option value="请选择">--请选择--</option>');
+					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus){
+						if (textStatus = "success") {
+							var pro_list = data.split("$");
+							for (var i = 0; i < pro_list.length - 1; i++) {
+								var newOption = $("<option >" + pro_list[i] + "</option>");
+								$(newOption).val(pro_list[i]);
+								$("#product_name").append(newOption);
+							}
+						}
+					});
+				});
+			});
 		</script>
   </body>
 </html>
