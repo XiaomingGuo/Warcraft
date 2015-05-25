@@ -39,7 +39,6 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-	<script src="JS/GetComboxContent.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
   	<form name="AppContent" action = "SubmitApplication.jsp" method = "post" >

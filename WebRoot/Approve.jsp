@@ -76,7 +76,7 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 	%>
     			<td>
     			<from>
-    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)%> id="receive" onclick="change(this)"></center>
+    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
     			</from>
     			</td>
 	<%
