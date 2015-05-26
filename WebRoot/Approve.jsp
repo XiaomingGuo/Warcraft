@@ -87,7 +87,7 @@ if (!recordList.isEmpty())
 	    		{
 		%>
 	    			<td>
-	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> Pro_Name=<%=recordList.get(2).get(iRow-1)%> Pro_Qty=<%=recordList.get(3).get(iRow-1)%>  onclick="change(this)"></center>
+	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+recordList.get(2).get(iRow-1)+"$"+recordList.get(3).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
 	    			</td>
 		<%
 				}
@@ -104,7 +104,8 @@ if (!recordList.isEmpty())
 		<script type="text/javascript">
 			function change(obj)
 			{
-				$.post("ApproveAjax.jsp", {"material_id":obj.name, "OUT_QTY":obj.Pro_Qty, "Pro_Name":obj.Pro_Name}, function(data, textStatus){
+				var tempList = obj.name.split("$");
+				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "OUT_QTY":tempList[2], "Pro_Name":tempList[1]}, function(data, textStatus){
 					if (textStatus = "success") {
 						location.reload();
 					}

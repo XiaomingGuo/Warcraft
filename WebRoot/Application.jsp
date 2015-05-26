@@ -48,7 +48,7 @@
   	<br><br><br>
   		<label>类别:</label>
 	  	<select name="product_type" id="product_type">
-		  	<option value = 0>--请选择类别--</option>
+		  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
 {
@@ -67,7 +67,7 @@ for(int i = 0; i < product_type.size(); i++)
 	<br><br>
 		<label>名称:</label>
 		<select name="product_name" id="product_name">
-		  	<option value = "">--请选择--</option>
+		  	<option value = "--请选择--">--请选择--</option>
 		</select>
 	<br><br>
 		<label>数量:</label>
@@ -83,29 +83,29 @@ for(int i = 1; i <= 10; i++)
 		</select>
 		<br><br>
 		<label>库存数量:</label>
-		<input name="Total_QTY" id="Total_QTY">
+		<input name="Total_QTY" id="Total_QTY" readonly>
 			<script type="text/javascript">
 			$(function()
 			{
 				var $product_type = $('#product_type');
-				var $product_info = $('#product_info');
+				//var $product_info = $('#product_info');
 				var $product_name = $('#product_name');
 				var $Total_QTY = $('#Total_QTY');
 				
 				$product_type.change(function()
 				{
-					$product_info.empty();
+					//$product_info.empty();
 					$product_name.empty();
-					$product_info.append('<option value="请选择">--请选择--</option>');
+					//$product_info.append('<option value="请选择">--请选择--</option>');
 					$product_name.append('<option value="请选择">--请选择--</option>');
 					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 					{
 						if (textStatus = "success")
 						{
 							var pro_list = data.split("$");
-							for (var i = 0; i < pro_list.length - 1; i++)
+							for (var i = 1; i < pro_list.length - 1; i++)
 							{
-								var newOption = $("<option >" + pro_list[i] + "</option>");
+								var newOption = $("<option>" + pro_list[i] + "</option>");
 								$(newOption).val(pro_list[i]);
 								$("#product_name").append(newOption);
 							}

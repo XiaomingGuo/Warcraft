@@ -6,7 +6,7 @@
 %>
 <%
 	String sql=(String)request.getParameter("FilterKey1");
-	String rtnRst = "";
+	String rtnRst = "remove$";
 	proInfo = hDBHandle.GetProductInfo(sql);
 	if (proInfo != null)
 	{
