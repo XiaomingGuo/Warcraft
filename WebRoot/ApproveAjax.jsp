@@ -4,16 +4,15 @@
 	DatabaseConn hDBHandle = new DatabaseConn();
 %>
 <%
-	String sql=(String)request.getParameter("id");
-	String rtnRst = "";
-	proInfo = hDBHandle.GetProductInfo(sql);
-	if (proInfo != null)
-	{
-		for(int i = 0; i < proInfo.size(); i++)
-		{
-			rtnRst += proInfo.get(i);
-			rtnRst += '$';
-		}
-	}
-	out.write(rtnRst);
+	String sql= "UPDATE material_record SET isApprove='1' WHERE id='" + (String)request.getParameter("material_id") + "'";
+	boolean execStatus = hDBHandle.execUpate(sql);
+	
+	sql = "select OUT_QTY from product_info where name=\"" + (String)request.getParameter("Pro_Name") +"\"" ;
+	
+	hDBHandle.QueryDataBase(sql);
+	int curr_count = Integer.parseInt(hDBHandle.GetSingleString("OUT_QTY"));
+	int useed_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
+	
+	sql= "UPDATE product_info SET OUT_QTY='" + Integer.toString(curr_count+useed_count) + "' WHERE name='" + (String)request.getParameter("Pro_Name") + "'";
+	execStatus = hDBHandle.execUpate(sql);
 %>

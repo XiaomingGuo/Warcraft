@@ -2,10 +2,12 @@
 <%
   String message="";
   Object abc = session.getAttribute("logonuser");
-  if(session.getAttribute("logonuser")==null){
+  if(session.getAttribute("logonuser")==null)
+  {
 	  message="请先<a href='Login.jsp'>[登录]</a>！";
   }
-  else{
+  else
+  {
 	  message=(String)session.getAttribute("error");
   }
 %>
@@ -27,7 +29,8 @@
           </tr>
         </table>
 <%  
-	if(session.getAttribute("logonuser")==null||session.getAttribute("logonuser").equals("")){
+	if(session.getAttribute("logonuser")==null||session.getAttribute("logonuser").equals(""))
+	{
 		out.println("<a href='Login.jsp'>[登录]</a>");
 	}
 %>

@@ -2,10 +2,12 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
-	if(session.getAttribute("logonuser")==null){
+	if(session.getAttribute("logonuser")==null)
+	{
 		response.sendRedirect("tishi.jsp");
 	}
-	else{
+	else
+	{
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -27,7 +29,9 @@
   </head>
   
   <body>
+  	<p align = "right"><a href = 'UserManagement.jsp'>用户管理</a></p>
   	<h2>您好！<jsp:getProperty property="username" name="mylogon"/></b>！欢迎登录！</h2>
+  	
   	<center>
   		<h1>
 		    <nav>
@@ -36,7 +40,7 @@
 		    		<li><a href="Application.jsp">申请</a></li>
 		    		<li><a href="Query.jsp">查询</a></li>
 		    		<li><a href="Approve.jsp">批准</a></li>
-		    		<li><a href="Checkin.jsp">录入</a></li>
+		    		<li><a href="AddMaterial.jsp">录入</a></li>
 		    		<li><a href="FinalReport.jsp">报表</a></li>
 		    		<li><a href="Summary.jsp">库存</a></li>
 		    		<li><a href="Quit.jsp">退出</a></li>

@@ -7,10 +7,12 @@
 %>
 <%
 	String message="";
-	if(session.getAttribute("logonuser")==null){
+	if(session.getAttribute("logonuser")==null)
+	{
 		response.sendRedirect("tishi.jsp");
 	}
-	else{
+	else
+	{
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -79,21 +81,30 @@ for(int i = 1; i <= 10; i++)
 }
 %>		
 		</select>
+		<br><br>
+		<label>库存数量:</label>
+		<input name="Total_QTY" id="Total_QTY">
 			<script type="text/javascript">
-			$(function(){
+			$(function()
+			{
 				var $product_type = $('#product_type');
 				var $product_info = $('#product_info');
 				var $product_name = $('#product_name');
+				var $Total_QTY = $('#Total_QTY');
 				
-				$product_type.change(function(){
+				$product_type.change(function()
+				{
 					$product_info.empty();
 					$product_name.empty();
 					$product_info.append('<option value="请选择">--请选择--</option>');
 					$product_name.append('<option value="请选择">--请选择--</option>');
-					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus){
-						if (textStatus = "success") {
+					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+					{
+						if (textStatus = "success")
+						{
 							var pro_list = data.split("$");
-							for (var i = 0; i < pro_list.length - 1; i++) {
+							for (var i = 0; i < pro_list.length - 1; i++)
+							{
 								var newOption = $("<option >" + pro_list[i] + "</option>");
 								$(newOption).val(pro_list[i]);
 								$("#product_name").append(newOption);
@@ -101,6 +112,17 @@ for(int i = 1; i <= 10; i++)
 						}
 					});
 				});
+				
+				$product_name.change(function()
+				{
+					$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+					{
+						if (textStatus = "success")
+						{
+							$Total_QTY.attr("value", data);
+						}
+					});
+				});				
 			});
 		</script>
 	<br><br>

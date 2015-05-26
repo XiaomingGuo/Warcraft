@@ -7,10 +7,12 @@
 	DatabaseConn hDBHandle = new DatabaseConn();
 %>
 <%
-	if(session.getAttribute("logonuser")==null){
+	if(session.getAttribute("logonuser")==null)
+	{
 		response.sendRedirect("tishi.jsp");
 	}
-	else{
+	else
+	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
 		String appProduct_type = request.getParameter("product_type");

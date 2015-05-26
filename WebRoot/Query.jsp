@@ -8,10 +8,12 @@
 %>
 <%
 	String message="";
-	if(session.getAttribute("logonuser")==null){
+	if(session.getAttribute("logonuser")==null)
+	{
 		response.sendRedirect("tishi.jsp");
 	}
-	else{
+	else
+	{
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";

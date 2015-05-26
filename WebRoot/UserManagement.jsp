@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"id", "proposer", "material_name", "QTY", "create_date", "isApprove"};
+	String[] keyList = {"id", "name", "create_date", "department", "permission"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -14,7 +14,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&512;
+		int temp = mylogon.getUserRight()&32;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -25,7 +25,7 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from material_record where isApprove=0";
+			String sql = "select * from user_info";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(keyList);
@@ -75,7 +75,7 @@ if (!recordList.isEmpty())
 	  	<%
 		for(int iCol = 1; iCol <= recordList.size(); iCol++)
 		{
-			if(keyList[iCol-1] != "isApprove")
+			if(keyList[iCol-1] != "permission")
 			{
 		%>
 	    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
@@ -87,7 +87,16 @@ if (!recordList.isEmpty())
 	    		{
 		%>
 	    			<td>
-	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> Pro_Name=<%=recordList.get(2).get(iRow-1)%> Pro_Qty=<%=recordList.get(3).get(iRow-1)%>  onclick="change(this)"></center>
+	    				<center>
+		    				<select style="width:100pt">
+		    					<option>--请选择--</option>
+		    					<option>普通员工</option>
+		    					<option>物料录入员</option>
+		    					<option>物料管理员</option>
+		    					<option>物料统计员</option>
+		    					<option>网站管理员</option>
+		    				</select>
+	    				</center>
 	    			</td>
 		<%
 				}
@@ -104,7 +113,8 @@ if (!recordList.isEmpty())
 		<script type="text/javascript">
 			function change(obj)
 			{
-				$.post("ApproveAjax.jsp", {"material_id":obj.name, "OUT_QTY":obj.Pro_Qty, "Pro_Name":obj.Pro_Name}, function(data, textStatus){
+				var sql = "UPDATE material_record SET isApprove='1' WHERE id='" + obj.name + "'";
+				$.post("ApproveAjax.jsp", {"sql":sql}, function(data, textStatus){
 					if (textStatus = "success") {
 						location.reload();
 					}
