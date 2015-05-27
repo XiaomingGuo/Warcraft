@@ -71,9 +71,9 @@
 	   			<th>添加产品:</th>
     		</tr>
     		<tr>
-    			<td>
+    			<td align="right">
 		    		<label>请选择产品类型：</label>
-				  	<select name="product_type" id="product_type">
+				  	<select name="product_type" id="product_type" style='width:180px'>
 					  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
@@ -87,15 +87,20 @@ for(int i = 0; i < product_type.size(); i++)
 	    		</td>
 	    	</tr>
 	    	<tr>
-    			<td>
-		   			<label>请输入产品名称:</label>
-					<input type="text" name="product_name" id="product_name">
+    			<td align="right">
+		   			<label align="left">请输入产品名称:</label>
+					<input type="text" name="product_name" id="product_name" style='width:180px'>
 				</td>
 			</tr>
 			<tr>
-    			<td>
-		   			<label>入库数量:</label>
-					<input type="text" name="QTY" id="QTY">
+    			<td align="right">
+		   			<label align="left">入库数量:</label>
+					<input type="text" name="QTY" id="QTY" style='width:180px'>
+				</td>
+			</tr>
+			<tr>
+    			<td align="center">
+					<input type="button" value="数据录入" style='width:100px'>
 				</td>
 			</tr>
 	    	</table>
@@ -110,7 +115,7 @@ for(int i = 0; i < product_type.size(); i++)
 				{
 					alert(data);
 				}
-				$('#product_type').val("");
+				location.reload();
 			});
 		}
 	</script>
