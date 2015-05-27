@@ -24,7 +24,7 @@
 		//String sql = "INSERT INTO product_type (name) VALUES ('电脑附件')";
 		String sql = "INSERT INTO material_record (proposer, material_name, QTY) VALUES (\"" + userName + "\", \"" + appProduct_name + "\", " + appProduct_QTY + ")";
 		int totalCount = Integer.parseInt(Total_QTY);
-		if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) > 0)
+		if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) >= 0)
 		{
 			if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && hDBHandle.execUpate(sql))
 			{
@@ -37,8 +37,7 @@
 		}
 		else
 		{	
-			session.setAttribute("error", "物品:"+appProduct_name+"余量不足,请补充!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("Application.jsp");
 		}
 	}
 %>

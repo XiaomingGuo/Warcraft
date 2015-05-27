@@ -1,5 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
+<%!
+	DatabaseConn hDBHandle = new DatabaseConn();
+	String[] sqlKeyList = {"id", "name", "product_type", "IN_QTY", "OUT_QTY"};
+	String[] keyList = {"id", "name", "product_type", "IN_QTY", "OUT_QTY", "repertory"};
+	List<List<String>> recordList = null;
+%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -8,17 +15,15 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&64;
-		if(temp == 0)
+		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		String sql = "select * from product_info";
+		if (hDBHandle.QueryDataBase(sql))
 		{
-			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 		}
-		else
-		{
-			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-			String path = request.getContextPath();
-			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -26,7 +31,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>汇总</title>
+    <title>库存</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -41,9 +46,49 @@
   
   <body>
     <jsp:include page="MainPage.jsp"/>
+    <center>
+    	<table border="1">
+    		<tr>
+<%
+for(int iCol = 1; iCol <= keyList.length; iCol++)
+{
+%>
+	   			<th><%= keyList[iCol-1]%></th>
+<%
+}
+%>
+    		</tr>
+ 
+<%
+for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+{
+%>
+  			<tr>
+  	<%
+	for(int iCol = 1; iCol <= recordList.size() + 1; iCol++)
+	{
+		if(keyList[iCol-1] != "repertory")
+		{
+	%>
+    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+    <%
+    	}
+    	else
+    	{
+	%>
+    			<td><%= Integer.parseInt(recordList.get(3).get(iRow-1)) - Integer.parseInt(recordList.get(4).get(iRow-1))%></td>
+	<%
+		}
+    }
+    %>
+			</tr>
+<%
+}
+%>
+    	</table>
+    </center>
   </body>
 </html>
 <%
-		}
 	}
 %>

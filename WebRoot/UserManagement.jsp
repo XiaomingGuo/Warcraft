@@ -115,7 +115,7 @@ if (!recordList.isEmpty())
 			{
 				var sql = "UPDATE material_record SET isApprove='1' WHERE id='" + obj.name + "'";
 				$.post("ApproveAjax.jsp", {"sql":sql}, function(data, textStatus){
-					if (textStatus = "success") {
+					if (textStatus == "success") {
 						location.reload();
 					}
 				});

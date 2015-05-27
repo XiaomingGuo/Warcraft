@@ -1,6 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-
+<%!
+	DatabaseConn hDBHandle = new DatabaseConn();
+	List<String> product_type = null;
+%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -20,6 +24,12 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			//product_type Database query
+			String sql = "select * from product_type";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				product_type = hDBHandle.GetAllStringValue("name");
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -27,7 +37,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>汇总</title>
+    <title>录入</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -39,9 +49,71 @@
 	-->
 
   </head>
-  
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
+    	<center>
+	    	<table border="1">
+	    	<tr>
+	   			<th>添加产品类型:</th>
+    		</tr>
+    		<tr>
+    			<td>
+		    		<label>请输入产品类型</label>
+		    		<input type="text" name="product_type" id="product_type">
+		    		<input type="button" value="Add" onclick="changeAddType(this)">
+	    		</td>
+	    	</tr>
+	    	</table>
+	    	<br><br><br><br><br>
+	    	<table border="1">
+	    	<tr>
+	   			<th>添加产品:</th>
+    		</tr>
+    		<tr>
+    			<td>
+		    		<label>请选择产品类型：</label>
+				  	<select name="product_type" id="product_type">
+					  	<option value = "--请选择类别--">--请选择类别--</option>
+<%
+for(int i = 0; i < product_type.size(); i++)
+{
+%>
+		  				<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
+<%
+}
+%>
+			  		</select>
+	    		</td>
+	    	</tr>
+	    	<tr>
+    			<td>
+		   			<label>请输入产品名称:</label>
+					<input type="text" name="product_name" id="product_name">
+				</td>
+			</tr>
+			<tr>
+    			<td>
+		   			<label>入库数量:</label>
+					<input type="text" name="QTY" id="QTY">
+				</td>
+			</tr>
+	    	</table>
+    	</center>
+	
+	<script type="text/javascript">
+		function changeAddType(obj)
+		{
+			$.post("AddProTypeAjax.jsp", {"product_type":$('#product_type').val()}, function(data, textStatus)
+			{
+				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
+				{
+					alert(data);
+				}
+				$('#product_type').val("");
+			});
+		}
+	</script>
   </body>
 </html>
 <%

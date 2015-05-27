@@ -93,6 +93,7 @@ public class DatabaseConn
 			{
 				Stmt.executeUpdate(sql);
 			}
+			this.CloseDatabase();
 		}
 		catch(SQLException e)
 		{
@@ -213,4 +214,22 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetRecordCount()
+	{
+		int rtnRst = 0;
+		try
+		{
+			result.last();
+			rtnRst = result.getRow();
+		}
+		catch(SQLException e)
+		{
+			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
+			this.CloseDatabase();
+			return 0;
+		}
+		return rtnRst;
+	}
+
 }

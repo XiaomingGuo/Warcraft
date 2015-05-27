@@ -37,7 +37,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>查询</title>
+    <title>批准</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -105,10 +105,13 @@ if (!recordList.isEmpty())
 			function change(obj)
 			{
 				var tempList = obj.name.split("$");
-				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "OUT_QTY":tempList[2], "Pro_Name":tempList[1]}, function(data, textStatus){
-					if (textStatus = "success") {
-						location.reload();
+				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "OUT_QTY":tempList[2], "Pro_Name":tempList[1]}, function(data, textStatus)
+				{
+					if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
+					{
+						alert(data);
 					}
+					location.reload();
 				});
 			}
 		</script>

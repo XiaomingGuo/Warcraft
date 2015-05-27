@@ -29,7 +29,7 @@
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>申领</title>
+    <title>申请</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -88,19 +88,16 @@ for(int i = 1; i <= 10; i++)
 			$(function()
 			{
 				var $product_type = $('#product_type');
-				//var $product_info = $('#product_info');
 				var $product_name = $('#product_name');
 				var $Total_QTY = $('#Total_QTY');
 				
 				$product_type.change(function()
 				{
-					//$product_info.empty();
 					$product_name.empty();
-					//$product_info.append('<option value="请选择">--请选择--</option>');
 					$product_name.append('<option value="请选择">--请选择--</option>');
 					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 					{
-						if (textStatus = "success")
+						if (textStatus == "success")
 						{
 							var pro_list = data.split("$");
 							for (var i = 1; i < pro_list.length - 1; i++)
@@ -117,7 +114,7 @@ for(int i = 1; i <= 10; i++)
 				{
 					$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
 					{
-						if (textStatus = "success")
+						if (textStatus == "success")
 						{
 							$Total_QTY.attr("value", data);
 						}
