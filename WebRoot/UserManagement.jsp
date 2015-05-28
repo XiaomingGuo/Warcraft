@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"id", "name", "create_date", "department", "permission"};
+	String[] keyList = {"id", "name", "create_date", "department", "password", "permission"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -14,7 +14,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&32;
+		int temp = mylogon.getUserRight()&64;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -88,13 +88,13 @@ if (!recordList.isEmpty())
 		%>
 	    			<td>
 	    				<center>
-		    				<select style="width:100pt">
+		    				<select name="permission" id="permission" style="width:100pt">
 		    					<option>--请选择--</option>
-		    					<option>普通员工</option>
-		    					<option>物料录入员</option>
-		    					<option>物料管理员</option>
-		    					<option>物料统计员</option>
-		    					<option>网站管理员</option>
+		    					<option name=512 id=512>普通成员</option>
+		    					<option name=768 id=768>物料录入</option>
+		    					<option name=896 id=896>物料管理员</option>
+		    					<option name=960 id=960>物料统计员</option>
+		    					<option name=992 id=992>网站管理员</option>
 		    				</select>
 	    				</center>
 	    			</td>

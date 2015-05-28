@@ -17,7 +17,7 @@
 	
 	used_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
 	
-	if (sql_in_count - (sql_out_count + used_count) > 0)
+	if (sql_in_count - (sql_out_count + used_count) >= 0)
 	{
 		sql= "UPDATE product_info SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE name='" + (String)request.getParameter("Pro_Name") + "'";
 		boolean execStatus = hDBHandle.execUpate(sql);

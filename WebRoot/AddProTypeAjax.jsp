@@ -7,8 +7,9 @@
 %>
 <%
 	String rtnRst = "";
-	String sql = "select * from product_type where name='" + (String)request.getParameter("product_type") +"'" ;
-	if (hDBHandle.QueryDataBase(sql))
+	String product_type = (String)request.getParameter("product_type");
+	String sql = "select * from product_type where name='" + product_type +"'" ;
+	if (!product_type.isEmpty()&&hDBHandle.QueryDataBase(sql))
 	{	
 		if(hDBHandle.GetRecordCount() > 0)
 		{
@@ -16,9 +17,13 @@
 		}
 		else
 		{
-			sql = "INSERT INTO product_type (name) VALUES ('" + (String)request.getParameter("product_type") + "')";
+			sql = "INSERT INTO product_type (name) VALUES ('" + product_type + "')";
 			hDBHandle.execUpate(sql);
 		}
+	}
+	else
+	{
+		rtnRst = "产品类型为空或查询数据库出错!";
 	}
 	
 	out.write(rtnRst);

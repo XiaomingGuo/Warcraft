@@ -43,89 +43,110 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
-  	<form name="AppContent" action = "SubmitApplication.jsp" method = "post" >
+  	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
   	<center>
   	<br><br><br>
-  		<label>类别:</label>
-	  	<select name="product_type" id="product_type">
-		  	<option value = "--请选择类别--">--请选择类别--</option>
+  	<table border="1">
+  	<tr>
+  		<th align="center">申领物品</th>
+  	</tr>
+  	<tr>
+  		<td align="right">
+	  		<label>类别:</label>
+		  	<select name="product_type" id="product_type" style="width:180px">
+			  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
 {
 %>
-		  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
+			  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
 <%
 }
 %>
-	  	</select>
+		  	</select>
+	  	</td>
+  	</tr>
 <!-- <br><br>
 		<label>类型:</label>
 		<select name="product_info" id="product_info">
 		  	<option value = "">--请选择--</option>
 		</select>
 -->
-	<br><br>
-		<label>名称:</label>
-		<select name="product_name" id="product_name">
-		  	<option value = "--请选择--">--请选择--</option>
-		</select>
-	<br><br>
-		<label>数量:</label>
-		<select name="QTY" id="QTY">
+	<tr>
+		<td align="right">
+			<label>名称:</label>
+			<select name="product_name" id="product_name" style="width:180px">
+			  	<option value = "--请选择--">--请选择--</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<label>数量:</label>
+			<select name="QTY" id="QTY" style="width:180px">
 <%
 for(int i = 1; i <= 10; i++)
 {
 %>
-		  	<option value = <%=i%>><%=i%></option>
+		  		<option value = <%=i%>><%=i%></option>
 <%
 }
 %>		
-		</select>
-		<br><br>
-		<label>库存数量:</label>
-		<input name="Total_QTY" id="Total_QTY" readonly>
-			<script type="text/javascript">
-			$(function()
-			{
-				var $product_type = $('#product_type');
-				var $product_name = $('#product_name');
-				var $Total_QTY = $('#Total_QTY');
-				
-				$product_type.change(function()
-				{
-					$product_name.empty();
-					$product_name.append('<option value="请选择">--请选择--</option>');
-					$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
-					{
-						if (textStatus == "success")
-						{
-							var pro_list = data.split("$");
-							for (var i = 1; i < pro_list.length - 1; i++)
-							{
-								var newOption = $("<option>" + pro_list[i] + "</option>");
-								$(newOption).val(pro_list[i]);
-								$("#product_name").append(newOption);
-							}
-						}
-					});
-				});
-				
-				$product_name.change(function()
-				{
-					$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
-					{
-						if (textStatus == "success")
-						{
-							$Total_QTY.attr("value", data);
-						}
-					});
-				});				
-			});
-		</script>
-	<br><br>
-		<input name="commit" type=submit value="提交">
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<label>库存数量:</label>
+			<input name="Total_QTY" id="Total_QTY" style="width:180px" readonly>
+		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			<input name="commit" type=submit value="提交" style="width:100">
+		</td>
+	</tr>
+	</table>
   	</center>
   	</form>
+  	<script type="text/javascript">
+		$(function()
+		{
+			var $product_type = $('#product_type');
+			var $product_name = $('#product_name');
+			var $Total_QTY = $('#Total_QTY');
+			
+			$product_type.change(function()
+			{
+				$product_name.empty();
+				$product_name.append('<option value="请选择">--请选择--</option>');
+				$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						var pro_list = data.split("$");
+						for (var i = 1; i < pro_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + pro_list[i] + "</option>");
+							$(newOption).val(pro_list[i]);
+							$("#product_name").append(newOption);
+						}
+					}
+				});
+			});
+			
+			$product_name.change(function()
+			{
+				$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						$Total_QTY.attr("value", data);
+					}
+				});
+			});				
+		});
+	</script>
   </body>
 </html>
 <%

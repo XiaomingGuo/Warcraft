@@ -41,9 +41,7 @@ public class DatabaseConn
 		{
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			Conn = DriverManager.getConnection(this.url, this.userName, this.password);
-		
 			Stmt = Conn.createStatement();
-			
 		}
 		catch(SQLException e)
 		{
@@ -109,8 +107,16 @@ public class DatabaseConn
 	{
 		try
 		{
-			if(Stmt != null)	Stmt.close();
-			if(Conn != null)	Conn.close();
+			if(Stmt != null)
+			{
+				Stmt.close();
+				Stmt = null;
+			}
+			if(Conn != null)
+			{
+				Conn.close();
+				Conn = null;
+			}
 		}
 		catch (SQLException e)
 		{
@@ -231,5 +237,4 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
-
 }

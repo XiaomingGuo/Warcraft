@@ -13,7 +13,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&256;
+		int temp = mylogon.getUserRight()&128;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -52,34 +52,35 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
-    	<center>
+   	<center>
+    	<table border="1">
+    	<tr>
+   			<th align="center">添加产品类型</th>
+   		</tr>
+   		<tr>
+   			<td>
+	    		<label>请输入产品类型:</label>
+	    		<input type="text" name="product_type" id="product_type" style='width:140px'>
+	    		<input type="button" value="Add" onclick="changeAddType(this)" style='width:50px'>
+    		</td>
+    	</tr>
+    	</table>
+    	<br><br><br>
+   		<form name="AddMaterial" action = "SubmitMaterial.jsp" method = "post">
 	    	<table border="1">
 	    	<tr>
-	   			<th>添加产品类型:</th>
-    		</tr>
-    		<tr>
-    			<td>
-		    		<label>请输入产品类型</label>
-		    		<input type="text" name="product_type" id="product_type">
-		    		<input type="button" value="Add" onclick="changeAddType(this)">
-	    		</td>
-	    	</tr>
-	    	</table>
-	    	<br><br><br><br><br>
-	    	<table border="1">
-	    	<tr>
-	   			<th>添加产品:</th>
+	   			<th>添加产品</th>
     		</tr>
     		<tr>
     			<td align="right">
-		    		<label>请选择产品类型：</label>
+		    		<label>请选择产品类型:</label>
 				  	<select name="product_type" id="product_type" style='width:180px'>
 					  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
 for(int i = 0; i < product_type.size(); i++)
 {
 %>
-		  				<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
+		  				<option value = <%=product_type.get(i)%>><%=product_type.get(i)%></option>
 <%
 }
 %>
@@ -88,23 +89,24 @@ for(int i = 0; i < product_type.size(); i++)
 	    	</tr>
 	    	<tr>
     			<td align="right">
-		   			<label align="left">请输入产品名称:</label>
+		   			<label>请输入产品名称:</label>
 					<input type="text" name="product_name" id="product_name" style='width:180px'>
 				</td>
 			</tr>
 			<tr>
     			<td align="right">
-		   			<label align="left">入库数量:</label>
+		   			<label>入库数量:</label>
 					<input type="text" name="QTY" id="QTY" style='width:180px'>
 				</td>
 			</tr>
 			<tr>
     			<td align="center">
-					<input type="button" value="数据录入" style='width:100px'>
+					<input type=submit value="提交" style='width:100px'>
 				</td>
 			</tr>
 	    	</table>
-    	</center>
+    	</form>
+   	</center>
 	
 	<script type="text/javascript">
 		function changeAddType(obj)

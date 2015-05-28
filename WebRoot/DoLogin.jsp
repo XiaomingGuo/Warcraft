@@ -23,12 +23,15 @@
 	else
 	{
 		String sql = "select password from user_info where name=\"" + name +"\"" ;
-		hDBHandle.QueryDataBase(sql);
-		KeyWord = hDBHandle.GetSingleString("password");
-	
+		if (hDBHandle.QueryDataBase(sql))
+		{
+			KeyWord = hDBHandle.GetSingleString("password");
+		}
 		sql = "select permission from user_info where name=\"" + name +"\"" ;
-		hDBHandle.QueryDataBase(sql);
-		userRight = hDBHandle.GetSingleInt("permission");
+		if (hDBHandle.QueryDataBase(sql))
+		{
+			userRight = hDBHandle.GetSingleInt("permission");
+		}
 		mylogon.setUsername(name);
 		mylogon.setUserpassword(KeyWord);
 		mylogon.setUserRight(userRight);
