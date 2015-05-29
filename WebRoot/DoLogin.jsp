@@ -22,28 +22,30 @@
 	}
 	else
 	{
+		String mess = "";
 		String sql = "select password from user_info where name=\"" + name +"\"" ;
-		if (hDBHandle.QueryDataBase(sql))
+		hDBHandle.QueryDataBase(sql);
+		if (hDBHandle.GetRecordCount() > 0)
 		{
 			KeyWord = hDBHandle.GetSingleString("password");
+			sql = "select permission from user_info where name=\"" + name +"\"" ;
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				userRight = hDBHandle.GetSingleInt("permission");
+			}
+			mylogon.setUsername(name);
+			mylogon.setUserpassword(KeyWord);
+			mylogon.setUserRight(userRight);
+			mess = mylogon.checkuser();
+			
+			if (KeyWord != null && KeyWord.equals(request.getParameter("key")))
+			{
+				bLoginSuccessful = true;
+				session.setAttribute("logonuser", mylogon);
+				response.sendRedirect("MainPage.jsp");
+			}
 		}
-		sql = "select permission from user_info where name=\"" + name +"\"" ;
-		if (hDBHandle.QueryDataBase(sql))
-		{
-			userRight = hDBHandle.GetSingleInt("permission");
-		}
-		mylogon.setUsername(name);
-		mylogon.setUserpassword(KeyWord);
-		mylogon.setUserRight(userRight);
-		String mess = mylogon.checkuser();
-		
-		if (KeyWord != null && KeyWord.equals(request.getParameter("key")))
-		{
-			bLoginSuccessful = true;
-			session.setAttribute("logonuser", mylogon);
-			response.sendRedirect("MainPage.jsp");
-		}
-		else
+		if(!bLoginSuccessful)
 		{
 			session.setAttribute("logonuser", "");
 			session.setAttribute("error", mess);
