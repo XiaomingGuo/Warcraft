@@ -176,7 +176,7 @@ public class DatabaseConn
 			result.first();
 			do
 			{
-				String tempString = result.getString("name");
+				String tempString = result.getString(colName);
 				rtnRst.add(tempString);
 			} while (result.next());
 			this.CloseDatabase();
@@ -237,4 +237,60 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetRepertoryByBarCode(String barcode)
+	{
+		return GetIN_QTYByBarCode(barcode) - GetOUT_QTYByBarCode(barcode);
+	}
+
+	public int GetIN_QTYByBarCode(String barcode)
+	{
+		int rtnRst = 0;
+		String sql = "select IN_QTY from material_storage where Bar_Code=\"" + barcode +"\"";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				List<String> in_Qty_List = GetAllStringValue("IN_QTY");
+				for (int i = 0; i < in_Qty_List.size(); i++)
+				{
+					rtnRst += Integer.parseInt(in_Qty_List.get(i));
+				}
+			}
+		}
+		return rtnRst;
+	}
+	
+	public int GetOUT_QTYByBarCode(String barcode)
+	{
+		int rtnRst = 0;
+		String sql = "select OUT_QTY from material_storage where Bar_Code=\"" + barcode +"\"";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				List<String> out_Qty_List = GetAllStringValue("OUT_QTY");
+				for (int i = 0; i < out_Qty_List.size(); i++)
+				{
+					rtnRst += Integer.parseInt(out_Qty_List.get(i));
+				}
+			}
+		}
+		return rtnRst;
+	}
+	
+	public String GetNameByBarcode(String barcode)
+	{
+		String rtnRst = "";
+		String sql = "select name from product_info where Bar_Code=\"" + barcode +"\"";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleString("name");
+			}
+		}
+		return rtnRst;
+	}
+
 }

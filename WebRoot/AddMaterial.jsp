@@ -60,7 +60,7 @@
    		<tr>
    			<td>
 	    		<label>请输入产品类型:</label>
-	    		<input type="text" name="product_type" id="product_type" style='width:140px'>
+	    		<input type="text" name="producttype" id="producttype" style='width:140px'>
 	    		<input type="button" value="Add" onclick="changeAddType(this)" style='width:50px'>
     		</td>
     	</tr>
@@ -87,16 +87,44 @@ for(int i = 0; i < product_type.size(); i++)
 			  		</select>
 	    		</td>
 	    	</tr>
+			<tr>
+				<td align="right">
+					<label>名称:</label>
+					<select name="product_name" id="product_name" style="width:180px">
+					  	<option value = "--请选择--">--请选择--</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">
+					<label>Bar Code:</label>
+					<select name="bar_code" id="bar_code" style="width:180px">
+					  	<option value = "--请选择--">--请选择--</option>
+					</select>
+				</td>
+			</tr>
 	    	<tr>
     			<td align="right">
 		   			<label>请输入产品名称:</label>
-					<input type="text" name="product_name" id="product_name" style='width:180px'>
+					<input type="text" name="productname" id="productname" style='width:180px'>
+				</td>
+			</tr>
+			<tr>
+    			<td align="right">
+		   			<label>Bar Code:</label>
+					<input type="text" name="barcode" id="barcode" style='width:180px'>
 				</td>
 			</tr>
 			<tr>
     			<td align="right">
 		   			<label>入库数量:</label>
 					<input type="text" name="QTY" id="QTY" style='width:180px'>
+				</td>
+			</tr>
+			<tr>
+    			<td align="right">
+		   			<label>单价:</label>
+					<input type="text" name="PriceUnit" id="PriceUnit" style='width:180px'>
 				</td>
 			</tr>
 			<tr>
@@ -107,11 +135,63 @@ for(int i = 0; i < product_type.size(); i++)
 	    	</table>
     	</form>
    	</center>
+	  	<script type="text/javascript">
+		$(function()
+		{
+			var $product_type = $('#product_type');
+			var $product_name = $('#product_name');
+			var $bar_code = $('#bar_code');
+			
+			$product_type.change(function()
+			{
+				$product_name.empty();
+				$product_name.append('<option value="请选择">--请选择--</option>');
+				$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						var pro_list = data.split("$");
+						for (var i = 1; i < pro_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + pro_list[i] + "</option>");
+							$(newOption).val(pro_list[i]);
+							$product_name.append(newOption);
+						}
+					}
+				});
+			});
+			
+			$product_name.change(function()
+			{
+				$bar_code.empty();
+				$bar_code.append('<option value="请选择">--请选择--</option>');
+				$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						var code_list = data.split("$");
+						for (var i = 1; i < code_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + code_list[i] + "</option>");
+							$(newOption).val(code_list[i]);
+							$bar_code.append(newOption);
+						}
+						$("#productname").attr("value", $product_name.find("option:selected").text());
+					}
+				});
+			});	
+			
+			$bar_code.change(function()
+			{
+				$('#barcode').attr("value", $bar_code.find("option:selected").text());
+			});				
+		});
+	</script>
 	
 	<script type="text/javascript">
 		function changeAddType(obj)
 		{
-			$.post("AddProTypeAjax.jsp", {"product_type":$('#product_type').val()}, function(data, textStatus)
+			$.post("AddProTypeAjax.jsp", {"pro_type":$('#pro_type').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
 				{

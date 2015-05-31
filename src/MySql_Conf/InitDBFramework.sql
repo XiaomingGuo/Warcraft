@@ -31,3 +31,9 @@ CREATE TABLE IF NOT EXISTS `earthquake`.`product_type` (
 PRIMARY KEY (`id`),
 UNIQUE INDEX `id_UNIQUE` (`id` ASC),
 UNIQUE INDEX `name_UNIQUE` (`name` ASC));
+
+CREATE TABLE IF NOT EXISTS `earthquake`.`material_storage` (
+`id` INT(11) NOT NULL AUTO_INCREMENT,
+`Bar_Code` VARCHAR(8) NOT NULL,`Batch_Lot` VARCHAR(11) NOT NULL,`Amount` INT(10) NOT NULL,`Price_Per_Unit` FLOAT NOT NULL,`Total_Price` DOUBLE NOT NULL,
+PRIMARY KEY (`id`),
+UNIQUE INDEX `id_UNIQUE` (`id` ASC));

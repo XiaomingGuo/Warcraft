@@ -66,12 +66,6 @@ for(int i = 0; i < product_type.size(); i++)
 		  	</select>
 	  	</td>
   	</tr>
-<!-- <br><br>
-		<label>类型:</label>
-		<select name="product_info" id="product_info">
-		  	<option value = "">--请选择--</option>
-		</select>
--->
 	<tr>
 		<td align="right">
 			<label>名称:</label>
@@ -82,10 +76,18 @@ for(int i = 0; i < product_type.size(); i++)
 	</tr>
 	<tr>
 		<td align="right">
+			<label>Bar Code:</label>
+			<select name="bar_code" id="bar_code" style="width:180px">
+			  	<option value = "--请选择--">--请选择--</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
 			<label>数量:</label>
 			<select name="QTY" id="QTY" style="width:180px">
 <%
-for(int i = 1; i <= 10; i++)
+for(int i = 1; i <= 20; i++)
 {
 %>
 		  		<option value = <%=i%>><%=i%></option>
@@ -114,12 +116,15 @@ for(int i = 1; i <= 10; i++)
 		{
 			var $product_type = $('#product_type');
 			var $product_name = $('#product_name');
+			var $bar_code = $('#bar_code');
 			var $Total_QTY = $('#Total_QTY');
 			
 			$product_type.change(function()
 			{
 				$product_name.empty();
+				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
+				$bar_code.append('<option value="请选择">--请选择--</option>');
 				$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -129,7 +134,7 @@ for(int i = 1; i <= 10; i++)
 						{
 							var newOption = $("<option>" + pro_list[i] + "</option>");
 							$(newOption).val(pro_list[i]);
-							$("#product_name").append(newOption);
+							$product_name.append(newOption);
 						}
 					}
 				});
@@ -137,11 +142,19 @@ for(int i = 1; i <= 10; i++)
 			
 			$product_name.change(function()
 			{
+				$bar_code.empty();
 				$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
-						$Total_QTY.attr("value", data);
+						var code_list = data.split("$");
+						for (var i = 1; i < code_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + code_list[i] + "</option>");
+							$(newOption).val(code_list[i]);
+							$bar_code.append(newOption);
+						}
+						$Total_QTY.attr("value", code_list[i]);
 					}
 				});
 			});				

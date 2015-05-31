@@ -1,3 +1,4 @@
+<%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
@@ -15,36 +16,33 @@
 	{
 		request.setCharacterEncoding("UTF-8");
 		String appProduct_type = request.getParameter("product_type");
-		String appProduct_name = request.getParameter("product_name");
-		String appProduct_QTY = request.getParameter("QTY");
-		
-		String sql = "select * from product_info where name='" + appProduct_name + "'";
-		hDBHandle.QueryDataBase(sql);
-		if (hDBHandle.GetRecordCount() > 0)
-		{	
-			int sqlCount = hDBHandle.GetSingleInt("IN_QTY");
-			sql= "UPDATE product_info SET IN_QTY='" + Integer.toString(Integer.parseInt(appProduct_QTY)+sqlCount) + "' WHERE name='" + appProduct_name + "'";
-			if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && hDBHandle.execUpate(sql))
-			{
-				response.sendRedirect("AddMaterial.jsp");
-			}
-			else
-			{
-				response.sendRedirect("AddMaterial.jsp");
-			}
-		}
-		else
+		String appProductname = request.getParameter("productname");
+		String appBarcode = request.getParameter("barcode");
+		String appPriceUnit = request.getParameter("PriceUnit");
+		String appProductQTY = request.getParameter("QTY");
+		if (!appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
 		{
-			//product_type Database query
-			sql = "INSERT INTO product_info (name, product_type, IN_QTY) VALUES ('" + appProduct_name + "', '" + appProduct_type + "', '" + appProduct_QTY + "')";
-			if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && hDBHandle.execUpate(sql))
+			String appTotalPrice = String.format("%.2f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
+			Calendar mData = Calendar.getInstance();
+			String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+			int loopNum = 1;
+			do
 			{
-				response.sendRedirect("AddMaterial.jsp");
+				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
+				String sql = "select * from material_storage where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
+				hDBHandle.QueryDataBase(sql);
+				if (hDBHandle.GetRecordCount() <= 0)
+				{
+					hDBHandle.CloseDatabase();
+					//product_type Database query
+					sql = "INSERT INTO material_storage (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "')";
+					hDBHandle.execUpate(sql);
+					break;
+				}
+				loopNum ++;
 			}
-			else
-			{
-				response.sendRedirect("AddMaterial.jsp");
-			}
+			while(true);
 		}
+		response.sendRedirect("AddMaterial.jsp");
 	}
 %>

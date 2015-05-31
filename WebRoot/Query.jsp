@@ -3,7 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"id", "proposer", "material_name", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -28,7 +29,7 @@
 			String sql = "select * from material_record";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(keyList);
+				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 			}
 %>
 
@@ -56,10 +57,10 @@
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= keyList.length; iCol++)
+for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 {
 %>
-	   			<th><%= keyList[iCol-1]%></th>
+	   			<th><%= displayKeyList[iCol-1]%></th>
 <%
 }
 %>
@@ -70,23 +71,29 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 {
 %>
   			<tr>
-  	<%
-	for(int iCol = 1; iCol <= recordList.size(); iCol++)
+<%
+	for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 	{
-		if(keyList[iCol-1] != "isApprove")
+		if(displayKeyList[iCol-1] == "isApprove")
 		{
-	%>
-    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
-    <%
+%>
+    			<td><%= (recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
+<%
+    	}
+    	else if (displayKeyList[iCol-1] == "name")
+    	{
+%>
+    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
+<%
     	}
     	else
     	{
-	%>
-    			<td><%= (recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
-	<%
+%>
+    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
+<%
 		}
     }
-    %>
+%>
 			</tr>
 <%
 }
