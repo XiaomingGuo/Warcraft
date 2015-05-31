@@ -56,7 +56,7 @@ public class DatabaseConn
 	{
 		//product_info Database query
 		List<String> product_info = null;
-		String sql = "select * from product_info where product_type=\"" + str +"\"";
+		String sql = "select * from product_info where product_type='" + str +"'";
 		if (QueryDataBase(sql))
 		{
 			product_info = GetAllStringValue("name");
@@ -246,7 +246,7 @@ public class DatabaseConn
 	public int GetIN_QTYByBarCode(String barcode)
 	{
 		int rtnRst = 0;
-		String sql = "select IN_QTY from material_storage where Bar_Code=\"" + barcode +"\"";
+		String sql = "select IN_QTY from material_storage where Bar_Code='" + barcode +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -264,7 +264,7 @@ public class DatabaseConn
 	public int GetOUT_QTYByBarCode(String barcode)
 	{
 		int rtnRst = 0;
-		String sql = "select OUT_QTY from material_storage where Bar_Code=\"" + barcode +"\"";
+		String sql = "select OUT_QTY from material_storage where Bar_Code='" + barcode +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -282,12 +282,26 @@ public class DatabaseConn
 	public String GetNameByBarcode(String barcode)
 	{
 		String rtnRst = "";
-		String sql = "select name from product_info where Bar_Code=\"" + barcode +"\"";
+		String sql = "select name from product_info where Bar_Code='" + barcode +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
 			{
 				rtnRst = GetSingleString("name");
+			}
+		}
+		return rtnRst;
+	}
+	
+	public String GetMergeMark(String id)
+	{
+		String rtnRst = "";
+		String sql = "select Merge_Mark from material_record where id='" + id +"'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleString("Merge_Mark");
 			}
 		}
 		return rtnRst;

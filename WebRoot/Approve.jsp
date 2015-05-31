@@ -3,7 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"id", "proposer", "material_name", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -28,7 +29,7 @@
 			String sql = "select * from material_record where isApprove=0";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(keyList);
+				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 			}
 %>
 
@@ -56,10 +57,10 @@
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= keyList.length; iCol++)
+for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 {
 %>
-	   			<th><%= keyList[iCol-1]%></th>
+	   			<th><%= displayKeyList[iCol-1]%></th>
 <%
 }
 %>
@@ -70,32 +71,38 @@ if (!recordList.isEmpty())
 {
 	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 	{
-	%>
-	  			<tr>
-	  	<%
-		for(int iCol = 1; iCol <= recordList.size(); iCol++)
+%>
+  			<tr>
+<%
+		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 		{
-			if(keyList[iCol-1] != "isApprove")
+			if(displayKeyList[iCol-1] == "isApprove")
 			{
-		%>
-	    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
-	    <%
+	    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
+	    		{
+%>
+    			<td>
+	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+recordList.get(1).get(iRow-1)+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
+    			</td>
+<%
+				}
+	    	}
+	    	else if(displayKeyList[iCol-1] == "name")
+	    	{
+%>
+    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(1).get(iRow-1)) %></td>
+<%
 	    	}
 	    	else
 	    	{
-	    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
-	    		{
-		%>
-	    			<td>
-	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+recordList.get(2).get(iRow-1)+"$"+recordList.get(3).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
-	    			</td>
-		<%
-				}
+%>
+    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+<%
 			}
 	    }
-	    %>
-				</tr>
-	<%
+%>
+			</tr>
+<%
 	}
 }
 %>
@@ -104,8 +111,9 @@ if (!recordList.isEmpty())
 		<script type="text/javascript">
 			function change(obj)
 			{
+    			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 				var tempList = obj.name.split("$");
-				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "OUT_QTY":tempList[2], "Pro_Name":tempList[1]}, function(data, textStatus)
+				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 				{
 					if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
 					{
