@@ -67,7 +67,7 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
     		</tr>
  
 <%
-for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
 {
 %>
   			<tr>

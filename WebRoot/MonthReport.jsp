@@ -4,7 +4,7 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
-	String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -15,7 +15,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&256;
+		int temp = mylogon.getUserRight()&64;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -26,7 +26,7 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from material_record where isApprove=0";
+			String sql = "select * from material_record where proposer='" + mylogon.getUsername() + "'";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -38,7 +38,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>批准</title>
+    <title>个人报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -50,10 +50,26 @@
 	-->
 
   </head>
-  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  
   <body>
     <jsp:include page="MainPage.jsp"/>
     <center>
+    	<lable>查询起止时间:</lable>
+    	<table border="1">
+    		<tr>
+    			<td>
+	   				<lable>开始日期:</lable>
+	    			<input type="date">
+    			</td>
+    			<td>
+	   				<lable>截止日期:</lable>
+	    			<input type="date">
+    			</td>
+    			<td>
+	    			<input type="button" value=查询  onclick="change(this)">
+    			</td>
+    		</tr>
+    	</table>
     	<table border="1">
     		<tr>
 <%
@@ -67,62 +83,54 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
     		</tr>
  
 <%
-if (!recordList.isEmpty())
+for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 {
-	for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
-	{
 %>
   			<tr>
 <%
-		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+	for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+	{
+		if(displayKeyList[iCol-1] == "isApprove")
 		{
-			if(displayKeyList[iCol-1] == "isApprove")
-			{
-	    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
-	    		{
 %>
-    			<td>
-	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+recordList.get(1).get(iRow-1)+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
-    			</td>
+    			<td><%= (recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
-				}
-	    	}
-	    	else if(displayKeyList[iCol-1] == "name")
-	    	{
+    	}
+    	else if (displayKeyList[iCol-1] == "name")
+    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(1).get(iRow-1)) %></td>
+    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
-	    	}
-	    	else
-	    	{
+    	}
+    	else
+    	{
 %>
-    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
 <%
-			}
-	    }
+		}
+    }
 %>
 			</tr>
 <%
-	}
 }
 %>
     	</table>
     </center>
-		<script type="text/javascript">
-			function change(obj)
+	<script type="text/javascript">
+		function change(obj)
+		{
+   			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+			var tempList = obj.name.split("$");
+			$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 			{
-    			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
-				var tempList = obj.name.split("$");
-				$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
+				if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
 				{
-					if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
-					{
-						alert(data);
-					}
-					location.reload();
-				});
-			}
-		</script>
+					alert(data);
+				}
+				location.reload();
+			});
+		}
+	</script>
   </body>
 </html>
 <%

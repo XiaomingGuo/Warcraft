@@ -41,7 +41,8 @@
 		    		<li><a href="Query.jsp">查询</a></li>
 		    		<li><a href="Approve.jsp">批准</a></li>
 		    		<li><a href="AddMaterial.jsp">录入</a></li>
-		    		<li><a href="FinalReport.jsp">个人报表</a></li>
+		    		<li><a href="PersonReport.jsp">个人报表</a></li>
+		    		<li><a href="MonthReport.jsp">月报表</a></li>
 		    		<li><a href="Summary.jsp">库存</a></li>
 		    		<li><a href="Quit.jsp">退出</a></li>
 		    	</ul>

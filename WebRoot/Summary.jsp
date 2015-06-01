@@ -3,8 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] sqlKeyList = {"id", "name", "product_type", "IN_QTY", "OUT_QTY"};
-	String[] keyList = {"id", "name", "product_type", "IN_QTY", "OUT_QTY", "repertory"};
+	String[] sqlKeyList = {"id", "name", "Bar_Code", "product_type"};
+	String[] keyList = {"id", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -65,20 +65,34 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 %>
   			<tr>
   	<%
-	for(int iCol = 1; iCol <= recordList.size() + 1; iCol++)
+	int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(recordList.get(2).get(iRow-1));
+	int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(recordList.get(2).get(iRow-1));
+	for(int iCol = 1; iCol <= keyList.length; iCol++)
 	{
-		if(keyList[iCol-1] != "repertory")
+		if(keyList[iCol-1] == "repertory")
 		{
 	%>
-    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+    			<td><%= sql_in_qty - sql_out_qty%></td>
+	<%
+    	}
+    	else if (keyList[iCol-1] == "IN_QTY")
+    	{
+    %>
+    			<td><%= sql_in_qty%></td>
+    <%
+    	}
+     	else if (keyList[iCol-1] == "OUT_QTY")
+    	{
+    %>
+    			<td><%= sql_out_qty%></td>
     <%
     	}
     	else
     	{
 	%>
-    			<td><%= Integer.parseInt(recordList.get(3).get(iRow-1)) - Integer.parseInt(recordList.get(4).get(iRow-1))%></td>
-	<%
-		}
+    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+    <%
+   		}
     }
     %>
 			</tr>

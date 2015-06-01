@@ -5,14 +5,14 @@
 	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 %>
 <%
-	String rtnRst = "";
+	String userName="", rtnRst = "";
 	String barcode = (String)request.getParameter("Barcode");
 	String recordID = (String)request.getParameter("material_id");
 	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
 	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode);
 	if (repertory_count >= used_count)
 	{
-		String sql = "select * from material_storage where Bar_Code='" + barcode +"'";
+		String sql = "select * from material_storage where Bar_Code='" + barcode +"' and IN_QTY != OUT_QTY";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
 			List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
@@ -26,24 +26,19 @@
 				{
 					sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
 					hDBHandle.execUpate(sql);
-					if (hDBHandle.GetMergeMark(recordID) == "0")
-					{
-						sql= "UPDATE material_record SET Batch_Lot='"+ batchLot +"' and isApprove='1' WHERE id='" + recordID + "'";
-					}
-					else
-					{
-						sql= "INSERT INTO material_record (Bar_Code, Batch_Lot, proposer, QTY, isApprove, Merge_Mark) VALUES ()";
-					}
+					sql= "UPDATE material_record SET Batch_Lot='"+ batchLot +"', QTY='" + Integer.toString(used_count) + "', isApprove='1', Merge_Mark='" + recordID + "' WHERE id='" + recordID + "'";
 					hDBHandle.execUpate(sql);
-					rtnRst = "";
 					break;
 				}
 				else
 				{
 					sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
 					hDBHandle.execUpate(sql);
+					sql = "SELECT proposer FROM material_record WHERE id='" + recordID + "'";
+					hDBHandle.QueryDataBase(sql);
+					userName = hDBHandle.GetSingleString("proposer");
 					
-					sql= "INSERT INTO material_record (Bar_Code, Batch_Lot, proposer, QTY, isApprove, Merge_Mark) VALUES ()";;
+					sql = "INSERT INTO material_record (Bar_Code, Batch_Lot, proposer, QTY, isApprove, Merge_Mark) VALUES ('" + barcode + "', '" + batchLot + "', '" + userName + "', '" + Integer.toString(recordCount) + "', '1', '" + recordID + "')";;
 					hDBHandle.execUpate(sql);
 					used_count -= recordCount;
 					continue;

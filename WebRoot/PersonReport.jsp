@@ -15,22 +15,14 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&512;
-		if(temp == 0)
+		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		String sql = "select * from material_record where proposer='" + mylogon.getUsername() + "'";
+		if (hDBHandle.QueryDataBase(sql))
 		{
-			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 		}
-		else
-		{
-			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-			String path = request.getContextPath();
-			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from material_record where proposer='" + mylogon.getUsername() + "'";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -67,7 +59,7 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
     		</tr>
  
 <%
-for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
 {
 %>
   			<tr>
@@ -103,6 +95,5 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
   </body>
 </html>
 <%
-		}
 	}
 %>
