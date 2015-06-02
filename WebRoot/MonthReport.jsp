@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
@@ -9,6 +10,8 @@
 %>
 <%
 	String message="";
+	Calendar mData = Calendar.getInstance();
+	String currentDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -59,11 +62,11 @@
     		<tr>
     			<td>
 	   				<lable>开始日期:</lable>
-	    			<input type="date">
+	   				<input type="text" value=<%=currentDate%> name="DateOfBegin" id="DateOfBegin">
     			</td>
     			<td>
 	   				<lable>截止日期:</lable>
-	    			<input type="date">
+	   				<input type="text" value=<%=currentDate%> name="DateOfEnd" id="DateOfBegin">
     			</td>
     			<td>
 	    			<input type="button" value=查询  onclick="change(this)">
@@ -120,7 +123,9 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 		function change(obj)
 		{
    			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
-			var tempList = obj.name.split("$");
+			//var tempList = obj.name.split("$");
+			alert($("#DateOfBegin").Text());
+			alert($("#DateOfEnd").Text());
 			$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
