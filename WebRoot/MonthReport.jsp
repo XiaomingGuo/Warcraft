@@ -69,7 +69,7 @@
 	   				<input type="text" value=<%=currentDate%> name="DateOfEnd" id="DateOfBegin">
     			</td>
     			<td>
-	    			<input type="button" value=查询  onclick="change(this)">
+	    			<input type="button" value="查询" onclick="change(this)">
     			</td>
     		</tr>
     	</table>
@@ -124,8 +124,8 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 		{
    			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 			//var tempList = obj.name.split("$");
-			alert($("#DateOfBegin").Text());
-			alert($("#DateOfEnd").Text());
+			alert($('#DateOfBegin').Text);
+			alert($('#DateOfEnd').val());
 			$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
