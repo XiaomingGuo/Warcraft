@@ -6,6 +6,8 @@
 	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
+	int pageNum = 0;
+	int PageRecordCount = 5;
 %>
 <%
 	String message="";
@@ -27,6 +29,20 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String sql = "select * from material_record";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				int recordCount = hDBHandle.GetRecordCount();
+				if (recordCount%PageRecordCount == 0)
+				{
+					pageNum = recordCount/PageRecordCount;
+				}
+				else
+				{
+					pageNum = 1 + recordCount/PageRecordCount;
+				}
+			}
+			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+			sql = String.format("select * from material_record limit %d,%d", PageRecordCount*BeginPage, PageRecordCount*(BeginPage+1));
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -99,6 +115,19 @@ for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
 }
 %>
     	</table>
+    	<br><br>
+    	<a href="Query.jsp?BeginPage=0">首页</a>
+    	<a href="Query.jsp?BeginPage=0">上一页</a>
+<%
+		for (int iPage = 1; iPage <= pageNum; iPage++)
+		{
+%>
+			<a href="Query.jsp?BeginPage="+<%=iPage %>><%=iPage %></a>
+<%
+		}
+%>
+    	<a href="Query.jsp">下一页</a>
+    	<a href="Query.jsp">末页</a>
     </center>
   </body>
 </html>
