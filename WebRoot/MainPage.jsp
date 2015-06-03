@@ -38,7 +38,7 @@
 		    	<ul>
 		    		<li><a href="MainPage.jsp">首页</a></li>
 		    		<li><a href="Application.jsp">申请</a></li>
-		    		<li><a href="Query.jsp?BeginPage=0">查询</a></li>
+		    		<li><a href="Query.jsp?BeginPage=1">查询</a></li>
 		    		<li><a href="Approve.jsp">批准</a></li>
 		    		<li><a href="AddMaterial.jsp">录入</a></li>
 		    		<li><a href="PersonReport.jsp">个人报表</a></li>

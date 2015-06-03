@@ -7,7 +7,7 @@
 	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 	int pageNum = 0;
-	int PageRecordCount = 5;
+	int PageRecordCount = 3;
 %>
 <%
 	String message="";
@@ -32,17 +32,10 @@
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				int recordCount = hDBHandle.GetRecordCount();
-				if (recordCount%PageRecordCount == 0)
-				{
-					pageNum = recordCount/PageRecordCount;
-				}
-				else
-				{
-					pageNum = 1 + recordCount/PageRecordCount;
-				}
+				pageNum = (recordCount%PageRecordCount == 0)?recordCount/PageRecordCount:1 + recordCount/PageRecordCount;
 			}
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
-			sql = String.format("select * from material_record limit %d,%d", PageRecordCount*BeginPage, PageRecordCount*(BeginPage+1));
+			sql = String.format("select * from material_record order by id desc limit %d,%d", PageRecordCount*(BeginPage-1), PageRecordCount);
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -83,7 +76,7 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
     		</tr>
  
 <%
-for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
+for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 {
 %>
   			<tr>
@@ -116,18 +109,48 @@ for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
 %>
     	</table>
     	<br><br>
-    	<a href="Query.jsp?BeginPage=0">首页</a>
-    	<a href="Query.jsp?BeginPage=0">上一页</a>
+    	<h2>
+    	<a href="Query.jsp?BeginPage=1">首页</a>
 <%
-		for (int iPage = 1; iPage <= pageNum; iPage++)
+		if (BeginPage > 1)
 		{
 %>
-			<a href="Query.jsp?BeginPage="+<%=iPage %>><%=iPage %></a>
+    		<a href="Query.jsp?BeginPage=<%=BeginPage-1 %>">上一页</a>
 <%
 		}
+		if (BeginPage - 2 > 1)
+		{
 %>
-    	<a href="Query.jsp">下一页</a>
-    	<a href="Query.jsp">末页</a>
+			<a>...</a>
+<%
+		}
+		int begin = (BeginPage-2)>1?BeginPage-2:1;
+		int end = (begin+4)<pageNum?(begin+4):pageNum;
+		if (end == pageNum)
+		{
+			begin = end - 4;
+		}
+		for (int iPage = begin; iPage <= end; iPage++)
+		{
+%>
+			<a href="Query.jsp?BeginPage=<%=iPage %>"><%=iPage %></a>
+<%
+		}
+		if ((BeginPage + 2) < pageNum)
+		{
+%>
+			<a>...</a>
+<%
+		}
+		if (BeginPage < pageNum)
+		{
+%>
+    		<a href="Query.jsp?BeginPage=<%=BeginPage+1 %>">下一页</a>
+<%
+    	}
+%>
+    	<a href="Query.jsp?BeginPage=<%=pageNum %>">末页</a>
+    	</h2>
     </center>
   </body>
 </html>
