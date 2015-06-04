@@ -168,6 +168,28 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
+	public double GetSingleDouble(String keyWord)
+	{
+		double rtnRst = 0.0;
+		try
+		{
+			result.last();
+			if (result.getRow() > 0)
+			{
+				result.first();
+				rtnRst = result.getDouble(keyWord);
+			}
+			this.CloseDatabase();
+		}
+		catch(SQLException e)
+		{
+			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
+			this.CloseDatabase();
+			return 0;
+		}
+		return rtnRst;
+	}
+	
 	public List<String> GetAllStringValue(String colName)
 	{
 		List<String> rtnRst = new ArrayList<String>();
@@ -306,5 +328,37 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
-
+	
+	public double GetPrice_Pre_Unit(String bar_code, String Batch_Lot)
+	{
+		double rtnRst = 0.0;
+		String sql = "select Price_Per_Unit from material_storage where Bar_Code='" + bar_code +"' and Batch_Lot='" + Batch_Lot + "'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleDouble("Price_Per_Unit");
+			}
+		}
+		return rtnRst;
+	}
+	
+	public double GetProductRepertoryPrice(String barcode)
+	{
+		double rtnRst = 0.0;
+		String sql = "select * from material_storage where Bar_Code='" + barcode +"' and IN_QTY != OUT_QTY";
+		String[] keyWord = {"IN_QTY", "OUT_QTY", "Price_Per_Unit"};
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				List<List<String>> Qty_List = GetAllDBColumnsByList(keyWord);
+				for (int i = 0; i < Qty_List.get(0).size(); i++)
+				{
+					rtnRst += (Integer.parseInt(Qty_List.get(0).get(i)) - Integer.parseInt(Qty_List.get(1).get(i))) * Float.parseFloat(Qty_List.get(2).get(i));
+				}
+			}
+		}
+		return rtnRst;
+	}
 }

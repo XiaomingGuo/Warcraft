@@ -3,11 +3,10 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
-	int pageNum = 0;
-	int PageRecordCount = 3;
+	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -29,14 +28,11 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String sql = "select * from material_record";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				int recordCount = hDBHandle.GetRecordCount();
-				pageNum = (recordCount%PageRecordCount == 0)?recordCount/PageRecordCount:1 + recordCount/PageRecordCount;
-			}
+			hDBHandle.QueryDataBase(sql);
+			int recordCount = hDBHandle.GetRecordCount();
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
-			sql = String.format("select * from material_record order by id desc limit %d,%d", PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hDBHandle.QueryDataBase(sql))
+			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hDBHandle.QueryDataBase(limitSql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 			}
@@ -86,7 +82,7 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 		if(displayKeyList[iCol-1] == "isApprove")
 		{
 %>
-    			<td><%= (recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
+    			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
     	}
     	else if (displayKeyList[iCol-1] == "name")
@@ -95,10 +91,16 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
     	}
+    	else if (displayKeyList[iCol-1] == "ID")
+    	{
+%>
+    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+<%
+    	}
     	else
     	{
 %>
-    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
+    			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
 <%
 		}
     }
@@ -109,48 +111,12 @@ for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 %>
     	</table>
     	<br><br>
-    	<h2>
-    	<a href="Query.jsp?BeginPage=1">首页</a>
-<%
-		if (BeginPage > 1)
-		{
-%>
-    		<a href="Query.jsp?BeginPage=<%=BeginPage-1 %>">上一页</a>
-<%
-		}
-		if (BeginPage - 2 > 1)
-		{
-%>
-			<a>...</a>
-<%
-		}
-		int begin = (BeginPage-2)>1?BeginPage-2:1;
-		int end = (begin+4)<pageNum?(begin+4):pageNum;
-		if (end == pageNum)
-		{
-			begin = end - 4;
-		}
-		for (int iPage = begin; iPage <= end; iPage++)
-		{
-%>
-			<a href="Query.jsp?BeginPage=<%=iPage %>"><%=iPage %></a>
-<%
-		}
-		if ((BeginPage + 2) < pageNum)
-		{
-%>
-			<a>...</a>
-<%
-		}
-		if (BeginPage < pageNum)
-		{
-%>
-    		<a href="Query.jsp?BeginPage=<%=BeginPage+1 %>">下一页</a>
-<%
-    	}
-%>
-    	<a href="Query.jsp?BeginPage=<%=pageNum %>">末页</a>
-    	</h2>
+   	    <jsp:include page="PageNum.jsp">
+   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
+   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+   	    	<jsp:param value="Query.jsp" name="PageName"/>
+   	    </jsp:include>
     </center>
   </body>
 </html>

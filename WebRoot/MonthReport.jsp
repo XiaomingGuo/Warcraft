@@ -4,14 +4,17 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
 	Calendar mData = Calendar.getInstance();
-	String currentDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+	String currentDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
+	String beginDate = String.format("%s%s", currentDate, "01");
+	String endDate = String.format("%s%s", currentDate, "31");
+	String strTotalPrice = "";
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -29,7 +32,14 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from material_record where proposer='" + mylogon.getUsername() + "'";
+			String tempBeginDate = request.getParameter("BeginDate");
+			String tempEndDate = request.getParameter("EndDate");
+			if (tempBeginDate != null&&tempEndDate != null)
+			{
+				beginDate = tempBeginDate;
+				endDate = tempEndDate;
+			}
+			String sql = "select * from material_record where create_date>'" + beginDate + "' and create_date<'" + endDate + "' and isApprove=1";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -53,26 +63,23 @@
 	-->
 
   </head>
-  
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
     <center>
     	<lable>查询起止时间:</lable>
     	<table border="1">
     		<tr>
-    			<td>
-	   				<lable>开始日期:</lable>
-	   				<input type="text" value=<%=currentDate%> name="DateOfBegin" id="DateOfBegin">
-    			</td>
-    			<td>
-	   				<lable>截止日期:</lable>
-	   				<input type="text" value=<%=currentDate%> name="DateOfEnd" id="DateOfBegin">
-    			</td>
-    			<td>
-	    			<input type="button" value="查询" onclick="change(this)">
-    			</td>
+    			<th><lable>开始日期:</lable></th>
+    			<th><lable>截止日期:</lable></th>
+    		</tr>
+    		<tr>
+    			<td><input type="text" name="DateOfBegin" id="DateOfBegin" style='width:100px' value="<%=beginDate%>"></td>
+    			<td><input type="text" name="DateOfEnd" id="DateOfEnd" style='width:100px' value="<%=endDate%>"></td>
     		</tr>
     	</table>
+		<input type="button" value="查询" onclick="Query(this)" style='width:80px'>
+		<input type="button" value="打印" onclick="Print(this)" style='width:80px'>
     	<table border="1">
     		<tr>
 <%
@@ -86,54 +93,66 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
     		</tr>
  
 <%
-for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+if (!recordList.isEmpty())
 {
+	double totalPrice = 0;
+	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+	{
+		hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1));
+		totalPrice += hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
 %>
   			<tr>
 <%
-	for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-	{
-		if(displayKeyList[iCol-1] == "isApprove")
+		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 		{
+			if(displayKeyList[iCol-1] == "isApprove")
+			{
 %>
-    			<td><%= (recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
+    			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
-    	}
-    	else if (displayKeyList[iCol-1] == "name")
-    	{
+    		}
+	    	else if (displayKeyList[iCol-1] == "name")
+	    	{
 %>
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
-    	}
-    	else
-    	{
+	    	}
+	    	else if (displayKeyList[iCol-1] == "ID")
+	    	{
 %>
-    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
+	    			<td><%=iRow %></td>
 <%
-		}
-    }
+	    	}
+	    	else
+	    	{
+%>
+    			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
+<%
+			}
+	    }
 %>
 			</tr>
 <%
+	}
+	strTotalPrice = String.format("%.3f", totalPrice);
 }
 %>
+			<tr>
+				<td><table>总价值：</table></td>
+				<td><%=strTotalPrice %></td>
+			</tr>
     	</table>
+    	<br><br>
     </center>
 	<script type="text/javascript">
-		function change(obj)
+		function Query(obj)
+		{	
+			window.location.href="MonthReport.jsp?BeginDate="+$('#DateOfBegin').val()+"&EndDate="+$('#DateOfEnd').val();
+		}
+		function Print(obj)
 		{
-   			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
-			//var tempList = obj.name.split("$");
-			alert($('#DateOfBegin').Text);
+			alert($('#DateOfBegin').val());
 			alert($('#DateOfEnd').val());
-			$.post("ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
-			{
-				if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
-				{
-					alert(data);
-				}
-				location.reload();
-			});
 		}
 	</script>
   </body>

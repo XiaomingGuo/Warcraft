@@ -3,9 +3,10 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
+	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -27,7 +28,11 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String sql = "select * from material_record where isApprove=0";
-			if (hDBHandle.QueryDataBase(sql))
+			hDBHandle.QueryDataBase(sql);
+			int recordCount = hDBHandle.GetRecordCount();
+			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hDBHandle.QueryDataBase(limitSql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 			}
@@ -69,7 +74,7 @@ for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 <%
 if (!recordList.isEmpty())
 {
-	for(int iRow = recordList.get(0).size(); iRow >= 1; iRow--)
+	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 	{
 %>
   			<tr>
@@ -78,7 +83,7 @@ if (!recordList.isEmpty())
 		{
 			if(displayKeyList[iCol-1] == "isApprove")
 			{
-	    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
+	    		if(!recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1"))
 	    		{
 %>
     			<td>
@@ -93,10 +98,16 @@ if (!recordList.isEmpty())
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(1).get(iRow-1)) %></td>
 <%
 	    	}
+	    	else if (displayKeyList[iCol-1] == "ID")
+	    	{
+	%>
+	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+	<%
+	    	}
 	    	else
 	    	{
 %>
-    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
 <%
 			}
 	    }
@@ -107,6 +118,13 @@ if (!recordList.isEmpty())
 }
 %>
     	</table>
+    	<br><br>
+   	    <jsp:include page="PageNum.jsp">
+   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
+   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+   	    	<jsp:param value="Approve.jsp" name="PageName"/>
+   	    </jsp:include>
     </center>
 		<script type="text/javascript">
 			function change(obj)

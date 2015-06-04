@@ -43,9 +43,9 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainPage.jsp"/>
-  	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
   	<center>
   	<br><br><br>
+   	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
   	<table border="1">
   	<tr>
   		<th align="center">申领物品</th>
@@ -109,8 +109,8 @@ for(int i = 1; i <= 20; i++)
 		</td>
 	</tr>
 	</table>
-  	</center>
   	</form>
+  	</center>
   	<script type="text/javascript">
 		$(function()
 		{

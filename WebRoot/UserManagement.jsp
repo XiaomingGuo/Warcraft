@@ -5,6 +5,7 @@
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] keyList = {"id", "name", "create_date", "department", "password", "permission"};
 	List<List<String>> recordList = null;
+	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -26,7 +27,11 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String sql = "select * from user_info";
-			if (hDBHandle.QueryDataBase(sql))
+			hDBHandle.QueryDataBase(sql);
+			int recordCount = hDBHandle.GetRecordCount();
+			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hDBHandle.QueryDataBase(limitSql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(keyList);
 			}
@@ -109,6 +114,13 @@ if (!recordList.isEmpty())
 }
 %>
     	</table>
+    	<br><br>
+   	    <jsp:include page="PageNum.jsp">
+   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
+   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+   	    	<jsp:param value="UserManagement.jsp" name="PageName"/>
+   	    </jsp:include>
     </center>
 		<script type="text/javascript">
 			function change(obj)

@@ -35,15 +35,15 @@
   	<center>
   		<h1>
 		    <nav>
-		    	<ul>
+		    	<ul >
 		    		<li><a href="MainPage.jsp">首页</a></li>
 		    		<li><a href="Application.jsp">申请</a></li>
 		    		<li><a href="Query.jsp?BeginPage=1">查询</a></li>
-		    		<li><a href="Approve.jsp">批准</a></li>
+		    		<li><a href="Approve.jsp?BeginPage=1">批准</a></li>
 		    		<li><a href="AddMaterial.jsp">录入</a></li>
-		    		<li><a href="PersonReport.jsp">个人报表</a></li>
-		    		<li><a href="MonthReport.jsp">月报表</a></li>
-		    		<li><a href="Summary.jsp">库存</a></li>
+		    		<li><a href="PersonReport.jsp?BeginPage=1">个人报表</a></li>
+		    		<li><a href="MonthReport.jsp?BeginPage=1">月报表</a></li>
+		    		<li><a href="Summary.jsp?BeginPage=1">库存</a></li>
 		    		<li><a href="Quit.jsp">退出</a></li>
 		    	</ul>
 		    </nav>

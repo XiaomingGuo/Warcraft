@@ -191,7 +191,6 @@ for(int i = 0; i < product_type.size(); i++)
 	<script type="text/javascript">
 		function changeAddType(obj)
 		{
-			alert($('#producttype').val());
 			$.post("AddProTypeAjax.jsp", {"pro_type":$('#producttype').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))

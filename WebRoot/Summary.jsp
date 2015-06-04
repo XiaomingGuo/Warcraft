@@ -3,9 +3,10 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] sqlKeyList = {"id", "name", "Bar_Code", "product_type"};
-	String[] keyList = {"id", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory"};
+	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
+	String[] keyList = {"ID", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory", "Total_Price"};
 	List<List<String>> recordList = null;
+	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -19,7 +20,11 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		String sql = "select * from product_info";
-		if (hDBHandle.QueryDataBase(sql))
+		hDBHandle.QueryDataBase(sql);
+		int recordCount = hDBHandle.GetRecordCount();
+		int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+		if (hDBHandle.QueryDataBase(limitSql))
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 		}
@@ -60,46 +65,70 @@ for(int iCol = 1; iCol <= keyList.length; iCol++)
     		</tr>
  
 <%
-for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+if (!recordList.isEmpty())
 {
+	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+	{
 %>
   			<tr>
-  	<%
-	int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(recordList.get(2).get(iRow-1));
-	int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(recordList.get(2).get(iRow-1));
-	for(int iCol = 1; iCol <= keyList.length; iCol++)
-	{
-		if(keyList[iCol-1] == "repertory")
+<%
+		String bar_code = recordList.get(1).get(iRow-1);
+		int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
+		int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
+		String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
+		for(int iCol = 1; iCol <= keyList.length; iCol++)
 		{
-	%>
+			if(keyList[iCol-1] == "repertory")
+			{
+%>
     			<td><%= sql_in_qty - sql_out_qty%></td>
-	<%
-    	}
-    	else if (keyList[iCol-1] == "IN_QTY")
-    	{
-    %>
+<%
+	    	}
+	    	else if (keyList[iCol-1] == "IN_QTY")
+	    	{
+%>
     			<td><%= sql_in_qty%></td>
-    <%
-    	}
-     	else if (keyList[iCol-1] == "OUT_QTY")
-    	{
-    %>
+<%
+	    	}
+	     	else if (keyList[iCol-1] == "OUT_QTY")
+	    	{
+%>
     			<td><%= sql_out_qty%></td>
-    <%
+<%
+	    	}
+	    	else if (keyList[iCol-1] == "ID")
+	    	{
+%>
+	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+<%
+	    	}
+	    	else if (keyList[iCol-1] == "Total_Price")
+	    	{
+%>
+	    			<td><%=pro_Price %></td>
+<%
+	    	}
+	    	else
+	    	{
+%>
+    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
+<%
+   			}
     	}
-    	else
-    	{
-	%>
-    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
-    <%
-   		}
-    }
-    %>
+%>
 			</tr>
 <%
+	}
 }
 %>
     	</table>
+    	<br><br>
+   	    <jsp:include page="PageNum.jsp">
+   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
+   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+   	    	<jsp:param value="Summary.jsp" name="PageName"/>
+   	    </jsp:include>
     </center>
   </body>
 </html>
