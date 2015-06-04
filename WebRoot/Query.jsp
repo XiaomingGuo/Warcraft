@@ -57,7 +57,7 @@
   </head>
   
   <body>
-    <jsp:include page="MainPage.jsp"/>
+    <jsp:include page="MainMenu.jsp"/>
     <center>
     	<table border="1">
     		<tr>

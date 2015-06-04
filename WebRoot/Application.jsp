@@ -42,7 +42,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainPage.jsp"/>
+    <jsp:include page="MainMenu.jsp"/>
   	<center>
   	<br><br><br>
    	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">

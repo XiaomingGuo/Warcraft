@@ -14,7 +14,6 @@
 	String currentDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 	String beginDate = String.format("%s%s", currentDate, "01");
 	String endDate = String.format("%s%s", currentDate, "31");
-	String strTotalPrice = "";
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -65,7 +64,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainPage.jsp"/>
+    <jsp:include page="MainMenu.jsp"/>
     <center>
     	<lable>查询起止时间:</lable>
     	<table border="1">
@@ -83,59 +82,59 @@
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-{
+			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+			{
 %>
 	   			<th><%= displayKeyList[iCol-1]%></th>
 <%
-}
+			}
 %>
     		</tr>
  
 <%
-if (!recordList.isEmpty())
-{
-	double totalPrice = 0;
-	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
-	{
-		hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1));
-		totalPrice += hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
+			double totalPrice = 0;
+			if (!recordList.isEmpty())
+			{
+				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				{
+					hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1));
+					totalPrice += hDBHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
 %>
   			<tr>
 <%
-		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-		{
-			if(displayKeyList[iCol-1] == "isApprove")
-			{
+					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+					{
+						if(displayKeyList[iCol-1] == "isApprove")
+						{
 %>
     			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
-    		}
-	    	else if (displayKeyList[iCol-1] == "name")
-	    	{
+			    		}
+				    	else if (displayKeyList[iCol-1] == "name")
+				    	{
 %>
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
-	    	}
-	    	else if (displayKeyList[iCol-1] == "ID")
-	    	{
+				    	}
+				    	else if (displayKeyList[iCol-1] == "ID")
+				    	{
 %>
 	    			<td><%=iRow %></td>
 <%
-	    	}
-	    	else
-	    	{
+				    	}
+				    	else
+				    	{
 %>
     			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
 <%
-			}
-	    }
+						}
+				    }
 %>
 			</tr>
 <%
-	}
-	strTotalPrice = String.format("%.3f", totalPrice);
-}
+				}
+			}
+			String strTotalPrice = String.format("%.3f", totalPrice);
 %>
 			<tr>
 				<td><table>总价值：</table></td>

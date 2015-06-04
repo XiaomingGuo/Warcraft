@@ -50,77 +50,85 @@
   </head>
   
   <body>
-    <jsp:include page="MainPage.jsp"/>
+    <jsp:include page="MainMenu.jsp"/>
     <center>
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= keyList.length; iCol++)
-{
+		for(int iCol = 1; iCol <= keyList.length; iCol++)
+		{
 %>
 	   			<th><%= keyList[iCol-1]%></th>
 <%
-}
+		}
 %>
     		</tr>
  
 <%
-if (!recordList.isEmpty())
-{
-	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
-	{
+		double totalPrice = 0.0;
+		if (!recordList.isEmpty())
+		{
+			for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+			{
 %>
   			<tr>
 <%
-		String bar_code = recordList.get(1).get(iRow-1);
-		int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
-		int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
-		String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
-		for(int iCol = 1; iCol <= keyList.length; iCol++)
-		{
-			if(keyList[iCol-1] == "repertory")
-			{
+				String bar_code = recordList.get(1).get(iRow-1);
+				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
+				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
+				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code);
+				totalPrice += dblPro_Price;
+				String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
+				for(int iCol = 1; iCol <= keyList.length; iCol++)
+				{
+					if(keyList[iCol-1] == "repertory")
+					{
 %>
     			<td><%= sql_in_qty - sql_out_qty%></td>
 <%
-	    	}
-	    	else if (keyList[iCol-1] == "IN_QTY")
-	    	{
+			    	}
+			    	else if (keyList[iCol-1] == "IN_QTY")
+			    	{
 %>
     			<td><%= sql_in_qty%></td>
 <%
-	    	}
-	     	else if (keyList[iCol-1] == "OUT_QTY")
-	    	{
+			    	}
+			     	else if (keyList[iCol-1] == "OUT_QTY")
+			    	{
 %>
     			<td><%= sql_out_qty%></td>
 <%
-	    	}
-	    	else if (keyList[iCol-1] == "ID")
-	    	{
+			    	}
+			    	else if (keyList[iCol-1] == "ID")
+			    	{
 %>
 	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
-	    	}
-	    	else if (keyList[iCol-1] == "Total_Price")
-	    	{
+			    	}
+			    	else if (keyList[iCol-1] == "Total_Price")
+			    	{
 %>
 	    			<td><%=pro_Price %></td>
 <%
-	    	}
-	    	else
-	    	{
+			    	}
+			    	else
+			    	{
 %>
     			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
 <%
-   			}
-    	}
+   					}
+    			}
 %>
 			</tr>
 <%
-	}
-}
+			}
+		}
+		String strTotalPrice = String.format("%.3f", totalPrice);
 %>
+			<tr>
+				<td><table>总价值：</table></td>
+				<td><%=strTotalPrice %></td>
+			</tr>
     	</table>
     	<br><br>
    	    <jsp:include page="PageNum.jsp">
