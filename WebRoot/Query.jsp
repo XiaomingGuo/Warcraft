@@ -30,7 +30,8 @@
 			String sql = "select * from material_record";
 			hDBHandle.QueryDataBase(sql);
 			int recordCount = hDBHandle.GetRecordCount();
-			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+			String tempBP = request.getParameter("BeginPage");
+			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
 			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
 			if (hDBHandle.QueryDataBase(limitSql))
 			{
@@ -62,52 +63,55 @@
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-{
+			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+			{
 %>
 	   			<th><%= displayKeyList[iCol-1]%></th>
 <%
-}
+			}
 %>
     		</tr>
  
 <%
-for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
-{
+			if (!recordList.isEmpty())
+			{ 
+				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				{
 %>
   			<tr>
 <%
-	for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-	{
-		if(displayKeyList[iCol-1] == "isApprove")
-		{
+					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+					{
+						if(displayKeyList[iCol-1] == "isApprove")
+						{
 %>
     			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
-    	}
-    	else if (displayKeyList[iCol-1] == "name")
-    	{
+				    	}
+				    	else if (displayKeyList[iCol-1] == "name")
+				    	{
 %>
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
-    	}
-    	else if (displayKeyList[iCol-1] == "ID")
-    	{
+				    	}
+				    	else if (displayKeyList[iCol-1] == "ID")
+				    	{
 %>
     			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
-    	}
-    	else
-    	{
+				    	}
+				    	else
+				    	{
 %>
     			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
 <%
-		}
-    }
+						}
+    				}
 %>
 			</tr>
 <%
-}
+				}
+			}
 %>
     	</table>
     	<br><br>

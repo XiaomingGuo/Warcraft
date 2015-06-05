@@ -77,12 +77,12 @@
 				  	<select name="product_type" id="product_type" style='width:180px'>
 					  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
-for(int i = 0; i < product_type.size(); i++)
-{
+			for(int i = 0; i < product_type.size(); i++)
+			{
 %>
 		  				<option value = <%=product_type.get(i)%>><%=product_type.get(i)%></option>
 <%
-}
+			}
 %>
 			  		</select>
 	    		</td>

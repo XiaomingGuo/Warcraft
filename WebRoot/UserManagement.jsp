@@ -3,7 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"id", "name", "create_date", "department", "password", "permission"};
+	String[] keyList = {"ID", "name", "create_date", "department", "password", "permission", "submit"};
+	String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
 %>
@@ -15,7 +16,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&64;
+		int temp = mylogon.getUserRight()&32;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -33,7 +34,7 @@
 			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
 			if (hDBHandle.QueryDataBase(limitSql))
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(keyList);
+				recordList = hDBHandle.GetAllDBColumnsByList(sqlkeyList);
 			}
 %>
 
@@ -42,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>查询</title>
+    <title>用户管理</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -61,57 +62,120 @@
     	<table border="1">
     		<tr>
 <%
-for(int iCol = 1; iCol <= keyList.length; iCol++)
-{
+			for(int iCol = 1; iCol <= keyList.length; iCol++)
+			{
 %>
 	   			<th><%= keyList[iCol-1]%></th>
 <%
-}
+			}
 %>
     		</tr>
  
 <%
-if (!recordList.isEmpty())
-{
-	for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
-	{
-	%>
-	  			<tr>
-	  	<%
-		for(int iCol = 1; iCol <= recordList.size(); iCol++)
-		{
-			if(keyList[iCol-1] != "permission")
+			if (!recordList.isEmpty())
 			{
-		%>
-	    			<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
-	    <%
-	    	}
-	    	else
-	    	{
-	    		if(!recordList.get(iCol-1).get(iRow-1).equalsIgnoreCase("1"))
-	    		{
-		%>
-	    			<td>
-	    				<center>
-		    				<select name="permission" id="permission" style="width:100pt">
-		    					<option>--请选择--</option>
-		    					<option name=512 id=512>普通成员</option>
-		    					<option name=768 id=768>物料录入</option>
-		    					<option name=896 id=896>物料管理员</option>
-		    					<option name=960 id=960>物料统计员</option>
-		    					<option name=992 id=992>网站管理员</option>
-		    				</select>
-	    				</center>
-	    			</td>
-		<%
+				int iRow = 0;
+				for(iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				{
+					if (recordList.get(1).get(iRow-1).equalsIgnoreCase("root"))
+						continue;
+%>
+  			<tr>
+<%
+					for(int iCol = 1; iCol <= keyList.length; iCol++)
+					{
+						String tempValue = recordList.get(0).get(iRow-1);
+						if(keyList[iCol-1] == "permission")
+						{
+%>
+    			<td>
+    				<center>
+	    				<input type="checkbox" name="permission" value="512">查询
+	    				<input type="checkbox" name="permission" value="256">批准
+	    				<input type="checkbox" name="permission" value="128">录入
+	    				<input type="checkbox" name="permission" value="64">月报表
+	    				<input type="checkbox" name="permission" value="32">用户管理
+    				</center>
+    			</td>
+<%
+				    	}
+						else if(keyList[iCol-1] == "submit")
+						{
+%>
+    			<td>
+					<center><input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)"></center>
+				</td>
+<%
+						}
+						else if(keyList[iCol-1] == "ID")
+						{
+%>
+   				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+<%
+						}
+				    	else
+				    	{
+%>
+   				<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+<%
+						}
+					}
+%>
+			</tr>
+<%
 				}
+%>
+  			<tr>
+<%
+				for(int iCol = 1; iCol <= keyList.length; iCol++)
+				{
+					if(keyList[iCol-1] == "permission")
+					{
+%>
+    			<td>
+    				<center>
+	    				<input type="checkbox" name="AddPermission" value="512">查询
+	    				<input type="checkbox" name="AddPermission" value="256">批准
+	    				<input type="checkbox" name="AddPermission" value="128">录入
+	    				<input type="checkbox" name="AddPermission" value="64">月报表
+	    				<input type="checkbox" name="AddPermission" value="32">用户管理
+    				</center>
+    			</td>
+<%
+			    	}
+					else if(keyList[iCol-1] == "submit")
+					{
+%>
+    			<td>
+					<center><input type="button" value="添加" name="<%=iRow %>" id="<%=iRow %>" onclick="Add(this)"></center>
+				</td>
+<%
+					}
+					else if(keyList[iCol-1] == "ID")
+					{
+%>
+   				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+<%
+					}
+			    	else if(keyList[iCol-1] == "create_date")
+			    	{
+%>
+				<td></td>
+<%
+					}
+			    	else
+			    	{
+%>
+   				<td>
+					<center><input type="text" name="<%=keyList[iCol-1] %>" id="<%=keyList[iCol-1] %>"></center>
+				</td>
+<%
+					}
+				}
+%>
+			</tr>
+<%
 			}
-	    }
-	    %>
-				</tr>
-	<%
-	}
-}
 %>
     	</table>
     	<br><br>
@@ -125,13 +189,31 @@ if (!recordList.isEmpty())
 		<script type="text/javascript">
 			function change(obj)
 			{
-				var sql = "UPDATE material_record SET isApprove='1' WHERE id='" + obj.name + "'";
-				$.post("ApproveAjax.jsp", {"sql":sql}, function(data, textStatus){
+				var iPermission = 0;
+				$("input:checkbox[name=permission]:checked").each(function(i){
+					iPermission += Number($(this).val());
+				});
+				$.post("UpdateUserAjax.jsp", {"Index":obj.name, "Permission":iPermission}, function(data, textStatus){
 					if (textStatus == "success") {
 						location.reload();
 					}
 				});
 			}
+			
+			function Add(obj)
+			{
+				//	String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
+				var iPermission = 0;
+				$("input:checkbox[name=AddPermission]:checked").each(function(i){
+					iPermission += Number($(this).val());
+				});
+				$.post("AddUserAjax.jsp", {"name":$('#name').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
+					if (textStatus == "success") {
+						location.reload();
+					}
+				});
+			}
+
 		</script>
   </body>
 </html>

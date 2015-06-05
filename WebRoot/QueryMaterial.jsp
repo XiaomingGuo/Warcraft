@@ -3,8 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] keyList = {"ID", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory", "Total_Price"};
+	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price"};
+	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
 %>
@@ -19,7 +19,7 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from product_info";
+		String sql = "select * from material_storage";
 		hDBHandle.QueryDataBase(sql);
 		int recordCount = hDBHandle.GetRecordCount();
 		String tempBP = request.getParameter("BeginPage");
@@ -29,7 +29,6 @@
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 		}
-		
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -37,7 +36,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>库存</title>
+    <title>查询</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -56,17 +55,16 @@
     	<table border="1">
     		<tr>
 <%
-		for(int iCol = 1; iCol <= keyList.length; iCol++)
+		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 		{
 %>
-	   			<th><%= keyList[iCol-1]%></th>
+	   			<th><%= displayKeyList[iCol-1]%></th>
 <%
 		}
 %>
     		</tr>
  
 <%
-		double totalPrice = 0.0;
 		if (!recordList.isEmpty())
 		{
 			for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
@@ -74,76 +72,40 @@
 %>
   			<tr>
 <%
-				String bar_code = recordList.get(1).get(iRow-1);
-				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
-				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
-				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code);
-				totalPrice += dblPro_Price;
-				String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
-				for(int iCol = 1; iCol <= keyList.length; iCol++)
+				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
-					if(keyList[iCol-1] == "repertory")
-					{
-%>
-    			<td><%= sql_in_qty - sql_out_qty%></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "IN_QTY")
+					if (displayKeyList[iCol-1] == "name")
 			    	{
 %>
-    			<td><%= sql_in_qty%></td>
+    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
 			    	}
-			     	else if (keyList[iCol-1] == "OUT_QTY")
+			    	else if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
-    			<td><%= sql_out_qty%></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "ID")
-			    	{
-%>
-	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "Total_Price")
-			    	{
-%>
-	    			<td><%=pro_Price %></td>
+    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
 			    	}
 			    	else
 			    	{
 %>
-    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
+    			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
 <%
-   					}
-    			}
+					}
+		    	}
 %>
 			</tr>
 <%
 			}
 		}
-		String strTotalPrice = String.format("%.3f", totalPrice);
 %>
-			<tr>
-<%
-			for(int iCol = 1; iCol <= keyList.length-2; iCol++)
-			{
-%>
-				<td><table></table></td>
-<%
-			}
-%>				<td><table>总价值：</table></td>
-				<td><%=strTotalPrice %></td>
-			</tr>
     	</table>
     	<br><br>
    	    <jsp:include page="PageNum.jsp">
    	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
    	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
    	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="Summary.jsp" name="PageName"/>
+   	    	<jsp:param value="QueryMaterial.jsp" name="PageName"/>
    	    </jsp:include>
     </center>
   </body>

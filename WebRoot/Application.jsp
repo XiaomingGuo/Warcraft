@@ -56,12 +56,12 @@
 		  	<select name="product_type" id="product_type" style="width:180px">
 			  	<option value = "--请选择类别--">--请选择类别--</option>
 <%
-for(int i = 0; i < product_type.size(); i++)
-{
+		for(int i = 0; i < product_type.size(); i++)
+		{
 %>
 			  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
 <%
-}
+		}
 %>
 		  	</select>
 	  	</td>
@@ -87,12 +87,12 @@ for(int i = 0; i < product_type.size(); i++)
 			<label>数量:</label>
 			<select name="QTY" id="QTY" style="width:180px">
 <%
-for(int i = 1; i <= 20; i++)
-{
+		for(int i = 1; i <= 20; i++)
+		{
 %>
 		  		<option value = <%=i%>><%=i%></option>
 <%
-}
+		}
 %>		
 			</select>
 		</td>

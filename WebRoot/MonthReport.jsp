@@ -50,7 +50,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>个人报表</title>
+    <title>月报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -78,7 +78,6 @@
     		</tr>
     	</table>
 		<input type="button" value="查询" onclick="Query(this)" style='width:80px'>
-		<input type="button" value="打印" onclick="Print(this)" style='width:80px'>
     	<table border="1">
     		<tr>
 <%
@@ -137,6 +136,14 @@
 			String strTotalPrice = String.format("%.3f", totalPrice);
 %>
 			<tr>
+<%
+			for(int iCol = 1; iCol <= displayKeyList.length-2; iCol++)
+			{
+%>
+				<td><table></table></td>
+<%
+			}
+%>
 				<td><table>总价值：</table></td>
 				<td><%=strTotalPrice %></td>
 			</tr>
@@ -147,11 +154,6 @@
 		function Query(obj)
 		{	
 			window.location.href="MonthReport.jsp?BeginDate="+$('#DateOfBegin').val()+"&EndDate="+$('#DateOfEnd').val();
-		}
-		function Print(obj)
-		{
-			alert($('#DateOfBegin').val());
-			alert($('#DateOfEnd').val());
 		}
 	</script>
   </body>
