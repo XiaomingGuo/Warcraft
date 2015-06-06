@@ -55,8 +55,10 @@
 		    		<li><a href="Application.jsp">申请</a></li>
 		    		<li><a href="Query.jsp">查询</a></li>
 		    		<li><a href="Approve.jsp">批准</a></li>
-		    		<li><a href="AddMaterial.jsp">录入</a></li>
-		    		<li><a href="QueryMaterial.jsp">录入查询</a></li>
+		    		<li><a href="Approve.jsp">订单录入</a></li>
+		    		<li><a href="Approve.jsp">订单录入查询</a></li>
+		    		<li><a href="AddMaterial.jsp">物料录入</a></li>
+		    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
 		    		<li><a href="PersonReport.jsp">个人报表</a></li>
 		    		<li><a href="MonthReport.jsp">月报表</a></li>
 		    		<li><a href="Summary.jsp">库存</a></li>
