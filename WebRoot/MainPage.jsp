@@ -29,9 +29,8 @@
   </head>
   
   <body>
-  	<jsp:include page="MainMenu.jsp"/>
-  	<center>
-  	</center>
+	<jsp:include page="MainMenu.jsp"/>
+	<center><blockquote></blockquote><img align="middle" src="IMAGE/MainView.jpg"></center>
   </body>
 </html>
 <%
