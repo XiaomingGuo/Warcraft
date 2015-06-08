@@ -13,7 +13,7 @@
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
 	<style>
-	body{ color:#464646; font:12px normal Verdana, Arial, Helvetica, sans-serif; background:#ECF5FF url(/tpl/user/tpl1/images/bg.jpg) center top repeat-x;}
+	body{background:#ECF5FF;}
 	</style>
   </head>
   

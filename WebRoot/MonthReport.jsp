@@ -66,11 +66,11 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
     <center>
-    	<lable>查询起止时间:</lable>
+    	<label>查询起止时间:</label>
     	<table border="1">
     		<tr>
-    			<th><lable>开始日期:</lable></th>
-    			<th><lable>截止日期:</lable></th>
+    			<th><label>开始日期:</label></th>
+    			<th><label>截止日期:</label></th>
     		</tr>
     		<tr>
     			<td><input type="text" name="DateOfBegin" id="DateOfBegin" style='width:100px' value="<%=beginDate%>"></td>

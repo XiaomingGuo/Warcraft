@@ -133,7 +133,7 @@
 				<td><table></table></td>
 <%
 			}
-%>				<td><table>总价值：</table></td>
+%>				<td><label>总价值:</label></td>
 				<td><%=strTotalPrice %></td>
 			</tr>
     	</table>
