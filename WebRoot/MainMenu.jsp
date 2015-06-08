@@ -31,34 +31,36 @@
   
   <body>
 <!-- -->
+<br>
 	<table align="center">
 		<tr>
 		<td width="80%">
 			<table width="100%">
 			<tr>
-			<td width="25%" align="left"><img src="IMAGE/Logo.jpg" align="middle"><b>常州市茂邦机械有限公司内部网络</b></td>
-			<td width="75%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
-	<%
+			<td width="60%" align="left"><img src="IMAGE/Logo.jpg" align="left"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
+			<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
+<%
 			int temp = mylogon.getUserRight()&32;
 			if(temp == 0)
 		  	{
-	%>
+%>
 			
 			<a href = 'ChangePassword.jsp'>修改密码</a>
-	<%
+<%
 		  	}
 		  	else
 		  	{
-	%>
+%>
 			<a href = 'ChangePassword.jsp'>修改密码</a>&nbsp;&nbsp;
 			<a href = 'UserManagement.jsp?BeginPage=1'>用户管理</a>
 	
-	<%
+<%
 	  		}
-	%>
+%>
 			</td>
 			</tr>
 			</table>
+			<br>
   		<h2 align="center">
 	    	<ul>
 	    		<li><a href="MainPage.jsp">首页</a></li>
@@ -75,7 +77,7 @@
 	    		<li><a href="Quit.jsp">退出</a></li>
 	    	</ul>
 	    </h2>
-    	<hr width=95% >
+    	<hr width=95% noshade="noshade" size="5">
     	</td>
     	</tr>
     </table>

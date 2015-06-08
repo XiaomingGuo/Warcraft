@@ -30,7 +30,10 @@
   
   <body>
 	<jsp:include page="MainMenu.jsp"/>
-	<center><blockquote></blockquote><img align="middle" src="IMAGE/MainView.jpg"></center>
+	<p align="center">
+	<br><br>
+	<img align="middle" src="IMAGE/MainView.jpg">
+	</p>
   </body>
 </html>
 <%
