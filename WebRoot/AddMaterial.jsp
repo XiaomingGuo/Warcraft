@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> product_type = null;
+ 	List<String> product_type = null, store_name = null;
 %>
 <%
 	String message="";
@@ -25,10 +25,10 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from product_type";
+			String sql = "select * from storeroom_name";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				product_type = hDBHandle.GetAllStringValue("name");
+				store_name = hDBHandle.GetAllStringValue("name");
 			}
 %>
 
@@ -53,7 +53,19 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
    	<center>
-    	<table border="1">
+		<table border="1">
+    	<tr>
+   			<th align="center">添加库房</th>
+   		</tr>
+   		<tr>
+   			<td>
+	    		<label>请输入库房名:</label>
+	    		<input type="text" name="storename" id="storename" style='width:140px'>
+	    		<input type="button" value="Add" onclick="changeAddStore(this)" style='width:50px'>
+    		</td>
+    	</tr>
+    	</table>
+       	<table border="1">
     	<tr>
    			<th align="center">添加产品类型</th>
    		</tr>
@@ -71,22 +83,30 @@
 	    	<tr>
 	   			<th>添加产品</th>
     		</tr>
-    		<tr>
-    			<td align="right">
-		    		<label>请选择产品类型:</label>
-				  	<select name="product_type" id="product_type" style='width:180px'>
-					  	<option value = "--请选择类别--">--请选择类别--</option>
+			<tr>
+		  		<td align="right">
+			  		<label>库名:</label>
+				  	<select name="store_name" id="store_name" style="width:180px">
+					  	<option value = "--请选择--">--请选择--</option>
 <%
-			for(int i = 0; i < product_type.size(); i++)
-			{
+				for(int i = 0; i < store_name.size(); i++)
+				{
 %>
-		  				<option value = <%=product_type.get(i)%>><%=product_type.get(i)%></option>
+					  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
 <%
-			}
+				}
 %>
-			  		</select>
-	    		</td>
-	    	</tr>
+				  	</select>
+			  	</td>
+		  	</tr>
+		  	<tr>
+		  		<td align="right">
+			  		<label>类别:</label>
+				  	<select name="product_type" id="product_type" style="width:180px">
+					  	<option value = "--请选择--">--请选择--</option>
+				  	</select>
+			  	</td>
+		  	</tr>
 			<tr>
 				<td align="right">
 					<label>名称:</label>
@@ -138,15 +158,39 @@
 	  	<script type="text/javascript">
 		$(function()
 		{
+			var $store_name = $('#store_name');
 			var $product_type = $('#product_type');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
+			
+			$store_name.change(function()
+			{
+				$product_type.empty();
+				$product_name.empty();
+				$bar_code.empty();
+				$product_type.append('<option value="请选择">--请选择--</option>');
+				$product_name.append('<option value="请选择">--请选择--</option>');
+				$bar_code.append('<option value="请选择">--请选择--</option>');
+				$.post("App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						var pro_list = data.split("$");
+						for (var i = 1; i < pro_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + pro_list[i] + "</option>");
+							$(newOption).val(pro_list[i]);
+							$product_type.append(newOption);
+						}
+					}
+				});
+			});
 			
 			$product_type.change(function()
 			{
 				$product_name.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$.post("AppAjax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -165,7 +209,7 @@
 			{
 				$bar_code.empty();
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -194,6 +238,18 @@
 			$.post("AddProTypeAjax.jsp", {"pro_type":$('#producttype').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
+				{
+					alert(data);
+				}
+				location.reload();
+			});
+		}
+		
+		function changeAddStore(obj)
+		{
+			$.post("AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
+			{
+				if (!(textStatus == "success" && data.indexOf("库名") < 0))
 				{
 					alert(data);
 				}

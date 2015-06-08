@@ -37,7 +37,7 @@
 		<td width="80%">
 			<table width="100%">
 			<tr>
-			<td width="60%" align="left"><img src="IMAGE/Logo.jpg" align="left"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
+			<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
 			<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
 <%
 			int temp = mylogon.getUserRight()&32;
@@ -67,8 +67,8 @@
 	    		<li><a href="Application.jsp">申请</a></li>
 	    		<li><a href="Query.jsp">查询</a></li>
 	    		<li><a href="Approve.jsp">批准</a></li>
-	    		<li><a href="Approve.jsp">订单录入</a></li>
-	    		<li><a href="Approve.jsp">订单录入查询</a></li>
+	    		<li><a href="Approve.jsp">生成订单</a></li>
+	    		<li><a href="Approve.jsp">生产订单查询</a></li>
 	    		<li><a href="AddMaterial.jsp">物料录入</a></li>
 	    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
 	    		<li><a href="PersonReport.jsp">个人报表</a></li>
