@@ -15,21 +15,11 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String appStore_name = request.getParameter("store_name_addproduct");
 		String appProduct_type = request.getParameter("product_type");
 		String appProductname = request.getParameter("productname");
 		String appBarcode = request.getParameter("barcode");
 		String appPriceUnit = request.getParameter("PriceUnit");
 		String appProductQTY = request.getParameter("QTY");
-		String storageName="other_storage";
-		if (appStore_name.indexOf("成品库") >= 0)
-		{
-			storageName = "product_storage";
-		}
-		else if(appStore_name.indexOf("原材料库") >= 0)
-		{
-			storageName = "material_storage";
-		}
 		if (!appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty())
 		{
 			String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
@@ -52,13 +42,13 @@
 			do
 			{
 				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
-				String sql = "select * from "+storageName+" where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
+				String sql = "select * from material_storage where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
 				hDBHandle.QueryDataBase(sql);
 				if (hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "')";
+					sql = "INSERT INTO material_storage (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "')";
 					hDBHandle.execUpate(sql);
 					break;
 				}

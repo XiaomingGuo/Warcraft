@@ -34,51 +34,53 @@
 <br>
 	<table align="center">
 		<tr>
-		<td width="80%">
-			<table width="100%">
-			<tr>
-			<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
-			<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
+			<td width="80%">
+				<table width="100%">
+					<tr>
+						<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
+						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
 <%
-			int temp = mylogon.getUserRight()&32;
-			if(temp == 0)
-		  	{
+						int temp = mylogon.getUserRight()&32;
+						if(temp == 0)
+					  	{
 %>
-			
-			<a href = 'ChangePassword.jsp'>修改密码</a>
+						
+						<a href = 'ChangePassword.jsp'>修改密码</a>
 <%
-		  	}
-		  	else
-		  	{
+					  	}
+					  	else
+					  	{
 %>
-			<a href = 'ChangePassword.jsp'>修改密码</a>&nbsp;&nbsp;
-			<a href = 'UserManagement.jsp?BeginPage=1'>用户管理</a>
-	
+						<a href = 'ChangePassword.jsp'>修改密码</a>&nbsp;&nbsp;
+						<a href = 'UserManagement.jsp?BeginPage=1'>用户管理</a>
+				
 <%
-	  		}
+				  		}
 %>
-			</td>
-			</tr>
-			</table>
-			<br>
-  		<h2 align="center">
-	    	<ul>
-	    		<li><a href="MainPage.jsp">首页</a></li>
-	    		<li><a href="Application.jsp">申请</a></li>
-	    		<li><a href="Query.jsp">查询</a></li>
-	    		<li><a href="Approve.jsp">批准</a></li>
-	    		<li><a href="Generate_Order.jsp">生成订单</a></li>
-	    		<li><a href="Query_Order.jsp">生产订单查询</a></li>
-	    		<li><a href="AddMaterial.jsp">物料录入</a></li>
-	    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
-	    		<li><a href="PersonReport.jsp">个人报表</a></li>
-	    		<li><a href="MonthReport.jsp">月报表</a></li>
-	    		<li><a href="Summary.jsp">库存</a></li>
-	    		<li><a href="Quit.jsp">退出</a></li>
-	    	</ul>
-	    </h2>
-    	<hr width=95% noshade="noshade" size="5">
-    	</td>
+						</td>
+					</tr>
+				</table>
+				<br>
+	  			<h2 align="center">
+			    	<ul>
+			    		<li><a href="MainPage.jsp">首页</a></li>
+			    		<li><a href="Application.jsp">申请</a></li>
+			    		<li><a href="Query.jsp">查询</a></li>
+			    		<li><a href="Approve.jsp">批准</a></li>
+			    		<li><a href="Generate_Order.jsp">生成订单</a></li>
+			    		<li><a href="Query_Order.jsp">生产订单查询</a></li>
+			    		<li><a href="Query_Order.jsp">生产订单审核及入库</a></li>
+			    		<li><a href="Query_Order.jsp">成品出货</a></li>
+			    		<li><a href="AddMaterial.jsp">物料录入</a></li>
+			    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
+			    		<li><a href="PersonReport.jsp">个人报表</a></li>
+			    		<li><a href="MonthReport.jsp">月报表</a></li>
+			    		<li><a href="Summary.jsp">库存</a></li>
+			    		<li><a href="Quit.jsp">退出</a></li>
+			    	</ul>
+			    </h2>
+	    		<hr width=95% noshade="noshade" size="5">
+	    	</td>
     	</tr>
     </table>
   </body>

@@ -30,6 +30,8 @@
 			{
 				store_name = hDBHandle.GetAllStringValue("name");
 			}
+			Calendar mData = Calendar.getInstance();
+			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -56,7 +58,16 @@
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="AddMaterial" action = "SubmitMaterial.jsp" method = "post">
+		  		<form name="Create_Order" action = "SubmitCreateOrder.jsp" method = "post">
+		  		<table>
+		  			<tr>
+		  				<td>
+					  		<label>订单号:</label>
+					  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-<%=createDate %>-" readonly>
+					  		<input type="text" name="OrderName" id="OrderName">
+				  		</td>
+			  		</tr>
+		  		</table>
 		    	<table align="center" border="1">
 			    	<tr>
 			   			<th>添加产品</th>

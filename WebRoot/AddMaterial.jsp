@@ -113,7 +113,7 @@
 								for(int i = 0; i < store_name.size(); i++)
 								{
 %>
-							  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
+							  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
 <%
 								}
 %>
@@ -194,6 +194,16 @@
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
+				if ($("#store_name_addproduct").find("option:selected").text().indexOf("成品库") >= 0)
+				{
+					$("#QTY").attr("value","0");
+					$("#QTY").attr("readonly","readonly");
+				}
+				else
+				{
+					$("#QTY").attr("value","");
+					$("#QTY").removeAttr("readonly");
+				}
 				$.post("App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -232,7 +242,7 @@
 			{
 				$bar_code.empty();
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

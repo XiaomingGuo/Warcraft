@@ -9,7 +9,8 @@
 	String rtnRst = "remove$";
 	List<String> barcodeList = null;
 	String pro_name = (String)request.getParameter("product_name");
-	String sql= "select Bar_Code from product_info where name='"+pro_name+"'";
+	String pro_type = (String)request.getParameter("product_type");
+	String sql= "select Bar_Code from product_info where name='"+pro_name+"' and product_type='"+ pro_type + "'";
 	if (hDBHandle.QueryDataBase(sql))
 	{
 		barcodeList = hDBHandle.GetAllStringValue("Bar_Code");
