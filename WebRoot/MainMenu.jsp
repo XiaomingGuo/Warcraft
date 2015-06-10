@@ -67,8 +67,8 @@
 	    		<li><a href="Application.jsp">申请</a></li>
 	    		<li><a href="Query.jsp">查询</a></li>
 	    		<li><a href="Approve.jsp">批准</a></li>
-	    		<li><a href="Approve.jsp">生成订单</a></li>
-	    		<li><a href="Approve.jsp">生产订单查询</a></li>
+	    		<li><a href="Generate_Order.jsp">生成订单</a></li>
+	    		<li><a href="Query_Order.jsp">生产订单查询</a></li>
 	    		<li><a href="AddMaterial.jsp">物料录入</a></li>
 	    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
 	    		<li><a href="PersonReport.jsp">个人报表</a></li>
