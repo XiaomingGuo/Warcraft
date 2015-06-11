@@ -23,6 +23,8 @@
 		{
 			store_name = hDBHandle.GetAllStringValue("name");
 		}
+		store_name.remove("成品库");
+		store_name.remove("原材料库");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -173,7 +175,7 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

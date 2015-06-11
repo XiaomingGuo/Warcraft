@@ -68,8 +68,9 @@
 			    		<li><a href="Query.jsp">查询</a></li>
 			    		<li><a href="Approve.jsp">批准</a></li>
 			    		<li><a href="Generate_Order.jsp">生成订单</a></li>
-			    		<li><a href="Query_Order.jsp">生产订单查询</a></li>
-			    		<li><a href="Query_Order.jsp">生产订单审核及入库</a></li>
+			    		<li><a href="Query_Order.jsp">订单查询</a></li>
+			    		<li><a href="Query_Order.jsp">订单审核及入库</a></li>
+			    		<li><a href="Query_Order.jsp">订单材料报废</a></li>
 			    		<li><a href="Query_Order.jsp">成品出货</a></li>
 			    		<li><a href="AddMaterial.jsp">物料录入</a></li>
 			    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>

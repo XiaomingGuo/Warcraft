@@ -19,7 +19,7 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from material_storage";
+		String sql = "select * from material_storage UNION select * from other_storage";
 		hDBHandle.QueryDataBase(sql);
 		int recordCount = hDBHandle.GetRecordCount();
 		String tempBP = request.getParameter("BeginPage");
