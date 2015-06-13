@@ -260,15 +260,15 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public int GetRepertoryByBarCode(String barcode)
+	public int GetRepertoryByBarCode(String barcode, String storage_name)
 	{
-		return GetIN_QTYByBarCode(barcode) - GetOUT_QTYByBarCode(barcode);
+		return GetIN_QTYByBarCode(barcode, storage_name) - GetOUT_QTYByBarCode(barcode, storage_name);
 	}
 
-	public int GetIN_QTYByBarCode(String barcode)
+	public int GetIN_QTYByBarCode(String barcode, String storage_name)
 	{
 		int rtnRst = 0;
-		String sql = "select IN_QTY from material_storage where Bar_Code='" + barcode +"'";
+		String sql = "select IN_QTY from "+storage_name+" where Bar_Code='" + barcode +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -283,10 +283,10 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public int GetOUT_QTYByBarCode(String barcode)
+	public int GetOUT_QTYByBarCode(String barcode, String storage_name)
 	{
 		int rtnRst = 0;
-		String sql = "select OUT_QTY from material_storage where Bar_Code='" + barcode +"'";
+		String sql = "select OUT_QTY from "+storage_name+" where Bar_Code='" + barcode +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)

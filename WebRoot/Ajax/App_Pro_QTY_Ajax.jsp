@@ -18,7 +18,7 @@
 	for (int i = 0; i < barcodeList.size(); i++)
 	{
 		String bar_Code = barcodeList.get(i);
-		iRepertory += hDBHandle.GetIN_QTYByBarCode(bar_Code) - hDBHandle.GetOUT_QTYByBarCode(bar_Code);
+		iRepertory += hDBHandle.GetIN_QTYByBarCode(bar_Code, "other_storage") - hDBHandle.GetOUT_QTYByBarCode(bar_Code, "other_storage");
 		rtnRst += bar_Code + "$";
 	}
 	rtnRst += Integer.toString(iRepertory);

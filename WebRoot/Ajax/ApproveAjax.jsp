@@ -9,10 +9,10 @@
 	String barcode = (String)request.getParameter("Barcode");
 	String recordID = (String)request.getParameter("material_id");
 	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
-	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode);
+	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode, "other_storage");
 	if (repertory_count >= used_count)
 	{
-		String sql = "select * from material_storage where Bar_Code='" + barcode +"'";
+		String sql = "select * from other_storage where Bar_Code='" + barcode +"'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
 			List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
@@ -30,10 +30,10 @@
 					}
 					else
 					{
-						sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+						sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
 						hDBHandle.execUpate(sql);
 					}
-					sql= "UPDATE material_record SET Batch_Lot='"+ batchLot +"', QTY='" + Integer.toString(used_count) + "', isApprove='1', Merge_Mark='" + recordID + "' WHERE id='" + recordID + "'";
+					sql= "UPDATE other_record SET Batch_Lot='"+ batchLot +"', QTY='" + Integer.toString(used_count) + "', isApprove='1', Merge_Mark='" + recordID + "' WHERE id='" + recordID + "'";
 					hDBHandle.execUpate(sql);
 					break;
 				}

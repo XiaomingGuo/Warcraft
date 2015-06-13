@@ -193,7 +193,7 @@
 				$("input:checkbox[name=permission]:checked").each(function(i){
 					iPermission += Number($(this).val());
 				});
-				$.post("UpdateUserAjax.jsp", {"Index":obj.name, "Permission":iPermission}, function(data, textStatus){
+				$.post("Ajax/UpdateUserAjax.jsp", {"Index":obj.name, "Permission":iPermission}, function(data, textStatus){
 					if (textStatus == "success") {
 						location.reload();
 					}
@@ -207,7 +207,7 @@
 				$("input:checkbox[name=AddPermission]:checked").each(function(i){
 					iPermission += Number($(this).val());
 				});
-				$.post("AddUserAjax.jsp", {"name":$('#name').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
+				$.post("Ajax/AddUserAjax.jsp", {"name":$('#name').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
 					if (textStatus == "success") {
 						location.reload();
 					}

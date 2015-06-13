@@ -194,6 +194,7 @@
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
+
 				if ($("#store_name_addproduct").find("option:selected").text().indexOf("成品库") >= 0)
 				{
 					$("#QTY").attr("value","0");
@@ -204,7 +205,7 @@
 					$("#QTY").attr("value","");
 					$("#QTY").removeAttr("readonly");
 				}
-				$.post("App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -223,7 +224,7 @@
 			{
 				$product_name.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -242,7 +243,9 @@
 			{
 				$bar_code.empty();
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$("#barcode").attr("value","");
+				$("#PriceUnit").attr("value","");
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -260,6 +263,7 @@
 			
 			$bar_code.change(function()
 			{
+				$("#PriceUnit").attr("value","");
 				$('#barcode').attr("value", $bar_code.find("option:selected").text());
 			});				
 		});
@@ -268,7 +272,7 @@
 	<script type="text/javascript">
 		function changeAddType(obj)
 		{
-			$.post("AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
+			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
 				{
@@ -280,7 +284,7 @@
 		
 		function changeAddStore(obj)
 		{
-			$.post("AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
+			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("库名") < 0))
 				{

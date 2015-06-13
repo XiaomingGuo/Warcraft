@@ -1,9 +1,13 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> product_type = null, store_name = null;
+ 	List<String> product_type = null;
+	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量", "确认录入"};
+	List<List<String>> recordList = null;
+	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -25,13 +29,14 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from storeroom_name";
+			String sql = "select * from product_type where storeroom='成品库'";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				store_name = hDBHandle.GetAllStringValue("name");
+				product_type = hDBHandle.GetAllStringValue("name");
 			}
 			Calendar mData = Calendar.getInstance();
 			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -59,89 +64,58 @@
     	<tr>
     		<td>
 		  		<form name="Create_Order" action = "SubmitCreateOrder.jsp" method = "post">
-		  		<table>
-		  			<tr>
-		  				<td>
-					  		<label>订单号:</label>
-					  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-<%=createDate %>-" readonly>
-					  		<input type="text" name="OrderName" id="OrderName">
-				  		</td>
-			  		</tr>
-		  		</table>
-		    	<table align="center" border="1">
-			    	<tr>
-			   			<th>添加产品</th>
-			   		</tr>
-					<tr>
-				  		<td align="right">
-					  		<label>库名:</label>
-						  	<select name="store_name_addproduct" id="store_name_addproduct" style="width:180px">
-							  	<option value = "--请选择--">--请选择--</option>
+			  		<table align="center">
+			  			<tr>
+			  				<td>
+				  				<h1>
+							  		<label>订单号:</label>
+							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-<%=createDate %>-" readonly>
+							  		<input type="text" name="OrderName" id="OrderName" onclick="change(this)" value="P015-05-06157">
+						  		</h1>
+					  		</td>
+				  		</tr>
+			  		</table>
+		  		
+			    	<table align="center" border="1">
+	    				<tr>
 <%
-								for(int i = 0; i < store_name.size(); i++)
-								{
+						for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+						{
 %>
-							  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
+		   					<th><%= displayKeyList[iCol-1]%></th>
 <%
-								}
+						}
 %>
-						  	</select>
-					  	</td>
-				  	</tr>
-				  	<tr>
-				  		<td align="right">
-					  		<label>类别:</label>
-						  	<select name="product_type" id="product_type" style="width:180px">
-							  	<option value = "--请选择--">--请选择--</option>
-						  	</select>
-					  	</td>
-				  	</tr>
-					<tr>
-						<td align="right">
-							<label>名称:</label>
-							<select name="product_name" id="product_name" style="width:180px">
-							  	<option value = "--请选择--">--请选择--</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-							<label>Bar Code:</label>
-							<select name="bar_code" id="bar_code" style="width:180px">
-							  	<option value = "--请选择--">--请选择--</option>
-							</select>
-						</td>
-					</tr>
-			    	<tr>
-			   			<td align="right">
-				   			<label>请输入产品名称:</label>
-							<input type="text" name="productname" id="productname" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="right">
-				   			<label>Bar Code:</label>
-							<input type="text" name="barcode" id="barcode" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="right">
-				   			<label>入库数量:</label>
-							<input type="text" name="QTY" id="QTY" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="right">
-				   			<label>单价:</label>
-							<input type="text" name="PriceUnit" id="PriceUnit" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="center">
-							<input type=submit value="提交" style='width:100px'>
-						</td>
-					</tr>
-		    	</table>
+	    				</tr>
+	 					<tr>
+					  		<td align="right">
+							  	<select name="product_type" id="product_type" style="width:100px">
+								  	<option value = "--请选择--">--请选择--</option>
+<%
+									for(int i = 0; i < product_type.size(); i++)
+									{
+%>
+								  	<option value = <%= product_type.get(i) %>><%=product_type.get(i)%></option>
+<%
+									}
+%>
+							  	</select>
+						  	</td>
+						  	<td align="right">
+								<select name="product_name" id="product_name" style="width:100px">
+								  	<option value = "--请选择--">--请选择--</option>
+								</select>
+							</td>
+							<td align="center"><input name="bar_code" id="bar_code" style="width:100px" readonly></td>
+							<td align="center"><input name="Delivery_Date" id="Delivery_Date" value=<%=DeliveryDate %>></td>
+							<td align="center"><input name="QTY" id="QTY"></td>
+							<td align="center"><input name="Product_QTY" id="Product_QTY" style="width:60px" readonly></td>
+							<td align="center"><input name="Material_QTY" id="Material_QTY" style="width:60px" readonly></td>
+							<td align="center"><input name="Need_Material" id="Need_Material" style="width:60px" readonly></td>
+							<td align="center"><input name="Present" id="Present" style="width:60px"><label>%</label></td>
+	    					<td align="center"><input align="middle" type="button" value="确认" onclick="addordercolumn(this)"></td>
+					  	</tr>
+			    	</table>
 				</form>
 			</td>
 		</tr>
@@ -149,39 +123,17 @@
   	<script type="text/javascript">
 		$(function()
 		{
-			var $store_name_addproduct = $('#store_name_addproduct');
 			var $product_type = $('#product_type');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
 			
-			$store_name_addproduct.change(function()
-			{
-				$product_type.empty();
-				$product_name.empty();
-				$bar_code.empty();
-				$product_type.append('<option value="请选择">--请选择--</option>');
-				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
-				{
-					if (textStatus == "success")
-					{
-						var pro_list = data.split("$");
-						for (var i = 1; i < pro_list.length - 1; i++)
-						{
-							var newOption = $("<option>" + pro_list[i] + "</option>");
-							$(newOption).val(pro_list[i]);
-							$product_type.append(newOption);
-						}
-					}
-				});
-			});
-			
 			$product_type.change(function()
 			{
 				$product_name.empty();
+				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$bar_code.append('<option value="请选择">--请选择--</option>');
+				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$product_type.find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -198,49 +150,29 @@
 			
 			$product_name.change(function()
 			{
-				$bar_code.empty();
-				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$product_name.find("option:selected").text(), "product_type":$product_type.find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
 						for (var i = 1; i < code_list.length - 1; i++)
 						{
-							var newOption = $("<option>" + code_list[i] + "</option>");
-							$(newOption).val(code_list[i]);
-							$bar_code.append(newOption);
+							$bar_code.attr("value", code_list[i]);
 						}
-						$("#productname").attr("value", $product_name.find("option:selected").text());
 					}
 				});
 			});	
-			
-			$bar_code.change(function()
-			{
-				$('#barcode').attr("value", $bar_code.find("option:selected").text());
-			});				
 		});
-	</script>
-	
-	<script type="text/javascript">
-		function changeAddType(obj)
-		{
-			$.post("AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
-			{
-				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
-				{
-					alert(data);
-				}
-				location.reload();
-			});
-		}
 		
-		function changeAddStore(obj)
+		function addordercolumn(obj)
 		{
-			$.post("AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
+			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+			//<!-- "产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量" -->
+			alert("1");
+			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text()}, function(data, textStatus)
 			{
-				if (!(textStatus == "success" && data.indexOf("库名") < 0))
+				alert("2");
+				if (!(textStatus == "success"))
 				{
 					alert(data);
 				}

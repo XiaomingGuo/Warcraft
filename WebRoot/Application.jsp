@@ -136,7 +136,7 @@
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -157,7 +157,7 @@
 				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -175,7 +175,7 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$.post("App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
