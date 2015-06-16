@@ -1,12 +1,14 @@
+<%@page import="org.apache.struts2.components.Else"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] keyList = {"ID", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory", "Total_Price"};
+ 	List<String> product_type = null;
+	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
+	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
 %>
 <%
 	String message="";
@@ -16,19 +18,37 @@
 	}
 	else
 	{
-		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-		String path = request.getContextPath();
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from product_info";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		String tempBP = request.getParameter("BeginPage");
-		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
+		int temp = mylogon.getUserRight()&128;
+		if(temp == 0)
 		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
+			response.sendRedirect("tishi.jsp");
 		}
+		else
+		{
+			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+			String path = request.getContextPath();
+			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			//product_type Database query
+			String sql = "select * from product_type where storeroom='成品库'";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				product_type = hDBHandle.GetAllStringValue("name");
+			}
+			
+			String tempOrderName = request.getParameter("OrderName");
+			if (tempOrderName != null)
+			{
+				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
+				hDBHandle.QueryDataBase(sql);
+				if (hDBHandle.QueryDataBase(sql))
+				{
+					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				}
+			}
+			Calendar mData = Calendar.getInstance();
+			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -36,7 +56,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>生产订单查询</title>
+    <title>生成订单</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -48,105 +68,108 @@
 	-->
 
   </head>
-  
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainMenu.jsp"/>
-    <center>
-    	<table border="1">
-    		<tr>
-<%
-		for(int iCol = 1; iCol <= keyList.length; iCol++)
+    <br><br>
+    <table align="center">
+    	<tr>
+    		<td>
+		  		<form name="Create_Order" action = "SubmitCreateOrder.jsp" method = "post">
+			  		<table align="center">
+			  			<tr>
+			  				<td>
+				  				<h1>
+							  		<label>订单号:</label>
+							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
+							  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
+						  		</h1>
+					  		</td>
+				  		</tr>
+			  		</table>
+			    	<br><br>
+		 		   	<table id="order_display"></table>
+				</form>
+			</td>
+		</tr>
+   	</table>
+  	<script type="text/javascript">
+				
+		function changeOrderName(obj)
 		{
-%>
-	   			<th><%= keyList[iCol-1]%></th>
-<%
-		}
-%>
-    		</tr>
- 
-<%
-		double totalPrice = 0.0;
-		if (!recordList.isEmpty())
-		{
-			for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+			var $orderdisplay = $("#order_display");
+			$orderdisplay.attr("border", 1);
+			$orderdisplay.attr("align", "center");
+			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
 			{
-%>
-  			<tr>
-<%
-				String bar_code = recordList.get(1).get(iRow-1);
-				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
-				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
-				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code);
-				totalPrice += dblPro_Price;
-				String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
-				for(int iCol = 1; iCol <= keyList.length; iCol++)
+				if (textStatus == "success")
 				{
-					if(keyList[iCol-1] == "repertory")
+					$orderdisplay.empty();
+					var data_list = data.split("$");
+					var iColCount = data_list[1], iRowCount = data_list[2];
+					var tr = $("<tr></tr>");
+					for (var iHead = 1; iHead < iColCount; iHead++)
 					{
-%>
-    			<td><%= sql_in_qty - sql_out_qty%></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "IN_QTY")
-			    	{
-%>
-    			<td><%= sql_in_qty%></td>
-<%
-			    	}
-			     	else if (keyList[iCol-1] == "OUT_QTY")
-			    	{
-%>
-    			<td><%= sql_out_qty%></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "ID")
-			    	{
-%>
-	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
-<%
-			    	}
-			    	else if (keyList[iCol-1] == "Total_Price")
-			    	{
-%>
-	    			<td><%=pro_Price %></td>
-<%
-			    	}
-			    	else
-			    	{
-%>
-    			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
-<%
-   					}
-    			}
-%>
-			</tr>
-<%
+						var th = $("<th>" + data_list[iHead + 3] + "</th>");
+						tr.append(th);
+					}
+					$orderdisplay.append(tr);
+					for(var iRow = 1; iRow <= iRowCount; iRow++)
+					{
+						var tr = $("<tr></tr>");
+						for (var iCol = 1; iCol < iColCount; iCol++)
+						{
+							var td = $("<td></td>");
+							if (iCol == iColCount - 1)
+							{
+								td.append("<label>未完成</label");
+							}
+							else
+							{
+								td.append(data_list[iRow*iColCount + iCol + 3]);
+							}
+							tr.append(td);
+						}
+						$orderdisplay.append(tr);
+					}
+				}
+			});
+		}
+		
+		function deleteRecord(obj)
+		{
+			var delID = obj.name;
+			alert(delID);
+			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
+			{
+				if (!(textStatus == "success"))
+				{
+					alert(data);
+				}
+				changeOrderName();
+			});
+		}
+		
+		function Qty_Calc(obj)
+		{
+			var orderCount = parseInt($("#order_QTY").val());
+			var proCount = parseInt($("#product_QTY").val());
+			var matCount = parseInt($("#material_QTY").val());
+			var PO_QTY = (proCount + matCount) - orderCount;
+			if (PO_QTY >= 0)
+			{
+				$("#PO_QTY").attr("value", 0);
+			}
+			else
+			{
+				$("#PO_QTY").attr("value", -PO_QTY);
 			}
 		}
-		String strTotalPrice = String.format("%.3f", totalPrice);
-%>
-			<tr>
-<%
-			for(int iCol = 1; iCol <= keyList.length-2; iCol++)
-			{
-%>
-				<td><table></table></td>
-<%
-			}
-%>				<td><label>总价值:</label></td>
-				<td><%=strTotalPrice %></td>
-			</tr>
-    	</table>
-    	<br><br>
-   	    <jsp:include page="PageNum.jsp">
-   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
-   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
-   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="Summary.jsp" name="PageName"/>
-   	    </jsp:include>
-    </center>
+	</script>
   </body>
 </html>
 <%
+		}
 	}
 %>

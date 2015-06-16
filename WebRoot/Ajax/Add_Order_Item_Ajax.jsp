@@ -10,12 +10,12 @@
 	String bar_code = (String)request.getParameter("bar_code");
 	String deliv_date = (String)request.getParameter("delivery_date");
 	String pro_qty = (String)request.getParameter("order_QTY");
-	String precent = (String)request.getParameter("present");
+	String percent = (String)request.getParameter("present");
 	String order_name = (String)request.getParameter("order_name");
 	
-	if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&precent != null)
+	if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 	{
-		String sql = "INSERT INTO product_order (product_type, product_name, Bar_Code, delivery_date, QTY, precent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + pro_qty + "','" + precent + "','" + order_name + "')";
+		String sql = "INSERT INTO product_order_record (product_type, product_name, Bar_Code, delivery_date, QTY, percent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + pro_qty + "','" + percent + "','" + order_name + "')";
 		hDBHandle.execUpate(sql);
 	}
 	out.write(rtnRst);

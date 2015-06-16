@@ -15,25 +15,21 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String appProduct_type = request.getParameter("product_type");
-		String appProductname = request.getParameter("productname");
-		String appBarcode = request.getParameter("barcode");
-		String appPriceUnit = request.getParameter("PriceUnit");
-		String appProductQTY = request.getParameter("QTY");
-		if (!appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty())
+		String appOrderHead = request.getParameter("OrderHeader");
+		String appOrderName = request.getParameter("OrderName");
+		String orderName = appOrderHead + appOrderName;
+		if (!appOrderHead.isEmpty() && !appOrderName.isEmpty())
 		{
-			String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
-			hDBHandle.QueryDataBase(sql);
-			if (hDBHandle.GetRecordCount() <= 0)
+			String sql = "select * from product_order where Order_Name='" + orderName + "'";
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 			{
 				hDBHandle.CloseDatabase();
-				//product_type Database query
-				sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
-				hDBHandle.execUpate(sql);
+				sql = "INSERT INTO product_order (name, status) VALUES ('" + orderName + "', '0')";
+				//hDBHandle.execUpate(sql);
 			}
 		}
 		
-		if (!appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
+		/*if (!appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
 		{
 			String appTotalPrice = String.format("%.2f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
 			Calendar mData = Calendar.getInstance();
@@ -55,7 +51,8 @@
 				loopNum ++;
 			}
 			while(true);
-		}
-		response.sendRedirect("AddMaterial.jsp");
+			
+		}*/
+		response.sendRedirect("Query_Order.jsp");
 	}
 %>

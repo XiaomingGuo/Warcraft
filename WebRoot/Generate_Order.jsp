@@ -7,7 +7,7 @@
 	DatabaseConn hDBHandle = new DatabaseConn();
  	List<String> product_type = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
-	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "precent", "status"};
+	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -39,7 +39,7 @@
 			String tempOrderName = request.getParameter("OrderName");
 			if (tempOrderName != null)
 			{
-				sql = "select * from product_order where Order_Name='" + tempOrderName + "'";
+				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
 				hDBHandle.QueryDataBase(sql);
 				if (hDBHandle.QueryDataBase(sql))
 				{
@@ -129,7 +129,13 @@
 					  	</tr>
 			    	</table>
 			    	<br><br>
-		 		   	<table id="order_display" align="center" border="1"></table>
+		 		   	<table id="order_display"></table>
+		 		   	<br><br>
+		 		   	<table align="center">
+			 		   	<tr>
+			 		   		<td><input align="middle" type="submit" value="提交订单"></td>
+			 		   	</tr>
+		 		   	</table>
 				</form>
 			</td>
 		</tr>
@@ -146,7 +152,6 @@
 				$product_name.empty();
 				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
 				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$product_type.find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -179,25 +184,42 @@
 		
 		function changeOrderName(obj)
 		{
-			//var orderdisplay = $("#order_display");
+			var $orderdisplay = $("#order_display");
+			$orderdisplay.attr("border", 1);
+			$orderdisplay.attr("align", "center");
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
 			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
 			{
 				if (textStatus == "success")
 				{
+					$orderdisplay.empty();
 					var data_list = data.split("$");
 					var iColCount = data_list[1], iRowCount = data_list[2];
-					alert(data);
-					alert(iColCount);
-					alert(iRowCount);
-					for(var iRow = 1; iRow < iRowCount; iRow++)
+					var tr = $("<tr></tr>");
+					for (var iHead = 1; iHead < iColCount; iHead++)
 					{
-						for (var iCol = 0; iCol < iColCount; iCol++)
-						{
-							alert(data_list[iRow*iColCount + iCol + 3]);
-						}
+						var th = $("<th>" + data_list[iHead + 3] + "</th>");
+						tr.append(th);
 					}
-					
+					$orderdisplay.append(tr);
+					for(var iRow = 1; iRow <= iRowCount; iRow++)
+					{
+						var tr = $("<tr></tr>");
+						for (var iCol = 1; iCol < iColCount; iCol++)
+						{
+							var td = $("<td></td>");
+							if (iCol == iColCount - 1)
+							{
+								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + 3] + " onclick=deleteRecord(this)>");
+							}
+							else
+							{
+								td.append(data_list[iRow*iColCount + iCol + 3]);
+							}
+							tr.append(td);
+						}
+						$orderdisplay.append(tr);
+					}
 				}
 			});
 		}
@@ -211,7 +233,21 @@
 				{
 					alert(data);
 				}
-				location.reload();
+				changeOrderName();
+			});
+		}
+		
+		function deleteRecord(obj)
+		{
+			var delID = obj.name;
+			alert(delID);
+			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
+			{
+				if (!(textStatus == "success"))
+				{
+					alert(data);
+				}
+				changeOrderName();
 			});
 		}
 		
