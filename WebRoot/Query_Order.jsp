@@ -5,10 +5,11 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> product_type = null;
+ 	List<String> orderName = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
+	String displayName = null;
 %>
 <%
 	String message="";
@@ -30,25 +31,11 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from product_type where storeroom='成品库'";
-			if (hDBHandle.QueryDataBase(sql))
+			String sql = "select * from product_order";
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
-				product_type = hDBHandle.GetAllStringValue("name");
+				orderName = hDBHandle.GetAllStringValue("Order_Name");
 			}
-			
-			String tempOrderName = request.getParameter("OrderName");
-			if (tempOrderName != null)
-			{
-				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
-				hDBHandle.QueryDataBase(sql);
-				if (hDBHandle.QueryDataBase(sql))
-				{
-					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-				}
-			}
-			Calendar mData = Calendar.getInstance();
-			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -72,29 +59,33 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
     <br><br>
-    <table align="center">
-    	<tr>
-    		<td>
-		  		<form name="Create_Order" action = "SubmitCreateOrder.jsp" method = "post">
-			  		<table align="center">
-			  			<tr>
-			  				<td>
-				  				<h1>
-							  		<label>订单号:</label>
-							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
-							  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
-						  		</h1>
-					  		</td>
-				  		</tr>
-			  		</table>
-			    	<br><br>
-		 		   	<table id="order_display"></table>
-				</form>
+    <table width="61.8%" height="100%" align="center">
+		<tr>
+			<td style="width:19%">
+				<table align="center" >
+					<tr>
+<%
+					for(int iRow = 0; iRow < orderName.size(); iRow++)
+					{
+						displayName = orderName.get(iRow);
+%>
+						<td><%=displayName%></td>
+<%
+					}
+%>
+					</tr>
+	   			</table>
+   			</td>
+			<td style="width:1%">
+			<hr size="800" width="1" noshade="noshade">
 			</td>
+   			<td style="width:80%">
+   				<table id=OrderContent border="1">
+	   			</table>
+   			</td>
 		</tr>
    	</table>
   	<script type="text/javascript">
-				
 		function changeOrderName(obj)
 		{
 			var $orderdisplay = $("#order_display");

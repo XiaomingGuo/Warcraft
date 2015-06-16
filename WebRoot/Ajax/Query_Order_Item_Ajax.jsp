@@ -26,16 +26,17 @@
 			for(int iRow = 0; iRow < iRowCount; iRow++)
 			{
 				int iPro_storage = 0, iMat_storage = 0;
+				String strBarcode = recordList.get(3).get(iRow);
 				for(int iCol = 0; iCol < iColCount; iCol++)
-				{	
+				{
 					if("成品库存" == displayList[iCol])
 					{
-						iPro_storage = hDBHandle.GetRepertoryByBarCode(recordList.get(3).get(iRow), "product_storage");
+						iPro_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
 					else if ("物料库存" == displayList[iCol])
 					{
-						iMat_storage = hDBHandle.GetRepertoryByBarCode(recordList.get(3).get(iRow), "material_storage");
+						iMat_storage = hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage");
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
 					else if ("采购量" == displayList[iCol])

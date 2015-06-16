@@ -129,13 +129,9 @@
 					  	</tr>
 			    	</table>
 			    	<br><br>
-		 		   	<table id="order_display"></table>
+		 		   	<table id="display_order"></table>
 		 		   	<br><br>
-		 		   	<table align="center">
-			 		   	<tr>
-			 		   		<td><input align="middle" type="submit" value="提交订单"></td>
-			 		   	</tr>
-		 		   	</table>
+		 		   	<table id="confirm_order"></table>
 				</form>
 			</td>
 		</tr>
@@ -184,15 +180,19 @@
 		
 		function changeOrderName(obj)
 		{
-			var $orderdisplay = $("#order_display");
-			$orderdisplay.attr("border", 1);
-			$orderdisplay.attr("align", "center");
+			var $displayOrder = $("#display_order");
+			var $confirmOrder = $("#confirm_order");
+			$displayOrder.attr("border", 1);
+			$displayOrder.attr("align", "center");
+			$confirmOrder.attr("align", "center");
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
+			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{
-					$orderdisplay.empty();
+					$displayOrder.empty();
+					$confirmOrder.empty();
+					var POCount = 0;
 					var data_list = data.split("$");
 					var iColCount = data_list[1], iRowCount = data_list[2];
 					var tr = $("<tr></tr>");
@@ -201,14 +201,14 @@
 						var th = $("<th>" + data_list[iHead + 3] + "</th>");
 						tr.append(th);
 					}
-					$orderdisplay.append(tr);
+					$displayOrder.append(tr);
 					for(var iRow = 1; iRow <= iRowCount; iRow++)
 					{
 						var tr = $("<tr></tr>");
 						for (var iCol = 1; iCol < iColCount; iCol++)
 						{
 							var td = $("<td></td>");
-							if (iCol == iColCount - 1)
+							if (1 == iColCount - iCol)
 							{
 								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + 3] + " onclick=deleteRecord(this)>");
 							}
@@ -216,9 +216,21 @@
 							{
 								td.append(data_list[iRow*iColCount + iCol + 3]);
 							}
+							if(5 == iColCount - iCol)
+							{
+								POCount += parseInt(data_list[iRow*iColCount + iCol + 3]);
+							}
 							tr.append(td);
 						}
-						$orderdisplay.append(tr);
+						$displayOrder.append(tr);
+					}
+					if (POCount <= 0)
+					{
+						$confirmOrder.append("<tr><td><input align='middle' type='submit' value='提交订单'></td></tr>");
+					}
+					else
+					{
+						$confirmOrder.append("<tr><td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td></tr>");
 					}
 				}
 			});
@@ -240,7 +252,6 @@
 		function deleteRecord(obj)
 		{
 			var delID = obj.name;
-			alert(delID);
 			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
@@ -265,6 +276,19 @@
 			{
 				$("#PO_QTY").attr("value", -PO_QTY);
 			}
+		}
+		
+		function CreatePO(obj)
+		{
+			alert("CreatePO");
+			/*$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
+			{
+				if (!(textStatus == "success"))
+				{
+					alert(data);
+				}
+				changeOrderName();
+			});*/
 		}
 	</script>
   </body>
