@@ -15,7 +15,8 @@
 	
 	if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 	{
-		String sql = "INSERT INTO product_order_record (product_type, product_name, Bar_Code, delivery_date, QTY, percent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + pro_qty + "','" + percent + "','" + order_name + "')";
+		int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
+		String sql = "INSERT INTO product_order_record (product_type, product_name, Bar_Code, delivery_date, QTY, percent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + Integer.toString(iOrderQTY) + "','" + percent + "','" + order_name + "')";
 		hDBHandle.execUpate(sql);
 	}
 	out.write(rtnRst);

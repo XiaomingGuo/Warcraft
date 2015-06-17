@@ -58,9 +58,12 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
     <jsp:include page="MainMenu.jsp"/>
-    <br><br>
-    <table align="center" id="TitleName"></table>
     <table width="61.8%" height="80%" align="center">
+    	<tr>
+    		<td height="3%"></td>
+    		<td height="3%" bgcolor="grey"></td>
+    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">订单号</label></font></b></td>
+    	</tr>
 		<tr>
 			<td valign="top" align="center" width="19%">
 				<table align="center" border="1" width="100%">
@@ -83,13 +86,12 @@
 	   				</ul>
 	   			</h5>
    			</td>
-			<td width="0.5%" height="80%" bgcolor="grey"></td>
+			<td width="0.5%" height="98%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top">
    				<table width="100%" border="1">
    					<tr><th>订单内容：</th></tr>
 	   			</table>
-	   			<table id="OrderBlock" border="1">
-	   			</table>
+	   			<table id="OrderBlock" border="1"></table>
    			</td>
 		</tr>
    	</table>
@@ -100,9 +102,7 @@
 			{
 				var order_name=$(this).html();
 				var $OrderBlock = $("#OrderBlock");
-				var $TitleName = $("#TitleName");
-				$TitleName.empty();
-				$TitleName.append("<tr><th>" + order_name + "</th></tr>");
+				$("#TitleName").html(order_name);
 				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
 				{
 					if (textStatus == "success")
@@ -125,7 +125,7 @@
 								var td = $("<td></td>");
 								if (iCol == iColCount - 1)
 								{
-									td.append("<label>未完成</label");
+									td.append("<label>未完成</label>");
 								}
 								else
 								{
@@ -141,7 +141,6 @@
 		});
 	</script>
   	<script type="text/javascript">
-  	
 		function changeOrderName(obj)
 		{
 			var $orderdisplay = $("#order_display");
@@ -187,7 +186,6 @@
 		function deleteRecord(obj)
 		{
 			var delID = obj.name;
-			alert(delID);
 			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))

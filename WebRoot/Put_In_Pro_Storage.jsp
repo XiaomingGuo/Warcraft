@@ -5,7 +5,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> orderList = null;
+ 	List<String> orderName = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
@@ -31,10 +31,10 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from product_order where status='0'";
+			String sql = "select * from product_order where status='1'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
-				orderList = hDBHandle.GetAllStringValue("Order_Name");
+				orderName = hDBHandle.GetAllStringValue("Order_Name");
 			}
 %>
 
@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>订单审核</title>
+    <title>订单入库</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -69,35 +69,29 @@
 				<table align="center" border="1" width="100%">
 					<tr><th>订单号:</th></tr>
 				</table>
-<%
-					if (orderList != null)
-					{
-%>
 				<h5>
 					<ul>
 <%
-						for(int iRow = 0; iRow < orderList.size(); iRow++)
+					if (orderName != null)
+					{
+						for(int iRow = 0; iRow < orderName.size(); iRow++)
 						{
-							displayName = orderList.get(iRow);
+							displayName = orderName.get(iRow);
 %>
 						<li><%=displayName %></li>
 <%
 						}
+					}
 %>
 	   				</ul>
 	   			</h5>
-<%
-					}
-%>
    			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
-   			<td width="80.5%" valign="top" align="center">
+   			<td width="80.5%" valign="top">
    				<table width="100%" border="1">
    					<tr><th>订单内容：</th></tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
-	   			<br><br>
-	   			<input align="middle" type="button" onclick="Approve(this)" value="Approve">
    			</td>
 		</tr>
    	</table>
@@ -109,14 +103,13 @@
 				var order_name=$(this).html();
 				var $OrderBlock = $("#OrderBlock");
 				$("#TitleName").html(order_name);
-				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
+				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
 				{
 					if (textStatus == "success")
 					{
 						$OrderBlock.empty();
 						var data_list = data.split("$");
 						var iColCount = data_list[1], iRowCount = data_list[2];
-						
 						var tr = $("<tr></tr>");
 						for (var iHead = 1; iHead < iColCount; iHead++)
 						{
@@ -132,7 +125,7 @@
 								var td = $("<td></td>");
 								if (iCol == iColCount - 1)
 								{
-									td.append("<label>未完成</label>");
+									td.append("<input type='button' value='入库' name=" + data_list[iRow*iColCount + 3] + " onclick='PutInStorage(this)'>");
 								}
 								else
 								{
@@ -147,17 +140,16 @@
 			});
 		});
 		
-		function Approve(obj)
+		function PutInStorage(obj)
 		{
-			var value = $("#TitleName").html();
-			alert(value);
-			$.post("Ajax/Approve_Order_Ajax.jsp", {"order_name":value}, function(data, textStatus)
+			var delID = obj.name;
+			alert(delID);
+			$.post("Ajax/Put_In_Storage.jsp", {"product_id":delID}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
 					alert(data);
 				}
-				location.reload();
 			});
 		}
 	</script>
