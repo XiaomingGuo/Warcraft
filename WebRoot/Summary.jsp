@@ -74,8 +74,8 @@
   			<tr>
 <%
 				String bar_code = recordList.get(1).get(iRow-1);
-				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code);
-				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code);
+				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, "other_storage");
+				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, "other_storage");
 				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code);
 				totalPrice += dblPro_Price;
 				String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));

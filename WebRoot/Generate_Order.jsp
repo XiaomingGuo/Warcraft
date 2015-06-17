@@ -195,42 +195,45 @@
 					var POCount = 0;
 					var data_list = data.split("$");
 					var iColCount = data_list[1], iRowCount = data_list[2];
-					var tr = $("<tr></tr>");
-					for (var iHead = 1; iHead < iColCount; iHead++)
-					{
-						var th = $("<th>" + data_list[iHead + 3] + "</th>");
-						tr.append(th);
-					}
-					$displayOrder.append(tr);
-					for(var iRow = 1; iRow <= iRowCount; iRow++)
+					if (iColCount > 0&&iRowCount > 0)
 					{
 						var tr = $("<tr></tr>");
-						for (var iCol = 1; iCol < iColCount; iCol++)
+						for (var iHead = 1; iHead < iColCount; iHead++)
 						{
-							var td = $("<td></td>");
-							if (1 == iColCount - iCol)
-							{
-								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + 3] + " onclick=deleteRecord(this)>");
-							}
-							else
-							{
-								td.append(data_list[iRow*iColCount + iCol + 3]);
-							}
-							if(5 == iColCount - iCol)
-							{
-								POCount += parseInt(data_list[iRow*iColCount + iCol + 3]);
-							}
-							tr.append(td);
+							var th = $("<th>" + data_list[iHead + 3] + "</th>");
+							tr.append(th);
 						}
 						$displayOrder.append(tr);
-					}
-					if (POCount <= 0)
-					{
-						$confirmOrder.append("<tr><td><input align='middle' type='submit' value='提交订单'></td></tr>");
-					}
-					else
-					{
-						$confirmOrder.append("<tr><td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td></tr>");
+						for(var iRow = 1; iRow <= iRowCount; iRow++)
+						{
+							var tr = $("<tr></tr>");
+							for (var iCol = 1; iCol < iColCount; iCol++)
+							{
+								var td = $("<td></td>");
+								if (1 == iColCount - iCol)
+								{
+									td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + 3] + " onclick=deleteRecord(this)>");
+								}
+								else
+								{
+									td.append(data_list[iRow*iColCount + iCol + 3]);
+								}
+								if(5 == iColCount - iCol)
+								{
+									POCount += parseInt(data_list[iRow*iColCount + iCol + 3]);
+								}
+								tr.append(td);
+							}
+							$displayOrder.append(tr);
+						}
+						if (POCount <= 0)
+						{
+							$confirmOrder.append("<tr><td><input align='middle' type='submit' value='提交订单'></td></tr>");
+						}
+						else
+						{
+							$confirmOrder.append("<tr><td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td></tr>");
+						}
 					}
 				}
 			});

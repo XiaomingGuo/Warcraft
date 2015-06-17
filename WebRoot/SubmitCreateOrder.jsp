@@ -22,10 +22,16 @@
 		if (!appOrderHead.isEmpty() && !appOrderName.isEmpty())
 		{
 			String sql = "select * from product_order where Order_Name='" + orderName + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+			hDBHandle.QueryDataBase(sql);
+			if (hDBHandle.GetRecordCount() <= 0)
 			{
 				hDBHandle.CloseDatabase();
 				sql = "INSERT INTO product_order (Order_Name, status) VALUES ('" + orderName + "', '0')";
+				hDBHandle.execUpate(sql);
+			}
+			else
+			{
+				sql = "UPDATE product_order SET status='0' WHERE='" + orderName + "'";
 				hDBHandle.execUpate(sql);
 			}
 		}

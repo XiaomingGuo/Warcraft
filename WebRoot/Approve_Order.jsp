@@ -5,7 +5,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> orderName = null;
+ 	List<String> orderList = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
@@ -31,10 +31,10 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from product_order where status='1'";
+			String sql = "select * from product_order where status='0'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
-				orderName = hDBHandle.GetAllStringValue("Order_Name");
+				orderList = hDBHandle.GetAllStringValue("Order_Name");
 			}
 %>
 
@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>查询订单</title>
+    <title>订单审核</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -69,11 +69,11 @@
 				<h5>
 					<ul>
 <%
-					if (orderName != null)
+					if (orderList != null)
 					{
-						for(int iRow = 0; iRow < orderName.size(); iRow++)
+						for(int iRow = 0; iRow < orderList.size(); iRow++)
 						{
-							displayName = orderName.get(iRow);
+							displayName = orderList.get(iRow);
 %>
 						<li><%=displayName %></li>
 <%
@@ -88,8 +88,7 @@
    				<table width="100%" border="1">
    					<tr><th>订单内容：</th></tr>
 	   			</table>
-	   			<table id="OrderBlock" border="1">
-	   			</table>
+	   			<table id="OrderBlock" border="1"></table>
    			</td>
 		</tr>
    	</table>
@@ -103,13 +102,14 @@
 				var $TitleName = $("#TitleName");
 				$TitleName.empty();
 				$TitleName.append("<tr><th>" + order_name + "</th></tr>");
-				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
+				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
 						$OrderBlock.empty();
 						var data_list = data.split("$");
 						var iColCount = data_list[1], iRowCount = data_list[2];
+						
 						var tr = $("<tr></tr>");
 						for (var iHead = 1; iHead < iColCount; iHead++)
 						{
@@ -139,80 +139,6 @@
 				});
 			});
 		});
-	</script>
-  	<script type="text/javascript">
-  	
-		function changeOrderName(obj)
-		{
-			var $orderdisplay = $("#order_display");
-			$orderdisplay.attr("border", 1);
-			$orderdisplay.attr("align", "center");
-			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
-			{
-				if (textStatus == "success")
-				{
-					$orderdisplay.empty();
-					var data_list = data.split("$");
-					var iColCount = data_list[1], iRowCount = data_list[2];
-					var tr = $("<tr></tr>");
-					for (var iHead = 1; iHead < iColCount; iHead++)
-					{
-						var th = $("<th>" + data_list[iHead + 3] + "</th>");
-						tr.append(th);
-					}
-					$orderdisplay.append(tr);
-					for(var iRow = 1; iRow <= iRowCount; iRow++)
-					{
-						var tr = $("<tr></tr>");
-						for (var iCol = 1; iCol < iColCount; iCol++)
-						{
-							var td = $("<td></td>");
-							if (iCol == iColCount - 1)
-							{
-								td.append("<label>未完成</label");
-							}
-							else
-							{
-								td.append(data_list[iRow*iColCount + iCol + 3]);
-							}
-							tr.append(td);
-						}
-						$orderdisplay.append(tr);
-					}
-				}
-			});
-		}
-		
-		function deleteRecord(obj)
-		{
-			var delID = obj.name;
-			alert(delID);
-			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
-			{
-				if (!(textStatus == "success"))
-				{
-					alert(data);
-				}
-				changeOrderName();
-			});
-		}
-		
-		function Qty_Calc(obj)
-		{
-			var orderCount = parseInt($("#order_QTY").val());
-			var proCount = parseInt($("#product_QTY").val());
-			var matCount = parseInt($("#material_QTY").val());
-			var PO_QTY = (proCount + matCount) - orderCount;
-			if (PO_QTY >= 0)
-			{
-				$("#PO_QTY").attr("value", 0);
-			}
-			else
-			{
-				$("#PO_QTY").attr("value", -PO_QTY);
-			}
-		}
 	</script>
   </body>
 </html>
