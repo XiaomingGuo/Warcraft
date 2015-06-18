@@ -111,21 +111,33 @@
 						var data_list = data.split("$");
 						var iColCount = data_list[1], iRowCount = data_list[2];
 						var tr = $("<tr></tr>");
-						for (var iHead = 1; iHead < iColCount; iHead++)
+						for (var iHead = 1; iHead <= iColCount; iHead++)
 						{
-							var th = $("<th>" + data_list[iHead + 3] + "</th>");
-							tr.append(th);
+							if (iHead == iColCount)
+							{
+								var th = $("<th>入库数量</th>");
+								tr.append(th);
+							}
+							else
+							{
+								var th = $("<th>" + data_list[iHead + 3] + "</th>");
+								tr.append(th);
+							}
 						}
 						$OrderBlock.append(tr);
 						for(var iRow = 1; iRow <= iRowCount; iRow++)
 						{
 							var tr = $("<tr></tr>");
-							for (var iCol = 1; iCol < iColCount; iCol++)
+							for (var iCol = 1; iCol <= iColCount; iCol++)
 							{
 								var td = $("<td></td>");
-								if (iCol == iColCount - 1)
+								if (1 == iColCount - iCol)
 								{
-									td.append("<input type='button' value='入库' name=" + data_list[iRow*iColCount + 3] + " onclick='PutInStorage(this)'>");
+									td.append("<input type='button' value='入库' name=" + data_list[iRow*iColCount + 3] + "$" + iRow.toString() + " onclick='PutInStorage(this)'>");
+								}
+								else if(0 == iColCount - iCol)
+								{
+									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "' style='width:70px' onblur='CheckQTY(this)'>");
 								}
 								else
 								{
@@ -142,15 +154,24 @@
 		
 		function PutInStorage(obj)
 		{
-			var delID = obj.name;
-			alert(delID);
-			$.post("Ajax/Put_In_Storage.jsp", {"product_id":delID}, function(data, textStatus)
+			var tempList = obj.name.split('$');
+			var storeQTY = $("#"+tempList[1]).val();
+			$.post("Ajax/Put_In_Storage.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
 					alert(data);
 				}
 			});
+		}
+		
+		function CheckQTY(obj)
+		{
+			if (parseInt(obj.value) > parseInt(obj.name))
+			{
+				alert("入库数量不能大于订单量!");
+				obj.value = 0;
+			}
 		}
 	</script>
   </body>

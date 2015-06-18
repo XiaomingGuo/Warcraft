@@ -2,8 +2,8 @@
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "成品库存", "物料库存", "采购量", "进货余量", "订单名", "创建时间", "操作"};
-	String[] sqlKeyList = {"id", "product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "Order_Name", "create_date", "status"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "成品库存", "物料库存", "采购量", "进货余量", "订单名", "创建时间", "操作"};
+	String[] sqlKeyList = {"id", "product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "completeQTY", "percent", "Order_Name", "create_date", "status"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -49,13 +49,11 @@
 						}
 						else
 						{
-							int POCount = orderCount - iRepertory;
-							float ratio = 1 + (float)Integer.parseInt(recordList.get(6).get(iRow))/100;
-							rtnRst += Integer.toString((int)(POCount*ratio)) + "$";
+							rtnRst += Integer.toString(orderCount - iRepertory) + "$";
 						}
 						
 					}
-					else if (iCol > 5)
+					else if (iCol > 6)
 					{
 						rtnRst += recordList.get(iCol-3).get(iRow) + "$";
 					}
