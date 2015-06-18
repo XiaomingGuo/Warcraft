@@ -26,7 +26,7 @@
 				{
 					if (recordCount == used_count)
 					{
-						hDBHandle.MoveMaterialToExhaustedTable(barcode, batchLot);
+						hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other");
 					}
 					else
 					{
@@ -39,7 +39,7 @@
 				}
 				else
 				{
-					if (!hDBHandle.MoveMaterialToExhaustedTable(barcode, batchLot))
+					if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other"))
 						continue;
 					sql = "SELECT proposer FROM material_record WHERE id='" + recordID + "'";
 					if (hDBHandle.QueryDataBase(sql))

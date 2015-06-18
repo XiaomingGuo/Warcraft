@@ -362,18 +362,18 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public boolean MoveMaterialToExhaustedTable(String barcode, String batchLot)
+	public boolean MoveToExhaustedTable(String barcode, String batchLot, String fromTable, String toTable)
 	{
 		boolean rtnRst = true;
-		String sql = "select * from material_storage WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+		String sql = "select * from " + fromTable + " WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
 		String[] keyWord = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price"};
 		rtnRst &= QueryDataBase(sql);
 		if (GetRecordCount() > 0)
 		{
 			List<List<String>> Move_List = GetAllDBColumnsByList(keyWord);
-			sql = "DELETE FROM material_storage WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
+			sql = "DELETE FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
 			rtnRst &= execUpate(sql);
-			sql = "INSERT INTO exhausted_material (Bar_Code, Batch_Lot, IN_QTY, OUT_QTY, Price_Per_Unit, Total_Price) VALUES ('" + Move_List.get(0).get(0) + "', '" + Move_List.get(1).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(4).get(0) + "', '" + Move_List.get(5).get(0) + "')";
+			sql = "INSERT INTO " + toTable + " (Bar_Code, Batch_Lot, IN_QTY, OUT_QTY, Price_Per_Unit, Total_Price) VALUES ('" + Move_List.get(0).get(0) + "', '" + Move_List.get(1).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(4).get(0) + "', '" + Move_List.get(5).get(0) + "')";
 			rtnRst &= execUpate(sql);
 		}
 		else
@@ -384,5 +384,22 @@ public class DatabaseConn
 		return rtnRst;
 	}
 
-	
+	public int TransferMaterialToProduct(String barcode, String batchLot, String OrderName, int used_count)
+	{
+		int rtnRst = 0;
+		String sql = "select * from product_storage where Bar_Code='" + barcode + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			int storageQTY = GetSingleInt("IN_QTY");
+			sql= "UPDATE product_storage SET IN_QTY='" + Integer.toString(storageQTY+used_count) + "' WHERE Bar_Code='" + barcode + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
+		}
+		else
+		{
+			CloseDatabase();
+			sql = "INSERT INTO product_storage (Bar_Code, Batch_Lot, Order_Name, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + barcode + "', '" + batchLot + "', '" + OrderName + "', '" + Integer.toString(used_count) + "', '0', '0')";
+			execUpate(sql);
+		}
+		return rtnRst;
+	}
+
 }

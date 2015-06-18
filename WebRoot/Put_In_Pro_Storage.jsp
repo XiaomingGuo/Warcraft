@@ -137,7 +137,7 @@
 								}
 								else if(0 == iColCount - iCol)
 								{
-									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "' style='width:70px' onblur='CheckQTY(this)'>");
+									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 9] + "' style='width:70px' onblur='CheckQTY(this)'>");
 								}
 								else
 								{
@@ -156,7 +156,7 @@
 		{
 			var tempList = obj.name.split('$');
 			var storeQTY = $("#"+tempList[1]).val();
-			$.post("Ajax/Put_In_Storage.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
+			$.post("Ajax/Put_In_Storage_Ajax.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
@@ -167,7 +167,8 @@
 		
 		function CheckQTY(obj)
 		{
-			if (parseInt(obj.value) > parseInt(obj.name))
+			var tempList = obj.name.split('$');
+			if (parseInt(obj.value)+parseInt(tempList[1]) > parseInt(tempList[0]))
 			{
 				alert("入库数量不能大于订单量!");
 				obj.value = 0;
