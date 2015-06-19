@@ -41,7 +41,7 @@
 							hDBHandle.execUpate(sql);
 							if (recordCount == used_count)
 							{
-								//hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
+								hDBHandle.Move1ToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
 							}
 							break;
 						}
@@ -49,7 +49,7 @@
 						{
 							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
-							//hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
+							hDBHandle.Move1ToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
 						}
 					}
 					response.sendRedirect("../Product_Shipment.jsp");

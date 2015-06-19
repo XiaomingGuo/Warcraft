@@ -365,22 +365,11 @@ public class DatabaseConn
 	public boolean MoveToExhaustedTable(String barcode, String batchLot, String fromTable, String toTable)
 	{
 		boolean rtnRst = true;
-		String sql = "select * from " + fromTable + " WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
-		String[] keyWord = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price"};
-		rtnRst &= QueryDataBase(sql);
-		if (GetRecordCount() > 0)
-		{
-			List<List<String>> Move_List = GetAllDBColumnsByList(keyWord);
-			sql = "DELETE FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
-			rtnRst &= execUpate(sql);
-			sql = "INSERT INTO " + toTable + " (Bar_Code, Batch_Lot, IN_QTY, OUT_QTY, Price_Per_Unit, Total_Price) VALUES ('" + Move_List.get(0).get(0) + "', '" + Move_List.get(1).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(2).get(0) + "', '" + Move_List.get(4).get(0) + "', '" + Move_List.get(5).get(0) + "')";
-			rtnRst &= execUpate(sql);
-		}
-		else
-		{
-			rtnRst &= false;
-			CloseDatabase();
-		}
+		String sql = null;
+		sql = "INSERT INTO " + toTable + " SELECT * FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
+		rtnRst &= execUpate(sql);
+		sql = "DELETE FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
+		rtnRst &= execUpate(sql);
 		return rtnRst;
 	}
 
@@ -401,5 +390,4 @@ public class DatabaseConn
 		execUpate(sql);
 		return rtnRst;
 	}
-
 }
