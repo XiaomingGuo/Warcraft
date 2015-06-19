@@ -11,7 +11,7 @@
 	String order_name = request.getParameter("order_name");
 	String status = request.getParameter("status");
 	
-	if (order_name != null)
+	if (order_name.length() > 11)
 	{
 		String sql = null;
 		if (status == null)

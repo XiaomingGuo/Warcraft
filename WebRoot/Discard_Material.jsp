@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> product_type = null, product_info = null, store_name=null;
+	List<String> product_type = null, product_info = null;
 %>
 <%
 	String message="";
@@ -18,20 +18,18 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		
 		//storeroom name Database query
-		String sql = "select * from storeroom_name";
+		String sql = "select * from product_type where storeroom='原材料库'";
 		if (hDBHandle.QueryDataBase(sql))
 		{
-			store_name = hDBHandle.GetAllStringValue("name");
+			product_type = hDBHandle.GetAllStringValue("name");
 		}
-		store_name.remove("成品库");
-		store_name.remove("原材料库");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>申请</title>
+    <title>材料报废</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -46,32 +44,24 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
   	<br><br><br>
-   	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
+   	<form name="AppContent" action = "Submit/SubmitDiscardMaterial.jsp" method = "post">
   	<table align="center" border="1">
 	  	<tr>
-	  		<th align="center">申领物品</th>
+	  		<th align="center">材料报废</th>
 	  	</tr>
 		<tr>
-	  		<td align="right">
-		  		<label>库名:</label>
-			  	<select name="store_name" id="store_name" style="width:180px">
-				  	<option value = "--请选择--">--请选择--</option>
-<%
-					for(int i = 0; i < store_name.size(); i++)
-					{
-%>
-				  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
-<%
-					}
-%>
-			  	</select>
-		  	</td>
-	  	</tr>
-	  	<tr>
 	  		<td align="right">
 		  		<label>类别:</label>
 			  	<select name="product_type" id="product_type" style="width:180px">
 				  	<option value = "--请选择--">--请选择--</option>
+<%
+					for(int i = 0; i < product_type.size(); i++)
+					{
+%>
+				  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
+<%
+					}
+%>
 			  	</select>
 		  	</td>
 	  	</tr>
@@ -93,7 +83,7 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<label>数量:</label>
+				<label>报废数量:</label>
 				<select name="QTY" id="QTY" style="width:180px">
 <%
 					for(int i = 1; i <= 20; i++)
@@ -122,34 +112,10 @@
   	<script type="text/javascript">
 		$(function()
 		{
-			var $store_name = $('#store_name');
 			var $product_type = $('#product_type');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
 			var $Total_QTY = $('#Total_QTY');
-			
-			$store_name.change(function()
-			{
-				$product_type.empty();
-				$product_name.empty();
-				$bar_code.empty();
-				$product_type.append('<option value="请选择">--请选择--</option>');
-				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name").find("option:selected").text()}, function(data, textStatus)
-				{
-					if (textStatus == "success")
-					{
-						var pro_list = data.split("$");
-						for (var i = 1; i < pro_list.length - 1; i++)
-						{
-							var newOption = $("<option>" + pro_list[i] + "</option>");
-							$(newOption).val(pro_list[i]);
-							$product_type.append(newOption);
-						}
-					}
-				});
-			});
 			
 			$product_type.change(function()
 			{
@@ -175,7 +141,7 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text(), "storage":"material_storage"}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

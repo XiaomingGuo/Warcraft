@@ -1,7 +1,7 @@
 <%@page import="org.apache.struts2.components.Else"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.DatabaseConn"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
@@ -181,7 +181,6 @@
 		function CloseOrder(obj)
 		{
 			var ordername = $("#TitleName").html();
-			alert(ordername);
 			$.post("Ajax/Close_Order_Ajax.jsp", {"Order_Name":ordername}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))

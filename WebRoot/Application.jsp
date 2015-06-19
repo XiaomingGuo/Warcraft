@@ -175,7 +175,7 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text(), "storage":"other_storage"}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

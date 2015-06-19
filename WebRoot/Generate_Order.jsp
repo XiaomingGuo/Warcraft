@@ -186,6 +186,11 @@
 			$displayOrder.attr("align", "center");
 			$confirmOrder.attr("align", "center");
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			if (order_name.length < 11)
+			{
+				alert("我的乖乖,你就不能起个长点儿的订单名吗?");
+				return;
+			}
 			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name, "status":"0"}, function(data, textStatus)
 			{
 				if (textStatus == "success")
@@ -242,6 +247,11 @@
 		function addordercolumn(obj)
 		{
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			if($("#OrderName").val()==""||$("#product_type").find("option:selected").text().indexOf("请选择")>=0||$("#product_name").find("option:selected").text().indexOf("请选择")>=0||$("#delivery_date").val().length != 8||$("#order_QTY").val()==""||parseInt($("#order_QTY").val()) <= 0)
+			{
+				alert("我说大姐,你这输入信息糊弄谁呢?");
+				return;
+			}
 			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
@@ -250,6 +260,7 @@
 				}
 				changeOrderName();
 			});
+			
 		}
 		
 		function deleteRecord(obj)

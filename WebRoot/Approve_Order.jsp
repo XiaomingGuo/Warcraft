@@ -150,7 +150,6 @@
 		function Approve(obj)
 		{
 			var value = $("#TitleName").html();
-			alert(value);
 			$.post("Ajax/Approve_Order_Ajax.jsp", {"order_name":value}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))

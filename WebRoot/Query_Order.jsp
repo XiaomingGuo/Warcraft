@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>查询订单</title>
+    <title>订单查询</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
