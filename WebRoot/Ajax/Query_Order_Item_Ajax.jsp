@@ -8,11 +8,20 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String order_name = (String)request.getParameter("order_name");
+	String order_name = request.getParameter("order_name");
+	String status = request.getParameter("status");
 	
 	if (order_name != null)
 	{
-		String sql = "select * from product_order_record where Order_Name='" + order_name + "'";
+		String sql = null;
+		if (status == null)
+		{
+			sql = "select * from product_order_record where Order_Name='" + order_name + "'";
+		}
+		else
+		{
+			sql = "select * from product_order_record where Order_Name='" + order_name + "' and status='" + status+ "'";
+		}
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);

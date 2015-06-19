@@ -75,7 +75,7 @@
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="Create_Order" action = "SubmitCreateOrder.jsp" method = "post">
+		  		<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
 			  		<table align="center">
 			  			<tr>
 			  				<td>
@@ -186,7 +186,7 @@
 			$displayOrder.attr("align", "center");
 			$confirmOrder.attr("align", "center");
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
+			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name, "status":"0"}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{
@@ -283,15 +283,8 @@
 		
 		function CreatePO(obj)
 		{
-			alert("CreatePO");
-			/*$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
-			{
-				if (!(textStatus == "success"))
-				{
-					alert(data);
-				}
-				changeOrderName();
-			});*/
+			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			location.href ="Generate_PO.jsp?OrderName="+order_name;
 		}
 	</script>
   </body>

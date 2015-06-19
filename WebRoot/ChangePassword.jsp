@@ -46,7 +46,7 @@
     <hr>
   	<center>
   		<br><br><br>
-	   	<form name="ChangePassword" action = "SubmitPassword.jsp" method = "post">
+	   	<form name="ChangePassword" action = "Submit/SubmitPassword.jsp" method = "post">
 	  	<table border="1">
 		  	<tr>
 		  		<th align="center">修改密码</th>

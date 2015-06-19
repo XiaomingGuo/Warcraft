@@ -29,16 +29,16 @@
 			if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) >= 0)
 			{
 				hDBHandle.execUpate(sql);
-				response.sendRedirect("Query.jsp");
+				response.sendRedirect("../Query.jsp");
 			}
 			else
 			{	
-				response.sendRedirect("Application.jsp");
+				response.sendRedirect("../Application.jsp");
 			}
 		}
 		else
 		{
-			response.sendRedirect("Application.jsp");
+			response.sendRedirect("../Application.jsp");
 		}
 	}
 %>

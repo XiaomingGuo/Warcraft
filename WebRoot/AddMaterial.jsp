@@ -99,7 +99,7 @@
 			   	</table>
 			</td>
     		<td>
-		  		<form name="AddMaterial" action = "SubmitMaterial.jsp" method = "post">
+		  		<form name="AddMaterial" action = "Submit/SubmitMaterial.jsp" method = "post">
 		    	<table align="center" border="1">
 			    	<tr>
 			   			<th>添加产品</th>

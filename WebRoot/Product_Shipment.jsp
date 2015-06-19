@@ -46,7 +46,7 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
   	<br><br><br>
-   	<form name="AppContent" action = "Submit/SubmitApplication.jsp" method = "post">
+   	<form name="AppContent" action = "SubmitApplication.jsp" method = "post">
   	<table align="center" border="1">
 	  	<tr>
 	  		<th align="center">申领物品</th>

@@ -8,23 +8,24 @@
 	String rtnRst = "remove$";
 	String pro_id = request.getParameter("product_id");
 	String QTYOfStore = request.getParameter("PutInQTY");
-	int used_count = Integer.parseInt(QTYOfStore);
 	
 	if (pro_id != null && QTYOfStore != null)
 	{
+		int used_count = Integer.parseInt(QTYOfStore);
 		String sql = "select * from product_order_record where id='" + pro_id + "'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
-			String[] orderRecordKey = {"Bar_Code", "Order_Name", "completeQTY"};
+			String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "completeQTY"};
 			List<List<String>> orderInfo = hDBHandle.GetAllDBColumnsByList(orderRecordKey);
 			barcode = orderInfo.get(0).get(0);
-			ordername = orderInfo.get(0).get(1);
-			int pro_record_comp_QTY = Integer.parseInt(orderInfo.get(0).get(2));
+			ordername = orderInfo.get(1).get(0);
+			int order_QTY = Integer.parseInt(orderInfo.get(2).get(0));
+			int pro_record_comp_QTY = Integer.parseInt(orderInfo.get(3).get(0));
 			//sql = "UPDATE product_order_record SET completeQTY='" + QTYOfStore + " WHERE id='" + pro_id + "'";
 			//hDBHandle.execUpate(sql);
 			
-			sql = "select * from material_storage where Bar_Code='" + barcode + "'";
-			String[] materialKey = {"Lot_Batch", "IN_QTY", "OUT_QTY"};
+			sql = "select * from material_storage where Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) + "'";
+			String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 			if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 			{
 				List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(materialKey);
@@ -39,11 +40,11 @@
 					{
 						if (recordCount == used_count)
 						{
-							hDBHandle.MoveToExhaustedTable(barcode, batchLot, "material_storage", "exhausted_material");
+							hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material");
 						}
 						else
 						{
-							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 						}
 						hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, used_count);
@@ -51,12 +52,19 @@
 					}
 					else
 					{
-						if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "material_storage", "exhausted_material"))
+						if (!hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material"))
 							continue;
 						hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, recordCount);
 					}
 				}
-				sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "' WHERE id='" + pro_id + "'";
+				if (order_QTY == (pro_record_comp_QTY+used_count))
+				{
+					sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='3' WHERE id='" + pro_id + "'";
+				}
+				else
+				{
+					sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='1' WHERE id='" + pro_id + "'";
+				}
 				hDBHandle.execUpate(sql);
 			}
 		}

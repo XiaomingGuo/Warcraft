@@ -36,21 +36,21 @@
 				else
 				{
 					session.setAttribute("error", "当前密码错误,请重新输入!");
-					response.sendRedirect("tishi.jsp");
+					response.sendRedirect("../tishi.jsp");
 				}
 			}
 			else
 			{
 				session.setAttribute("error", "用户不存在或用户名重复!");
-				response.sendRedirect("tishi.jsp");
+				response.sendRedirect("../tishi.jsp");
 			}
 			session.setAttribute("error", "恭喜你,密码修改成功,重新登录后生效!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("../tishi.jsp");
 		}
 		else
 		{
 			session.setAttribute("error", "密码为空或新密码两次输入密码不一致!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("../tishi.jsp");
 		}
 	}
 %>

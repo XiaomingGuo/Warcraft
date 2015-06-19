@@ -5,7 +5,6 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> orderName = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
@@ -31,6 +30,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
+ 			List<String> orderName = null;
 			String sql = "select * from product_order where status='1'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
@@ -87,11 +87,13 @@
 	   			</h5>
    			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
-   			<td width="80.5%" valign="top">
+   			<td width="80.5%" valign="top" align="center">
    				<table width="100%" border="1">
    					<tr><th>订单内容：</th></tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
+	   			<br><br>
+	   			<input align="middle" type="button" onclick="CloseOrder(this)" value="关闭订单">
    			</td>
 		</tr>
    	</table>
@@ -133,11 +135,11 @@
 								var td = $("<td></td>");
 								if (1 == iColCount - iCol)
 								{
-									td.append("<input type='button' value='入库' name=" + data_list[iRow*iColCount + 3] + "$" + iRow.toString() + " onclick='PutInStorage(this)'>");
+									td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 3] + "$" + iRow.toString() + "' onclick='PutInStorage(this)'>");
 								}
 								else if(0 == iColCount - iCol)
 								{
-									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 9] + "' style='width:70px' onblur='CheckQTY(this)'>");
+									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 9] + "' id='" + iRow.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
 								}
 								else
 								{
@@ -162,6 +164,7 @@
 				{
 					alert(data);
 				}
+				location.reload();
 			});
 		}
 		
@@ -173,6 +176,20 @@
 				alert("入库数量不能大于订单量!");
 				obj.value = 0;
 			}
+		}
+		
+		function CloseOrder(obj)
+		{
+			var ordername = $("#TitleName").html();
+			alert(ordername);
+			$.post("Ajax/Close_Order_Ajax.jsp", {"Order_Name":ordername}, function(data, textStatus)
+			{
+				if (!(textStatus == "success"))
+				{
+					alert(data);
+				}
+				location.reload();
+			});
 		}
 	</script>
   </body>

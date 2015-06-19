@@ -5,7 +5,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String order_name = (String)request.getParameter("order_name");
+	String order_name = request.getParameter("order_name");
 	
 	if (order_name != null||order_name.indexOf("订单号") < 0)
 	{

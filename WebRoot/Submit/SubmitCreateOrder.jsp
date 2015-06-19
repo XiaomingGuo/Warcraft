@@ -35,6 +35,6 @@
 				hDBHandle.execUpate(sql);
 			}
 		}
-		response.sendRedirect("Query_Order.jsp");
+		response.sendRedirect("../Query_Order.jsp");
 	}
 %>

@@ -397,8 +397,8 @@ public class DatabaseConn
 		{
 			CloseDatabase();
 			sql = "INSERT INTO product_storage (Bar_Code, Batch_Lot, Order_Name, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + barcode + "', '" + batchLot + "', '" + OrderName + "', '" + Integer.toString(used_count) + "', '0', '0')";
-			execUpate(sql);
 		}
+		execUpate(sql);
 		return rtnRst;
 	}
 

@@ -71,8 +71,8 @@
 			    		<li><a href="Query_Order.jsp">订单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">订单审核</a></li>
 			    		<li><a href="Put_In_Pro_Storage.jsp">订单入库</a></li>
-			    		<li><a href="Query_Order.jsp">材料报废</a></li>
-			    		<li><a href="Query_Order.jsp">成品出货</a></li>
+			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
+			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
 			    		<li><a href="AddMaterial.jsp">物料录入</a></li>
 			    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
 			    		<li><a href="PersonReport.jsp">个人报表</a></li>

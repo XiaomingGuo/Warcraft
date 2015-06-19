@@ -66,6 +66,6 @@
 			}
 			while(true);
 		}
-		response.sendRedirect("AddMaterial.jsp");
+		response.sendRedirect("../AddMaterial.jsp");
 	}
 %>
