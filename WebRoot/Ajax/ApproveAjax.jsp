@@ -24,14 +24,11 @@
 				int recordCount = sql_in_count - sql_out_count;
 				if (recordCount >= used_count)
 				{
+					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+					hDBHandle.execUpate(sql);
 					if (recordCount == used_count)
 					{
 						hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other");
-					}
-					else
-					{
-						sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
-						hDBHandle.execUpate(sql);
 					}
 					sql= "UPDATE other_record SET Batch_Lot='"+ batchLot +"', QTY='" + Integer.toString(used_count) + "', isApprove='1', Merge_Mark='" + recordID + "' WHERE id='" + recordID + "'";
 					hDBHandle.execUpate(sql);
@@ -39,6 +36,8 @@
 				}
 				else
 				{
+					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+					hDBHandle.execUpate(sql);
 					if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other"))
 						continue;
 					sql = "SELECT proposer FROM material_record WHERE id='" + recordID + "'";

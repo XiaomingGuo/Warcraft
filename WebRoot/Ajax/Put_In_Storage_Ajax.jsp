@@ -21,8 +21,6 @@
 			ordername = orderInfo.get(1).get(0);
 			int order_QTY = Integer.parseInt(orderInfo.get(2).get(0));
 			int pro_record_comp_QTY = Integer.parseInt(orderInfo.get(3).get(0));
-			//sql = "UPDATE product_order_record SET completeQTY='" + QTYOfStore + " WHERE id='" + pro_id + "'";
-			//hDBHandle.execUpate(sql);
 			
 			sql = "select * from material_storage where Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) + "'";
 			String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
@@ -55,6 +53,7 @@
 						if (!hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material"))
 							continue;
 						hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, recordCount);
+						used_count -= recordCount;
 					}
 				}
 				if (order_QTY == (pro_record_comp_QTY+used_count))

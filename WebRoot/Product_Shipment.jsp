@@ -52,7 +52,7 @@
 		<tr>
 			<td align="right">
 				<label>出库单号:</label>
-				<input name="ShippingOrderName" id="ShippingOrderName" value="P015-05-06157" style="width:180px">
+				<input name="PONum" id="PONum" value="P015-05-06157" style="width:180px">
 			</td>
 		</tr>
 		<tr>

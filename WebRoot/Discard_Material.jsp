@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> product_type = null, product_info = null;
+	List<String> product_order = null, product_info = null;
 %>
 <%
 	String message="";
@@ -18,10 +18,10 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		
 		//storeroom name Database query
-		String sql = "select * from product_type where storeroom='原材料库'";
+		String sql = "select * from product_order";
 		if (hDBHandle.QueryDataBase(sql))
 		{
-			product_type = hDBHandle.GetAllStringValue("name");
+			product_order = hDBHandle.GetAllStringValue("Order_Name");
 		}
 %>
 
@@ -51,14 +51,14 @@
 	  	</tr>
 		<tr>
 	  		<td align="right">
-		  		<label>类别:</label>
-			  	<select name="product_type" id="product_type" style="width:180px">
+		  		<label>订单:</label>
+			  	<select name="product_order" id="product_order" style="width:200px">
 				  	<option value = "--请选择--">--请选择--</option>
 <%
-					for(int i = 0; i < product_type.size(); i++)
+					for(int i = 0; i < product_order.size(); i++)
 					{
 %>
-				  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
+				  	<option value = <%=product_order.get(i)%>><%=product_order.get(i)%></option>
 <%
 					}
 %>
@@ -68,7 +68,7 @@
 		<tr>
 			<td align="right">
 				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:180px">
+				<select name="product_name" id="product_name" style="width:200px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
@@ -76,7 +76,7 @@
 		<tr>
 			<td align="right">
 				<label>Bar Code:</label>
-				<select name="bar_code" id="bar_code" style="width:180px">
+				<select name="bar_code" id="bar_code" style="width:200px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
@@ -84,7 +84,7 @@
 		<tr>
 			<td align="right">
 				<label>报废数量:</label>
-				<select name="QTY" id="QTY" style="width:180px">
+				<select name="QTY" id="QTY" style="width:200px">
 <%
 					for(int i = 1; i <= 20; i++)
 					{
@@ -99,7 +99,13 @@
 		<tr>
 			<td align="right">
 				<label>库存数量:</label>
-				<input name="Total_QTY" id="Total_QTY" style="width:180px" readonly>
+				<input name="Total_QTY" id="Total_QTY" style="width:200px" readonly>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<label>报废原因:</label>
+				<input name="discard_reason" id="discard_reason" style="width:200px">
 			</td>
 		</tr>
 		<tr>
@@ -112,18 +118,18 @@
   	<script type="text/javascript">
 		$(function()
 		{
-			var $product_type = $('#product_type');
+			var $product_order = $('#product_order');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
 			var $Total_QTY = $('#Total_QTY');
 			
-			$product_type.change(function()
+			$product_order.change(function()
 			{
 				$product_name.empty();
 				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/Query_Pro_Name_From_Order_Ajax.jsp", {"FilterKey1":$("#product_order").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -141,7 +147,8 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text(), "storage":"material_storage"}, function(data, textStatus)
+				var tempValue = $("#product_name").find("option:selected").text().split("-");
+				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_type":tempValue[0], "product_name":tempValue[1]+"-"+tempValue[2], "storage":"material_storage"}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

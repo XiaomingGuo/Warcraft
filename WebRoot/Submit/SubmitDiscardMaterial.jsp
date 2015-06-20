@@ -16,11 +16,13 @@
 	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
+		String appOrderName = request.getParameter("product_order");
 		String appBarcode = request.getParameter("bar_code");
 		String appProduct_QTY = request.getParameter("QTY");
+		String appreason = request.getParameter("discard_reason");
 		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
-		if (used_count > 0 && appBarcode.length()==8)
+		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") <= 0&&appreason != ""&&appreason != null)
 		{
 			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "material_storage");
 			if (repertory_count >= used_count)
@@ -50,8 +52,11 @@
 							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_out_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
+							used_count -= recordCount;
 						}
 					}
+					sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, QTY, reason) VALUE ('" + appOrderName + "', '" + appBarcode + "', '" + appProduct_QTY + "', '" + appreason +"')";
+					hDBHandle.execUpate(sql);
 					response.sendRedirect("../Discard_Material.jsp");
 				}
 				else

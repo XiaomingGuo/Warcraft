@@ -5,7 +5,7 @@
 
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
+	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY", "Order_Name"};
 %>
 <%
 	if(session.getAttribute("logonuser")==null)
@@ -16,11 +16,12 @@
 	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
+		String appPONum = request.getParameter("PONum");
 		String appBarcode = request.getParameter("bar_code");
 		String appProduct_QTY = request.getParameter("QTY");
 		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
-		if (used_count > 0 && appBarcode.length()==8)
+		if (used_count > 0 && appBarcode.length()==8 && appPONum!="" && appPONum!=null)
 		{
 			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "product_storage");
 			if (repertory_count >= used_count)
@@ -34,14 +35,18 @@
 						String batchLot =  material_info_List.get(0).get(iCol);
 						int sql_in_count = Integer.parseInt(material_info_List.get(1).get(iCol));
 						int sql_out_count = Integer.parseInt(material_info_List.get(2).get(iCol));
+						String ordername = material_info_List.get(3).get(iCol);
 						int recordCount = sql_in_count - sql_out_count;
 						if (recordCount >= used_count)
 						{
 							sql= "UPDATE product_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
+							sql= "INSERT INTO shipping_record (customer_po, Bar_Code, Batch_Lot, Order_Name, ship_QTY) VALUE ('" + appPONum + "', '" + appBarcode + "', '"+ batchLot + "', '" + ordername + "', '" + Integer.toString(used_count) + "')";
+							hDBHandle.execUpate(sql);
+							
 							if (recordCount == used_count)
 							{
-								hDBHandle.Move1ToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
+								hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
 							}
 							break;
 						}
@@ -49,7 +54,10 @@
 						{
 							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
-							hDBHandle.Move1ToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
+							sql= "INSERT INTO shipping_record (customer_po, Bar_Code, Batch_Lot, Order_Name, ship_QTY) VALUE ('" + appPONum + "', '" + appBarcode + "', '"+ batchLot + "', '" + ordername + "', '" + Integer.toString(recordCount) + "')";
+							hDBHandle.execUpate(sql);
+							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
+							used_count -= recordCount;
 						}
 					}
 					response.sendRedirect("../Product_Shipment.jsp");
