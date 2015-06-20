@@ -16,19 +16,27 @@
 	}
 	else
 	{
-		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-		String path = request.getContextPath();
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from product_info";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		String tempBP = request.getParameter("BeginPage");
-		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
+		int temp = mylogon.getUserRight()&4;
+		if(temp == 0)
 		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
+			response.sendRedirect("tishi.jsp");
 		}
+		else
+		{
+			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+			String path = request.getContextPath();
+			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			String sql = "select * from product_info";
+			hDBHandle.QueryDataBase(sql);
+			int recordCount = hDBHandle.GetRecordCount();
+			String tempBP = request.getParameter("BeginPage");
+			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
+			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hDBHandle.QueryDataBase(limitSql))
+			{
+				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -55,80 +63,80 @@
     	<table border="1">
     		<tr>
 <%
-		for(int iCol = 1; iCol <= keyList.length; iCol++)
-		{
+			for(int iCol = 1; iCol <= keyList.length; iCol++)
+			{
 %>
 	   			<th><%= keyList[iCol-1]%></th>
 <%
-		}
+			}
 %>
     		</tr>
  
 <%
-		double totalPrice = 0.0;
-		if (!recordList.isEmpty())
-		{
-			for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+			double totalPrice = 0.0;
+			if (!recordList.isEmpty())
 			{
+				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				{
 %>
   			<tr>
 <%
-				String bar_code = recordList.get(1).get(iRow-1);
-				String storageName = "other_storage";
-				if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
-				{
-					storageName = "material_storage";
-				}
-				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, storageName);
-				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, storageName);
-				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code, storageName);
-				totalPrice += dblPro_Price;
-				String pro_Price = String.format("%.3f", dblPro_Price);
-				for(int iCol = 1; iCol <= keyList.length; iCol++)
-				{
-					if(keyList[iCol-1] == "repertory")
+					String bar_code = recordList.get(1).get(iRow-1);
+					String storageName = "other_storage";
+					if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
 					{
+						storageName = "material_storage";
+					}
+					int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, storageName);
+					int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, storageName);
+					double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code, storageName);
+					totalPrice += dblPro_Price;
+					String pro_Price = String.format("%.3f", dblPro_Price);
+					for(int iCol = 1; iCol <= keyList.length; iCol++)
+					{
+						if(keyList[iCol-1] == "repertory")
+						{
 %>
     			<td><%= sql_in_qty - sql_out_qty%></td>
 <%
-			    	}
-			    	else if (keyList[iCol-1] == "IN_QTY")
-			    	{
+				    	}
+				    	else if (keyList[iCol-1] == "IN_QTY")
+				    	{
 %>
     			<td><%= sql_in_qty%></td>
 <%
-			    	}
-			     	else if (keyList[iCol-1] == "OUT_QTY")
-			    	{
+				    	}
+				     	else if (keyList[iCol-1] == "OUT_QTY")
+				    	{
 %>
     			<td><%= sql_out_qty%></td>
 <%
-			    	}
-			    	else if (keyList[iCol-1] == "ID")
-			    	{
+				    	}
+				    	else if (keyList[iCol-1] == "ID")
+				    	{
 %>
 	    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
-			    	}
-			    	else if (keyList[iCol-1] == "Total_Price")
-			    	{
+				    	}
+				    	else if (keyList[iCol-1] == "Total_Price")
+				    	{
 %>
 	    			<td><%=pro_Price %></td>
 <%
-			    	}
-			    	else
-			    	{
+				    	}
+				    	else
+				    	{
 %>
     			<td><%= recordList.get(iCol-2).get(iRow-1)%></td>
 <%
-   					}
-    			}
+   						}
+    				}
 %>
 			</tr>
 <%
+				}
 			}
-		}
-		String strTotalPrice = String.format("%.3f", totalPrice);
+			String strTotalPrice = String.format("%.3f", totalPrice);
 %>
 			<tr>
 <%
@@ -153,5 +161,6 @@
   </body>
 </html>
 <%
+		}
 	}
 %>

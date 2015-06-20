@@ -40,7 +40,7 @@
 						<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
 <%
-						int temp = mylogon.getUserRight()&32;
+						int temp = mylogon.getUserRight()&2;
 						if(temp == 0)
 					  	{
 %>

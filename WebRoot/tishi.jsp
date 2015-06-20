@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>  
   <body>
+    <jsp:include page="MainMenu.jsp"/>
     <center>
         <table style="margin-top:200" width="250" border="1" cellpadding="0" cellspacing="0" bordercolor="black" bordercolorlight="black" bordercolordark="white" >
           <tr bgcolor="lightgrey">
