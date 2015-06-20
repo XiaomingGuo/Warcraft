@@ -30,6 +30,13 @@
 			{
 				store_name = hDBHandle.GetAllStringValue("name");
 			}
+			for (int index = 0; index < store_name.size(); index++)
+			{
+				if (store_name.get(index).indexOf("成品库") == 0)
+				{
+					store_name.remove(index);
+				}
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

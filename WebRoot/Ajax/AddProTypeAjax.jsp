@@ -13,11 +13,22 @@
 	{	
 		if(hDBHandle.GetRecordCount() > 0)
 		{
+			hDBHandle.CloseDatabase();
 			rtnRst = "产品类型已经存在!";
 		}
 		else
 		{
-			sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + pro_type + "','"+ storeroom +"')";
+			hDBHandle.CloseDatabase();
+			if(storeroom.indexOf("原材料库") == 0)
+			{
+				sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + pro_type + "','成品库')";
+				hDBHandle.execUpate(sql);
+				sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + pro_type + "原锭','"+ storeroom +"')";
+			}
+			else
+			{
+				sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + pro_type + "','"+ storeroom +"')";
+			}
 			hDBHandle.execUpate(sql);
 		}
 	}

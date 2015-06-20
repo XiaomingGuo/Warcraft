@@ -22,29 +22,49 @@
 		String appPriceUnit = request.getParameter("PriceUnit");
 		String appProductQTY = request.getParameter("QTY");
 		String storageName="other_storage";
-		if (appStore_name.indexOf("成品库") >= 0)
-		{
-			storageName = "product_storage";
-		}
-		else if(appStore_name.indexOf("原材料库") >= 0)
-		{
-			storageName = "material_storage";
-		}
-		if (!appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty())
-		{
-			String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
-			hDBHandle.QueryDataBase(sql);
-			if (hDBHandle.GetRecordCount() <= 0)
-			{
-				hDBHandle.CloseDatabase();
-				//product_type Database query
-				sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
-				hDBHandle.execUpate(sql);
-			}
-		}
 		
-		if (!appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
+		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
 		{
+			if(appStore_name.indexOf("原材料库") >= 0)//storageName = "product_storage";
+			{
+				if(Integer.parseInt(appBarcode) < 50000000||Integer.parseInt(appBarcode) > 60000000)
+				{
+					session.setAttribute("error", "弄啥呢?原材料八码必须介于[50000000 ~ 60000000)之间, 你不知道吗?");
+					response.sendRedirect("../tishi.jsp");
+					return;
+				}
+				storageName = "material_storage";
+				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
+				hDBHandle.QueryDataBase(sql);
+				if (hDBHandle.GetRecordCount() <= 0)
+				{
+					hDBHandle.CloseDatabase();
+					//product_type Database query
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
+					hDBHandle.execUpate(sql);
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + Integer.toString(Integer.parseInt(appBarcode) + 10000000) + "', '" + appProduct_type.replace("原锭", "") + "')";
+					hDBHandle.execUpate(sql);
+				}
+			}
+			else
+			{
+				if(Integer.parseInt(appBarcode) >= 50000000&&Integer.parseInt(appBarcode) < 70000000)
+				{
+					session.setAttribute("error", "弄啥呢?介于[50000000 ~ 69999999]之间的八码已经被原材料库和成品库占用了, 你不知道吗?");
+					response.sendRedirect("../tishi.jsp");
+					return;
+				}
+
+				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
+				hDBHandle.QueryDataBase(sql);
+				if (hDBHandle.GetRecordCount() <= 0)
+				{
+					hDBHandle.CloseDatabase();
+					//product_type Database query
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
+					hDBHandle.execUpate(sql);
+				}
+			}
 			String appTotalPrice = String.format("%.2f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
 			Calendar mData = Calendar.getInstance();
 			String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
