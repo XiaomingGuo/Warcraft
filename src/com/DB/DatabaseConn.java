@@ -343,10 +343,10 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public double GetProductRepertoryPrice(String barcode)
+	public double GetProductRepertoryPrice(String barcode, String storage)
 	{
 		double rtnRst = 0.0;
-		String sql = "select * from material_storage where Bar_Code='" + barcode +"' and IN_QTY != OUT_QTY";
+		String sql = "select * from " + storage + " where Bar_Code='" + barcode +"' and IN_QTY != OUT_QTY";
 		String[] keyWord = {"IN_QTY", "OUT_QTY", "Price_Per_Unit"};
 		if (QueryDataBase(sql))
 		{

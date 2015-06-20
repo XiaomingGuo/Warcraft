@@ -25,7 +25,7 @@
 		
 		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
 		{
-			if(appStore_name.indexOf("原材料库") >= 0)//storageName = "product_storage";
+			if(appStore_name.indexOf("原材料库") >= 0)
 			{
 				if(Integer.parseInt(appBarcode) < 50000000||Integer.parseInt(appBarcode) > 60000000)
 				{

@@ -74,11 +74,16 @@
   			<tr>
 <%
 				String bar_code = recordList.get(1).get(iRow-1);
-				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, "other_storage");
-				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, "other_storage");
-				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code);
+				String storageName = "other_storage";
+				if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
+				{
+					storageName = "material_storage";
+				}
+				int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, storageName);
+				int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, storageName);
+				double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code, storageName);
 				totalPrice += dblPro_Price;
-				String pro_Price = String.format("%.3f", hDBHandle.GetProductRepertoryPrice(bar_code));
+				String pro_Price = String.format("%.3f", dblPro_Price);
 				for(int iCol = 1; iCol <= keyList.length; iCol++)
 				{
 					if(keyList[iCol-1] == "repertory")
