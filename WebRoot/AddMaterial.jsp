@@ -154,13 +154,13 @@
 			    	<tr>
 			   			<td align="right">
 				   			<label>请输入产品名称:</label>
-							<input type="text" name="productname" id="productname" style='width:180px'>
+							<input type="text" name="productname" id="productname" style='width:180px' onblur="changeProductName(this)">
 						</td>
 					</tr>
 					<tr>
 			   			<td align="right">
 				   			<label id=lable_barcode>Bar Code:</label>
-							<input type="text" name="barcode" id="barcode" style='width:180px' onblur="checkBarcode(this)">
+							<input type="text" name="barcode" id="barcode" style='width:180px' onchange="checkBarcode(this)">
 						</td>
 					</tr>
 					<tr>
@@ -201,17 +201,10 @@
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-
-				if ($("#store_name_addproduct").find("option:selected").text().indexOf("成品库") >= 0)
-				{
-					$("#QTY").attr("value","0");
-					$("#QTY").attr("readonly","readonly");
-				}
-				else
-				{
-					$("#QTY").attr("value","");
-					$("#QTY").removeAttr("readonly");
-				}
+				$("#productname").val("");
+				$("#barcode").val("");
+				$("#QTY").val("");
+				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -230,7 +223,13 @@
 			$product_type.change(function()
 			{
 				$product_name.empty();
+				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
+				$bar_code.append('<option value="请选择">--请选择--</option>');
+				$("#productname").val("");
+				$("#barcode").val("");
+				$("#QTY").val("");
+				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -250,8 +249,10 @@
 			{
 				$bar_code.empty();
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$("#barcode").attr("value","");
-				$("#PriceUnit").attr("value","");
+				$("#productname").val("");
+				$("#barcode").val("");
+				$("#QTY").val("");
+				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -263,35 +264,52 @@
 							$(newOption).val(code_list[i]);
 							$bar_code.append(newOption);
 						}
-						$("#productname").attr("value", $product_name.find("option:selected").text());
+						$("#productname").val($product_name.find("option:selected").text());
 					}
 				});
 			});	
 			
 			$bar_code.change(function()
 			{
-				$("#PriceUnit").attr("value","");
-				$('#barcode').attr("value", $bar_code.find("option:selected").text());
+				$("#barcode").val("");
+				var selectedBarcode = $bar_code.find("option:selected").text();
+				//alert(selectedBarcode);
+				if (selectedBarcode.indexOf("请选择") > 0)
+				{
+					//alert("1:");
+					$("#barcode").val("");
+				}
+				else
+				{
+					//alert("2:"+selectedBarcode);
+					$("#barcode").val(selectedBarcode);
+				}
 			});				
 		});
 		
 		function checkBarcode(obj)
 		{
-			if(obj.value == "" ||obj.value == null)
+			var checkedBarcode = $("#barcode").val();
+			//alert(checkedBarcode);
+			if(checkedBarcode == null||checkedBarcode == "" )
 			{
 				return;
 			}
-			$.post("Ajax/Check_Barcode_Ajax.jsp", {"Bar_Code":obj.value}, function(data, textStatus)
+			$.post("Ajax/Check_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{
-					alert(data);
 					if (parseInt(data.split('$')[1]) > 0)
 					{
-						$('#barcode').attr("value", "");
+						$("#barcode").val("");
 					}
 				}
 			});
+		}
+		
+		function changeProductName(obj)
+		{
+			$("#barcode").val("");
 		}
 		
 		function changeAddType(obj)
