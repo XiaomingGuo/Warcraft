@@ -54,7 +54,6 @@
 				}
 			}
 			Calendar mData = Calendar.getInstance();
-			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
 
@@ -88,8 +87,7 @@
 			  				<td>
 				  				<h1>
 							  		<label>客户PO号:</label>
-							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
-							  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
+							  		<input type="text" name="POName" id="POName" onblur="changeOrderName(this)" value="P015-05-06157" style="width:200px">
 						  		</h1>
 					  		</td>
 				  		</tr>

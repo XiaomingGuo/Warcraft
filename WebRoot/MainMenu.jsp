@@ -67,7 +67,7 @@
 			    		<li><a href="Application.jsp">申请</a></li>
 			    		<li><a href="Query.jsp">查询</a></li>
 			    		<li><a href="Approve.jsp">批准</a></li>
-			    		<!-- <li><a href="Input_Customer_PO.jsp">客户PO录入</a></li> -->
+			    		<li><a href="Customer_PO.jsp">客户PO录入</a></li>
 			    		<li><a href="Generate_Order.jsp">生产单生成</a></li>
 			    		<li><a href="Query_Order.jsp">生产单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>
