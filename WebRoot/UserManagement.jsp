@@ -92,9 +92,9 @@
     				<center>
 	    				<input type="checkbox" name="permission" value="2048">查询
 	    				<input type="checkbox" name="permission" value="1024">批准
-	    				<input type="checkbox" name="permission" value="512">生成订单
-	    				<input type="checkbox" name="permission" value="256">订单审核
-	    				<input type="checkbox" name="permission" value="128">订单入库
+	    				<input type="checkbox" name="permission" value="512">生产单生成
+	    				<input type="checkbox" name="permission" value="256">生产单审核
+	    				<input type="checkbox" name="permission" value="128">成品入库
 	    				<input type="checkbox" name="permission" value="64">材料报废
 	    				<br>
 	    				<input type="checkbox" name="permission" value="32">成品出货
@@ -143,9 +143,9 @@
     				<center>
 	    				<input type="checkbox" name="AddPermission" value="2048">查询
 	    				<input type="checkbox" name="AddPermission" value="1024">批准
-	    				<input type="checkbox" name="AddPermission" value="512">生成订单
-	    				<input type="checkbox" name="AddPermission" value="256">订单审核
-	    				<input type="checkbox" name="AddPermission" value="128">订单入库
+	    				<input type="checkbox" name="AddPermission" value="512">生产单生成
+	    				<input type="checkbox" name="AddPermission" value="256">生产单审核
+	    				<input type="checkbox" name="AddPermission" value="128">成品入库
 	    				<input type="checkbox" name="AddPermission" value="64">材料报废
 	    				<br>
 	    				<input type="checkbox" name="AddPermission" value="32">成品出货

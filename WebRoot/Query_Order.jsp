@@ -31,7 +31,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
  			List<String> orderName = null;
-			String sql = "select * from product_order where status>=1";
+			String sql = "select * from product_order where status=1";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				orderName = hDBHandle.GetAllStringValue("Order_Name");
@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>订单查询</title>
+    <title>生产单查询</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -62,12 +62,12 @@
     	<tr>
     		<td height="3%"></td>
     		<td height="3%" bgcolor="grey"></td>
-    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">订单号</label></font></b></td>
+    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">生产单号</label></font></b></td>
     	</tr>
 		<tr>
 			<td valign="top" align="center" width="19%">
 				<table align="center" border="1" width="100%">
-					<tr><th>订单号:</th></tr>
+					<tr><th>生产单号:</th></tr>
 				</table>
 				<h5>
 					<ul>
@@ -89,7 +89,7 @@
 			<td width="0.5%" height="98%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top">
    				<table width="100%" border="1">
-   					<tr><th>订单内容：</th></tr>
+   					<tr><th>生产单内容：</th></tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
    			</td>

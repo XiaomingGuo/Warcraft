@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>订单入库</title>
+    <title>成品入库</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -62,12 +62,12 @@
     	<tr>
     		<td height="3%"></td>
     		<td height="3%" bgcolor="grey"></td>
-    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">订单号</label></font></b></td>
+    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">生产单号</label></font></b></td>
     	</tr>
 		<tr>
 			<td valign="top" align="center" width="19%">
 				<table align="center" border="1" width="100%">
-					<tr><th>订单号:</th></tr>
+					<tr><th>生产单号:</th></tr>
 				</table>
 				<h5>
 					<ul>
@@ -89,11 +89,11 @@
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top" align="center">
    				<table width="100%" border="1">
-   					<tr><th>订单内容：</th></tr>
+   					<tr><th>生产单内容：</th></tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
 	   			<br><br>
-	   			<input align="middle" type="button" onclick="CloseOrder(this)" value="关闭订单">
+	   			<input align="middle" type="button" onclick="CloseOrder(this)" value="关闭生产单">
    			</td>
 		</tr>
    	</table>
@@ -173,7 +173,7 @@
 			var tempList = obj.name.split('$');
 			if (parseInt(obj.value)+parseInt(tempList[1]) > parseInt(tempList[0]))
 			{
-				alert("入库数量不能大于订单量!");
+				alert("入库数量不能大于生产单量!");
 				obj.value = 0;
 			}
 		}

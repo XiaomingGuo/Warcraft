@@ -59,16 +59,19 @@
 	  	</tr>
 		<tr>
 	  		<td align="right">
-		  		<label>订单:</label>
+		  		<label>生产单:</label>
 			  	<select name="product_order" id="product_order" style="width:200px">
 				  	<option value = "--请选择--">--请选择--</option>
 <%
-					for(int i = 0; i < product_order.size(); i++)
-					{
+			if (product_order != null)
+			{
+				for(int i = 0; i < product_order.size(); i++)
+				{
 %>
 				  	<option value = <%=product_order.get(i)%>><%=product_order.get(i)%></option>
 <%
-					}
+				}
+			}
 %>
 			  	</select>
 		  	</td>

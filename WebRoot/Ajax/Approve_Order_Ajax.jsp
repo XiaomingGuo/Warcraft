@@ -6,11 +6,25 @@
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name");
+	List<String> idList = null;
 	
-	if (order_name != null||order_name.indexOf("订单号") < 0)
+	if (order_name != null||order_name.indexOf("生产单号") < 0)
 	{
-		String sql = "UPDATE product_order SET status='1' where Order_Name='" + order_name + "'";
-		hDBHandle.execUpate(sql);
+		String sql= "select id from product_order_record where Order_Name='"+order_name+"'";
+		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+		{
+			idList = hDBHandle.GetAllStringValue("id");
+			for (int index = 0; index < idList.size(); index++)
+			{
+				if(Integer.parseInt(idList.get(index)) == 0)
+				{
+					sql = "UPDATE product_order_record SET status='1' where id='" + idList.get(index) + "'";
+					hDBHandle.execUpate(sql);
+				}
+			}
+			sql = "UPDATE product_order SET status='1' where Order_Name='" + order_name + "'";
+			hDBHandle.execUpate(sql);
+		}
 	}
 	out.write(rtnRst);
 %>

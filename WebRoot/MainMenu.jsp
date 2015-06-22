@@ -67,10 +67,11 @@
 			    		<li><a href="Application.jsp">申请</a></li>
 			    		<li><a href="Query.jsp">查询</a></li>
 			    		<li><a href="Approve.jsp">批准</a></li>
-			    		<li><a href="Generate_Order.jsp">生成订单</a></li>
-			    		<li><a href="Query_Order.jsp">订单查询</a></li>
-			    		<li><a href="Approve_Order.jsp">订单审核</a></li>
-			    		<li><a href="Put_In_Pro_Storage.jsp">订单入库</a></li>
+			    		<!-- <li><a href="Input_Customer_PO.jsp">客户PO录入</a></li> -->
+			    		<li><a href="Generate_Order.jsp">生产单生成</a></li>
+			    		<li><a href="Query_Order.jsp">生产单查询</a></li>
+			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>
+			    		<li><a href="Put_In_Pro_Storage.jsp">成品入库</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
 			    		<li><a href="AddMaterial.jsp">物料录入</a></li>

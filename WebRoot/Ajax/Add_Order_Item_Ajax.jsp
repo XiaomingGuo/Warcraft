@@ -13,11 +13,23 @@
 	String percent = (String)request.getParameter("present");
 	String order_name = (String)request.getParameter("order_name");
 	
-	if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
+	if (order_name != null&&order_name != "")
 	{
-		int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
-		String sql = "INSERT INTO product_order_record (product_type, product_name, Bar_Code, delivery_date, QTY, percent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + Integer.toString(iOrderQTY) + "','" + percent + "','" + order_name + "')";
-		hDBHandle.execUpate(sql);
+		String sql = "select * from product_order_record where Order_Name='" + order_name + "' and status='3'";
+		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+		{
+			if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
+			{
+				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
+				sql = "INSERT INTO product_order_record (product_type, product_name, Bar_Code, delivery_date, QTY, percent, Order_Name) VALUES ('" + pro_type + "','" + pro_name + "','" + bar_code + "','" + deliv_date +"','" + Integer.toString(iOrderQTY) + "','" + percent + "','" + order_name + "')";
+				hDBHandle.execUpate(sql);
+			}
+		}
+		else
+		{
+			rtnRst += "error:大哥这生产单已经有了,换个生产单名吧!";
+		}
+		
 	}
 	out.write(rtnRst);
 %>

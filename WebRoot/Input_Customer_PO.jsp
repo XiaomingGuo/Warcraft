@@ -56,7 +56,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>生产单生成</title>
+    <title>客户PO信息录入</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -80,7 +80,7 @@
 			  			<tr>
 			  				<td>
 				  				<h1>
-							  		<label>生产单号:</label>
+							  		<label>客户PO号:</label>
 							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
 							  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
 						  		</h1>
@@ -191,7 +191,7 @@
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
 			if (order_name.length < 11)
 			{
-				alert("我的乖乖,你就不能起个长点儿的生产单名吗?");
+				alert("我的乖乖,你就不能起个长点儿的PO单名吗?");
 				return;
 			}
 			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name, "status":"0"}, function(data, textStatus)
@@ -257,16 +257,13 @@
 			}
 			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
 			{
-				if (textStatus == "success")
+				if (!(textStatus == "success"))
 				{
-					if(data.indexOf('error') >= 0)
-					{
-						alert(data.split('$')[1]);
-						return;
-					}
+					alert(data);
 				}
 				changeOrderName();
 			});
+			
 		}
 		
 		function deleteRecord(obj)

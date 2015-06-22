@@ -159,8 +159,8 @@
 					</tr>
 					<tr>
 			   			<td align="right">
-				   			<label>Bar Code:</label>
-							<input type="text" name="barcode" id="barcode" style='width:180px'>
+				   			<label id=lable_barcode>Bar Code:</label>
+							<input type="text" name="barcode" id="barcode" style='width:180px' onblur="checkBarcode(this)">
 						</td>
 					</tr>
 					<tr>
@@ -274,9 +274,26 @@
 				$('#barcode').attr("value", $bar_code.find("option:selected").text());
 			});				
 		});
-	</script>
-	
-	<script type="text/javascript">
+		
+		function checkBarcode(obj)
+		{
+			if(obj.value == "" ||obj.value == null)
+			{
+				return;
+			}
+			$.post("Ajax/Check_Barcode_Ajax.jsp", {"Bar_Code":obj.value}, function(data, textStatus)
+			{
+				if (textStatus == "success")
+				{
+					alert(data);
+					if (parseInt(data.split('$')[1]) > 0)
+					{
+						$('#barcode').attr("value", "");
+					}
+				}
+			});
+		}
+		
 		function changeAddType(obj)
 		{
 			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)

@@ -78,15 +78,16 @@
 			{
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
+					String storageName = "other_storage";
 					String bar_code = recordList.get(1).get(iRow-1);
 					if (Integer.parseInt(bar_code) >= 60000000 && Integer.parseInt(bar_code) < 70000000)
 					{
 						continue;
+						//storageName = "product_storage";
 					}
 %>
   			<tr>
 <%
-					String storageName = "other_storage";
 					if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
 					{
 						storageName = "material_storage";

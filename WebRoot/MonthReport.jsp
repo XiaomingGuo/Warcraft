@@ -38,7 +38,7 @@
 				beginDate = tempBeginDate;
 				endDate = tempEndDate;
 			}
-			String sql = "select * from material_record where create_date>'" + beginDate + "' and create_date<'" + endDate + "' and isApprove=1";
+			String sql = "select * from other_record where create_date>'" + beginDate + "' and create_date<'" + endDate + "' and isApprove=1";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
