@@ -18,6 +18,7 @@
 		String sql = "select * from product_order_record where Order_Name='" + order_name + "' and status='3'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 		{
+			hDBHandle.CloseDatabase();
 			if (pro_type != null&&pro_name != null&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 			{
 				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
@@ -27,6 +28,7 @@
 		}
 		else
 		{
+			hDBHandle.CloseDatabase();
 			rtnRst += "error:大哥这生产单已经有了,换个生产单名吧!";
 		}
 		

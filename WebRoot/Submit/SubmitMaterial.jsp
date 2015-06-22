@@ -35,8 +35,7 @@
 				}
 				storageName = "material_storage";
 				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
-				hDBHandle.QueryDataBase(sql);
-				if (hDBHandle.GetRecordCount() <= 0)
+				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
@@ -44,6 +43,10 @@
 					hDBHandle.execUpate(sql);
 					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + Integer.toString(Integer.parseInt(appBarcode) + 10000000) + "', '" + appProduct_type.replace("原锭", "") + "')";
 					hDBHandle.execUpate(sql);
+				}
+				else
+				{
+					hDBHandle.CloseDatabase();
 				}
 			}
 			else
@@ -56,13 +59,16 @@
 				}
 
 				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
-				hDBHandle.QueryDataBase(sql);
-				if (hDBHandle.GetRecordCount() <= 0)
+				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
 					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
 					hDBHandle.execUpate(sql);
+				}
+				else
+				{
+					hDBHandle.CloseDatabase();
 				}
 			}
 			String appTotalPrice = String.format("%.2f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
@@ -73,14 +79,17 @@
 			{
 				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
 				String sql = "select * from "+storageName+" where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
-				hDBHandle.QueryDataBase(sql);
-				if (hDBHandle.GetRecordCount() <= 0)
+				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
 					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "')";
 					hDBHandle.execUpate(sql);
 					break;
+				}
+				else
+				{
+					hDBHandle.CloseDatabase();
 				}
 				loopNum ++;
 			}

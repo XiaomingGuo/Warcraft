@@ -279,6 +279,14 @@ public class DatabaseConn
 					rtnRst += Integer.parseInt(in_Qty_List.get(i));
 				}
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}
@@ -297,6 +305,14 @@ public class DatabaseConn
 					rtnRst += Integer.parseInt(out_Qty_List.get(i));
 				}
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}
@@ -311,6 +327,14 @@ public class DatabaseConn
 			{
 				rtnRst = GetSingleString("name");
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}
@@ -325,6 +349,14 @@ public class DatabaseConn
 			{
 				rtnRst = GetSingleString("Merge_Mark");
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}
@@ -339,6 +371,14 @@ public class DatabaseConn
 			{
 				rtnRst = GetSingleDouble("Price_Per_Unit");
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}
@@ -358,6 +398,14 @@ public class DatabaseConn
 					rtnRst += (Integer.parseInt(Qty_List.get(0).get(i)) - Integer.parseInt(Qty_List.get(1).get(i))) * Float.parseFloat(Qty_List.get(2).get(i));
 				}
 			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
 		}
 		return rtnRst;
 	}

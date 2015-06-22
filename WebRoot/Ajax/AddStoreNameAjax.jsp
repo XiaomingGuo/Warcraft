@@ -12,10 +12,12 @@
 	{	
 		if(hDBHandle.GetRecordCount() > 0)
 		{
+			hDBHandle.CloseDatabase();
 			rtnRst = "库名已经存在!";
 		}
 		else
 		{
+			hDBHandle.CloseDatabase();
 			sql = "INSERT INTO storeroom_name (name) VALUES ('" + storeroom + "')";
 			hDBHandle.execUpate(sql);
 		}

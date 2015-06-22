@@ -30,12 +30,17 @@
 			String sql = "select * from other_record where isApprove=0";
 			hDBHandle.QueryDataBase(sql);
 			int recordCount = hDBHandle.GetRecordCount();
+			hDBHandle.CloseDatabase();
 			String tempBP = request.getParameter("BeginPage");
 			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
 			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
 			if (hDBHandle.QueryDataBase(limitSql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
 			}
 %>
 

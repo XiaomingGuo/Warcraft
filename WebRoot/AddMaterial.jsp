@@ -30,6 +30,10 @@
 			{
 				store_name = hDBHandle.GetAllStringValue("name");
 			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
 			for (int index = 0; index < store_name.size(); index++)
 			{
 				if (store_name.get(index).indexOf("成品库") == 0)

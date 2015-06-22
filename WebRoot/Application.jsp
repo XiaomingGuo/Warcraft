@@ -23,6 +23,10 @@
 		{
 			store_name = hDBHandle.GetAllStringValue("name");
 		}
+		else
+		{
+			hDBHandle.CloseDatabase();
+		}
 		store_name.remove("成品库");
 		store_name.remove("原材料库");
 %>

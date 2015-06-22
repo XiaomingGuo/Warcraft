@@ -23,8 +23,7 @@
 		if (!cur_PWD.isEmpty() && !new_PWD.isEmpty() && !confirm_PWD.isEmpty() && new_PWD.equals(confirm_PWD))
 		{
 			String sql = "select * from user_info where name='" + user_name + "'";
-			hDBHandle.QueryDataBase(sql);
-			if (hDBHandle.GetRecordCount() == 1)
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() == 1)
 			{
 				sql_PWD = hDBHandle.GetSingleString("password");
 				if (sql_PWD.equals(cur_PWD))
@@ -41,6 +40,7 @@
 			}
 			else
 			{
+				hDBHandle.CloseDatabase();
 				session.setAttribute("error", "用户不存在或用户名重复!");
 				response.sendRedirect("../tishi.jsp");
 			}

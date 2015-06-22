@@ -20,6 +20,10 @@
 	{
 		barcodeList = hDBHandle.GetAllStringValue("Bar_Code");
 	}
+	else
+	{
+		hDBHandle.CloseDatabase();
+	}
 	for (int i = 0; i < barcodeList.size(); i++)
 	{
 		String bar_Code = barcodeList.get(i);

@@ -35,15 +35,22 @@
 			{
 				product_type = hDBHandle.GetAllStringValue("name");
 			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
 			
 			String tempOrderName = request.getParameter("OrderName");
 			if (tempOrderName != null)
 			{
 				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
-				hDBHandle.QueryDataBase(sql);
 				if (hDBHandle.QueryDataBase(sql))
 				{
 					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				}
+				else
+				{
+					hDBHandle.CloseDatabase();
 				}
 			}
 			Calendar mData = Calendar.getInstance();

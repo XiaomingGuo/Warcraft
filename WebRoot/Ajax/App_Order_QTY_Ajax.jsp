@@ -15,6 +15,10 @@
 	{
 		strBarcode = hDBHandle.GetSingleString("Bar_Code");
 	}
+	else
+	{
+		hDBHandle.CloseDatabase();
+	}
 	iProRepertory = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 	iMatRepertory = hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage");
 	rtnRst += strBarcode + "$";

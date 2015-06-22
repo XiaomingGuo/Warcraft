@@ -73,6 +73,10 @@
 				}
 			}
 		}
+		else
+		{
+			hDBHandle.CloseDatabase();
+		}
 	}
 	out.write(rtnRst);
 %>

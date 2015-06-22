@@ -21,6 +21,10 @@
 				hDBHandle.execUpate(sql);
 			}
 		}
+		else
+		{
+			hDBHandle.CloseDatabase();
+		}
 	}
 	out.write(rtnRst);
 %>

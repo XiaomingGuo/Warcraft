@@ -12,6 +12,10 @@
 	{
 		pro_type = hDBHandle.GetAllStringValue("name");
 	}
+	else
+	{
+		hDBHandle.CloseDatabase();
+	}
 	if (pro_type != null)
 	{
 		for(int i = 0; i < pro_type.size(); i++)

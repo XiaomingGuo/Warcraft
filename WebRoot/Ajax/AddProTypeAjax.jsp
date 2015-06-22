@@ -10,7 +10,8 @@
 	String pro_type = (String)request.getParameter("pro_type");
 	String sql = "select * from product_type where name='" + pro_type +"'" ;
 	if (!storeroom.isEmpty()&&!pro_type.isEmpty()&&hDBHandle.QueryDataBase(sql))
-	{	
+	{
+		hDBHandle.CloseDatabase();
 		if(hDBHandle.GetRecordCount() > 0)
 		{
 			hDBHandle.CloseDatabase();

@@ -7,11 +7,11 @@
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String KeyWord = "";
 	int userRight = 0;
-	boolean bLoginSuccessful = false;
 %>
 
 <%
 	//session.invalidate();
+	boolean bLoginSuccessful = false;
 	request.setCharacterEncoding("UTF-8");
 
 	String name = request.getParameter("name");
@@ -24,14 +24,17 @@
 	{
 		String mess = "";
 		String sql = "select password from user_info where name=\"" + name +"\"" ;
-		hDBHandle.QueryDataBase(sql);
-		if (hDBHandle.GetRecordCount() > 0)
+		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
 			KeyWord = hDBHandle.GetSingleString("password");
 			sql = "select permission from user_info where name=\"" + name +"\"" ;
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				userRight = hDBHandle.GetSingleInt("permission");
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
 			}
 			mylogon.setUsername(name);
 			mylogon.setUserpassword(KeyWord);
@@ -44,6 +47,10 @@
 				session.setAttribute("logonuser", mylogon);
 				response.sendRedirect("MainPage.jsp");
 			}
+		}
+		else
+		{
+			hDBHandle.CloseDatabase();
 		}
 		if(!bLoginSuccessful)
 		{

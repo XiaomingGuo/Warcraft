@@ -25,6 +25,10 @@
 			sql = "UPDATE product_order SET status='1' where Order_Name='" + order_name + "'";
 			hDBHandle.execUpate(sql);
 		}
+		else
+		{
+			hDBHandle.CloseDatabase();
+		}
 	}
 	out.write(rtnRst);
 %>

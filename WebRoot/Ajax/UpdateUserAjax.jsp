@@ -11,12 +11,18 @@
 	{	
 		if(hDBHandle.GetRecordCount() > 0)
 		{
+			hDBHandle.CloseDatabase();
 			sql = "UPDATE user_info SET permission='" + (String)request.getParameter("Permission") + "' WHERE id='" + id +"'";
 			hDBHandle.execUpate(sql);
+		}
+		else
+		{
+			hDBHandle.CloseDatabase();
 		}
 	}
 	else
 	{
+		hDBHandle.CloseDatabase();
 		rtnRst = "产品类型为空或查询数据库出错!";
 	}
 	

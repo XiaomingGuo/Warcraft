@@ -26,6 +26,7 @@
 			String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 			if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 			{
+				hDBHandle.CloseDatabase();
 				if (order_QTY == (pro_record_comp_QTY+used_count))
 				{
 					sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='3' WHERE id='" + pro_id + "'";
@@ -64,6 +65,14 @@
 					}
 				}
 			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
+		}
+		else
+		{
+			hDBHandle.CloseDatabase();
 		}
 	}
 	

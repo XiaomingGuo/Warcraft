@@ -15,6 +15,10 @@
 		String[] keyWord = {"product_name", "Bar_Code"};
 		pro_info = hDBHandle.GetAllDBColumnsByList(keyWord);
 	}
+	else
+	{
+		hDBHandle.CloseDatabase();
+	}
 	if (pro_info != null)
 	{
 		pro_type = new ArrayList<String>();
@@ -27,6 +31,10 @@
 			{
 				temp_type = hDBHandle.GetSingleString("product_type");
 				pro_type.add(temp_type);
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
 			}
 		}
 		for(int i = 0; i < pro_info.get(0).size(); i++)

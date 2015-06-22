@@ -30,11 +30,16 @@
 			String sql = "select * from user_info";
 			hDBHandle.QueryDataBase(sql);
 			int recordCount = hDBHandle.GetRecordCount();
+			hDBHandle.CloseDatabase();
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
 			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
 			if (hDBHandle.QueryDataBase(limitSql))
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlkeyList);
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
 			}
 %>
 
