@@ -6,7 +6,7 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
  	List<String> product_type = null;
-	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
+	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "供应商", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
 %>
@@ -132,7 +132,11 @@
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" onchange="Qty_Calc(this)" style="width:60px" readonly></td>
 							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:60px" readonly></td>
 							<td align="center"><input type="text" name="PO_QTY" id="PO_QTY" style="width:60px" readonly></td>
-							<td align="center"><input type="text" name="present" id="present" style="width:40px" value='8'><label>%</label></td>
+							<td align="center">
+								<select name="vendor_name" id="vendor_name" style="width:100px">
+								  	<option value = "--请选择--">--请选择--</option>
+								</select>
+							</td>
 	    					<td align="center"><input align="middle" type="button" value="确认" onclick="addordercolumn(this)"></td>
 					  	</tr>
 			    	</table>
@@ -254,13 +258,13 @@
 		
 		function addordercolumn(obj)
 		{
-			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			if($("#OrderName").val()==""||$("#product_type").find("option:selected").text().indexOf("请选择")>=0||$("#product_name").find("option:selected").text().indexOf("请选择")>=0||$("#delivery_date").val().length != 8||$("#order_QTY").val()==""||parseInt($("#order_QTY").val()) <= 0)
+			var po_name = $("#POName").val();
+			if(po_name==""||$("#bar_code").val()||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0)
 			{
 				alert("我说大姐,你这输入信息糊弄谁呢?");
 				return;
 			}
-			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
+			$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "vendor_name":$vendor_name.find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
