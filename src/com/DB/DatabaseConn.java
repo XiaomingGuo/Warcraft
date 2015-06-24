@@ -438,4 +438,19 @@ public class DatabaseConn
 		execUpate(sql);
 		return rtnRst;
 	}
+	
+	public String GetTypeByBarcode(String barcode)
+	{
+		String rtnRst = "";
+		String sql = "select * from product_info where Bar_Code='" + barcode + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			rtnRst = GetSingleString("product_type");
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
 }

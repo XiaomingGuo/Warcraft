@@ -9,7 +9,7 @@
 	
 	if (pro_id != null)
 	{
-		String sql = "delete from product_order_record where id='" + pro_id + "'";
+		String sql = "delete from customer_po_record where id='" + pro_id + "'";
 		hDBHandle.execUpate(sql);
 	}
 	out.write(rtnRst);
