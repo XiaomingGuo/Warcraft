@@ -31,11 +31,11 @@
 				hDBHandle.CloseDatabase();
 			}
 		}
+		rtnRst += po_status + "$";
 		sql = "select * from customer_po_record where po_name='" + po_name + "'";
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			rtnRst += po_status + "$";
 			int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 			rtnRst += Integer.toString(iColCount) + "$";
 			rtnRst += Integer.toString(iRowCount) + "$";

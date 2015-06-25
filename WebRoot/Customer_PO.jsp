@@ -237,6 +237,10 @@
 					{
 						$("#confirm_button").attr("disabled", "disabled");
 					}
+					else
+					{
+						$("#confirm_button").removeAttr("disabled");
+					}
 					if (iColCount > 0&&iRowCount > 0)
 					{
 						var tr = $("<tr></tr>");
@@ -328,15 +332,15 @@
 			var proCount = parseInt($("#product_QTY").val());
 			var matCount = parseInt($("#material_QTY").val());
 			var tempQTY = (proCount + matCount) - poCount;
-			if (poCount > 0&&proCount > 0&&matCount > 0)
+			if (poCount > 0&&proCount >= 0&&matCount >= 0)
 			{
 				if (tempQTY >= 0)
 				{
-					$("#Need_QTY").attr("value", 0);
+					$("#Need_QTY").val(0);
 				}
 				else
 				{
-					$("#Need_QTY").attr("value", -tempQTY);
+					$("#Need_QTY").val(-tempQTY);
 				}
 			}
 		}
@@ -344,7 +348,7 @@
 		function CreatePO(obj)
 		{
 			var po_name = $("#OrderHeader").val() + $("#OrderName").val();
-			location.href ="Generate_PO.jsp?OrderName="+po_name;
+			location.href ="List_Purchase.jsp?PO_Name="+po_name;
 		}
 	</script>
   </body>

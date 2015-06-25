@@ -9,7 +9,7 @@
 %>
 <%
 	String message="";
-	String OrderName = request.getParameter("OrderName");
+	String POName = request.getParameter("PO_Name");
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -26,7 +26,7 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from product_order_record where Order_Name='" + OrderName + "'";
+			String sql = "select * from product_order_record where Order_Name='" + POName + "'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
