@@ -347,7 +347,7 @@
 		
 		function CreatePO(obj)
 		{
-			var po_name = $("#OrderHeader").val() + $("#OrderName").val();
+			var po_name = $("#POName").val();
 			location.href ="List_Purchase.jsp?PO_Name="+po_name;
 		}
 	</script>

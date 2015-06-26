@@ -55,7 +55,7 @@
 				{
 					String barcode = recordList.get(0).get(recordIndex);
 					int po_qty = Integer.parseInt(recordList.get(1).get(recordIndex)) - Integer.parseInt(recordList.get(2).get(recordIndex));
-					int repertory = hDBHandle.GetRepertoryByBarCode(barcode, "material_storage");
+					int repertory = hDBHandle.GetRepertoryByBarCode(barcode, "material_storage") + hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(barcode) - 10000000), "material_storage");
 					if (repertory < po_qty)
 					{
 						isRemoveVendor = false;
