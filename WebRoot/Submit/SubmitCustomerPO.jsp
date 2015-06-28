@@ -31,7 +31,7 @@
 				response.sendRedirect("../Customer_PO.jsp");
 			}
 			sql = "select * from customer_po_record where po_name='" + appPOName + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				String[] colNames = {"Bar_Code", "vendor", "QTY", "percent"};
 				List<List<String>> recordList = hDBHandle.GetAllDBColumnsByList(colNames);
@@ -47,7 +47,7 @@
 						int manufacture_QTY = iPOCount*(100+ipercent)/100;
 						if (iRepertory < manufacture_QTY)
 						{
-							sql = "INSERT INTO mb_material_po_record (Bar_Code, vendor, po_name, PO_QTY) VALUES ('" + strBarcode + "','" + strVendor + "','" + appPOName + "', '" + Integer.toString(manufacture_QTY-iRepertory) + "')";
+							sql = "INSERT INTO mb_material_po_record (Bar_Code, vendor, po_name, PO_QTY) VALUES ('" + strBarcode + "','" + strVendor + "','" + appPOName + "','" + Integer.toString(manufacture_QTY-iRepertory) + "')";
 							hDBHandle.execUpate(sql);
 						}
 					}
