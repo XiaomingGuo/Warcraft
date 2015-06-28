@@ -4,12 +4,13 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
-	String[] sqlKeyList = {"product_type", "Bar_Code", "product_name", "QTY", "delivery_date"};
+	String[] sqlKeyList = {"Bar_Code", "QTY", "percent"};
 	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
 	String POName = request.getParameter("PO_Name");
+	String vendor = request.getParameter("vendor");
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -26,7 +27,7 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from product_order_record where Order_Name='" + POName + "'";
+			String sql = "select * from customer_po_record where po_name='" + POName + "' and vendor='" + vendor + "'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -70,10 +71,10 @@
        	<table width="80%">
     		<tr>
 				<td width="50%" align="left"><b>供货商/SHIP TO:</b></td>
-				<td width="50%" align="left"><b>购买者/VENDOR:</b></td>
+				<td width="50%" align="left"><b>购买者/VENDOR: </b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>姓名/ATTN NAME:</b></td>
+				<td width="50%" align="left"><b>姓名/ATTN NAME:<%=vendor %></b></td>
 				<td width="50%" align="left"><b>姓名/NAME:  茂邦机械</b></td>
 			</tr>
     		<tr>
@@ -114,6 +115,7 @@
 <%
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
+						String strBarcode = recordList.get(0).get(iRow-1);
 				    	if (displayKeyList[iCol-1] == "模具号" || displayKeyList[iCol-1] == "交货日期" || displayKeyList[iCol-1] == "备注" )
 				    	{
 %>
@@ -126,14 +128,26 @@
     			<td width="2%"><input type="text" value="件" readonly></td>
 <%
 				    	}
+				    	else if(displayKeyList[iCol-1] == "名称")
+				    	{
+%>
+    			<td width="2%"><input type="text" value="<%=hDBHandle.GetTypeByBarcode(strBarcode)%>" readonly></td>
+<%
+				    	}
+				    	else if(displayKeyList[iCol-1] == "型号")
+				    	{
+%>
+    			<td width="2%"><input type="text" value="<%=hDBHandle.GetNameByBarcode(strBarcode)%>" readonly></td>
+<%
+				    	}
 				    	else if(displayKeyList[iCol-1] == "数量")
 				    	{
-							String strBarcode = recordList.get(1).get(iRow-1);
 							int iPro_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							int iMat_storage = hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage");
-							int displayQTY = Integer.parseInt(recordList.get(iCol-1).get(iRow-1))-iPro_storage-iMat_storage;
+							int PO_Count = Integer.parseInt(recordList.get(1).get(iRow-1));
+							int displayQTY = PO_Count-iPro_storage-iMat_storage;
 %>
-    			<td width="15%"><input type="text" value=<%=displayQTY %> readonly></td>
+    			<td width="15%"><input type="text" value=<%=displayQTY+(PO_Count*Integer.parseInt(recordList.get(2).get(iRow-1))/100) %> readonly></td>
 <%
 				    	}
 				    	else

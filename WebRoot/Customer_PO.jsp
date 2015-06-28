@@ -160,7 +160,7 @@
 							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:60px" readonly></td>
 							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:60px" readonly></td>
 							<td align="center"><input type="text" name="percent" id="percent" style="width:100%" value='8'></td>
-	    					<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addpoitem(this)"></td>
+	    					<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addpoitem(this)" disabled></td>
 					  	</tr>
 			    	</table>
 			    	<br><br>

@@ -91,12 +91,12 @@
   <body>
     <jsp:include page="MainMenu.jsp"/>
     <br><br><br>
-    <table align="center" border="1">
+    <table align="center">
 <%
 			for (int iRow = 0; iRow < vendorList.size(); iRow++)
 			{
 %>
-			<h1><tr><td valign="top" align="center" width="19%"><%=vendorList.get(iRow) %></td></tr></h1>
+			<tr><td align="center" width="19%"><h1><a href="Generate_PO.jsp?PO_Name=<%=POName%>&vendor=<%=vendorList.get(iRow)%>"><%=vendorList.get(iRow) %></a></h1></td></tr>
 <%
 			}
 %>
