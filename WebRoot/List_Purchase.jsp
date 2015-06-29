@@ -96,12 +96,40 @@
 			for (int iRow = 0; iRow < vendorList.size(); iRow++)
 			{
 %>
-			<tr><td align="center" width="19%"><h1><a href="Generate_PO.jsp?PO_Name=<%=POName%>&vendor=<%=vendorList.get(iRow)%>"><%=vendorList.get(iRow) %></a></h1></td></tr>
+			<tr>
+				<td align="center" width="25%"><h1><a onclick="func(this)" href="Generate_PO.jsp?PO_Name=<%=POName%>&vendor=<%=vendorList.get(iRow)%>&date_of_delivery=<%=request.getParameterValues("date_of_delivery") %>"><%=vendorList.get(iRow) %></a></h1></td>
+				<td align="right"><b>交货日期:</b></td>
+				<td><input type="text" id="date_of_delivery" name="date_of_delivery"></td>
+			</tr>
 <%
 			}
 %>
    	</table>
   </body>
+   	<script type="text/javascript">
+		function func(obj)
+		{
+			alert("123456");
+			/*var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			if($("#OrderName").val()==""||$("#product_type").find("option:selected").text().indexOf("请选择")>=0||$("#product_name").find("option:selected").text().indexOf("请选择")>=0||$("#delivery_date").val().length != 8||$("#order_QTY").val()==""||parseInt($("#order_QTY").val()) <= 0)
+			{
+				alert("我说大姐,你这输入信息糊弄谁呢?");
+				return;
+			}
+			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
+			{
+				if (textStatus == "success")
+				{
+					if(data.indexOf('error') >= 0)
+					{
+						alert(data.split('$')[1]);
+						return;
+					}
+				}
+				changeOrderName();
+			});*/
+		}
+	</script>
 </html>
 <%
 		}
