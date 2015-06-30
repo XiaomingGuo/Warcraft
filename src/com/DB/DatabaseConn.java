@@ -453,4 +453,23 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetMBMaterialPOQTY(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		String sql = "select PO_QTY from mb_material_po where Bar_Code='" + barcode +"' and po_name='" + po_name + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			List<String> po_Qty_List = GetAllStringValue("PO_QTY");
+			for (int i = 0; i < po_Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(i));
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
 }

@@ -129,29 +129,22 @@
 					alert("我的乖乖,你就不能选择个正确的PO单号吗?");
 					return;
 				}
-				$.post("Ajax/Query_PO_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
+				$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
+						alert(data);
 						$displayOrder.empty();
 						$confirmOrder.empty();
 						var Count = 0;
 						var data_list = data.split("$");
-						var status = data_list[1], iColCount = data_list[2], iRowCount = data_list[3];
-						if (status != "null")
-						{
-							$("#confirm_button").attr("disabled", "disabled");
-						}
-						else
-						{
-							$("#confirm_button").removeAttr("disabled");
-						}
+						var iColCount = data_list[1], iRowCount = data_list[2];
 						if (iColCount > 0&&iRowCount > 0)
 						{
 							var tr = $("<tr></tr>");
 							for (var iHead = 1; iHead <= iColCount; iHead++)
 							{
-								var th = $("<th>" + data_list[iHead + 3] + "</th>");
+								var th = $("<th>" + data_list[iHead + 2] + "</th>");
 								tr.append(th);
 							}
 							$displayOrder.append(tr);
@@ -163,31 +156,33 @@
 									var td = $("<td></td>");
 									if (0 == iColCount - iCol)
 									{
-										if(status == "null")
+										if(data_list[iRow*iColCount + iCol + 2] != "0")
 										{
-											td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + iCol + 3] + " onclick=deleteRecord(this)>");
+											td.append("<input type='text' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
 										}
 										else
 										{
-											td.append("<label>已提交</label>");
+											td.append("<label>已完成</label>");
 										}
 									}
 									else
 									{
-										td.append(data_list[iRow*iColCount + iCol + 3]);
+										td.append(data_list[iRow*iColCount + iCol + 2]);
 									}
-									if(3 == iColCount - iCol)
+									if(2 == iColCount - iCol)
 									{
-										Count += parseInt(data_list[iRow*iColCount + iCol + 3]);
+										Count += parseInt(data_list[iRow*iColCount + iCol + 2]);
 									}
 									tr.append(td);
 								}
 								$displayOrder.append(tr);
 							}
-							
-							var cmdtr = $("<tr></tr>");
-							cmdtr.append("<td><input align='middle' type='submit' value='提交生产单'></td>");
-							$confirmOrder.append(cmdtr);
+							if (Count > 0)
+							{
+								var cmdtr = $("<tr></tr>");
+								cmdtr.append("<td><input align='middle' type='submit' value='提交生产单'></td>");
+								$confirmOrder.append(cmdtr);
+							}
 						}
 					}
 				});
