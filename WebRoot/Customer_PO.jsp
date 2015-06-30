@@ -50,19 +50,6 @@
 				hDBHandle.CloseDatabase();
 			}
 			
-			/*String tempOrderName = request.getParameter("OrderName");
-			if (tempOrderName != null)
-			{
-				sql = "select * from product_order_record where po_name='" + tempOrderName + "'";
-				if (hDBHandle.QueryDataBase(sql))
-				{
-					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
-			}*/
 			Calendar mData = Calendar.getInstance();
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
