@@ -8,7 +8,6 @@
  	List<String> po_list = null, product_type = null;
 	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
-	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
@@ -39,23 +38,6 @@
 			{
 				hDBHandle.CloseDatabase();
 			}
-			
-			String tempOrderName = request.getParameter("OrderName");
-			if (tempOrderName != null)
-			{
-				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
-				if (hDBHandle.QueryDataBase(sql))
-				{
-					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
-			}
-			Calendar mData = Calendar.getInstance();
-			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -133,7 +115,6 @@
 				{
 					if (textStatus == "success")
 					{
-						alert(data);
 						$displayOrder.empty();
 						$confirmOrder.empty();
 						var Count = 0;
@@ -158,7 +139,7 @@
 									{
 										if(data_list[iRow*iColCount + iCol + 2] != "0")
 										{
-											td.append("<input type='text' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
+											td.append("<input type='text' name='" + iRow + "_QTY' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
 										}
 										else
 										{
@@ -188,50 +169,6 @@
 				});
 			});
 		});
-		
-		function addordercolumn(obj)
-		{
-			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			if($("#OrderName").val()==""||$("#product_type").find("option:selected").text().indexOf("请选择")>=0||$("#product_name").find("option:selected").text().indexOf("请选择")>=0||$("#delivery_date").val().length != 8||$("#order_QTY").val()==""||parseInt($("#order_QTY").val()) <= 0)
-			{
-				alert("我说大姐,你这输入信息糊弄谁呢?");
-				return;
-			}
-			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
-			{
-				if (textStatus == "success")
-				{
-					if(data.indexOf('error') >= 0)
-					{
-						alert(data.split('$')[1]);
-						return;
-					}
-				}
-				changeOrderName();
-			});
-		}
-		
-		function Qty_Calc(obj)
-		{
-			var orderCount = parseInt($("#order_QTY").val());
-			var proCount = parseInt($("#product_QTY").val());
-			var matCount = parseInt($("#material_QTY").val());
-			var PO_QTY = (proCount + matCount) - orderCount;
-			if (PO_QTY >= 0)
-			{
-				$("#PO_QTY").attr("value", 0);
-			}
-			else
-			{
-				$("#PO_QTY").attr("value", -PO_QTY);
-			}
-		}
-		
-		function CreatePO(obj)
-		{
-			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			location.href ="Generate_PO.jsp?OrderName="+order_name;
-		}
 	</script>
   </body>
 </html>

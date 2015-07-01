@@ -16,23 +16,62 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String appOrderHead = request.getParameter("OrderHeader");
-		String appOrderName = request.getParameter("OrderName");
-		String orderName = appOrderHead + appOrderName;
-		if (!appOrderHead.isEmpty() && !appOrderName.isEmpty())
+		Calendar mData = Calendar.getInstance();
+		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String appPOName = request.getParameter("po_select");
+		String OrderName = null, sql = null;
+		
+		if (!appPOName.isEmpty())
 		{
-			String sql = "select * from product_order where Order_Name='" + orderName + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+			int iCount = 1;
+			do
 			{
-				hDBHandle.CloseDatabase();
-				sql = "INSERT INTO product_order (Order_Name, status) VALUES ('" + orderName + "', '0')";
-				hDBHandle.execUpate(sql);
+				OrderName = "MB_" + createDate + "_" + appPOName + "_" + Integer.toString(iCount);
+				sql = "select * from product_order where Order_Name='" + OrderName + "'";
+				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+				{
+					hDBHandle.CloseDatabase();
+					break;
+				}
+				else
+				{
+					hDBHandle.CloseDatabase();
+					iCount += 1;
+					continue;
+				}
+			}while(true);
+
+			sql = "select * from customer_po_record where po_name='" + appPOName + "' order by id asc";
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			{
+				String[] sqlKeyList = {"Bar_Code", "delivery_date"};
+				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+				{
+					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
+					if (Integer.parseInt(iOrderQTY) > 0)
+					{
+						String strBarcode = recordList.get(0).get(iRow);
+						String strDeliDate = recordList.get(1).get(iRow);
+						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + strBarcode + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
+						hDBHandle.execUpate(sql);
+						sql = "select * from product_order where Order_Name='" + OrderName + "'";
+						if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+						{
+							hDBHandle.CloseDatabase();
+							sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
+							hDBHandle.execUpate(sql);
+						}
+						else
+						{
+							hDBHandle.CloseDatabase();
+						}
+					}
+				}
 			}
 			else
 			{
 				hDBHandle.CloseDatabase();
-				sql = "UPDATE product_order SET status='0' WHERE='" + orderName + "'";
-				hDBHandle.execUpate(sql);
 			}
 		}
 		response.sendRedirect("../Query_Order.jsp");

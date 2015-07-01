@@ -11,7 +11,7 @@
 	String po_name = request.getParameter("po_name");
 	String status = request.getParameter("status");
 	String po_status = null;
-	String sql = "select * from customer_po_record where po_name='" + po_name + "'";
+	String sql = "select * from customer_po_record where po_name='" + po_name + "' order by id asc";
 	if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 	{
 		recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -24,7 +24,7 @@
 		}
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
-			int iPro_storage = 0, iMat_storage = 0, iMBMaterialQTY = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0;
+			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0;
 			String strBarcode = recordList.get(0).get(iRow);
 			for(int iCol = 0; iCol < iColCount; iCol++)
 			{
@@ -79,8 +79,7 @@
 				}
 				else if ("缺料数量" == displayList[iCol])
 				{
-					iMBMaterialQTY = hDBHandle.GetMBMaterialPOQTY(strBarcode, po_name);
-					rtnRst += Integer.toString(iMBMaterialQTY) + "$";
+					rtnRst += Integer.toString(hDBHandle.GetMBMaterialPOQTY(strBarcode, po_name)) + "$";
 				}
 				else if ("操作" == displayList[iCol])
 				{
