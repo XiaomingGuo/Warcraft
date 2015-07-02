@@ -3,8 +3,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
+	String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "是否领取"};
+	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
 %>
@@ -87,13 +87,13 @@
 <%
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
-						if(displayKeyList[iCol-1] == "isApprove")
+						if(displayKeyList[iCol-1] == "是否领取")
 						{
 %>
     			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
 <%
 				    	}
-				    	else if (displayKeyList[iCol-1] == "name")
+				    	else if (displayKeyList[iCol-1] == "物料名称")
 				    	{
 %>
     			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>

@@ -13,23 +13,19 @@
 	}
 	else
 	{
-		String userName=mylogon.getUsername();
+		String proposerName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
 		String appProduct_type = request.getParameter("product_type");
 		String appProduct_name = request.getParameter("product_name");
 		String appBarcode = request.getParameter("bar_code");
+		String appUserName = request.getParameter("user_name");
 		String appProduct_QTY = request.getParameter("QTY");
 		String Total_QTY = request.getParameter("Total_QTY");
 		
 		//product_type Database query
-		//if ()
-		//{
-		//	session.setAttribute("error", "你要申请啥,不说我咋知道你要申请啥!");
-		//	response.sendRedirect("../tishi.jsp");
-		//}
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && (Integer.parseInt(appProduct_QTY) > 0 || Integer.parseInt(Total_QTY) > 0))
 		{
-			String sql = "INSERT INTO other_record (proposer, Bar_Code, QTY) VALUES ('" + userName + "', '" + appBarcode + "', " + appProduct_QTY + ")";
+			String sql = "INSERT INTO other_record (proposer, Bar_Code, user_name, QTY) VALUES ('" + proposerName + "', '" + appBarcode + "', '" + appUserName + "', " + appProduct_QTY + ")";
 			if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) >= 0)
 			{
 				hDBHandle.execUpate(sql);

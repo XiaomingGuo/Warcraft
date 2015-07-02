@@ -64,7 +64,7 @@
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "', '" + appWeightUnit + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else

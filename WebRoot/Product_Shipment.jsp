@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> product_type = null, product_info = null;
+	List<String> po_list = null, product_type = null, product_info = null;
 %>
 <%
 	String message="";
@@ -26,10 +26,10 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
 			//storeroom name Database query
-			String sql = "select * from product_type where storeroom='成品库'";
+			String sql = "select * from customer_po where status<5";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				product_type = hDBHandle.GetAllStringValue("name");
+				po_list = hDBHandle.GetAllStringValue("po_name");
 			}
 			else
 			{
@@ -64,7 +64,20 @@
 		<tr>
 			<td align="right">
 				<label>出库单号:</label>
-				<input name="PONum" id="PONum" value="P015-05-06157" style="width:180px">
+			  	<select name="po_select" id="po_select" style="width:180px">
+				  	<option value = "--请选择--">--请选择--</option>
+<%
+							if (po_list != null)
+							{
+								for(int i = 0; i < po_list.size(); i++)
+								{
+%>
+				  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
+<%
+								}
+							}
+%>
+			  	</select>
 			</td>
 		</tr>
 		<tr>
@@ -72,17 +85,6 @@
 		  		<label>类别:</label>
 			  	<select name="product_type" id="product_type" style="width:180px">
 				  	<option value = "--请选择--">--请选择--</option>
-<%
-			if(product_type != null)
-			{
-				for(int i = 0; i < product_type.size(); i++)
-				{
-%>
-				  	<option value = <%= i + 1 %>><%=product_type.get(i)%></option>
-<%
-				}
-			}
-%>
 			  	</select>
 		  	</td>
 	  	</tr>
@@ -129,6 +131,27 @@
 			var $bar_code = $('#bar_code');
 			var $Total_QTY = $('#Total_QTY');
 			
+			$po_select.change(function()
+			{
+				$product_name.empty();
+				$bar_code.empty();
+				$product_name.append('<option value="请选择">--请选择--</option>');
+				$bar_code.append('<option value="请选择">--请选择--</option>');
+				$.post("Ajax/Get_PO_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				{
+					if (textStatus == "success")
+					{
+						var pro_list = data.split("$");
+						for (var i = 1; i < pro_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + pro_list[i] + "</option>");
+							$(newOption).val(pro_list[i]);
+							$product_name.append(newOption);
+						}
+					}
+				});
+			});
+			
 			$product_type.change(function()
 			{
 				$product_name.empty();
@@ -158,13 +181,10 @@
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
-						for (var i = 1; i < code_list.length - 1; i++)
-						{
-							var newOption = $("<option>" + code_list[i] + "</option>");
-							$(newOption).val(code_list[i]);
-							$bar_code.append(newOption);
-						}
-						$Total_QTY.attr("value", code_list[i]);
+						var newOption = $("<option>" + code_list[1] + "</option>");
+						$(newOption).val(code_list[1]);
+						$bar_code.append(newOption);
+						$Total_QTY.attr("value", code_list[3]);
 					}
 				});
 			});				

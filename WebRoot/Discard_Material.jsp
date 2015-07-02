@@ -168,13 +168,10 @@
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
-						for (var i = 1; i < code_list.length - 1; i++)
-						{
-							var newOption = $("<option>" + code_list[i] + "</option>");
-							$(newOption).val(code_list[i]);
-							$bar_code.append(newOption);
-						}
-						$Total_QTY.attr("value", code_list[i]);
+						var newOption = $("<option>" + code_list[1] + "</option>");
+						$(newOption).val(code_list[1]);
+						$bar_code.append(newOption);
+						$Total_QTY.attr("value", code_list[3]);
 					}
 				});
 			});				
