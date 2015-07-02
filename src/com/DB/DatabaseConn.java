@@ -472,4 +472,24 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetDiscardMaterialQTY(String barcode, String order_name)
+	{
+		int rtnRst = 0;
+		String sql = "select QTY from discard_material_record where Bar_Code='" + barcode +"' and Order_Name='" + order_name + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			List<String> Qty_List = GetAllStringValue("QTY");
+			for (int i = 0; i < Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(Qty_List.get(i));
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+
 }

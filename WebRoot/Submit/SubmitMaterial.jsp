@@ -20,10 +20,11 @@
 		String appProductname = request.getParameter("productname");
 		String appBarcode = request.getParameter("barcode");
 		String appPriceUnit = request.getParameter("PriceUnit");
+		String appWeightUnit = request.getParameter("WeightUnit");
 		String appProductQTY = request.getParameter("QTY");
 		String storageName="other_storage";
 		
-		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty())
+		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty() && !appWeightUnit.isEmpty())
 		{
 			if(appStore_name.indexOf("原材料库") >= 0)
 			{
@@ -39,9 +40,9 @@
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "', '" + appWeightUnit + "')";
 					hDBHandle.execUpate(sql);
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type) VALUES ('" + appProductname + "', '" + Integer.toString(Integer.parseInt(appBarcode) + 10000000) + "', '" + appProduct_type.replace("原锭", "") + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight) VALUES ('" + appProductname + "', '" + Integer.toString(Integer.parseInt(appBarcode) + 10000000) + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else

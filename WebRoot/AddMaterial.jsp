@@ -175,6 +175,12 @@
 					</tr>
 					<tr>
 			   			<td align="right">
+				   			<label>单重:</label>
+							<input type="text" name="WeightUnit" id="WeightUnit" style='width:180px'>
+						</td>
+					</tr>
+					<tr>
+			   			<td align="right">
 				   			<label>单价:</label>
 							<input type="text" name="PriceUnit" id="PriceUnit" style='width:180px'>
 						</td>
@@ -208,6 +214,7 @@
 				$("#productname").val("");
 				$("#barcode").val("");
 				$("#QTY").val("");
+				$("#WeightUnit").val("");
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name_addproduct").find("option:selected").text()}, function(data, textStatus)
 				{
@@ -233,6 +240,8 @@
 				$("#productname").val("");
 				$("#barcode").val("");
 				$("#QTY").val("");
+				$("#WeightUnit").val("");
+				$("#WeightUnit").removeAttr("readonly");
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
@@ -252,23 +261,33 @@
 			$product_name.change(function()
 			{
 				$bar_code.empty();
-				$bar_code.append('<option value="请选择">--请选择--</option>');
 				$("#productname").val("");
 				$("#barcode").val("");
 				$("#QTY").val("");
+				$("#WeightUnit").val("");
+				$("#WeightUnit").removeAttr("readonly");
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
-						for (var i = 1; i < code_list.length - 1; i++)
+						if (code_list.length == 4)
 						{
-							var newOption = $("<option>" + code_list[i] + "</option>");
-							$(newOption).val(code_list[i]);
+							var newOption = $("<option>" + code_list[1] + "</option>");
+							$(newOption).val(code_list[1]);
 							$bar_code.append(newOption);
+							$("#productname").val($product_name.find("option:selected").text());
+							$("#barcode").val(code_list[1]);
+							$("#WeightUnit").val(code_list[2]);
+							$("#WeightUnit").attr("readonly", "readonly");
 						}
-						$("#productname").val($product_name.find("option:selected").text());
+						else
+						{
+							$bar_code.append('<option value="请选择">--请选择--</option>');
+							$("#barcode").val("");
+							$("#WeightUnit").val(code_list[2]);
+						}
 					}
 				});
 			});	
@@ -277,15 +296,12 @@
 			{
 				$("#barcode").val("");
 				var selectedBarcode = $bar_code.find("option:selected").text();
-				//alert(selectedBarcode);
 				if (selectedBarcode.indexOf("请选择") > 0)
 				{
-					//alert("1:");
 					$("#barcode").val("");
 				}
 				else
 				{
-					//alert("2:"+selectedBarcode);
 					$("#barcode").val(selectedBarcode);
 				}
 			});				
@@ -294,7 +310,6 @@
 		function checkBarcode(obj)
 		{
 			var checkedBarcode = $("#barcode").val();
-			//alert(checkedBarcode);
 			if(checkedBarcode == null||checkedBarcode == "" )
 			{
 				return;

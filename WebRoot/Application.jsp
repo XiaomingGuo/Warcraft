@@ -98,16 +98,7 @@
 		<tr>
 			<td align="right">
 				<label>数量:</label>
-				<select name="QTY" id="QTY" style="width:180px">
-<%
-					for(int i = 1; i <= 20; i++)
-					{
-%>
-			  		<option value = <%=i%>><%=i%></option>
-<%
-					}
-%>		
-				</select>
+				<input name="QTY" id="QTY" style="width:180px">
 			</td>
 		</tr>
 		<tr>
