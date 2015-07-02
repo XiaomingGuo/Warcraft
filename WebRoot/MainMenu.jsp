@@ -75,6 +75,7 @@
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
 			    		<li><a href="AddMaterial.jsp">物料录入</a></li>
+			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>
 			    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
 			    		<li><a href="PersonReport.jsp">个人报表</a></li>
 			    		<li><a href="MonthReport.jsp">月报表</a></li>

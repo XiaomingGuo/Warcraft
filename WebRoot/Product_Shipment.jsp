@@ -81,14 +81,6 @@
 			</td>
 		</tr>
 		<tr>
-	  		<td align="right">
-		  		<label>类别:</label>
-			  	<select name="product_type" id="product_type" style="width:180px">
-				  	<option value = "--请选择--">--请选择--</option>
-			  	</select>
-		  	</td>
-	  	</tr>
-		<tr>
 			<td align="right">
 				<label>名称:</label>
 				<select name="product_name" id="product_name" style="width:180px">
@@ -137,7 +129,7 @@
 				$bar_code.empty();
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("Ajax/Get_PO_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/Get_PO_Product_Ajax.jsp", {"po_name":$("#po_select").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
