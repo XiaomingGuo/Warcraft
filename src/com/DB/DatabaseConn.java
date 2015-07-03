@@ -476,7 +476,7 @@ public class DatabaseConn
 	public int GetDiscardMaterialQTY(String barcode, String order_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from discard_material_record where Bar_Code='" + barcode +"' and Order_Name='" + order_name + "'";
+		String sql = "select QTY from discard_material_record where Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Order_Name='" + order_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			List<String> Qty_List = GetAllStringValue("QTY");
@@ -484,6 +484,21 @@ public class DatabaseConn
 			{
 				rtnRst += Integer.parseInt(Qty_List.get(i));
 			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public String GetPOQTY(String barcode, String po_name)
+	{
+		String rtnRst = "";
+		String sql = "select * from customer_po_record where Bar_Code='" + barcode + "' and po_name='" + po_name + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			rtnRst = GetSingleString("QTY");
 		}
 		else
 		{

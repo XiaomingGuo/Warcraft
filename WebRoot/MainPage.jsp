@@ -29,7 +29,7 @@
   </head>
   
   <body>
-	<jsp:include page="MainMenu.jsp"/>
+	<jsp:include page="Menu/MainMenu.jsp"/>
 	<p align="center">
 	<br><br>
 	<img align="middle" src="IMAGE/MainView.jpg">

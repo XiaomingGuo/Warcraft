@@ -16,7 +16,7 @@
 			for(int iRow = 0; iRow < recordList.size(); iRow++)
 			{
 				String strBarcode = recordList.get(iRow);
-				rtnRst += hDBHandle.GetNameByBarcode(strBarcode) + "$";
+				rtnRst += strBarcode + "$";
 			}
 		}
 		else

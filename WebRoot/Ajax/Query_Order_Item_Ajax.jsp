@@ -3,7 +3,7 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "客户PO单名", "生产单名", "创建时间", "操作"};
-	String[] sqlKeyList = {"Bar_Code", "delivery_date", "QTY", "completeQTY", "po_name", "Order_Name", "create_date", "status"};
+	String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "po_name", "Order_Name", "create_date", "status"};
 	List<List<String>> recordList = null;
 %>
 <%
@@ -35,12 +35,12 @@
 			for(int iRow = 0; iRow < iRowCount; iRow++)
 			{
 				int iPro_storage = 0, iMat_storage = 0;
-				String strBarcode = recordList.get(0).get(iRow);
+				String strBarcode = recordList.get(1).get(iRow);
 				for(int iCol = 0; iCol < iColCount; iCol++)
 				{
 					if("ID" == displayList[iCol])
 					{
-						rtnRst += Integer.toString(iRow + 1) + "$";
+						rtnRst += recordList.get(0).get(iRow) + "$";
 					}
 					else if("产品类型" == displayList[iCol])
 					{
@@ -56,15 +56,15 @@
 					}
 					else if("交货时间" == displayList[iCol])
 					{
-						rtnRst += recordList.get(1).get(iRow) + "$";
+						rtnRst += recordList.get(2).get(iRow) + "$";
 					}
 					else if("数量" == displayList[iCol])
 					{
-						rtnRst += recordList.get(2).get(iRow) + "$";
+						rtnRst += recordList.get(3).get(iRow) + "$";
 					}
 					else if("完成数量" == displayList[iCol])
 					{
-						rtnRst += recordList.get(3).get(iRow) + "$";
+						rtnRst += recordList.get(4).get(iRow) + "$";
 					}
 					else if("报废数量" == displayList[iCol])
 					{
@@ -72,19 +72,19 @@
 					}
 					else if("客户PO单名" == displayList[iCol])
 					{
-						rtnRst += recordList.get(4).get(iRow) + "$";
+						rtnRst += recordList.get(5).get(iRow) + "$";
 					}
 					else if("生产单名" == displayList[iCol])
 					{
-						rtnRst += recordList.get(5).get(iRow) + "$";
+						rtnRst += recordList.get(6).get(iRow) + "$";
 					}
 					else if("创建时间" == displayList[iCol])
 					{
-						rtnRst += recordList.get(6).get(iRow)  + "$";
+						rtnRst += recordList.get(7).get(iRow)  + "$";
 					}
 					else if("操作" == displayList[iCol])
 					{
-						rtnRst += recordList.get(7).get(iRow) + "$";
+						rtnRst += recordList.get(8).get(iRow) + "$";
 					}
 				}
 			}

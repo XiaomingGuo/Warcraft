@@ -25,6 +25,22 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
+			String sql = "select * from storeroom_name";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				store_name = hDBHandle.GetAllStringValue("name");
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
+			for (int index = 0; index < store_name.size(); index++)
+			{
+				if (store_name.get(index).indexOf("成品库") == 0)
+				{
+					store_name.remove(index);
+				}
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -32,7 +48,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>添加供应商</title>
+    <title>物料录入</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -50,58 +66,51 @@
     <br><br>
     <table width="55%" align="center">
     	<tr>
-    		<td>
-		  		<form name="AddSupplier" action = "Submit/SubmitAddSupplier.jsp" method = "post">
-		    	<table align="center" border="1">
+	    	<td>
+		       	<table align="center" border="1">
 			    	<tr>
-			   			<th>添加供应商信息</th>
+			   			<th align="center">添加产品类型</th>
 			   		</tr>
 					<tr>
 				  		<td align="right">
-					  		<label>供应商名:</label>
-							<input type="text" name="suppliername" id="suppliername" style='width:180px'>
+					  		<label>库名:</label>
+						  	<select name="store_name_addtype" id="store_name_addtype" style="width:193px">
+							  	<option value = "--请选择--">--请选择--</option>
+<%
+								for(int i = 0; i < store_name.size(); i++)
+								{
+%>
+							  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
+<%
+								}
+%>
+						  	</select>
 					  	</td>
 				  	</tr>
-				  	<tr>
-				  		<td align="right">
-					  		<label>传真:</label>
-							<input type="text" name="faxinfo" id="faxinfo" style='width:180px'>
-					  	</td>
-				  	</tr>
-					<tr>
-						<td align="right">
-							<label>电话:</label>
-							<input type="text" name="telinfo" id="telinfo" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-							<label>邮箱:</label>
-							<input type="text" name="mailaddress" id="mailaddress" style='width:180px'>
-						</td>
-					</tr>
-			    	<tr>
+			   		<tr>
 			   			<td align="right">
-				   			<label>厂家地址:</label>
-							<input type="text" name="address" id="address" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="right">
-				   			<label>备注:</label>
-							<input type="text" name="description" id="description" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="center">
-							<input type=submit value="提交" style='width:100px'>
-						</td>
-					</tr>
-		    	</table>
-				</form>
+				    		<label>请输入产品类型:</label>
+				    		<input type="text" name="producttype" id="producttype" style='width:140px'>
+				    		<input type="button" value="Add" onclick="changeAddType(this)" style='width:50px'>
+			    		</td>
+			    	</tr>
+			   	</table>
 			</td>
 		</tr>
    	</table>
+  	<script type="text/javascript">
+		function changeAddType(obj)
+		{
+			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
+			{
+				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
+				{
+					alert(data);
+				}
+				location.reload();
+			});
+		}
+	</script>
   </body>
 </html>
 <%

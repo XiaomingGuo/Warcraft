@@ -16,7 +16,7 @@
 	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
-		String appPONum = request.getParameter("PONum");
+		String appPONum = request.getParameter("po_select");
 		String appBarcode = request.getParameter("bar_code");
 		String appProduct_QTY = request.getParameter("QTY");
 		int used_count = Integer.parseInt(appProduct_QTY);
@@ -41,7 +41,7 @@
 						{
 							sql= "UPDATE product_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
-							sql= "INSERT INTO shipping_record (customer_po, Bar_Code, Batch_Lot, Order_Name, ship_QTY) VALUE ('" + appPONum + "', '" + appBarcode + "', '"+ batchLot + "', '" + ordername + "', '" + Integer.toString(used_count) + "')";
+							sql= "UPDATE customer_po_record SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "'WHERE Bar_Code='" + appBarcode +"' and po_name='" + appPONum +"'";
 							hDBHandle.execUpate(sql);
 							
 							if (recordCount == used_count)
@@ -54,7 +54,7 @@
 						{
 							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
-							sql= "INSERT INTO shipping_record (customer_po, Bar_Code, Batch_Lot, Order_Name, ship_QTY) VALUE ('" + appPONum + "', '" + appBarcode + "', '"+ batchLot + "', '" + ordername + "', '" + Integer.toString(recordCount) + "')";
+							sql= "UPDATE customer_po_record SET OUT_QTY='" + Integer.toString(sql_in_count) + "'WHERE Bar_Code='" + appBarcode +"' and po_name='" + appPONum +"'";
 							hDBHandle.execUpate(sql);
 							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
 							used_count -= recordCount;

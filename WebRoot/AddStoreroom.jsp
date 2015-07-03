@@ -32,7 +32,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>添加供应商</title>
+    <title>物料录入</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -50,58 +50,35 @@
     <br><br>
     <table width="55%" align="center">
     	<tr>
-    		<td>
-		  		<form name="AddSupplier" action = "Submit/SubmitAddSupplier.jsp" method = "post">
-		    	<table align="center" border="1">
+	    	<td>
+				<table align="center" border="1">
 			    	<tr>
-			   			<th>添加供应商信息</th>
+			   			<th align="center">添加库房</th>
 			   		</tr>
-					<tr>
-				  		<td align="right">
-					  		<label>供应商名:</label>
-							<input type="text" name="suppliername" id="suppliername" style='width:180px'>
-					  	</td>
-				  	</tr>
-				  	<tr>
-				  		<td align="right">
-					  		<label>传真:</label>
-							<input type="text" name="faxinfo" id="faxinfo" style='width:180px'>
-					  	</td>
-				  	</tr>
-					<tr>
-						<td align="right">
-							<label>电话:</label>
-							<input type="text" name="telinfo" id="telinfo" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-						<td align="right">
-							<label>邮箱:</label>
-							<input type="text" name="mailaddress" id="mailaddress" style='width:180px'>
-						</td>
-					</tr>
-			    	<tr>
+			   		<tr>
 			   			<td align="right">
-				   			<label>厂家地址:</label>
-							<input type="text" name="address" id="address" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="right">
-				   			<label>备注:</label>
-							<input type="text" name="description" id="description" style='width:180px'>
-						</td>
-					</tr>
-					<tr>
-			   			<td align="center">
-							<input type=submit value="提交" style='width:100px'>
-						</td>
-					</tr>
+				    		<label>请输入库房名:</label>
+				    		<input type="text" name="storename" id="storename" style='width:140px'>
+				    		<input type="button" value="Add" onclick="changeAddStore(this)" style='width:50px'>
+			    		</td>
+			    	</tr>
 		    	</table>
-				</form>
 			</td>
 		</tr>
    	</table>
+  	<script type="text/javascript">
+		function changeAddStore(obj)
+		{
+			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
+			{
+				if (!(textStatus == "success" && data.indexOf("库名") < 0))
+				{
+					alert(data);
+				}
+				location.reload();
+			});
+		}
+	</script>
   </body>
 </html>
 <%

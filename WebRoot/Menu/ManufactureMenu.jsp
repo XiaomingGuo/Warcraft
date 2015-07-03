@@ -32,7 +32,7 @@
   <body>
 <!-- -->
 <br>
-	<table align="center">
+	<table width="80%" align="center">
 		<tr>
 			<td width="80%">
 				<table width="100%">
@@ -64,22 +64,13 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="Application.jsp">申请</a></li>
-			    		<li><a href="Query.jsp">查询</a></li>
-			    		<li><a href="Approve.jsp">批准</a></li>
-			    		<li><a href="Customer_PO.jsp">客户PO录入</a></li>
+			    		<li><a href="Customer_PO.jsp">客户PO生成</a></li>
 			    		<li><a href="Generate_Order.jsp">生产单生成</a></li>
 			    		<li><a href="Query_Order.jsp">生产单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>
 			    		<li><a href="Put_In_Pro_Storage.jsp">成品入库</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
-			    		<li><a href="AddMaterial.jsp">物料录入</a></li>
-			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>
-			    		<li><a href="QueryMaterial.jsp">物料录入查询</a></li>
-			    		<li><a href="PersonReport.jsp">个人报表</a></li>
-			    		<li><a href="MonthReport.jsp">月报表</a></li>
-			    		<li><a href="Summary.jsp">库存</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

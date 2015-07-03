@@ -54,7 +54,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainMenu.jsp"/>
+    <jsp:include page="Menu/ManufactureMenu.jsp"/>
   	<br><br><br>
    	<form name="AppContent" action = "Submit/SubmitProductShipment.jsp" method = "post">
   	<table align="center" border="1">
@@ -82,14 +82,6 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:180px">
-				  	<option value = "--请选择--">--请选择--</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
 				<label>Bar Code:</label>
 				<select name="bar_code" id="bar_code" style="width:180px">
 				  	<option value = "--请选择--">--请选择--</option>
@@ -98,8 +90,22 @@
 		</tr>
 		<tr>
 			<td align="right">
+				<label>名称:</label>
+				<select name="product_name" id="product_name" style="width:180px">
+				  	<option value = "--请选择--">--请选择--</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
 				<label>出库数量:</label>
 				<input name="QTY" id="QTY" style="width:180px">
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<label>订单数量:</label>
+				<input name="CPO_QTY" id="CPO_QTY" style="width:180px" readonly>
 			</td>
 		</tr>
 		<tr>
@@ -118,9 +124,10 @@
   	<script type="text/javascript">
 		$(function()
 		{
-			var $product_type = $('#product_type');
+			var $po_select = $('#po_select');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
+			var $CPO_QTY = $('#CPO_QTY');
 			var $Total_QTY = $('#Total_QTY');
 			
 			$po_select.change(function()
@@ -134,49 +141,29 @@
 					if (textStatus == "success")
 					{
 						var pro_list = data.split("$");
-						for (var i = 1; i < pro_list.length - 1; i++)
+						for (var i = 1; i < (pro_list.length - 1); i++)
 						{
 							var newOption = $("<option>" + pro_list[i] + "</option>");
 							$(newOption).val(pro_list[i]);
-							$product_name.append(newOption);
+							$bar_code.append(newOption);
 						}
 					}
 				});
 			});
 			
-			$product_type.change(function()
+			$bar_code.change(function()
 			{
 				$product_name.empty();
-				$bar_code.empty();
-				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
-				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
+				$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#bar_code").find("option:selected").text(), "po_name":$("#po_select").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
-						var pro_list = data.split("$");
-						for (var i = 1; i < pro_list.length - 1; i++)
-						{
-							var newOption = $("<option>" + pro_list[i] + "</option>");
-							$(newOption).val(pro_list[i]);
-							$product_name.append(newOption);
-						}
-					}
-				});
-			});
-			
-			$product_name.change(function()
-			{
-				$bar_code.empty();
-				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text(), "storage":"product_storage"}, function(data, textStatus)
-				{
-					if (textStatus == "success")
-					{
+						alert(data);
 						var code_list = data.split("$");
 						var newOption = $("<option>" + code_list[1] + "</option>");
-						$(newOption).val(code_list[1]);
-						$bar_code.append(newOption);
-						$Total_QTY.attr("value", code_list[3]);
+						$product_name.append(newOption);
+						$CPO_QTY.val(code_list[2]);
+						$Total_QTY.val(code_list[3]);
 					}
 				});
 			});				

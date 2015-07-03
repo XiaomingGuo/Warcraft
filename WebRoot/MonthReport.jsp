@@ -68,7 +68,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainMenu.jsp"/>
+    <jsp:include page="Menu/QueryMenu.jsp"/>
     <center>
     	<label>查询起止时间:</label>
     	<table border="1">

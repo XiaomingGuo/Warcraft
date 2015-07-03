@@ -62,53 +62,10 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainMenu.jsp"/>
+    <jsp:include page="Menu/DataEnterMenu.jsp"/>
     <br><br>
     <table width="55%" align="center">
     	<tr>
-	    	<td>
-				<table width="80%" align="center" border="1">
-			    	<tr>
-			   			<th align="center">添加库房</th>
-			   		</tr>
-			   		<tr>
-			   			<td align="right">
-				    		<label>请输入库房名:</label>
-				    		<input type="text" name="storename" id="storename" style='width:140px'>
-				    		<input type="button" value="Add" onclick="changeAddStore(this)" style='width:50px'>
-			    		</td>
-			    	</tr>
-		    	</table>
-		    	<br><br><br>
-		       	<table width="80%" align="center" border="1">
-			    	<tr>
-			   			<th align="center">添加产品类型</th>
-			   		</tr>
-					<tr>
-				  		<td align="right">
-					  		<label>库名:</label>
-						  	<select name="store_name_addtype" id="store_name_addtype" style="width:193px">
-							  	<option value = "--请选择--">--请选择--</option>
-<%
-								for(int i = 0; i < store_name.size(); i++)
-								{
-%>
-							  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
-<%
-								}
-%>
-						  	</select>
-					  	</td>
-				  	</tr>
-			   		<tr>
-			   			<td align="right">
-				    		<label>请输入产品类型:</label>
-				    		<input type="text" name="producttype" id="producttype" style='width:140px'>
-				    		<input type="button" value="Add" onclick="changeAddType(this)" style='width:50px'>
-			    		</td>
-			    	</tr>
-			   	</table>
-			</td>
     		<td>
 		  		<form name="AddMaterial" action = "Submit/SubmitMaterial.jsp" method = "post">
 		    	<table align="center" border="1">
@@ -329,30 +286,6 @@
 		function changeProductName(obj)
 		{
 			$("#barcode").val("");
-		}
-		
-		function changeAddType(obj)
-		{
-			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
-			{
-				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
-				{
-					alert(data);
-				}
-				location.reload();
-			});
-		}
-		
-		function changeAddStore(obj)
-		{
-			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
-			{
-				if (!(textStatus == "success" && data.indexOf("库名") < 0))
-				{
-					alert(data);
-				}
-				location.reload();
-			});
 		}
 	</script>
   </body>

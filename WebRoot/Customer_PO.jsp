@@ -59,7 +59,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>客户PO信息录入</title>
+    <title>客户PO生成</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -73,7 +73,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="MainMenu.jsp"/>
+    <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br>
     <table align="center">
     	<tr>

@@ -63,7 +63,7 @@
   </head>
   
   <body>
-    <jsp:include page="MainMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <center>
     	<table border="1">
     		<tr>
