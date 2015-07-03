@@ -11,8 +11,8 @@
 	{
 		rtnRst += hDBHandle.GetNameByBarcode(barcode) + "$";
 		int iRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "product_storage");
-		rtnRst += Integer.toString(iRepertory) + "$";
 		rtnRst += hDBHandle.GetPOQTY(barcode, po_name) + "$";
+		rtnRst += Integer.toString(iRepertory) + "$";
 	}
 	else
 	{

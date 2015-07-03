@@ -2,7 +2,7 @@
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "需加工数量", "成品库存", "物料库存", "缺料数量", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "物料库存", "缺料数量", "操作"};
 	String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
 	List<List<String>> recordList = null;
 %>
@@ -24,7 +24,7 @@
 		}
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
-			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0;
+			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0, inProcess = 0;
 			String strBarcode = recordList.get(0).get(iRow);
 			for(int iCol = 0; iCol < iColCount; iCol++)
 			{
@@ -62,10 +62,15 @@
 					iDelivQTY = Integer.parseInt(recordList.get(4).get(iRow));
 					rtnRst += recordList.get(4).get(iRow) + "$";
 				}
-				else if("需加工数量" == displayList[iCol])
+				else if("加工总量" == displayList[iCol])
 				{
 					iOrderQTY = iCPOQTY*(100+Integer.parseInt(recordList.get(5).get(iRow)))/100;
 					rtnRst += Integer.toString(iOrderQTY) + "$";
+				}
+				else if("已加工总量" == displayList[iCol])
+				{
+					inProcess = hDBHandle.GetInProcessQty(strBarcode, po_name);
+					rtnRst += Integer.toString(inProcess) + "$";
 				}
 				else if("成品库存" == displayList[iCol])
 				{
@@ -84,7 +89,7 @@
 				else if ("操作" == displayList[iCol])
 				{
 					int po_count = iOrderQTY-iDelivQTY-iPro_storage;
-					if(po_count < 0)
+					if (inProcess == iOrderQTY || po_count < 0)
 					{
 						rtnRst += "0$";
 					}

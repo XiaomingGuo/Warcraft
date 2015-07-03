@@ -49,7 +49,7 @@
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
-					if (Integer.parseInt(iOrderQTY) > 0)
+					if (iOrderQTY != null && Integer.parseInt(iOrderQTY) > 0)
 					{
 						String strBarcode = recordList.get(0).get(iRow);
 						String strDeliDate = recordList.get(1).get(iRow);
@@ -66,6 +66,12 @@
 						{
 							hDBHandle.CloseDatabase();
 						}
+					}
+					else
+					{
+						session.setAttribute("error", "订单已经生成或客户PO为空!");
+						response.sendRedirect("../tishi.jsp");
+						return;
 					}
 				}
 			}

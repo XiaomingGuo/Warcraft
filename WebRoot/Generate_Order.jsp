@@ -6,8 +6,6 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
  	List<String> po_list = null, product_type = null;
-	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
-	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 %>
 <%
 	String message="";
