@@ -51,7 +51,7 @@
 			}
 			
 			Calendar mData = Calendar.getInstance();
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
+			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -329,6 +329,10 @@
 				{
 					$("#Need_QTY").val(-tempQTY);
 				}
+			}
+			else
+			{
+				$("#cpo_QTY").val("");
 			}
 		}
 		

@@ -5,7 +5,7 @@
 	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 %>
 <%
-	String userName="", rtnRst = "";
+	String rtnRst = "";
 	String barcode = (String)request.getParameter("Barcode");
 	String recordID = (String)request.getParameter("material_id");
 	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
@@ -40,11 +40,12 @@
 					hDBHandle.execUpate(sql);
 					if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other"))
 						continue;
-					sql = "SELECT proposer FROM material_record WHERE id='" + recordID + "'";
+					sql = "SELECT * FROM other_record WHERE id='" + recordID + "'";
 					if (hDBHandle.QueryDataBase(sql))
 					{
-						userName = hDBHandle.GetSingleString("proposer");
-						sql = "INSERT INTO material_record (Bar_Code, Batch_Lot, proposer, QTY, isApprove, Merge_Mark) VALUES ('" + barcode + "', '" + batchLot + "', '" + userName + "', '" + Integer.toString(recordCount) + "', '1', '" + recordID + "')";
+						String[] keyWord = {"proposer", "user_name"};
+						List<List<String>> tempList = hDBHandle.GetAllDBColumnsByList(keyWord);
+						sql = "INSERT INTO other_record (Bar_Code, Batch_Lot, proposer, QTY, user_name, isApprove, Merge_Mark) VALUES ('" + barcode + "', '" + batchLot + "', '" + tempList.get(0).get(0) + "', '" + Integer.toString(recordCount) + "', '" + tempList.get(1).get(0) + "', '1', '" + recordID + "')";
 						hDBHandle.execUpate(sql);
 						used_count -= recordCount;
 					}
@@ -63,7 +64,7 @@
 	}
 	else
 	{
-		rtnRst = "("+ barcode + "): 库存数量不足!";
+		rtnRst = "("+ hDBHandle.GetNameByBarcode(barcode) + "): 库存数量不足!";
 	}
 
 	out.write(rtnRst);

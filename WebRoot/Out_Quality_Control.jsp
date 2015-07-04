@@ -70,7 +70,7 @@
 				<table align="center" border="1" width="100%">
 					<tr><th>生产单号:</th></tr>
 				</table>
-				<h4>
+				<h5>
 					<ul>
 <%
 					if (orderName != null)
@@ -85,7 +85,7 @@
 					}
 %>
 	   				</ul>
-	   			</h4>
+	   			</h5>
    			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top" align="center">
@@ -94,6 +94,7 @@
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
 	   			<br><br>
+	   			<input id="closeOrder" align="middle" type="button" onclick="CloseOrder(this)" value="关闭生产单">
    			</td>
 		</tr>
    	</table>
@@ -105,7 +106,7 @@
 				var order_name=$(this).html();
 				var $OrderBlock = $("#OrderBlock");
 				$("#TitleName").html(order_name);
-				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
+				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
 				{
 					if (textStatus == "success")
 					{
@@ -140,7 +141,7 @@
 								}
 								else if(0 == iColCount - iCol)
 								{
-									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 9] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
+									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 12] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
 								}
 								else
 								{
@@ -159,7 +160,7 @@
 		{
 			var tempList = obj.name.split('$');
 			var storeQTY = $("#"+tempList[1]).val();
-			$.post("Ajax/Put_In_Storage_Ajax.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
+			$.post("Ajax/Out_Quality_Control_Ajax.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
@@ -177,6 +178,19 @@
 				alert("入库数量不能大于生产单量!");
 				obj.value = 0;
 			}
+		}
+		
+		function CloseOrder(obj)
+		{
+			var ordername = $("#TitleName").html();
+			$.post("Ajax/Close_Order_Ajax.jsp", {"Order_Name":ordername}, function(data, textStatus)
+			{
+				if (!(textStatus == "success"))
+				{
+					alert(data);
+				}
+				location.reload();
+			});
 		}
 	</script>
   </body>

@@ -158,7 +158,6 @@
 				{
 					if (textStatus == "success")
 					{
-						alert(data);
 						var code_list = data.split("$");
 						var newOption = $("<option>" + code_list[1] + "</option>");
 						$product_name.append(newOption);

@@ -79,7 +79,7 @@
 			do
 			{
 				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
-				String sql = "select * from "+storageName+" where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
+ 				String sql = "select * from "+storageName+" where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "' UNION select * from exhausted_" + storageName.split("_")[0] + " where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
 				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();

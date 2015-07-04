@@ -37,7 +37,7 @@
 			<td width="80%">
 				<table width="100%">
 					<tr>
-						<!-- <td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td> -->
+						<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
 <%
 						int temp = mylogon.getUserRight()&2;
@@ -69,6 +69,7 @@
 			    		<li><a href="Query_Order.jsp">生产单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>
 			    		<li><a href="Put_In_Pro_Storage.jsp">成品入库</a></li>
+			    		<li><a href="Out_Quality_Control.jsp">入库检验</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
