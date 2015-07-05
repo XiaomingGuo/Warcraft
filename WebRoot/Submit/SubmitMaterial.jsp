@@ -16,6 +16,7 @@
 	{
 		request.setCharacterEncoding("UTF-8");
 		String appStore_name = request.getParameter("store_name_addproduct");
+		String appSupplier_name = request.getParameter("supplier_name");
 		String appProduct_type = request.getParameter("product_type");
 		String appProductname = request.getParameter("productname");
 		String appBarcode = request.getParameter("barcode");
@@ -84,7 +85,7 @@
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "')";
+					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "')";
 					hDBHandle.execUpate(sql);
 					break;
 				}

@@ -90,6 +90,14 @@
 				  	</tr>
 				  	<tr>
 				  		<td align="right">
+					  		<label>供应商名:</label>
+						  	<select name="supplier_name" id="supplier_name" style="width:180px">
+							  	<option value = "--请选择--">--请选择--</option>
+						  	</select>
+					  	</td>
+				  	</tr>
+				  	<tr>
+				  		<td align="right">
 					  		<label>类别:</label>
 						  	<select name="product_type" id="product_type" style="width:180px">
 							  	<option value = "--请选择--">--请选择--</option>
@@ -156,15 +164,18 @@
 		$(function()
 		{
 			var $store_name_addproduct = $('#store_name_addproduct');
+			var $supplier_name = $('#supplier_name');
 			var $product_type = $('#product_type');
 			var $product_name = $('#product_name');
 			var $bar_code = $('#bar_code');
 			
 			$store_name_addproduct.change(function()
 			{
+				$supplier_name.empty();
 				$product_type.empty();
 				$product_name.empty();
 				$bar_code.empty();
+				$supplier_name.append('<option value="请选择">--请选择--</option>');
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
 				$bar_code.append('<option value="请选择">--请选择--</option>');
@@ -177,7 +188,15 @@
 				{
 					if (textStatus == "success")
 					{
-						var pro_list = data.split("$");
+						var data_list = data.split("#");
+						var vendor_list = data_list[0].split("$");
+						for (var i = 1; i < vendor_list.length - 1; i++)
+						{
+							var newOption = $("<option>" + vendor_list[i] + "</option>");
+							$(newOption).val(vendor_list[i]);
+							$supplier_name.append(newOption);
+						}
+						var pro_list = data_list[1].split("$");
 						for (var i = 1; i < pro_list.length - 1; i++)
 						{
 							var newOption = $("<option>" + pro_list[i] + "</option>");

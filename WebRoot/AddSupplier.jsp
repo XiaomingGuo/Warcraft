@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> product_type = null, store_name = null;
+ 	List<String> store_name = null;
 %>
 <%
 	String message="";
@@ -25,6 +25,22 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
+			String sql = "select * from storeroom_name";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				store_name = hDBHandle.GetAllStringValue("name");
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
+			for (int index = 0; index < store_name.size(); index++)
+			{
+				if (store_name.get(index).indexOf("成品库") == 0)
+				{
+					store_name.remove(index);
+				}
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -56,6 +72,22 @@
 			    	<tr>
 			   			<th>添加供应商信息</th>
 			   		</tr>
+					<tr>
+				  		<td align="right">
+					  		<label>库名:</label>
+						  	<select name="store_name_addproduct" id="store_name_addproduct" style="width:180px">
+							  	<option value = "--请选择--">--请选择--</option>
+<%
+								for(int i = 0; i < store_name.size(); i++)
+								{
+%>
+							  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
+<%
+								}
+%>
+						  	</select>
+					  	</td>
+				  	</tr>
 					<tr>
 				  		<td align="right">
 					  		<label>供应商名:</label>

@@ -141,7 +141,8 @@
 				{
 					if (textStatus == "success")
 					{
-						var pro_list = data.split("$");
+						var data_list = data.split("#");
+						var pro_list = data_list[1].split("$");
 						for (var i = 1; i < pro_list.length - 1; i++)
 						{
 							var newOption = $("<option>" + pro_list[i] + "</option>");

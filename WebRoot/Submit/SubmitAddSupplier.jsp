@@ -15,6 +15,7 @@
 	{
 		String proposerName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
+		String appStorename = request.getParameter("store_name_addproduct");
 		String appSupplier = request.getParameter("suppliername");
 		String appFaxinfo = request.getParameter("faxinfo");
 		String appTelinfo = request.getParameter("telinfo");
@@ -23,13 +24,13 @@
 		String description = request.getParameter("description");
 		
 		//product_type Database query
-		if (!appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())
+		if (!appStorename.isEmpty() && !appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())
 		{
-			String sql = "select * from vendor_info where vendor_name='" + appSupplier +"'";
+			String sql = "select * from vendor_info where vendor_name='" + appSupplier +"' and storeroom='" + appStorename + "'";
 			if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 			{
 				hDBHandle.CloseDatabase();
-				sql = "INSERT INTO vendor_info (vendor_name, vendor_fax, vendor_tel, vendor_e_mail, vendor_address, description) VALUES ('" + appSupplier + "', '" + appFaxinfo + "', '" + appTelinfo + "', '" + appMailaddress +"', '" + appAddress +"', '" + description + "')";
+				sql = "INSERT INTO vendor_info (vendor_name, storeroom, vendor_fax, vendor_tel, vendor_e_mail, vendor_address, description) VALUES ('" + appSupplier + "', '" + appStorename + "', '" + appFaxinfo + "', '" + appTelinfo + "', '" + appMailaddress +"', '" + appAddress +"', '" + description + "')";
 				hDBHandle.execUpate(sql);
 				response.sendRedirect("../AddSupplier.jsp");
 			}
