@@ -40,7 +40,7 @@
 				hDBHandle.CloseDatabase();
 			}
 			
-			sql = "select * from vendor_info";
+			sql = "select * from vendor_info where storeroom='原材料库'";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				vendorList = hDBHandle.GetAllStringValue("vendor_name");

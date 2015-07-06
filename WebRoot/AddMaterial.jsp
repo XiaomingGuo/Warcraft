@@ -286,8 +286,10 @@
 		function checkBarcode(obj)
 		{
 			var checkedBarcode = $("#barcode").val();
-			if(checkedBarcode == null||checkedBarcode == "" )
+			if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
 			{
+				alert("八码的内容和位数不符合要求");
+				$("#barcode").val("");
 				return;
 			}
 			$.post("Ajax/Check_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
