@@ -151,7 +151,7 @@
 					  	</tr>
 			    	</table>
 			    	<br><br>
-		 		   	<table id="display_po"" border='1' align="center"></table>
+		 		   	<table id="display_po" border='1' align="center"></table>
 		 		   	<br><br>
 		 		   	<table id="confirm_po" align="center"></table>
 				</form>
@@ -285,7 +285,7 @@
 		function addpoitem(obj)
 		{
 			var po_name = $("#POName").val();
-			if(po_name==""||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0)
+			if(po_name==""||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
 			{
 				alert("我说大姐,你这输入信息糊弄谁呢?");
 				return;

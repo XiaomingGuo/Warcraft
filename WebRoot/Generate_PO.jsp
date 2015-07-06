@@ -4,13 +4,13 @@
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
-	String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
-	List<List<String>> recordList = null;
+	List<List<String>> recordList = null, vendorInfo = null;
 %>
 <%
 	String message="";
 	String POName = request.getParameter("PO_Name");
 	String vendor = request.getParameter("vendor");
+	String delivery_Date = request.getParameter("Delivery_Date");
 	
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -31,7 +31,18 @@
 			String sql = "select * from mb_material_po where po_name='" + POName + "' and vendor='" + vendor + "'";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
+				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
+			sql = "select * from vendor_info where vendor_name='" + vendor +  "'";
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			{
+				String[] sqlKeyList = {"vendor_fax", "vendor_tel", "vendor_e_mail", "vendor_address"};
+				vendorInfo = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 			}
 			else
 			{
@@ -71,26 +82,31 @@
     	<br><br>
        	<table width="80%">
     		<tr>
-				<td width="50%" align="left"><b>供货商/SHIP TO:</b></td>
+				<td width="50%" align="left"><b>供货商/SHIP TO: </b></td>
 				<td width="50%" align="left"><b>购买者/VENDOR: </b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>姓名/ATTN NAME:<%=vendor %></b></td>
+				<td width="50%" align="left"><b>姓名/ATTN NAME: <%=vendor %></b></td>
 				<td width="50%" align="left"><b>姓名/NAME:  茂邦机械</b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>传真/FAX:</b></td>
+				<td width="50%" align="left"><b>传真/FAX: <%=vendorInfo.get(0).get(0) %></b></td>
 				<td width="50%" align="left"><b>传真/FAX: 85850265</b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>电话/TEL:</b></td>
+				<td width="50%" align="left"><b>电话/TEL: <%=vendorInfo.get(1).get(0) %></b></td>
 				<td width="50%" align="left"><b>电话/TEL: 85850265</b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>邮箱/MAIL:</b></td>
+				<td width="50%" align="left"><b>邮箱/MAIL: <%=vendorInfo.get(2).get(0) %></b></td>
+				<td width="50%" align="left"><b>邮箱/MAIL: </b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>日期/DATE:</b></td>
+				<td width="50%" align="left"><b>地址/ADD: <%=vendorInfo.get(3).get(0) %></b></td>
+				<td width="50%" align="left"><b>地址/ADD: 常州市武进区</b></td>
+			</tr>
+    		<tr>
+				<td width="50%" align="left"><b>日期/DATE: <%=delivery_Date %></b></td>
 			</tr>
     	</table>
     	<br><br><br><br>

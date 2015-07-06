@@ -68,6 +68,8 @@
 					continue;
 				}
 			}
+			Calendar mData = Calendar.getInstance();
+			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -89,7 +91,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br><br>
     <table align="center">
 <%
@@ -98,8 +100,8 @@
 %>
 			<tr>
 				<td align="center" width="25%"><h1><a onclick="func(this)" name="<%=POName %>$<%=vendorList.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=vendorList.get(iRow) %></a></h1></td>
-				<td align="right"><b>交货日期:</b></td>
-				<td><input type="text" id="date_of_delivery_<%=iRow %>" name="date_of_delivery_<%=iRow %>"></td>
+				<td align="right"><b>交货日期: </b></td>
+				<td><input type="text" id="date_of_delivery_<%=iRow %>" name="date_of_delivery_<%=iRow %>" value="<%=DeliveryDate %>"></td>
 			</tr>
 <%
 			}
@@ -128,7 +130,7 @@
 						return;
 					}
 				}
-				location.href = "Generate_PO.jsp?PO_Name=" + vPOName + "&vendor=" + vendorName;
+				location.href = "Generate_PO.jsp?PO_Name=" + vPOName + "&vendor=" + vendorName + "&Delivery_Date=" + deliveryDate;
 			});
 		}
 	</script>
