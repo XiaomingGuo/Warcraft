@@ -48,6 +48,8 @@
 			{
 				hDBHandle.CloseDatabase();
 			}
+			Calendar mData = Calendar.getInstance();
+			String currentDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -106,7 +108,7 @@
 				<td width="50%" align="left"><b>地址/ADD: 常州市武进区</b></td>
 			</tr>
     		<tr>
-				<td width="50%" align="left"><b>日期/DATE: <%=delivery_Date %></b></td>
+				<td width="50%" align="left"><b>日期/DATE: <%=currentDate %></b></td>
 			</tr>
     	</table>
     	<br><br><br><br>
@@ -143,7 +145,7 @@
 				    	else if(displayKeyList[iCol-1] == "交货日期")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="<%=recordList.get(2).get(iRow-1) %>" readonly></td>
+    			<td width="2%"><input type="text" value="<%=delivery_Date %>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单位")
