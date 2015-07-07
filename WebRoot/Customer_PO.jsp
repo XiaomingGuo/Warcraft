@@ -292,9 +292,9 @@
 			}
 			$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#cpo_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
 			{
-				if (!(textStatus == "success"))
+				if (!(textStatus == "success")||data.indexOf("error:") >= 0)
 				{
-					alert(data);
+					alert(data.split("$")[1]);
 				}
 				changePOName();
 			});

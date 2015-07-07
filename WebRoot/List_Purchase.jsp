@@ -42,7 +42,7 @@
 				sql = "select * from customer_po_record where vendor='" + vendorList.get(index) + "'";
 				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 				{
-					String[] kewordList = {"Bar_Code", "QTY", "OUT_QTY"};
+					String[] kewordList = {"Bar_Code", "QTY", "percent"};
 					recordList = hDBHandle.GetAllDBColumnsByList(kewordList);
 				}
 				else
@@ -54,7 +54,7 @@
 				for (int recordIndex = 0; recordIndex < recordList.get(0).size(); recordIndex++)
 				{
 					String barcode = recordList.get(0).get(recordIndex);
-					int po_qty = Integer.parseInt(recordList.get(1).get(recordIndex)) - Integer.parseInt(recordList.get(2).get(recordIndex));
+					int po_qty = Integer.parseInt(recordList.get(1).get(recordIndex))*(100 + Integer.parseInt(recordList.get(2).get(recordIndex)))/100;
 					int repertory = hDBHandle.GetRepertoryByBarCode(barcode, "material_storage") + hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(barcode) - 10000000), "material_storage");
 					if (repertory < po_qty)
 					{

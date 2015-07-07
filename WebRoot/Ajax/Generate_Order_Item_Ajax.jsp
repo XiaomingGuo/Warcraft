@@ -89,7 +89,7 @@
 				else if ("操作" == displayList[iCol])
 				{
 					int po_count = iOrderQTY-iDelivQTY-iPro_storage;
-					if (inProcess == iOrderQTY || po_count < 0)
+					if (inProcess == iOrderQTY || po_count < 0 )
 					{
 						rtnRst += "0$";
 					}

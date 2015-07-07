@@ -106,7 +106,8 @@
 				var po_name = $po_select.find("option:selected").text();
 				if (po_name.indexOf("请选择") >= 0)
 				{
-					alert("我的乖乖,你就不能选择个正确的PO单号吗?");
+					$displayOrder.empty();
+					$confirmOrder.empty();
 					return;
 				}
 				$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
