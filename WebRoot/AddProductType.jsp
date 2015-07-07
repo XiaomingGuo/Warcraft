@@ -101,6 +101,11 @@
   	<script type="text/javascript">
 		function changeAddType(obj)
 		{
+			if ($("#store_name_addtype").find("option:selected").text().indexOf("请选择") >= 0 || $('#producttype').val() == "")
+			{
+				alert("未选择库房名或产品类型为空!");
+				return;
+			}
 			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))

@@ -69,6 +69,11 @@
   	<script type="text/javascript">
 		function changeAddStore(obj)
 		{
+			if ($('#storename').val() == "")
+			{
+				alert("库房名不能为空!");
+				return;
+			}
 			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success" && data.indexOf("库名") < 0))
