@@ -24,6 +24,12 @@
 		//product_type Database query
 		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") <= 0&&appreason != ""&&appreason != null)
 		{
+			String POName = hDBHandle.GetPONameFromOrderRecord(appBarcode, appOrderName);
+			if (hDBHandle.GetInProcessQty(appBarcode, POName) - hDBHandle.GetCompleteQty(appBarcode, POName) < used_count)
+			{
+				session.setAttribute("error", "("+ appBarcode + "): 你这报废的也太狠了吧, 加上报废数量都比客户PO数量大了!");
+				response.sendRedirect("../tishi.jsp");
+			}
 			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "material_storage");
 			if (repertory_count >= used_count)
 			{

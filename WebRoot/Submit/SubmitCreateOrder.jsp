@@ -33,12 +33,8 @@
 					hDBHandle.CloseDatabase();
 					break;
 				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-					iCount += 1;
-					continue;
-				}
+				hDBHandle.CloseDatabase();
+				iCount += 1;
 			}while(true);
 
 			sql = "select * from customer_po_record where po_name='" + appPOName + "' order by id asc";
@@ -69,7 +65,7 @@
 					}
 					else
 					{
-						session.setAttribute("error", "订单已经生成或客户PO为空!");
+						session.setAttribute("error", "物料不足或生产单已生成!");
 						response.sendRedirect("../tishi.jsp");
 						return;
 					}

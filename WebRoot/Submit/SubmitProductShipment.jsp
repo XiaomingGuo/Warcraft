@@ -52,7 +52,7 @@
 						}
 						else
 						{
-							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE product_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 							sql= "UPDATE customer_po_record SET OUT_QTY='" + Integer.toString(sql_in_count) + "'WHERE Bar_Code='" + appBarcode +"' and po_name='" + appPONum +"'";
 							hDBHandle.execUpate(sql);

@@ -525,4 +525,38 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetCompleteQty(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		String sql = "select QTY from product_order_record where Bar_Code='" + barcode +"' and po_name='" + po_name + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			List<String> po_Qty_List = GetAllStringValue("QTY");
+			for (int i = 0; i < po_Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(i));
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public String GetPONameFromOrderRecord(String barcode, String orderName)
+	{
+		String rtnRst = "";
+		String sql = "select po_name from product_order_record where Bar_Code='" + barcode +"' and Order_Name='" + orderName + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			rtnRst = GetSingleString("po_name");
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
 }

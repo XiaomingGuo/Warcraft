@@ -88,18 +88,18 @@
 				}
 				else if ("操作" == displayList[iCol])
 				{
-					int po_count = iOrderQTY-iDelivQTY-iPro_storage;
-					if (inProcess == iOrderQTY || po_count < 0 )
+					int po_count = iOrderQTY-iDelivQTY-iPro_storage-inProcess;
+					if (po_count <= 0)
 					{
 						rtnRst += "0$";
 					}
-					else if(po_count < iMat_storage)
+					else if(po_count < (iMat_storage-inProcess))
 					{
 						rtnRst += Integer.toString(po_count) + "$";
 					}
-					else if(po_count > iMat_storage)
+					else if(po_count > (iMat_storage-inProcess))
 					{
-						rtnRst += Integer.toString(iMat_storage) + "$";
+						rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
 					}
 				}
 			}

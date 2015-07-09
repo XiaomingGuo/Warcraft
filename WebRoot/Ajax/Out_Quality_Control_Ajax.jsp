@@ -56,6 +56,8 @@
 					}
 					else
 					{
+						sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(recordCount) + "' WHERE Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Batch_Lot='" + batchLot +"'";
+						hDBHandle.execUpate(sql);
 						if (!hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material"))
 							continue;
 						hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, recordCount);

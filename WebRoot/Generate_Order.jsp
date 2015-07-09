@@ -27,7 +27,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from customer_po where status<5";
+			String sql = "select * from customer_po where status = 0";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				po_list = hDBHandle.GetAllStringValue("po_name");
@@ -136,7 +136,7 @@
 									var td = $("<td></td>");
 									if (0 == iColCount - iCol)
 									{
-										if(data_list[iRow*iColCount + iCol + 2] != "0")
+										if(parseInt(data_list[iRow*iColCount + 11])-parseInt(data_list[iRow*iColCount + 10])-parseInt(data_list[iRow*iColCount + 12])-parseInt(data_list[iRow*iColCount + 13]) > 0)
 										{
 											td.append("<input type='text' name='" + iRow + "_QTY' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
 										}

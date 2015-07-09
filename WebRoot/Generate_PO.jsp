@@ -145,7 +145,7 @@
 				    	else if(displayKeyList[iCol-1] == "交货日期")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="<%=delivery_Date %>" readonly></td>
+    			<td width="2%"><input type="text" value="<%=recordList.get(2).get(iRow-1) %>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单位")
