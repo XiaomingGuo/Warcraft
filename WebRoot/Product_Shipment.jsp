@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>生产单生成</title>
+    <title>成品出货</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -62,7 +62,7 @@
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
+		  		<form name="Create_Order" action = "Submit/SubmitProductShipment.jsp" method = "post">
 			  		<table align="center">
 			  			<tr>
 			  				<td>
@@ -110,7 +110,7 @@
 					$confirmOrder.empty();
 					return;
 				}
-				$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
+				$.post("Ajax/PO_Shipment_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -136,7 +136,7 @@
 									var td = $("<td></td>");
 									if (0 == iColCount - iCol)
 									{
-										if(parseInt(data_list[iRow*iColCount + 11])-parseInt(data_list[iRow*iColCount + 10])-parseInt(data_list[iRow*iColCount + 12])-parseInt(data_list[iRow*iColCount + 13]) > 0)
+										if(parseInt(data_list[iRow*iColCount + 9]) > parseInt(data_list[iRow*iColCount + 10]))
 										{
 											td.append("<input type='text' name='" + iRow + "_QTY' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
 										}
@@ -160,7 +160,7 @@
 							if (Count > 0)
 							{
 								var cmdtr = $("<tr></tr>");
-								cmdtr.append("<td><input align='middle' type='submit' value='提交生产单'></td>");
+								cmdtr.append("<td><input align='middle' type='submit' value='出货'></td>");
 								$confirmOrder.append(cmdtr);
 							}
 						}
