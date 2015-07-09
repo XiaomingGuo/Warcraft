@@ -70,7 +70,7 @@
 				<table align="center" border="1" width="100%">
 					<tr><th>生产单号:</th></tr>
 				</table>
-				<h4>
+				<h5>
 					<ul>
 <%
 					if (orderName != null)
@@ -85,7 +85,7 @@
 					}
 %>
 	   				</ul>
-	   			</h4>
+	   			</h5>
    			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top" align="center">

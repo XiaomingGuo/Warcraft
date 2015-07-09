@@ -22,7 +22,7 @@
 				po_status = hDBHandle.GetSingleString("status");
 				if (Integer.parseInt(po_status) > Integer.parseInt(status))
 				{
-					rtnRst += "error$该PO单已经存在!";
+					rtnRst += "error:该PO单已经存在!";
 					out.write(rtnRst);
 				}
 			}
@@ -113,7 +113,7 @@
 	}
 	else
 	{
-		rtnRst += "error$产品订单号稍微复杂点儿行不?";
+		rtnRst += "error:产品订单号稍微复杂点儿行不?";
 	}
 	out.write(rtnRst);
 %>

@@ -40,28 +40,26 @@
 			sql = "select * from customer_po_record where po_name='" + appPOName + "' order by id asc";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
-				String[] sqlKeyList = {"Bar_Code", "delivery_date"};
+				int iUpdatePOStatusFlag = 0;
+				String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
 				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
-					if (iOrderQTY != null && Integer.parseInt(iOrderQTY) > 0)
+					if (iOrderQTY == null)
+					{
+						continue;
+					}
+					else if(Integer.parseInt(iOrderQTY) > 0)
 					{
 						String strBarcode = recordList.get(0).get(iRow);
-						String strDeliDate = recordList.get(1).get(iRow);
+						String strDeliDate = recordList.get(2).get(iRow);
 						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + strBarcode + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
 						hDBHandle.execUpate(sql);
-						sql = "select * from product_order where Order_Name='" + OrderName + "'";
-						if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
-						{
-							hDBHandle.CloseDatabase();
-							sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
-							hDBHandle.execUpate(sql);
-						}
-						else
-						{
-							hDBHandle.CloseDatabase();
-						}
+						sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
+						hDBHandle.execUpate(sql);
+						int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
+						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
 					}
 					else
 					{
@@ -69,6 +67,11 @@
 						response.sendRedirect("../tishi.jsp");
 						return;
 					}
+				}
+				if (iUpdatePOStatusFlag == 0)
+				{
+					sql = "UPDATE customer_po SET status = 1 WHERE po_name='" + appPOName + "'";
+					hDBHandle.execUpate(sql);
 				}
 			}
 			else

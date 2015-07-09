@@ -15,13 +15,13 @@
 		String sql = "select * from product_order_record where id='" + pro_id + "'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
-			String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "OQC_QTY"};
+			String[] orderRecordKey = {"Bar_Code", "Order_Name", "completeQTY", "OQC_QTY"};
 			List<List<String>> orderInfo = hDBHandle.GetAllDBColumnsByList(orderRecordKey);
 			barcode = orderInfo.get(0).get(0);
 			ordername = orderInfo.get(1).get(0);
-			int order_QTY = Integer.parseInt(orderInfo.get(2).get(0));
+			int complete_QTY = Integer.parseInt(orderInfo.get(2).get(0));
 			int pro_record_comp_QTY = Integer.parseInt(orderInfo.get(3).get(0));
-			if (order_QTY == (pro_record_comp_QTY+used_count))
+			if (complete_QTY == (pro_record_comp_QTY+used_count))
 			{
 				sql= "UPDATE product_order_record SET OQC_QTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='3' WHERE id='" + pro_id + "'";
 			}
