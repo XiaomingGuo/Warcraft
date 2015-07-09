@@ -2,7 +2,7 @@
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "交付数量", "操作"};
 	String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
 	List<List<String>> recordList = null;
 %>
@@ -77,7 +77,7 @@
 					iPro_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
-				else if ("操作" == displayList[iCol])
+				else if ("交付数量" == displayList[iCol])
 				{
 					int po_count = iCPOQTY-iDelivQTY;
 					if (po_count <= 0)
@@ -91,6 +91,17 @@
 					else if(po_count > (iPro_storage))
 					{
 						rtnRst += Integer.toString(iPro_storage) + "$";
+					}
+				}
+				else if("操作" == displayList[iCol])
+				{
+					if (iCPOQTY > iDelivQTY)
+					{
+						rtnRst += "1$";
+					}
+					else
+					{
+						rtnRst += "0$";
 					}
 				}
 			}

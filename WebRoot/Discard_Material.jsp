@@ -64,7 +64,7 @@
 		<tr>
 	  		<td align="right">
 		  		<label>生产单:</label>
-			  	<select name="product_order" id="product_order" style="width:200px">
+			  	<select name="product_order" id="product_order" style="width:260px">
 				  	<option value = "--请选择--">--请选择--</option>
 <%
 			if (product_order != null)
@@ -83,7 +83,7 @@
 		<tr>
 			<td align="right">
 				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:200px">
+				<select name="product_name" id="product_name" style="width:260px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
@@ -91,7 +91,7 @@
 		<tr>
 			<td align="right">
 				<label>Bar Code:</label>
-				<select name="bar_code" id="bar_code" style="width:200px">
+				<select name="bar_code" id="bar_code" style="width:260px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
@@ -99,7 +99,7 @@
 		<tr>
 			<td align="right">
 				<label>报废数量:</label>
-				<select name="QTY" id="QTY" style="width:200px">
+				<select name="QTY" id="QTY" style="width:260px">
 <%
 					for(int i = 1; i <= 20; i++)
 					{
@@ -114,13 +114,13 @@
 		<tr>
 			<td align="right">
 				<label>库存数量:</label>
-				<input name="Total_QTY" id="Total_QTY" style="width:200px" readonly>
+				<input name="Total_QTY" id="Total_QTY" style="width:260px" readonly>
 			</td>
 		</tr>
 		<tr>
 			<td align="right">
 				<label>报废原因:</label>
-				<input name="discard_reason" id="discard_reason" style="width:200px">
+				<input name="discard_reason" id="discard_reason" style="width:260px">
 			</td>
 		</tr>
 		<tr>

@@ -492,13 +492,13 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public String GetPOQTY(String barcode, String po_name)
+	public String GetPOInfo(String barcode, String po_name, String keyWord)
 	{
 		String rtnRst = "";
 		String sql = "select * from customer_po_record where Bar_Code='" + barcode + "' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
-			rtnRst = GetSingleString("QTY");
+			rtnRst = GetSingleString(keyWord);
 		}
 		else
 		{
