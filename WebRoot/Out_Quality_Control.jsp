@@ -93,8 +93,6 @@
    					<tr><th>生产单内容：</th></tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
-	   			<br><br>
-	   			<input id="closeOrder" align="middle" type="button" onclick="CloseOrder(this)" value="关闭生产单">
    			</td>
 		</tr>
    	</table>
@@ -162,9 +160,9 @@
 			var storeQTY = $("#"+tempList[1]).val();
 			$.post("Ajax/Out_Quality_Control_Ajax.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
 			{
-				if (!(textStatus == "success"))
+				if (!(textStatus == "success") || data.indexOf("error") > 0)
 				{
-					alert(data);
+					alert(data.split("$")[1]);
 				}
 				location.reload();
 			});
@@ -178,19 +176,6 @@
 				alert("入库数量不能大于生产单量!");
 				obj.value = 0;
 			}
-		}
-		
-		function CloseOrder(obj)
-		{
-			var ordername = $("#TitleName").html();
-			$.post("Ajax/Close_Order_Ajax.jsp", {"Order_Name":ordername}, function(data, textStatus)
-			{
-				if (!(textStatus == "success"))
-				{
-					alert(data);
-				}
-				location.reload();
-			});
 		}
 	</script>
   </body>
