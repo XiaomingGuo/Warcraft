@@ -160,7 +160,7 @@
 							if (Count > 0)
 							{
 								var cmdtr = $("<tr></tr>");
-								cmdtr.append("<td><input align='middle' type='submit' value='出货'></td>");
+								cmdtr.append("<td><input align='middle' type='submit' value='关闭订单'></td>");
 								$confirmOrder.append(cmdtr);
 							}
 						}
