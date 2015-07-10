@@ -164,6 +164,7 @@
 								$displayOrder.append(tr);
 							}
 							var cmdtr = $("<tr></tr>");
+							cmdtr.append("<td><input align='middle' type='button' value='打印销售单' onclick='ShowSalePage(this)'></td>");
 							cmdtr.append("<td><input align='middle' type='submit' value='关闭订单'></td>");
 							$confirmOrder.append(cmdtr);
 						}
@@ -198,7 +199,12 @@
 				obj.value = parseInt(splitList[0]) - parseInt(splitList[1]);
 			}
 		}
-
+		
+		function ShowSalePage(obj)
+		{
+			var po_name = $("#po_select").find("option:selected").text();
+			location.href ="List_SaleOrder.jsp?PO_Name="+po_name;
+		}
 	</script>
   </body>
 </html>
