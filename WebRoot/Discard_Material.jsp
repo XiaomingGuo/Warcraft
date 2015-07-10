@@ -26,7 +26,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
 			//storeroom name Database query
-			String sql = "select * from product_order";
+			String sql = "select * from product_order where status=1";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				product_order = hDBHandle.GetAllStringValue("Order_Name");

@@ -28,7 +28,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
  			List<String> orderName = null;
-			String sql = "select * from product_order where status='1'";
+			String sql = "select * from product_order where status=1";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				orderName = hDBHandle.GetAllStringValue("Order_Name");

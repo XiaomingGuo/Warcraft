@@ -5,7 +5,6 @@
 
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY", "Order_Name"};
 %>
 <%
 	if(session.getAttribute("logonuser")==null)
@@ -17,66 +16,28 @@
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
 		String appPONum = request.getParameter("po_select");
-		String appBarcode = request.getParameter("bar_code");
-		String appProduct_QTY = request.getParameter("QTY");
-		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
-		if (used_count > 0 && appBarcode.length()==8 && appPONum!="" && appPONum!=null)
+		if (appPONum!=null && appPONum!="")
 		{
-			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "product_storage");
-			if (repertory_count >= used_count)
+			String sql = "select * from product_order_record where po_name='" + appPONum +"'";
+			if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 			{
-				String sql = "select * from product_storage where Bar_Code='" + appBarcode +"'";
-				if (hDBHandle.QueryDataBase(sql))
+				List<String> order_List = hDBHandle.GetAllStringValue("Order_Name");
+				for (int iIndex = 0; iIndex < order_List.size(); iIndex++)
 				{
-					List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
-					for (int iCol = 0; iCol < material_info_List.get(0).size(); iCol++)
-					{
-						String batchLot =  material_info_List.get(0).get(iCol);
-						int sql_in_count = Integer.parseInt(material_info_List.get(1).get(iCol));
-						int sql_out_count = Integer.parseInt(material_info_List.get(2).get(iCol));
-						String ordername = material_info_List.get(3).get(iCol);
-						int recordCount = sql_in_count - sql_out_count;
-						if (recordCount >= used_count)
-						{
-							sql= "UPDATE product_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
-							hDBHandle.execUpate(sql);
-							sql= "UPDATE customer_po_record SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "'WHERE Bar_Code='" + appBarcode +"' and po_name='" + appPONum +"'";
-							hDBHandle.execUpate(sql);
-							
-							if (recordCount == used_count)
-							{
-								hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
-							}
-							break;
-						}
-						else
-						{
-							sql= "UPDATE product_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
-							hDBHandle.execUpate(sql);
-							sql= "UPDATE customer_po_record SET OUT_QTY='" + Integer.toString(sql_in_count) + "'WHERE Bar_Code='" + appBarcode +"' and po_name='" + appPONum +"'";
-							hDBHandle.execUpate(sql);
-							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "product_storage", "exhausted_product");
-							used_count -= recordCount;
-						}
-					}
-					response.sendRedirect("../Product_Shipment.jsp");
+					sql= "UPDATE product_order SET status=2 WHERE Order_Name='" + order_List.get(iIndex) + "'";
+					hDBHandle.execUpate(sql);
 				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
+				sql= "UPDATE customer_po SET status=2 WHERE po_name='" + appPONum + "'";
+				hDBHandle.execUpate(sql);
 			}
 			else
 			{
-				session.setAttribute("error", "("+ appBarcode + "): 库存数量不足,不够出货数量,加油生产吧兄弟!");
+				hDBHandle.CloseDatabase();
+				session.setAttribute("error", "该po单无生产单生成!");
 				response.sendRedirect("../tishi.jsp");
-			}			
+			}
 		}
-		else
-		{
-			session.setAttribute("error", "你输入的是什么啊,赶紧重新输入!");
-			response.sendRedirect("../tishi.jsp");
-		}
+		response.sendRedirect("../Product_Shipment.jsp");
 	}
 %>
