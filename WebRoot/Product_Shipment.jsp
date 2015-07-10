@@ -148,11 +148,11 @@
 									{
 										if (parseInt(data_list[iRow*iColCount + iCol + 2]) == 0)
 										{
-											td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 6] + "$" + data_list[iRow*iColCount + 7] + "$" + iRow + "' onclick='PutOutQtyInCPO(this)' disabled>");
+											td.append("<input type='button' value='出库' disabled>");
 										}
 										else
 										{
-											td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 6] + "$" + data_list[iRow*iColCount + 7] + "$" + iRow + "' onclick='PutOutQtyInCPO(this)'>");
+											td.append("<input type='button' value='出库' name='" + data_list[iRow*iColCount + 6] + "$" + data_list[iRow*iColCount + 7] + "$" + iRow + "' onclick='PutOutQtyInCPO(this)'>");
 										}
 									}
 									else

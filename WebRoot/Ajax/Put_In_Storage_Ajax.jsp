@@ -23,11 +23,11 @@
 			int pro_record_comp_QTY = Integer.parseInt(orderInfo.get(3).get(0));
 			if (order_QTY == (pro_record_comp_QTY+used_count))
 			{
-				sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='3' WHERE id='" + pro_id + "'";
+				sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status=3 WHERE id='" + pro_id + "'";
 			}
 			else
 			{
-				sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='1' WHERE id='" + pro_id + "'";
+				sql= "UPDATE product_order_record SET completeQTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status=2 WHERE id='" + pro_id + "'";
 			}
 			hDBHandle.execUpate(sql);
 		}

@@ -16,13 +16,10 @@
 			idList = hDBHandle.GetAllStringValue("id");
 			for (int index = 0; index < idList.size(); index++)
 			{
-				if(Integer.parseInt(idList.get(index)) == 0)
-				{
-					sql = "UPDATE product_order_record SET status='1' where id='" + idList.get(index) + "'";
-					hDBHandle.execUpate(sql);
-				}
+				sql = "UPDATE product_order_record SET status=1 where id='" + idList.get(index) + "'";
+				hDBHandle.execUpate(sql);
 			}
-			sql = "UPDATE product_order SET status='1' where Order_Name='" + order_name + "'";
+			sql = "UPDATE product_order SET status=1 where Order_Name='" + order_name + "'";
 			hDBHandle.execUpate(sql);
 		}
 		else

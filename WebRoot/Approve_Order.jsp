@@ -136,7 +136,7 @@
 								var td = $("<td></td>");
 								if (iCol == iColCount - 1)
 								{
-									td.append("<label>未完成</label>");
+									td.append("<label>待审核</label>");
 								}
 								else
 								{

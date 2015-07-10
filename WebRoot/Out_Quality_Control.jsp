@@ -135,11 +135,25 @@
 								var td = $("<td></td>");
 								if (1 == iColCount - iCol)
 								{
-									td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 3] + "$" + execID.toString() + "' onclick='PutInStorage(this)'>");
+									if (data_list[(iRow)*iColCount + 9] == data_list[(iRow)*iColCount + 12])
+									{
+										td.append("<input type='button' value='入库' disabled>");
+									}
+									else
+									{
+										td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 3] + "$" + execID.toString() + "' onclick='PutInStorage(this)'>");
+									}
 								}
 								else if(0 == iColCount - iCol)
 								{
-									td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 12] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
+									if (data_list[(iRow)*iColCount + 9] == data_list[(iRow)*iColCount + 12])
+									{
+										td.append("<label>检验已完成</label>");
+									}
+									else
+									{
+										td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 12] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
+									}
 								}
 								else
 								{

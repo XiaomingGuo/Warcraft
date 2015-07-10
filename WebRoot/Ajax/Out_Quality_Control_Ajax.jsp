@@ -26,11 +26,11 @@
 			{
 				if (iOrder_QTY == (pro_record_comp_QTY+used_count))
 				{
-					sql= "UPDATE product_order_record SET OQC_QTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='3' WHERE id='" + pro_id + "'";
+					sql= "UPDATE product_order_record SET OQC_QTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='5' WHERE id='" + pro_id + "'";
 				}
 				else
 				{
-					sql= "UPDATE product_order_record SET OQC_QTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='1' WHERE id='" + pro_id + "'";
+					sql= "UPDATE product_order_record SET OQC_QTY='"+ Integer.toString(pro_record_comp_QTY + used_count) + "', status='4' WHERE id='" + pro_id + "'";
 				}
 				hDBHandle.execUpate(sql);
 				
