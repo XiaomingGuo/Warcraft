@@ -119,13 +119,10 @@
 			}
 			$.post("Ajax/Generate_MB_PO_Ajax.jsp", {"PO_Name":vPOName, "vendor":vendorName, "Delivery_Date":deliveryDate}, function(data, textStatus)
 			{
-				if (textStatus == "success")
+				if (!(textStatus == "success")||data.indexOf("error") >= 0)
 				{
-					if(data.indexOf("error") >= 0)
-					{
-						alert(data.split('$')[1]);
-						return;
-					}
+					alert(data.split('$')[1]);
+					return;
 				}
 				location.href = "Generate_PO.jsp?PO_Name=" + vPOName + "&vendor=" + vendorName + "&Delivery_Date=" + deliveryDate;
 			});

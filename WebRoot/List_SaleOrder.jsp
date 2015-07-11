@@ -62,7 +62,7 @@
 <%
 			for (int iRow = 0; iRow < print_mark.size(); iRow++)
 			{
-				if(print_mark.get(iRow).indexOf("00000000") >= 0)
+				if(print_mark.get(iRow).indexOf("00000000") > 0)
 				{
 %>
 			<tr>
@@ -108,14 +108,11 @@
 				alert("我说大姐,日期要写全啊!");
 				return;
 			}
-			$.post("Ajax/Add_Sale_Order_Ajax.jsp", {"Order_Name": obj.name, "date_of_delivery":date_of_delivery}, function(data, textStatus)
+			$.post("Ajax/Add_Sale_Order_Ajax.jsp", {"POName": obj.name, "date_of_delivery":date_of_delivery}, function(data, textStatus)
 			{
-				if (textStatus == "success" || data.indexOf("error"))
+				if (!(textStatus == "success") || data.indexOf("error") >= 0)
 				{
-					if (parseInt(data.split('$')[1]) > 0)
-					{
-						alert(data.split("$")[1]);
-					}
+					alert(data.split("$")[1]);
 				}
 				location.href = "List_SaleOrder.jsp?PO_Name=" + obj.name;
 			});

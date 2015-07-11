@@ -6,12 +6,12 @@
 <%
 	String rtnRst = "remove$";
 	String date_of_delivery = (String)request.getParameter("date_of_delivery");
-	String ordername = (String)request.getParameter("Order_Name");
-	if (ordername != null)
+	String po_name = (String)request.getParameter("POName");
+	if (po_name != null && date_of_delivery != null)
 	{
 		Calendar mData = Calendar.getInstance();
 		String currentDate = String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-		String sql = "select * from shipping_record where customer_po='" + ordername + "' and print_mark='00000000'";
+		String sql = "select * from shipping_record where customer_po='" + po_name + "' and print_mark='00000000'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
 			List<String> idList = hDBHandle.GetAllStringValue("id");
@@ -24,7 +24,7 @@
 			sql = "select * from shipping_no order by id asc";
 			if (hDBHandle.QueryDataBase(sql))
 			{
-				String ship_no = String.format("%s%04d", currentDate, hDBHandle.GetRecordCount());
+ 				String ship_no = String.format("%s%04d", currentDate, hDBHandle.GetRecordCount() + 1);
 				sql = "INSERT INTO shipping_no (print_mark, shipping_no) VALUES ('" + date_of_delivery + "','" + ship_no + "')";
 				hDBHandle.execUpate(sql);
 			}
