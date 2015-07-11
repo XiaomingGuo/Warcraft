@@ -151,6 +151,12 @@
 						</td>
 					</tr>
 					<tr>
+			   			<td align="right">
+				   			<label>备注:</label>
+							<input type="text" name="Description" id="Description" style='width:180px'>
+						</td>
+					</tr>
+					<tr>
 			   			<td align="center">
 							<input type=submit value="提交" style='width:100px'>
 						</td>
@@ -242,13 +248,14 @@
 				$("#QTY").val("");
 				$("#WeightUnit").val("");
 				$("#WeightUnit").removeAttr("readonly");
+				$("#Description").removeAttr("readonly");
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
-						if (code_list.length == 4)
+						if (code_list.length == 5)
 						{
 							var newOption = $("<option>" + code_list[1] + "</option>");
 							$(newOption).val(code_list[1]);
@@ -257,6 +264,8 @@
 							$("#barcode").val(code_list[1]);
 							$("#WeightUnit").val(code_list[2]);
 							$("#WeightUnit").attr("readonly", "readonly");
+							$("#Description").val(code_list[3]);
+							$("#Description").attr("readonly", "readonly");
 						}
 						else
 						{

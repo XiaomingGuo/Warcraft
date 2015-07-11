@@ -84,7 +84,7 @@
 					{
 						rtnRst += "0$";
 					}
-					else if(po_count < iPro_storage)
+					else if(po_count <= iPro_storage)
 					{
 						rtnRst += Integer.toString(po_count) + "$";
 					}

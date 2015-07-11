@@ -17,7 +17,7 @@
 	String sql= "select * from product_info where name='"+pro_name+"' and product_type='"+ pro_type + "'";
 	if (hDBHandle.QueryDataBase(sql))
 	{
-		String[] keyWord = {"Bar_Code", "weight"};
+		String[] keyWord = {"Bar_Code", "weight", "description"};
 		proInfo = hDBHandle.GetAllDBColumnsByList(keyWord);
 	}
 	else
@@ -30,7 +30,7 @@
 		{
 			String bar_Code = proInfo.get(0).get(i);
 			iRepertory += hDBHandle.GetIN_QTYByBarCode(bar_Code, storageName) - hDBHandle.GetOUT_QTYByBarCode(bar_Code, storageName);
-			rtnRst += bar_Code + "$" + proInfo.get(1).get(i) + "$";
+			rtnRst += bar_Code + "$" + proInfo.get(1).get(i) + "$" + proInfo.get(2).get(i) + "$" ;
 		}
 	}
 	rtnRst += Integer.toString(iRepertory);

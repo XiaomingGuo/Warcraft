@@ -3,7 +3,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"};
+	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注"};
 	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
@@ -77,26 +77,76 @@
 %>
   			<tr>
 <%
+				//{"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总价", "供应商", "备注"};
+				//"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"
 				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
-					if (displayKeyList[iCol-1] == "name")
-			    	{
-%>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
-<%
-			    	}
-			    	else if (displayKeyList[iCol-1] == "ID")
+					if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
     			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
 			    	}
-			    	else
+			    	else if (displayKeyList[iCol-1] == "产品名称")
 			    	{
 %>
-    			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
+    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
-					}
+			    	}
+			    	else if (displayKeyList[iCol-1] == "八码")
+			    	{
+%>
+    			<td><%= recordList.get(0).get(iRow-1) %></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "批号")
+			    	{
+%>
+    			<td><%= recordList.get(1).get(iRow-1) %></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "总进货量")
+			    	{
+%>
+    			<td><%= recordList.get(2).get(iRow-1)%></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "已消耗")
+			    	{
+%>
+    			<td><%= recordList.get(3).get(iRow-1) %></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "库存")
+			    	{
+%>
+    			<td><%= (Integer.parseInt(recordList.get(2).get(iRow-1)) - Integer.parseInt(recordList.get(3).get(iRow-1)))%></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "单价")
+			    	{
+%>
+    			<td><%= recordList.get(4).get(iRow-1)%></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "总进货价")
+			    	{
+%>
+    			<td><%= recordList.get(5).get(iRow-1)%></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "供应商")
+			    	{
+%>
+    			<td><%= recordList.get(6).get(iRow-1)%></td>
+<%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "备注")
+			    	{
+%>
+    			<td><%= hDBHandle.GetDescByBarcode(recordList.get(0).get(iRow-1)) %></td>
+<%
+			    	}
 		    	}
 %>
 			</tr>

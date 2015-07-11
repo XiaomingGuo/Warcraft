@@ -559,4 +559,26 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public String GetDescByBarcode(String barcode)
+	{
+		String rtnRst = "";
+		String sql = "select description from product_info where Bar_Code='" + barcode +"'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleString("description");
+			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
 }
