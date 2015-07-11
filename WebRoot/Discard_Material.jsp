@@ -171,7 +171,7 @@
 						var newOption = $("<option>" + code_list[1] + "</option>");
 						$(newOption).val(code_list[1]);
 						$bar_code.append(newOption);
-						$Total_QTY.attr("value", code_list[3]);
+						$Total_QTY.attr("value", code_list[4]);
 					}
 				});
 			});				
