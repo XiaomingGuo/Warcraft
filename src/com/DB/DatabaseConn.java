@@ -339,6 +339,28 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
+	public double GetPerWeigthByBarcode(String barcode)
+	{
+		double rtnRst = 0.0;
+		String sql = "select weight from product_info where Bar_Code='" + barcode +"'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleDouble("weight");
+			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
 	public String GetMergeMark(String id)
 	{
 		String rtnRst = "";
@@ -581,4 +603,53 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public int GetShipQTYByBarcode(String barcode, String Delivery_Date)
+	{
+		int rtnRst = 0;
+		String sql = "select ship_QTY from shipping_record where Bar_Code='" + barcode +"' and print_mark='" + Delivery_Date + "'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				List<String> in_Qty_List = GetAllStringValue("ship_QTY");
+				for (int i = 0; i < in_Qty_List.size(); i++)
+				{
+					rtnRst += Integer.parseInt(in_Qty_List.get(i));
+				}
+			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public String GetShipNOByPrintMark(String PrintMark)
+	{
+		String rtnRst = "";
+		String sql = "select shipping_no from shipping_no where print_mark='" + PrintMark +"'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleString("shipping_no");
+			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+
 }

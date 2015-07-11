@@ -44,7 +44,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>成品入库</title>
+    <title>入待检库</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

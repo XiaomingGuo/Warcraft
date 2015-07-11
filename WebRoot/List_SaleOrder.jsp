@@ -58,7 +58,7 @@
   <body>
     <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br><br>
-    <table align="center">
+    <table align="center" width="20%">
 <%
 			for (int iRow = 0; iRow < print_mark.size(); iRow++)
 			{
@@ -66,9 +66,9 @@
 				{
 %>
 			<tr>
-				<td><label>销售日期:</label></td>
-				<td><input type="text" id="date_of_delivery" name="date_of_delivery" value="<%=DeliveryDate %>"></td>
-				<td><input type="button" id="add" value="添加销售单" name="<%=POName %>" onclick="addSaleOrder(this)"></td>
+				<td align="center"><label>销售日期:</label></td>
+				<td align="center"><input type="text" id="date_of_delivery" name="date_of_delivery" value="<%=DeliveryDate %>"></td>
+				<td align="center" width="10%"><input type="button" id="add" value="添加销售单" name="<%=POName %>" onclick="addSaleOrder(this)"></td>
 			</tr>
 <%			
 				}
@@ -76,7 +76,9 @@
 				{
 %>
 			<tr>
-				<td align="center" width="25%"><h1><a onclick="func(this)" name="<%=POName %>$<%=print_mark.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=print_mark.get(iRow) %></a></h1></td>
+				<td align="center"><label>销售日期:</label></td>
+				<td align="center"><h1><a onclick="func(this)" name="<%=POName %>$<%=print_mark.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=print_mark.get(iRow) %></a></h1></td>
+				<td align="center"><label></label></td>
 			</tr>
 <%
 				}
@@ -90,23 +92,22 @@
 			var paramList = obj.name.split("$");
 			var vPOName = paramList[0];
 			var print_mark = paramList[1];
-			var deliveryDate = $("#date_of_delivery").val();
 			if(vPOName==""||vPOName == null||print_mark == ""||print_mark == null)
 			{
 				alert("我说大姐,你这PO号和供应商名称我没见过啊?");
 				return;
 			}
-			if (deliveryDate.size() != 8)
-			{
-				alert("我说大姐,日期要写全啊!");
-				return;
-			}
-			location.href = "SaleOrder.jsp?PO_Name=" + vPOName + "&vendor=" + vendorName + "&Delivery_Date=" + deliveryDate;
+			location.href = "SaleOrder.jsp?PO_Name=" + vPOName + "&Delivery_Date=" + print_mark;
 		}
 		
 		function addSaleOrder(obj)
 		{
 			var date_of_delivery = $("#date_of_delivery").val();
+			if (date_of_delivery.length != 8)
+			{
+				alert("我说大姐,日期要写全啊!");
+				return;
+			}
 			$.post("Ajax/Add_Sale_Order_Ajax.jsp", {"Order_Name": obj.name, "date_of_delivery":date_of_delivery}, function(data, textStatus)
 			{
 				if (textStatus == "success" || data.indexOf("error"))

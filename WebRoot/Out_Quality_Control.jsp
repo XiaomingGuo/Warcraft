@@ -148,7 +148,14 @@
 								{
 									if (data_list[(iRow)*iColCount + 9] == data_list[(iRow)*iColCount + 12])
 									{
-										td.append("<label>检验已完成</label>");
+										if (data_list[(iRow)*iColCount + 8] == data_list[(iRow)*iColCount + 9])
+										{
+											td.append("<label>检验已完成</label>");
+										}
+										else
+										{
+											td.append("<label>待检验</label>");
+										}
 									}
 									else
 									{

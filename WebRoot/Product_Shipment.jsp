@@ -27,7 +27,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from customer_po where status = 1";
+			String sql = "select * from customer_po where status <= 1";
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				po_list = hDBHandle.GetAllStringValue("po_name");
@@ -114,7 +114,6 @@
 				{
 					if (textStatus == "success")
 					{
-						alert(data);
 						$displayOrder.empty();
 						$confirmOrder.empty();
 						var data_list = data.split("$");
@@ -136,7 +135,6 @@
 									var td = $("<td></td>");
 									if (1 == iColCount - iCol)
 									{
-										alert(data_list[iRow*iColCount + iCol + 2]);
 										if(parseInt(data_list[iRow*iColCount + 9]) > parseInt(data_list[iRow*iColCount + 10]))
 										{
 											td.append("<input type='text' style='width:68px' name='" + data_list[iRow*iColCount + 9] + "$" + data_list[iRow*iColCount + 10] + "' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + " onblur='CheckQTY(this)'>");

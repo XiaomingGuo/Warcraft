@@ -84,7 +84,7 @@
 			  				<td>
 				  				<h1>
 							  		<label>客户PO号:</label>
-							  		<input type="text" name="POName" id="POName" onblur="changePOName(this)" value="P015-05-06157" style="width:200px">
+							  		<input type="text" name="POName" id="POName" onblur="changePOName(this)" style="width:200px">
 						  		</h1>
 					  		</td>
 				  		</tr>

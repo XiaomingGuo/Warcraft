@@ -68,7 +68,7 @@
 			    		<li><a href="Generate_Order.jsp">生产单生成</a></li>
 			    		<li><a href="Query_Order.jsp">生产单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>
-			    		<li><a href="Put_In_Pro_Storage.jsp">成品入库</a></li>
+			    		<li><a href="Put_In_Pro_Storage.jsp">入待检库</a></li>
 			    		<li><a href="Out_Quality_Control.jsp">入库检验</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
