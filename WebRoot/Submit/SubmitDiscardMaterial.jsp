@@ -22,7 +22,7 @@
 		String appreason = request.getParameter("discard_reason");
 		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
-		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") <= 0&&appreason != ""&&appreason != null)
+		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&appreason != ""&&appreason != null)
 		{
 			String POName = hDBHandle.GetPONameFromOrderRecord(appBarcode, appOrderName);
 			if (hDBHandle.GetInProcessQty(appBarcode, POName) - hDBHandle.GetCompleteQty(appBarcode, POName) < used_count)

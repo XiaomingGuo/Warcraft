@@ -62,7 +62,7 @@
 <%
 			for (int iRow = 0; iRow < print_mark.size(); iRow++)
 			{
-				if(print_mark.get(iRow).indexOf("00000000") > 0)
+				if(print_mark.get(iRow).indexOf("00000000") >= 0)
 				{
 %>
 			<tr>

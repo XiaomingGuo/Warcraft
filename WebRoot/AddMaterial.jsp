@@ -281,7 +281,7 @@
 			{
 				$("#barcode").val("");
 				var selectedBarcode = $bar_code.find("option:selected").text();
-				if (selectedBarcode.indexOf("请选择") > 0)
+				if (selectedBarcode.indexOf("请选择") >= 0)
 				{
 					$("#barcode").val("");
 				}

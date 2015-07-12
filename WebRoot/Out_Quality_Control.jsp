@@ -181,7 +181,7 @@
 			var storeQTY = $("#"+tempList[1]).val();
 			$.post("Ajax/Out_Quality_Control_Ajax.jsp", {"product_id":tempList[0], "PutInQTY":storeQTY}, function(data, textStatus)
 			{
-				if (!(textStatus == "success") || data.indexOf("error") > 0)
+				if (!(textStatus == "success") || data.indexOf("error") >= 0)
 				{
 					alert(data.split("$")[1]);
 				}

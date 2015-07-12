@@ -21,7 +21,7 @@
 				hDBHandle.execUpate(sql);
 			}
 			
-			sql = "select * from shipping_no order by id asc";
+			sql = "select * from shipping_no where shipping_no > " + currentDate + "0000";
 			if (hDBHandle.QueryDataBase(sql))
 			{
  				String ship_no = String.format("%s%04d", currentDate, hDBHandle.GetRecordCount() + 1);
