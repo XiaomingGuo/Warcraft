@@ -56,7 +56,7 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  <body>
+  <body onload="winLoad()">
     <table align="center">
     	<tr>
     		<td>
