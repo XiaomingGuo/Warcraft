@@ -214,19 +214,6 @@
 			});
 		}
 		
-		function deleteRecord(obj)
-		{
-			var delID = obj.name;
-			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
-			{
-				if (!(textStatus == "success"))
-				{
-					alert(data);
-				}
-				changeOrderName();
-			});
-		}
-		
 		function Qty_Calc(obj)
 		{
 			var orderCount = parseInt($("#order_QTY").val());

@@ -79,20 +79,13 @@
   <body>
     <table align="center">
     	<tr>
-    		<td>
-		  		<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
-			  		<table align="center">
-			  			<tr>
-			  				<td>
-				  				<h1>
-							  		<label>生产单号:</label>
-							  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
-							  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
-						  		</h1>
-					  		</td>
-				  		</tr>
-			  		</table>
-		  		
+    		<td align="center">
+		  		<form name="Create_Order" action = "Submit/SubmitManualOrder.jsp" method = "post">
+	  				<h1>
+				  		<label>生产单号:</label>
+				  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
+				  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
+			  		</h1>
 			    	<table align="center" border="1">
 	    				<tr>
 <%
