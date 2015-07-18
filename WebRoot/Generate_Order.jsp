@@ -57,7 +57,6 @@
   	<script type="text/javascript">
   		function winload()
   		{
-  			alert("1");
 			$("#display_page_order").load("Generate_Order_Manual.jsp");
   		}
   	</script>
@@ -65,51 +64,44 @@
   <body onload="winload()">
     <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br>
-    <table align="center">
-    	<tr>
-    		<td>
-		  		<table align="center">
-		  			<tr>
-		  				<td>
-			  				<h1>
-						  		<label>客户PO单号:</label>
-							  	<select name="po_select" id="po_select" style="width:300px">
-								  	<option value = "--请选择--">--请选择--</option>
-<%
-						if (po_list != null)
-						{
-							for(int i = 0; i < po_list.size(); i++)
-							{
-%>
-								  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
-<%
-							}
-						}
-%>
-							  	</select>
-					  		</h1>
-				  		</td>
-			  		</tr>
-		  		</table>
-	 		   	<div id="display_page_order" align="center"></div>
-	 		   	<div id="display_page_po" align="center">
-			  		<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
-			 		   	<table id="display_order" border="1" align="center"></table>
+	<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
+	    <table align="center">
+	    	<tr>
+	    		<td align="center">
+	  				<h1>
+		  				<label>客户PO单号:</label>
+					  	<select name="po_select" id="po_select" style="width:300px">
+						  	<option value = "--请选择--">--请选择--</option>
+	<%
+				if (po_list != null)
+				{
+					for(int i = 0; i < po_list.size(); i++)
+					{
+	%>
+						  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
+	<%
+					}
+				}
+	%>
+					  	</select>
+			  		</h1>
+		 		   	<div id="display_page_order" align="center"></div>
+		 		   	<br>
+		 		   	<div id="display_page_po" align="center">
+			 		   	<table id="display_order_po"></table>
 			 		   	<br>
-			 		   	<table id="confirm_order" align="center"></table>
-					</form>
-				</div>
-			</td>
-		</tr>
-   	</table>
+			 		   	<table id="confirm_order_po"></table>
+					</div>
+				</td>
+			</tr>
+	   	</table>
+	</form>
 	<script type="text/javascript">
 		$(function()
 		{
 			var $po_select = $('#po_select');
 			$po_select.change(function()
 			{
-				var $displayOrder = $("#display_order");
-				var $confirmOrder = $("#confirm_order");
 				var po_name = $po_select.find("option:selected").text();
 				if (po_name.indexOf("请选择") >= 0)
 				{
@@ -121,7 +113,8 @@
 				{
 					$("#display_page_order").hide();
 					$("#display_page_po").show();
-					alert("2");
+					var $displayOrder = $("#display_order_po");
+					var $confirmOrder = $("#confirm_order_po");
 					$displayOrder.empty();
 					$confirmOrder.empty();
 					$displayOrder.attr("border", 1);
