@@ -13,15 +13,26 @@
 	
 	if (order_name != null&&order_name != "")
 	{
-		String sql = "select * from product_order_record where Order_Name='" + order_name + "'";
+		String sql = "select * from product_order where Order_Name='" + order_name + "'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 		{
 			hDBHandle.CloseDatabase();
 			if (bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 			{
 				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
-				sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + bar_code + "','" + deliv_date + "','" + Integer.toString(iOrderQTY) + "','Internal_po','" + order_name + "')";
-				hDBHandle.execUpate(sql);
+				sql = "select * from product_order_record where Order_Name='" + order_name + "' and Bar_Code='" + bar_code + "'";
+				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				{
+					hDBHandle.CloseDatabase();
+					sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + bar_code + "','" + deliv_date + "','" + Integer.toString(iOrderQTY) + "','Internal_po','" + order_name + "')";
+					hDBHandle.execUpate(sql);
+				}
+				else
+				{
+					int tempQTY = hDBHandle.GetSingleInt("QTY");
+					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "'";
+					hDBHandle.execUpate(sql);
+				}
 			}
 		}
 		else

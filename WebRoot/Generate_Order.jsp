@@ -64,38 +64,40 @@
   <body onload="winload()">
     <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br>
-	<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
-	    <table align="center">
-	    	<tr>
-	    		<td align="center">
-	  				<h1>
-		  				<label>客户PO单号:</label>
-					  	<select name="po_select" id="po_select" style="width:300px">
-						  	<option value = "--请选择--">--请选择--</option>
-	<%
-				if (po_list != null)
+    <table align="center">
+    	<tr>
+    		<td align="center">
+			<form name="Create_Order" action = "Submit/SubmitCreateOrder.jsp" method = "post">
+  				<h1>
+	  				<label>客户PO单号:</label>
+				  	<select name="po_select" id="po_select" style="width:300px">
+					  	<option value = "--请选择--">--请选择--</option>
+<%
+			if (po_list != null)
+			{
+				for(int i = 0; i < po_list.size(); i++)
 				{
-					for(int i = 0; i < po_list.size(); i++)
-					{
-	%>
-						  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
-	<%
-					}
+%>
+					  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
+<%
 				}
-	%>
-					  	</select>
-			  		</h1>
-		 		   	<div id="display_page_order" align="center"></div>
-		 		   	<br>
-		 		   	<div id="display_page_po" align="center">
-			 		   	<table id="display_order_po"></table>
-			 		   	<br>
-			 		   	<table id="confirm_order_po"></table>
-					</div>
-				</td>
-			</tr>
-	   	</table>
-	</form>
+			}
+%>
+				  	</select>
+		  		</h1>
+	 		   	<div id="display_page_po" align="center">
+		 		   	<table id="display_order_po"></table>
+		 		   	<table id="confirm_order_po"></table>
+				</div>
+			</form>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			   	<div id="display_page_order" align="center"></div>
+			</td>
+		</tr>
+   	</table>
 	<script type="text/javascript">
 		$(function()
 		{

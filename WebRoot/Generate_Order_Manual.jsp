@@ -40,19 +40,6 @@
 				hDBHandle.CloseDatabase();
 			}
 			
-			String tempOrderName = request.getParameter("OrderName");
-			if (tempOrderName != null)
-			{
-				sql = "select * from product_order_record where Order_Name='" + tempOrderName + "'";
-				if (hDBHandle.QueryDataBase(sql))
-				{
-					recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
-			}
 			Calendar mData = Calendar.getInstance();
 			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
@@ -129,9 +116,9 @@
 	    					<td align="center"><input align="middle" type="button" value="确认" onclick="addordercolumn(this)"></td>
 					  	</tr>
 			    	</table>
-			    	<br><br>
+			    	<br>
 		 		   	<table id="display_order"></table>
-		 		   	<br><br>
+		 		   	<br>
 		 		   	<table id="confirm_order"></table>
 				</form>
 			</td>
@@ -253,7 +240,7 @@
 				alert("我说大姐,你这输入信息糊弄谁呢?");
 				return;
 			}
-			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"product_type":$("#product_type").find("option:selected").text(), "product_name":$("#product_name").find("option:selected").text(), "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
+			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{
