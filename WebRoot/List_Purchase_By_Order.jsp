@@ -117,7 +117,7 @@
 				alert("我说大姐,你这PO号和供应商名称我没见过啊?");
 				return;
 			}
-			$.post("Ajax/Generate_MB_PO_Ajax.jsp", {"Order_Name":vOrderName, "vendor":vendorName, "Delivery_Date":deliveryDate}, function(data, textStatus)
+			$.post("Ajax/Generate_MB_PO_By_Order_Ajax.jsp", {"Order_Name":vOrderName, "vendor":vendorName, "Delivery_Date":deliveryDate}, function(data, textStatus)
 			{
 				if (!(textStatus == "success")||data.indexOf("error") >= 0)
 				{

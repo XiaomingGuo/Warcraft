@@ -8,7 +8,7 @@
 	String appPOName = (String)request.getParameter("PO_Name");
 	String appVendor = (String)request.getParameter("vendor");
 	String appDelivDate = (String)request.getParameter("Delivery_Date");
-	if (appPOName != null)
+	if (appPOName != null && appDelivDate.length() == 8)
 	{
 		String sql = "select * from customer_po_record where po_name='" + appPOName + "' and vendor='" + appVendor + "'";
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
@@ -32,14 +32,14 @@
 						if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 						{
 							hDBHandle.CloseDatabase();
-							if (appDelivDate != null&&!appDelivDate.isEmpty())
+							if (appDelivDate != null&&!appDelivDate.isEmpty()&&appDelivDate.length() == 8)
 							{
 								sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + strMaterialBarcode + "','" + strVendor + "','" + appPOName + "','" + Integer.toString(manufacture_QTY-iRepertory) + "','" + appDelivDate + "')";
 								hDBHandle.execUpate(sql);
 							}
 							else
 							{
-								rtnRst += "error:交货日期不能为空!$";
+								rtnRst += "error:交货日期填写有误!$";
 								break;
 							}
 						}
@@ -54,7 +54,12 @@
 		else
 		{
 			hDBHandle.CloseDatabase();
+			rtnRst += "error:po单不存在!";
 		}
+	}
+	else
+	{
+		rtnRst += "error:po单需要填写交货日期!";
 	}
 	out.write(rtnRst);
 %>
