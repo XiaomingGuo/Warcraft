@@ -84,7 +84,7 @@
 			  				<td>
 				  				<h1>
 							  		<label>客户PO号:</label>
-							  		<input type="text" name="POName" id="POName" onblur="changePOName(this)" style="width:200px">
+							  		<input type="text" name="POName" id="POName" onchange="changePOName(this)" style="width:200px">
 						  		</h1>
 					  		</td>
 				  		</tr>
@@ -205,7 +205,7 @@
 		{
 			var $displayOrder = $("#display_po");
 			var $confirmOrder = $("#confirm_po");
-			var po_name = $("#POName").val();
+			var po_name = $.trim($("#POName").val());
 			if (po_name.length < 6)
 			{
 				alert("我的乖乖,你就不能起个长点儿的PO单名吗?");

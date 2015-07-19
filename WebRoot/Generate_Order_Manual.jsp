@@ -5,13 +5,13 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> product_type = null;
-	String[] displayKeyList = {"产品类型", "产品名称", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
+	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
+	List<String> product_type = null, vendorList = null;
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -34,6 +34,16 @@
 			if (hDBHandle.QueryDataBase(sql))
 			{
 				product_type = hDBHandle.GetAllStringValue("name");
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
+			
+			sql = "select * from vendor_info where storeroom='原材料库'";
+			if (hDBHandle.QueryDataBase(sql))
+			{
+				vendorList = hDBHandle.GetAllStringValue("vendor_name");
 			}
 			else
 			{
@@ -104,6 +114,23 @@
 						  	<td align="right">
 								<select name="product_name" id="product_name" style="width:100px">
 								  	<option value = "--请选择--">--请选择--</option>
+								</select>
+							</td>
+							<td align="center">
+								<select name="vendor_name" id="vendor_name" style="width:100px">
+									<option value = "--请选择--">--请选择--</option>
+								
+<%
+						if (vendorList != null)
+						{
+							for(int i = 0; i < vendorList.size(); i++)
+							{
+%>
+								  	<option value = <%= vendorList.get(i) %>><%=vendorList.get(i)%></option>
+<%
+							}
+						}
+%>
 								</select>
 							</td>
 							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" readonly></td>
@@ -213,7 +240,7 @@
 								}
 								if(5 == iColCount - iCol)
 								{
-									POCount += parseInt(data_list[iRow*iColCount + iCol + 3]);
+									POCount += parseInt(data_list[iRow*iColCount + 8]) - parseInt(data_list[iRow*iColCount + iCol + 3]);
 								}
 								tr.append(td);
 							}
@@ -235,12 +262,13 @@
 		function addordercolumn(obj)
 		{
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
+			var vendor = $("#vendor_name").find("option:selected").text();
 			if($("#OrderName").val()==""||$("#product_type").find("option:selected").text().indexOf("请选择")>=0||$("#product_name").find("option:selected").text().indexOf("请选择")>=0||$("#delivery_date").val().length != 8||$("#order_QTY").val()==""||parseInt($("#order_QTY").val()) <= 0)
 			{
 				alert("我说大姐,你这输入信息糊弄谁呢?");
 				return;
 			}
-			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
+			$.post("Ajax/Add_Order_Item_Ajax.jsp", {"vendor": vendor, "bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "order_QTY":$("#order_QTY").val(), "present":$("#present").val(), "order_name":order_name}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{
@@ -256,8 +284,9 @@
 		
 		function deleteRecord(obj)
 		{
+			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
 			var delID = obj.name;
-			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID}, function(data, textStatus)
+			$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID, "Order_Name":order_name, "Bar_Code":$("#bar_code").val()}, function(data, textStatus)
 			{
 				if (!(textStatus == "success"))
 				{
@@ -286,7 +315,7 @@
 		function CreatePO(obj)
 		{
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			location.href ="Generate_PO.jsp?OrderName="+order_name;
+			location.href ="List_Purchase_By_Order.jsp?Order_Name="+order_name;
 		}
 	</script>
   </body>

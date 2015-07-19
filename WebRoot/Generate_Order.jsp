@@ -104,7 +104,7 @@
 			var $po_select = $('#po_select');
 			$po_select.change(function()
 			{
-				var po_name = $po_select.find("option:selected").text();
+				var po_name = $.trim($po_select.find("option:selected").text());
 				if (po_name.indexOf("请选择") >= 0)
 				{
 					$("#display_page_po").hide();
@@ -122,7 +122,7 @@
 					$displayOrder.attr("border", 1);
 					$displayOrder.attr("align", "center");
 					$confirmOrder.attr("align", "center");
-					$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
+					$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":$.trim(po_name), "status":"0"}, function(data, textStatus)
 					{
 						if (textStatus == "success")
 						{

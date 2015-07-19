@@ -2,7 +2,7 @@
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "客户PO单名", "生产单名", "创建时间", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "操作"};
 	String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
 	List<List<String>> recordList = null;
 %>
@@ -79,6 +79,10 @@
 					else if("检验合格数" == displayList[iCol])
 					{
 						rtnRst += recordList.get(5).get(iRow) + "$";
+					}
+					else if("材料库存" == displayList[iCol])
+					{
+						rtnRst += hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage") + "$";
 					}
 					else if("客户PO单名" == displayList[iCol])
 					{

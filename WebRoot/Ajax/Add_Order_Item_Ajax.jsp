@@ -5,6 +5,7 @@
 %>
 <%
 	String rtnRst = "remove$";
+	String vendor = (String)request.getParameter("vendor");
 	String bar_code = (String)request.getParameter("bar_code");
 	String deliv_date = (String)request.getParameter("delivery_date");
 	String pro_qty = (String)request.getParameter("order_QTY");
@@ -17,7 +18,7 @@
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 		{
 			hDBHandle.CloseDatabase();
-			if (bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
+			if (vendor != null&&vendor != ""&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 			{
 				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
 				sql = "select * from product_order_record where Order_Name='" + order_name + "' and Bar_Code='" + bar_code + "'";
@@ -30,8 +31,27 @@
 				else
 				{
 					int tempQTY = hDBHandle.GetSingleInt("QTY");
-					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "'";
+					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "' WHERE Order_Name='" + order_name + "' and Bar_Code='" + bar_code + "'";
 					hDBHandle.execUpate(sql);
+				}
+				
+				String material_barcode = Integer.toString(Integer.parseInt(bar_code)-10000000);
+				int po_qty = iOrderQTY - hDBHandle.GetRepertoryByBarCode(material_barcode, "material_storage");
+				if (po_qty > 0)
+				{
+					sql = "select * from mb_material_po where po_name='" + order_name + "' and Bar_Code='" + material_barcode + "'";
+					if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+					{
+						hDBHandle.CloseDatabase();
+						sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + bar_code + "','" + vendor + "','" + order_name + "','" + Integer.toString(po_qty) + "', 'null')";
+						hDBHandle.execUpate(sql);
+					}
+					else
+					{
+						int tempQTY = hDBHandle.GetSingleInt("PO_QTY");
+						sql = "UPDATE mb_material_po SET PO_QTY='" + Integer.toString(tempQTY + po_qty) + "' WHERE po_name='" + order_name + "' and Bar_Code='" + material_barcode + "'";
+						hDBHandle.execUpate(sql);
+					}
 				}
 			}
 		}
