@@ -1,3 +1,4 @@
+<%@page import="org.apache.struts2.components.Else"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
@@ -84,22 +85,49 @@
 				}
 				else if ("缺料数量" == displayList[iCol])
 				{
-					rtnRst += Integer.toString(hDBHandle.GetMBMaterialPOQTY(strBarcode, po_name)) + "$";
-				}
-				else if ("操作" == displayList[iCol])
-				{
-					int po_count = iOrderQTY-iDelivQTY-iPro_storage-inProcess;
-					if (po_count <= 0)
+					if ((iOrderQTY-inProcess) > (iPro_storage+iMat_storage))
+					{
+						rtnRst += Integer.toString((iOrderQTY-inProcess)-(iPro_storage+iMat_storage)) + "$";
+					}
+					else
 					{
 						rtnRst += "0$";
 					}
-					else if(po_count < (iMat_storage-inProcess))
+				}
+				else if ("操作" == displayList[iCol])
+				{
+					int iOperationQTY = iOrderQTY - iPro_storage;
+					if (iDelivQTY == 0)
 					{
-						rtnRst += Integer.toString(po_count) + "$";
+						int po_count = iOperationQTY-inProcess;
+						if (po_count <= 0)
+						{
+							rtnRst += "0$";
+						}
+						else if(po_count < (iMat_storage-inProcess))
+						{
+							rtnRst += Integer.toString(po_count) + "$";
+						}
+						else if(po_count > (iMat_storage-inProcess))
+						{
+							rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
+						}
 					}
-					else if(po_count > (iMat_storage-inProcess))
+					else
 					{
-						rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
+						int po_count = iOrderQTY-iDelivQTY-iPro_storage;
+						if (po_count <= 0)
+						{
+							rtnRst += "0$";
+						}
+						else if(po_count < (iMat_storage-inProcess))
+						{
+							rtnRst += Integer.toString(po_count) + "$";
+						}
+						else if(po_count > (iMat_storage-inProcess))
+						{
+							rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
+						}
 					}
 				}
 			}
