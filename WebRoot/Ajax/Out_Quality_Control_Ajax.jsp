@@ -8,15 +8,16 @@
 	String rtnRst = "remove$";
 	String pro_id = request.getParameter("product_id");
 	String QTYOfStore = request.getParameter("PutInQTY");
+	String sql = "";
 	
 	if (pro_id != null && QTYOfStore != null)
 	{
 		int used_count = Integer.parseInt(QTYOfStore);
-		String sql = "select * from product_order_record where id='" + pro_id + "'";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+		String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "completeQTY", "OQC_QTY"};
+		List<List<String>> orderInfo = hDBHandle.GetProductOrderRecord(pro_id, orderRecordKey);
+		
+		if (orderInfo != null)
 		{
-			String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "completeQTY", "OQC_QTY"};
-			List<List<String>> orderInfo = hDBHandle.GetAllDBColumnsByList(orderRecordKey);
 			barcode = orderInfo.get(0).get(0);
 			ordername = orderInfo.get(1).get(0);
 			int iOrder_QTY = Integer.parseInt(orderInfo.get(2).get(0));
@@ -34,11 +35,10 @@
 				}
 				hDBHandle.execUpate(sql);
 				
-				sql = "select * from material_storage where Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) + "'";
 				String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
-				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+				List<List<String>> material_info_List = hDBHandle.GetMaterialStorage(barcode, materialKey);
+				if (material_info_List != null)
 				{
-					List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(materialKey);
 					for (int iCol = 0; iCol < material_info_List.get(0).size(); iCol++)
 					{
 						String batchLot =  material_info_List.get(0).get(iCol);
@@ -70,7 +70,7 @@
 				}
 				else
 				{
-					hDBHandle.CloseDatabase();
+					;
 				}
 			}
 			else
@@ -80,7 +80,7 @@
 		}
 		else
 		{
-			hDBHandle.CloseDatabase();
+			;
 		}
 	}
 	

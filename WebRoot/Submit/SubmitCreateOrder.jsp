@@ -23,26 +23,13 @@
 		
 		if (!appPOName.isEmpty())
 		{
-			int iCount = 1;
-			do
-			{
-				OrderName = "MB_" + createDate + "_" + appPOName + "_" + Integer.toString(iCount);
-				sql = "select * from product_order where Order_Name='" + OrderName + "'";
-				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
-				{
-					hDBHandle.CloseDatabase();
-					break;
-				}
-				hDBHandle.CloseDatabase();
-				iCount += 1;
-			}while(true);
+			OrderName = hDBHandle.GenOrderName("MB_" + createDate + "_" + appPOName);
 
-			sql = "select * from customer_po_record where po_name='" + appPOName + "' order by id asc";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
+			recordList = hDBHandle.GetCustomerPORecord(appPOName, sqlKeyList);
+			if (recordList != null)
 			{
 				int iUpdatePOStatusFlag = 0;
-				String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
@@ -76,7 +63,7 @@
 			}
 			else
 			{
-				hDBHandle.CloseDatabase();
+				;
 			}
 		}
 		response.sendRedirect("../Query_Order.jsp");

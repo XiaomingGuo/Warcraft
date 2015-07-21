@@ -651,5 +651,112 @@ public class DatabaseConn
 		}
 		return rtnRst;
 	}
+	
+	public String GenOrderName(String OrderHeader)
+	{
+		String orderName = "";
+		int iCount = 1;
+		do
+		{
+			orderName = OrderHeader + "_" + Integer.toString(iCount);
+			String sql = "select * from product_order where Order_Name='" + orderName + "'";
+			if (QueryDataBase(sql)&&GetRecordCount() <= 0)
+			{
+				CloseDatabase();
+				break;
+			}
+			CloseDatabase();
+			iCount += 1;
+		}while(true);
+		return orderName;
+	}
 
+	public List<List<String>> GetCustomerPORecord(String PO_Name, String[] KeyList)
+	{
+		List<List<String>> rtnRst = null;
+		String sql = "select * from customer_po_record where po_name='" + PO_Name + "' order by id asc";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			rtnRst = GetAllDBColumnsByList(KeyList);
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public List<List<String>> GetProductOrderRecord(String id, String[] KeyList)
+	{
+		List<List<String>> rtnRst = null;
+		String sql = "select * from product_order_record where id='" + id + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			rtnRst = GetAllDBColumnsByList(KeyList);
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public List<List<String>> GetMaterialStorage(String Barcode, String[] KeyList)
+	{
+		List<List<String>> rtnRst = null;
+		String usedBarcode = (Integer.parseInt(Barcode) >= 60000000)?Integer.toString(Integer.parseInt(Barcode)-10000000):Barcode;
+		String sql = "select * from material_storage where Bar_Code='" + usedBarcode + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			rtnRst = GetAllDBColumnsByList(KeyList);
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+
+	public boolean GetMaterialStorage(int count, String barcode)
+	{
+		String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
+		String usedBarcode = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
+		List<List<String>> material_info_List = GetMaterialStorage(usedBarcode, materialKey);
+		if (material_info_List != null)
+		{
+			int used_count = count;
+			for (int iCol = 0; iCol < material_info_List.get(0).size(); iCol++)
+			{
+				String batchLot =  material_info_List.get(0).get(iCol);
+				int sql_in_count = Integer.parseInt(material_info_List.get(1).get(iCol));
+				int sql_out_count = Integer.parseInt(material_info_List.get(2).get(iCol));
+				int recordCount = sql_in_count - sql_out_count;
+			
+				String sql = "";
+				if (recordCount >= used_count)
+				{
+					sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + usedBarcode +"' and Batch_Lot='" + batchLot +"'";
+					execUpate(sql);
+					if (recordCount == used_count)
+					{
+						MoveToExhaustedTable(usedBarcode, batchLot, "material_storage", "exhausted_material");
+					}
+					break;
+				}
+				else
+				{
+					sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + usedBarcode +"' and Batch_Lot='" + batchLot +"'";
+					execUpate(sql);
+					if (!MoveToExhaustedTable(usedBarcode, batchLot, "material_storage", "exhausted_material"))
+						continue;
+					used_count -= recordCount;
+				}
+			}
+		}
+		else
+		{
+			return false;
+		}
+		return true;
+	}
 }
