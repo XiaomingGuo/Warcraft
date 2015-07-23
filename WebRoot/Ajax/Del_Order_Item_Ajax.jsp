@@ -13,7 +13,7 @@
 	{
 		String sql = "delete from product_order_record where id='" + pro_id + "'";
 		hDBHandle.execUpate(sql);
-		sql = "delete from mb_material_po where po_name='" + Order_Name + "' and Bar_Code='" + Bar_Code + "'";
+		sql = "delete from mb_material_po where po_name='" + Order_Name + "' and Bar_Code='" + hDBHandle.GetUsedBarcode(Bar_Code, "mb_material_po") + "'";
 		hDBHandle.execUpate(sql);
 	}
 	out.write(rtnRst);

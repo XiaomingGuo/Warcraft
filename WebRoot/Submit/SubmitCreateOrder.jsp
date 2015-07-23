@@ -41,7 +41,7 @@
 					{
 						String strBarcode = recordList.get(0).get(iRow);
 						String strDeliDate = recordList.get(2).get(iRow);
-						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + strBarcode + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
+						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
 						hDBHandle.execUpate(sql);
 						sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
 						hDBHandle.execUpate(sql);

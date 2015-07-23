@@ -37,14 +37,14 @@
 					return;
 				}
 				storageName = "material_storage";
-				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
+				String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "'";
 				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
 					hDBHandle.execUpate(sql);
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + Integer.toString(Integer.parseInt(appBarcode) + 10000000) + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "', '" + appDescription + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "material_info") + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "', '" + appDescription + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else
@@ -61,12 +61,12 @@
 					return;
 				}
 
-				String sql = "select * from product_info where Bar_Code='" + appBarcode + "'";
+				String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "other_info") + "'";
 				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + appBarcode + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "other_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else
@@ -81,12 +81,12 @@
 			do
 			{
 				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
- 				String sql = "select * from "+storageName+" where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "' UNION select * from exhausted_" + storageName.split("_")[0] + " where Bar_Code='" + appBarcode + "' and Batch_Lot='" + batch_lot + "'";
+ 				String sql = "select * from "+storageName+" where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "' and Batch_Lot='" + batch_lot + "' UNION select * from exhausted_" + storageName.split("_")[0] + " where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "' and Batch_Lot='" + batch_lot + "'";
 				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name) VALUES ('" + appBarcode + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "')";
+					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name) VALUES ('" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "')";
 					hDBHandle.execUpate(sql);
 					break;
 				}

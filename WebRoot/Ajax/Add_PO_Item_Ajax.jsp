@@ -20,10 +20,10 @@
 			hDBHandle.CloseDatabase();
 			if (bar_code != null&&deliv_date != null&&cpo_qty != null&&vendorname != null)
 			{
-				sql = "select * from customer_po_record where bar_code='" + bar_code + "' and po_name='" + poname + "'";
+				sql = "select * from customer_po_record where Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "customer_po_record") + "' and po_name='" + poname + "'";
 				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 				{
-					sql = "INSERT INTO customer_po_record (Bar_Code, po_name, delivery_date, QTY, vendor, percent) VALUES ('" + bar_code + "','" + poname + "','" + deliv_date +"','" + cpo_qty + "','" + vendorname +"','" + percent + "')";
+					sql = "INSERT INTO customer_po_record (Bar_Code, po_name, delivery_date, QTY, vendor, percent) VALUES ('" + hDBHandle.GetUsedBarcode(bar_code, "customer_po_record") + "','" + poname + "','" + deliv_date +"','" + cpo_qty + "','" + vendorname +"','" + percent + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else

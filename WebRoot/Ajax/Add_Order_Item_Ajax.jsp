@@ -21,21 +21,21 @@
 			if (vendor != null&&vendor != ""&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 			{
 				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
-				sql = "select * from product_order_record where Order_Name='" + order_name + "' and Bar_Code='" + bar_code + "'";
+				sql = "select * from product_order_record where Order_Name='" + order_name + "' and Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "'";
 				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 				{
 					hDBHandle.CloseDatabase();
-					sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + bar_code + "','" + deliv_date + "','" + Integer.toString(iOrderQTY) + "','Internal_po','" + order_name + "')";
+					sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "','" + deliv_date + "','" + Integer.toString(iOrderQTY) + "','Internal_po','" + order_name + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else
 				{
 					int tempQTY = hDBHandle.GetSingleInt("QTY");
-					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "' WHERE Order_Name='" + order_name + "' and Bar_Code='" + bar_code + "'";
+					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "' WHERE Order_Name='" + order_name + "' and Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "'";
 					hDBHandle.execUpate(sql);
 				}
 				
-				String material_barcode = Integer.toString(Integer.parseInt(bar_code)-10000000);
+				String material_barcode = hDBHandle.GetUsedBarcode(bar_code, "mb_material_po");
 				int po_qty = iOrderQTY - hDBHandle.GetRepertoryByBarCode(material_barcode, "material_storage");
 				if (po_qty > 0)
 				{
@@ -43,7 +43,7 @@
 					if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
 					{
 						hDBHandle.CloseDatabase();
-						sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + bar_code + "','" + vendor + "','" + order_name + "','" + Integer.toString(po_qty) + "', 'null')";
+						sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + material_barcode + "','" + vendor + "','" + order_name + "','" + Integer.toString(po_qty) + "', 'null')";
 						hDBHandle.execUpate(sql);
 					}
 					else

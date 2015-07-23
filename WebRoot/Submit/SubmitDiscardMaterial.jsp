@@ -33,7 +33,7 @@
 			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "material_storage");
 			if (repertory_count >= used_count)
 			{
-				String sql = "select * from material_storage where Bar_Code='" + appBarcode +"'";
+				String sql = "select * from material_storage where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "material_storage") +"'";
 				if (hDBHandle.QueryDataBase(sql))
 				{
 					List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
@@ -45,7 +45,7 @@
 						int recordCount = sql_in_count - sql_out_count;
 						if (recordCount >= used_count)
 						{
-							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_in_count-used_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_in_count-used_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 							if (recordCount == used_count)
 							{
@@ -55,13 +55,13 @@
 						}
 						else
 						{
-							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_out_count) + "' WHERE Bar_Code='" + appBarcode +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_out_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
 							used_count -= recordCount;
 						}
 					}
-					sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, QTY, reason) VALUE ('" + appOrderName + "', '" + appBarcode + "', '" + appProduct_QTY + "', '" + appreason +"')";
+					sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, QTY, reason) VALUE ('" + appOrderName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "discard_material_record") + "', '" + appProduct_QTY + "', '" + appreason +"')";
 					hDBHandle.execUpate(sql);
 					response.sendRedirect("../Discard_Material.jsp");
 				}

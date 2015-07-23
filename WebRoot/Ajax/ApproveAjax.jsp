@@ -12,7 +12,7 @@
 	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode, "other_storage");
 	if (repertory_count >= used_count)
 	{
-		String sql = "select * from other_storage where Bar_Code='" + barcode +"'";
+		String sql = "select * from other_storage where Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
 			List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
@@ -24,7 +24,7 @@
 				int recordCount = sql_in_count - sql_out_count;
 				if (recordCount >= used_count)
 				{
-					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"' and Batch_Lot='" + batchLot +"'";
 					hDBHandle.execUpate(sql);
 					if (recordCount == used_count)
 					{
@@ -36,7 +36,7 @@
 				}
 				else
 				{
-					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + barcode +"' and Batch_Lot='" + batchLot +"'";
+					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"' and Batch_Lot='" + batchLot +"'";
 					hDBHandle.execUpate(sql);
 					if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other"))
 						continue;
@@ -45,7 +45,7 @@
 					{
 						String[] keyWord = {"proposer", "user_name"};
 						List<List<String>> tempList = hDBHandle.GetAllDBColumnsByList(keyWord);
-						sql = "INSERT INTO other_record (Bar_Code, Batch_Lot, proposer, QTY, user_name, isApprove, Merge_Mark) VALUES ('" + barcode + "', '" + batchLot + "', '" + tempList.get(0).get(0) + "', '" + Integer.toString(recordCount) + "', '" + tempList.get(1).get(0) + "', '1', '" + recordID + "')";
+						sql = "INSERT INTO other_record (Bar_Code, Batch_Lot, proposer, QTY, user_name, isApprove, Merge_Mark) VALUES ('" + hDBHandle.GetUsedBarcode(barcode, "other_storage") + "', '" + batchLot + "', '" + tempList.get(0).get(0) + "', '" + Integer.toString(recordCount) + "', '" + tempList.get(1).get(0) + "', '1', '" + recordID + "')";
 						hDBHandle.execUpate(sql);
 						used_count -= recordCount;
 					}

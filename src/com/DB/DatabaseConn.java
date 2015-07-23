@@ -265,10 +265,28 @@ public class DatabaseConn
 		return GetIN_QTYByBarCode(barcode, storage_name) - GetOUT_QTYByBarCode(barcode, storage_name);
 	}
 
+	public String GetUsedBarcode(String barcode, String storage_name)
+	{
+		String rtnRst = null;
+		if (storage_name.indexOf("material") >= 0)
+		{
+			rtnRst = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
+		}
+		else if(storage_name.indexOf("product") >= 0)
+		{
+			rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
+		}
+		else
+		{
+			rtnRst = barcode;
+		}
+		return rtnRst;
+	}
+	
 	public int GetIN_QTYByBarCode(String barcode, String storage_name)
 	{
 		int rtnRst = 0;
-		String sql = "select IN_QTY from "+storage_name+" where Bar_Code='" + barcode +"'";
+		String sql = "select IN_QTY from "+storage_name+" where Bar_Code='" + GetUsedBarcode(barcode, storage_name) +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -294,7 +312,7 @@ public class DatabaseConn
 	public int GetOUT_QTYByBarCode(String barcode, String storage_name)
 	{
 		int rtnRst = 0;
-		String sql = "select OUT_QTY from "+storage_name+" where Bar_Code='" + barcode +"'";
+		String sql = "select OUT_QTY from "+storage_name+" where Bar_Code='" + GetUsedBarcode(barcode, storage_name) +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -320,7 +338,7 @@ public class DatabaseConn
 	public String GetNameByBarcode(String barcode)
 	{
 		String rtnRst = "";
-		String sql = "select name from product_info where Bar_Code='" + barcode +"'";
+		String sql = "select name from product_info where Bar_Code='" + GetUsedBarcode(barcode, "product_storage") +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -342,7 +360,7 @@ public class DatabaseConn
 	public double GetPerWeigthByBarcode(String barcode)
 	{
 		double rtnRst = 0.0;
-		String sql = "select weight from product_info where Bar_Code='" + barcode +"'";
+		String sql = "select weight from product_info where Bar_Code='" + GetUsedBarcode(barcode, "product_storage") +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -386,7 +404,7 @@ public class DatabaseConn
 	public double GetPrice_Pre_Unit(String bar_code, String Batch_Lot)
 	{
 		double rtnRst = 0.0;
-		String sql = "select Price_Per_Unit from material_storage where Bar_Code='" + bar_code +"' and Batch_Lot='" + Batch_Lot + "'";
+		String sql = "select Price_Per_Unit from material_storage where Bar_Code='" + GetUsedBarcode(bar_code, "material_storage") +"' and Batch_Lot='" + Batch_Lot + "'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -408,7 +426,7 @@ public class DatabaseConn
 	public double GetProductRepertoryPrice(String barcode, String storage)
 	{
 		double rtnRst = 0.0;
-		String sql = "select * from " + storage + " where Bar_Code='" + barcode +"' and IN_QTY != OUT_QTY";
+		String sql = "select * from " + storage + " where Bar_Code='" + GetUsedBarcode(barcode, storage) +"' and IN_QTY != OUT_QTY";
 		String[] keyWord = {"IN_QTY", "OUT_QTY", "Price_Per_Unit"};
 		if (QueryDataBase(sql))
 		{
@@ -436,9 +454,9 @@ public class DatabaseConn
 	{
 		boolean rtnRst = true;
 		String sql = null;
-		sql = "INSERT INTO " + toTable + " SELECT * FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
+		sql = "INSERT INTO " + toTable + " SELECT * FROM " + fromTable + " WHERE Bar_Code='" + GetUsedBarcode(barcode, toTable) +"' AND Batch_Lot='" + batchLot +"'";
 		rtnRst &= execUpate(sql);
-		sql = "DELETE FROM " + fromTable + " WHERE Bar_Code='" + barcode +"' AND Batch_Lot='" + batchLot +"'";
+		sql = "DELETE FROM " + fromTable + " WHERE Bar_Code='" + GetUsedBarcode(barcode, fromTable) +"' AND Batch_Lot='" + batchLot +"'";
 		rtnRst &= execUpate(sql);
 		return rtnRst;
 	}
@@ -446,16 +464,16 @@ public class DatabaseConn
 	public int TransferMaterialToProduct(String barcode, String batchLot, String OrderName, int used_count)
 	{
 		int rtnRst = 0;
-		String sql = "select * from product_storage where Bar_Code='" + barcode + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
+		String sql = "select * from product_storage where Bar_Code='" + GetUsedBarcode(barcode, "product_storage") + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
 			int storageQTY = GetSingleInt("IN_QTY");
-			sql= "UPDATE product_storage SET IN_QTY='" + Integer.toString(storageQTY+used_count) + "' WHERE Bar_Code='" + barcode + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
+			sql= "UPDATE product_storage SET IN_QTY='" + Integer.toString(storageQTY+used_count) + "' WHERE Bar_Code='" + GetUsedBarcode(barcode, "product_storage") + "' and Batch_Lot='" + batchLot + "' and Order_Name='" + OrderName + "'";
 		}
 		else
 		{
 			CloseDatabase();
-			sql = "INSERT INTO product_storage (Bar_Code, Batch_Lot, Order_Name, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + barcode + "', '" + batchLot + "', '" + OrderName + "', '" + Integer.toString(used_count) + "', '0', '0')";
+			sql = "INSERT INTO product_storage (Bar_Code, Batch_Lot, Order_Name, IN_QTY, Price_Per_Unit, Total_Price) VALUES ('" + GetUsedBarcode(barcode, "product_storage") + "', '" + batchLot + "', '" + OrderName + "', '" + Integer.toString(used_count) + "', '0', '0')";
 		}
 		execUpate(sql);
 		return rtnRst;
@@ -464,7 +482,7 @@ public class DatabaseConn
 	public String GetTypeByBarcode(String barcode)
 	{
 		String rtnRst = "";
-		String sql = "select * from product_info where Bar_Code='" + barcode + "'";
+		String sql = "select * from product_info where Bar_Code='" + GetUsedBarcode(barcode, "product_storage") + "'";
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
 			rtnRst = GetSingleString("product_type");
@@ -479,7 +497,7 @@ public class DatabaseConn
 	public int GetMBMaterialPOQTY(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		String sql = "select PO_QTY from mb_material_po where Bar_Code='" + barcode +"' and po_name='" + po_name + "'";
+		String sql = "select PO_QTY from mb_material_po where Bar_Code='" + GetUsedBarcode(barcode, "mb_material_po") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			List<String> po_Qty_List = GetAllStringValue("PO_QTY");
@@ -498,7 +516,7 @@ public class DatabaseConn
 	public int GetDiscardMaterialQTY(String barcode, String order_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from discard_material_record where Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Order_Name='" + order_name + "'";
+		String sql = "select QTY from discard_material_record where Bar_Code='" + GetUsedBarcode(barcode, "discard_material_record") +"' and Order_Name='" + order_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			List<String> Qty_List = GetAllStringValue("QTY");
@@ -517,7 +535,7 @@ public class DatabaseConn
 	public String GetPOInfo(String barcode, String po_name, String keyWord)
 	{
 		String rtnRst = "";
-		String sql = "select * from customer_po_record where Bar_Code='" + barcode + "' and po_name='" + po_name + "'";
+		String sql = "select * from customer_po_record where Bar_Code='" + GetUsedBarcode(barcode, "customer_po_record") + "' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
 			rtnRst = GetSingleString(keyWord);
@@ -532,7 +550,7 @@ public class DatabaseConn
 	public int GetInProcessQty(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from product_order_record where Bar_Code='" + barcode +"' and po_name='" + po_name + "'";
+		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			List<String> po_Qty_List = GetAllStringValue("QTY");
@@ -551,7 +569,7 @@ public class DatabaseConn
 	public int GetCompleteQty(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from product_order_record where Bar_Code='" + barcode +"' and po_name='" + po_name + "'";
+		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			List<String> po_Qty_List = GetAllStringValue("QTY");
@@ -570,7 +588,7 @@ public class DatabaseConn
 	public String GetPONameFromOrderRecord(String barcode, String orderName)
 	{
 		String rtnRst = "";
-		String sql = "select po_name from product_order_record where Bar_Code='" + barcode +"' and Order_Name='" + orderName + "'";
+		String sql = "select po_name from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and Order_Name='" + orderName + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			rtnRst = GetSingleString("po_name");
@@ -585,7 +603,7 @@ public class DatabaseConn
 	public String GetDescByBarcode(String barcode)
 	{
 		String rtnRst = "";
-		String sql = "select description from product_info where Bar_Code='" + barcode +"'";
+		String sql = "select description from product_info where Bar_Code='" + GetUsedBarcode(barcode, "other_storage") +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -607,7 +625,7 @@ public class DatabaseConn
 	public int GetShipQTYByBarcode(String barcode, String Delivery_Date)
 	{
 		int rtnRst = 0;
-		String sql = "select ship_QTY from shipping_record where Bar_Code='" + barcode +"' and print_mark='" + Delivery_Date + "'";
+		String sql = "select ship_QTY from shipping_record where Bar_Code='" + GetUsedBarcode(barcode, "shipping_record") +"' and print_mark='" + Delivery_Date + "'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -701,11 +719,10 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public List<List<String>> GetMaterialStorage(String Barcode, String[] KeyList)
+	public List<List<String>> GetMaterialStorage(String barcode, String[] KeyList)
 	{
 		List<List<String>> rtnRst = null;
-		String usedBarcode = (Integer.parseInt(Barcode) >= 60000000)?Integer.toString(Integer.parseInt(Barcode)-10000000):Barcode;
-		String sql = "select * from material_storage where Bar_Code='" + usedBarcode + "'";
+		String sql = "select * from material_storage where Bar_Code='" + GetUsedBarcode(barcode, "material_storage") + "'";
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
 			rtnRst = GetAllDBColumnsByList(KeyList);
@@ -720,7 +737,7 @@ public class DatabaseConn
 	public boolean GetMaterialStorage(int count, String barcode)
 	{
 		String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
-		String usedBarcode = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
+		String usedBarcode = GetUsedBarcode(barcode, "material_storage");
 		List<List<String>> material_info_List = GetMaterialStorage(usedBarcode, materialKey);
 		if (material_info_List != null)
 		{

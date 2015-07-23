@@ -146,9 +146,13 @@
 										var td = $("<td></td>");
 										if (0 == iColCount - iCol)
 										{
-											if(parseInt(data_list[iRow*iColCount + 11])-parseInt(data_list[iRow*iColCount + 10])-parseInt(data_list[iRow*iColCount + 12])-parseInt(data_list[iRow*iColCount + 13]) > 0)
+											if(data_list[iRow*iColCount + iCol + 2] > 0)
 											{
 												td.append("<input type='text' name='" + iRow + "_QTY' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
+											}
+											else if (data_list[iRow*iColCount + iCol + 2] < 0)
+											{
+												td.append("<label>缺料中</label>");
 											}
 											else
 											{

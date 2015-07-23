@@ -25,7 +25,7 @@
 		//product_type Database query
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && !appProduct_QTY.isEmpty() && !Total_QTY.isEmpty())
 		{
-			String sql = "INSERT INTO other_record (proposer, Bar_Code, user_name, QTY) VALUES ('" + proposerName + "', '" + appBarcode + "', '" + appUserName + "', " + appProduct_QTY + ")";
+			String sql = "INSERT INTO other_record (proposer, Bar_Code, user_name, QTY) VALUES ('" + proposerName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "other_record") + "', '" + appUserName + "', " + appProduct_QTY + ")";
 			if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) >= 0)
 			{
 				hDBHandle.execUpate(sql);

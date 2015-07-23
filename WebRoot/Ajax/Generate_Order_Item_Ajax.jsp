@@ -96,7 +96,22 @@
 				}
 				else if ("操作" == displayList[iCol])
 				{
-					int iOperationQTY = iOrderQTY - iPro_storage;
+					if (iMat_storage + iPro_storage == 0)
+					{
+						rtnRst += (inProcess != iOrderQTY)?"-1$":"0$";
+					}
+					else
+					{
+						if(inProcess == 0)
+						{
+							rtnRst += Integer.toString(iMat_storage + iPro_storage - iDelivQTY - iPro_storage) + "$";;
+						}
+						else
+						{
+							
+						}
+					}
+					/*int iOperationQTY = iOrderQTY - iPro_storage;
 					if (iDelivQTY == 0)
 					{
 						int po_count = iOperationQTY-inProcess;
@@ -128,7 +143,7 @@
 						{
 							rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
 						}
-					}
+					}*/
 				}
 			}
 		}

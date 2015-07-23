@@ -9,7 +9,7 @@
 	
 	if (barcode != null)
 	{
-		String sql = "select * from product_info where Bar_Code='" + barcode + "'";
+		String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "product_info") + "'";
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
 			rtnRst += "1$";

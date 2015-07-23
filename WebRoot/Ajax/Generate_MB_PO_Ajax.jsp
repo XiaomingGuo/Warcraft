@@ -20,7 +20,7 @@
 				for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String strBarcode = recordList.get(0).get(iRow);
-					String strMaterialBarcode = Integer.toString(Integer.parseInt(strBarcode)-10000000);
+					String strMaterialBarcode = hDBHandle.GetUsedBarcode(strBarcode, "mb_material_po");
 					String strVendor = recordList.get(1).get(iRow);
 					int iPOCount = Integer.parseInt(recordList.get(2).get(iRow));
 					int ipercent = Integer.parseInt(recordList.get(3).get(iRow));

@@ -48,7 +48,7 @@
 					
 						if (recordCount >= used_count)
 						{
-							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
 							if (recordCount == used_count)
 							{
@@ -59,9 +59,9 @@
 						}
 						else
 						{
-							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(recordCount) + "' WHERE Bar_Code='" + Integer.toString(Integer.parseInt(barcode)-10000000) +"' and Batch_Lot='" + batchLot +"'";
+							sql= "UPDATE material_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
 							hDBHandle.execUpate(sql);
-							if (!hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material"))
+							if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "material_storage", "exhausted_material"))
 								continue;
 							hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, recordCount);
 							used_count -= recordCount;
