@@ -776,4 +776,23 @@ public class DatabaseConn
 		}
 		return true;
 	}
+	
+/*	public int GetUncompleteOrderRecord(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			List<String> po_Qty_List = GetAllStringValue("QTY");
+			for (int i = 0; i < po_Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(i));
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}*/
 }

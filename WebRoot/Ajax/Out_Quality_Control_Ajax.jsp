@@ -52,7 +52,7 @@
 							hDBHandle.execUpate(sql);
 							if (recordCount == used_count)
 							{
-								hDBHandle.MoveToExhaustedTable(Integer.toString(Integer.parseInt(barcode)-10000000), batchLot, "material_storage", "exhausted_material");
+								hDBHandle.MoveToExhaustedTable(barcode, batchLot, "material_storage", "exhausted_material");
 							}
 							hDBHandle.TransferMaterialToProduct(barcode, batchLot, ordername, used_count);
 							break;

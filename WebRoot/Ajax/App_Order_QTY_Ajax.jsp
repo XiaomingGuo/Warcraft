@@ -20,7 +20,7 @@
 		hDBHandle.CloseDatabase();
 	}
 	iProRepertory = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
-	iMatRepertory = hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage");
+	iMatRepertory = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage");
 	rtnRst += strBarcode + "$";
 	rtnRst += Integer.toString(iProRepertory) + "$";
 	rtnRst += Integer.toString(iMatRepertory) + "$";

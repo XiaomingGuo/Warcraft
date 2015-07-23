@@ -82,7 +82,7 @@
 					}
 					else if("材料库存" == displayList[iCol])
 					{
-						rtnRst += hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage") + "$";
+						rtnRst += hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage") + "$";
 					}
 					else if("客户PO单名" == displayList[iCol])
 					{

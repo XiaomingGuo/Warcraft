@@ -70,7 +70,7 @@
 					}
 					else if ("物料库存" == displayList[iCol])
 					{
-						iMat_storage = hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(strBarcode)-10000000), "material_storage");
+						iMat_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage");
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
 					else if ("采购量" == displayList[iCol])
