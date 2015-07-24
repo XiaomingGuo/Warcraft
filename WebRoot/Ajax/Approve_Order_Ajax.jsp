@@ -1,3 +1,4 @@
+<%@page import="org.apache.struts2.components.Else"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
@@ -6,21 +7,37 @@
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name");
-	List<String> idList = null;
 	
 	if (order_name != null||order_name.indexOf("生产单号") < 0)
 	{
-		String sql= "select id from product_order_record where Order_Name='"+order_name+"'";
+		String sql= "select * from product_order_record where Order_Name='"+order_name+"'";
 		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 		{
-			idList = hDBHandle.GetAllStringValue("id");
-			for (int index = 0; index < idList.size(); index++)
+			String[] keyList = {"id", "Bar_Code", "QTY"};
+			List<List<String>> recordList = hDBHandle.GetAllDBColumnsByList(keyList);
+			boolean isApprove = true;
+			if (recordList != null)
 			{
-				sql = "UPDATE product_order_record SET status=1 where id='" + idList.get(index) + "'";
-				hDBHandle.execUpate(sql);
+				for (int index = 0; index < recordList.get(0).size(); index++)
+				{
+					if (hDBHandle.GetRepertoryByBarCode(recordList.get(1).get(index), "material_storage") >= Integer.parseInt(recordList.get(2).get(index)))
+					{
+						sql = "UPDATE product_order_record SET status=1 where id='" + recordList.get(0).get(index) + "'";
+						hDBHandle.execUpate(sql);
+					}
+					else
+					{
+						rtnRst += "error:原材料库存不足不能生产!$";
+						isApprove = false;
+						break;
+					}
+				}
+				if (isApprove)
+				{
+					sql = "UPDATE product_order SET status=1 where Order_Name='" + order_name + "'";
+					hDBHandle.execUpate(sql);
+				}
 			}
-			sql = "UPDATE product_order SET status=1 where Order_Name='" + order_name + "'";
-			hDBHandle.execUpate(sql);
 		}
 		else
 		{

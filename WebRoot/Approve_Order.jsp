@@ -156,9 +156,9 @@
 			var value = $("#TitleName").html();
 			$.post("Ajax/Approve_Order_Ajax.jsp", {"order_name":value}, function(data, textStatus)
 			{
-				if (!(textStatus == "success"))
+				if (!(textStatus == "success")||data.indexOf("error") >= 0)
 				{
-					alert(data);
+					alert(data.split("$")[1]);
 				}
 				location.reload();
 			});
