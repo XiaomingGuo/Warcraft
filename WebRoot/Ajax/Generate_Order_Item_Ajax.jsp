@@ -80,7 +80,8 @@
 				}
 				else if ("物料库存" == displayList[iCol])
 				{
-					iMat_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage")-hDBHandle.GetUncompleteOrderRecord(strBarcode, po_name);
+					int tempQTY = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage")-hDBHandle.GetUncompleteOrderRecord(strBarcode, po_name);
+					iMat_storage = (tempQTY > 0)?tempQTY:0;
 					rtnRst += Integer.toString(iMat_storage) + "$";
 				}
 				else if ("缺料数量" == displayList[iCol])
@@ -96,54 +97,29 @@
 				}
 				else if ("操作" == displayList[iCol])
 				{
-					if (iMat_storage + iPro_storage == 0)
+					int operationQTY = iOrderQTY - iPro_storage;
+					if(operationQTY > 0)
 					{
-						rtnRst += (inProcess != iOrderQTY)?"-1$":"0$";
-					}
-					else
-					{
-						if(inProcess == 0)
+						if(operationQTY > iMat_storage)
 						{
-							rtnRst += Integer.toString(iMat_storage + iPro_storage - iDelivQTY - iPro_storage) + "$";;
+							if (iMat_storage > 0)
+							{
+								rtnRst += Integer.toString(iMat_storage) + "$";
+							}
+							else
+							{
+								rtnRst += "-1$";
+							}
 						}
 						else
 						{
-							
-						}
-					}
-					/*int iOperationQTY = iOrderQTY - iPro_storage;
-					if (iDelivQTY == 0)
-					{
-						int po_count = iOperationQTY-inProcess;
-						if (po_count <= 0)
-						{
-							rtnRst += "0$";
-						}
-						else if(po_count < (iMat_storage-inProcess))
-						{
-							rtnRst += Integer.toString(po_count) + "$";
-						}
-						else if(po_count > (iMat_storage-inProcess))
-						{
-							rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
+							rtnRst += Integer.toString(operationQTY) + "$";;
 						}
 					}
 					else
 					{
-						int po_count = iOrderQTY-iDelivQTY-iPro_storage;
-						if (po_count <= 0)
-						{
-							rtnRst += "0$";
-						}
-						else if(po_count < (iMat_storage-inProcess))
-						{
-							rtnRst += Integer.toString(po_count) + "$";
-						}
-						else if(po_count > (iMat_storage-inProcess))
-						{
-							rtnRst += Integer.toString(iMat_storage-inProcess) + "$";
-						}
-					}*/
+						rtnRst += "0$";
+					}
 				}
 			}
 		}

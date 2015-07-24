@@ -572,7 +572,7 @@ public class DatabaseConn
 		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
-			List<String> po_Qty_List = GetAllStringValue("QTY");
+			List<String> po_Qty_List = GetAllStringValue("OQC_QTY");
 			for (int i = 0; i < po_Qty_List.size(); i++)
 			{
 				rtnRst += Integer.parseInt(po_Qty_List.get(i));
@@ -777,16 +777,17 @@ public class DatabaseConn
 		return true;
 	}
 	
-/*	public int GetUncompleteOrderRecord(String barcode, String po_name)
+	public int GetUncompleteOrderRecord(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
+		String sql = "select * from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
-			List<String> po_Qty_List = GetAllStringValue("QTY");
-			for (int i = 0; i < po_Qty_List.size(); i++)
+			String[] keyList = {"QTY", "OQC_QTY"};
+			List<List<String>> po_Qty_List = GetAllDBColumnsByList(keyList);
+			for (int i = 0; i < po_Qty_List.get(0).size(); i++)
 			{
-				rtnRst += Integer.parseInt(po_Qty_List.get(i));
+				rtnRst += Integer.parseInt(po_Qty_List.get(0).get(i))-Integer.parseInt(po_Qty_List.get(1).get(i));
 			}
 		}
 		else
@@ -794,5 +795,26 @@ public class DatabaseConn
 			CloseDatabase();
 		}
 		return rtnRst;
-	}*/
+	}
+	
+	public int GetTotalOrderQTY(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		String sql = "select * from customer_po_record where Bar_Code='" + GetUsedBarcode(barcode, "customer_po_record") +"' and po_name='" + po_name + "'";
+		if (QueryDataBase(sql)&&GetRecordCount() > 0)
+		{
+			String[] keyList = {"QTY", "percent"};
+			List<List<String>> po_Qty_List = GetAllDBColumnsByList(keyList);
+			for (int i = 0; i < po_Qty_List.get(0).size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(0).get(i))*(100+Integer.parseInt(po_Qty_List.get(1).get(i)))/100;
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+
 }
