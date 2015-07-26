@@ -81,7 +81,7 @@
 	  				<h1>
 				  		<label>生产单号:</label>
 				  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
-				  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-P015-05-06157" style="width:200px">
+				  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-" style="width:200px">
 			  		</h1>
 			    	<table align="center" border="1">
 	    				<tr>

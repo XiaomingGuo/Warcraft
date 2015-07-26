@@ -18,12 +18,12 @@
 			boolean isApprove = true;
 			if (recordList != null)
 			{
+				List<String> sqlList = new ArrayList<String>();
 				for (int index = 0; index < recordList.get(0).size(); index++)
 				{
 					if (hDBHandle.GetRepertoryByBarCode(recordList.get(1).get(index), "material_storage") >= Integer.parseInt(recordList.get(2).get(index)))
 					{
-						sql = "UPDATE product_order_record SET status=1 where id='" + recordList.get(0).get(index) + "'";
-						hDBHandle.execUpate(sql);
+						sqlList.add("UPDATE product_order_record SET status=1 where id='" + recordList.get(0).get(index) + "'");
 					}
 					else
 					{
@@ -34,6 +34,10 @@
 				}
 				if (isApprove)
 				{
+					for(int idx = 0; idx < sqlList.size(); idx++)
+					{
+						hDBHandle.execUpate(sqlList.get(idx));
+					}
 					sql = "UPDATE product_order SET status=1 where Order_Name='" + order_name + "'";
 					hDBHandle.execUpate(sql);
 				}

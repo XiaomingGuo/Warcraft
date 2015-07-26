@@ -113,7 +113,7 @@
 				var order_name=$(this).html();
 				var $OrderBlock = $("#OrderBlock");
 				$("#TitleName").html(order_name);
-				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
+				$.post("Ajax/Query_Approve_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{

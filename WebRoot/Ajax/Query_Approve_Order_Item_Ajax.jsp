@@ -82,15 +82,7 @@
 					}
 					else if("材料库存" == displayList[iCol])
 					{
-						int iMaterialQTY = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage") - hDBHandle.GetUncompleteOrderRecord(strBarcode);
-						if (iMaterialQTY < 0)
-						{
-							rtnRst += "0$";
-						}
-						else
-						{
-							rtnRst += iMaterialQTY + "$";
-						}
+						rtnRst += hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage") + "$";
 					}
 					else if("客户PO单名" == displayList[iCol])
 					{

@@ -80,7 +80,7 @@
 				}
 				else if ("物料库存" == displayList[iCol])
 				{
-					int tempQTY = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage")-hDBHandle.GetUncompleteOrderRecord(strBarcode, po_name);
+					int tempQTY = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage")-hDBHandle.GetUncompleteOrderRecord(strBarcode);
 					iMat_storage = (tempQTY > 0)?tempQTY:0;
 					rtnRst += Integer.toString(iMat_storage) + "$";
 				}

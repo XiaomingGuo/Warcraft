@@ -777,10 +777,10 @@ public class DatabaseConn
 		return true;
 	}
 	
-	public int GetUncompleteOrderRecord(String barcode, String po_name)
+	public int GetUncompleteOrderRecord(String barcode)
 	{
 		int rtnRst = 0;
-		String sql = "select * from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
+		String sql = "select * from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and status<5";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
 			String[] keyList = {"QTY", "OQC_QTY"};

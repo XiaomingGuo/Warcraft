@@ -29,6 +29,8 @@
 			{
 				int iUpdatePOStatusFlag = 0;
 				OrderName = hDBHandle.GenOrderName("MB_" + createDate + "_" + appPOName);
+				sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
+				hDBHandle.execUpate(sql);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
@@ -37,8 +39,6 @@
 						String strBarcode = recordList.get(0).get(iRow);
 						String strDeliDate = recordList.get(2).get(iRow);
 						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
-						hDBHandle.execUpate(sql);
-						sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
 						hDBHandle.execUpate(sql);
 						int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
 						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
@@ -57,6 +57,8 @@
 				{
 					iUpdatePOStatusFlag = 0;
 					OrderName = hDBHandle.GenOrderName("MB_" + createDate + "_" + appPOName);
+					sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
+					hDBHandle.execUpate(sql);
 					for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 					{
 						String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
@@ -68,8 +70,6 @@
 							if(tempOrderQty > 0)
 							{
 								sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + Integer.toString(tempOrderQty) + "','" + appPOName + "','" + OrderName + "')";
-								hDBHandle.execUpate(sql);
-								sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
 								hDBHandle.execUpate(sql);
 								int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
 								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
