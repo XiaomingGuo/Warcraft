@@ -140,7 +140,7 @@
 %>
 								</select>
 							</td>
-							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" readonly></td>
+							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onkeydown="if (event.keyCode == 13) InputBarcode();"></td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:60px" readonly></td>
@@ -177,7 +177,7 @@
 						var pro_list = data.split("$");
 						for (var i = 1; i < pro_list.length - 1; i++)
 						{
-							var newOption = $("<option>" + pro_list[i] + "</option>");
+							var newOption = $("<option value=" + pro_list[i] + ">" + pro_list[i] + "</option>");
 							$(newOption).val(pro_list[i]);
 							$product_name.append(newOption);
 						}
@@ -340,6 +340,27 @@
 		{
 			var po_name = $("#POName").val();
 			location.href ="List_Purchase.jsp?PO_Name="+po_name;
+		}
+		
+		function InputBarcode(obj)
+		{
+			$("#product_name").empty();
+			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#bar_code").val()}, function(data, textStatus)
+			{
+				if (textStatus == "success" && data.indexOf("error") < 0)
+				{
+					var proInfoList = data.split("$");
+					$("#product_type").val(proInfoList[1]);
+					var newOption = $("<option>" + proInfoList[2] + "</option>");
+					$(newOption).val(proInfoList[2]);
+					$("#product_name").append(newOption);
+					$("#product_name").change();
+				}
+				else
+				{
+					alert(data);
+				}
+			});
 		}
 	</script>
   </body>

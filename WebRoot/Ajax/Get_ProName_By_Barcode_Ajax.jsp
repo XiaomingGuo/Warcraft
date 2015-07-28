@@ -5,14 +5,15 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String po_name = request.getParameter("po_name");
 	String barcode = request.getParameter("Bar_Code");
 	if(barcode.length() == 8)
 	{
+		rtnRst += hDBHandle.GetTypeByBarcode(barcode) + "$";
 		rtnRst += hDBHandle.GetNameByBarcode(barcode) + "$";
-		int iRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "product_storage");
-		rtnRst += hDBHandle.GetPOInfo(barcode, po_name, "") + "$";
-		rtnRst += Integer.toString(iRepertory) + "$";
+		int iProRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "product_storage");
+		rtnRst += Integer.toString(iProRepertory) + "$";
+		int iMatRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "material_storage");
+		rtnRst += Integer.toString(iMatRepertory) + "$";
 	}
 	else
 	{
