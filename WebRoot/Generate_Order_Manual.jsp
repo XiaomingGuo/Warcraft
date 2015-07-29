@@ -321,20 +321,27 @@
 		function InputBarcode(obj)
 		{
 			$("#product_name").empty();
-			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#bar_code").val()}, function(data, textStatus)
+			var barcode = $("#bar_code").val();
+			if(barcode == null||barcode == "" || barcode.length != 8)
+			{
+				alert("八码的内容和位数不符合要求");
+				$("#bar_code").val("");
+				return;
+			}
+			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":barcode}, function(data, textStatus)
 			{
 				if (textStatus == "success" && data.indexOf("error") < 0)
 				{
 					var proInfoList = data.split("$");
-					$("#product_type").val(proInfoList[1]);
-					var newOption = $("<option>" + proInfoList[2] + "</option>");
-					$(newOption).val(proInfoList[2]);
+					$("#product_type").val(proInfoList[2]);
+					var newOption = $("<option>" + proInfoList[3] + "</option>");
+					$(newOption).val(proInfoList[3]);
 					$("#product_name").append(newOption);
 					$("#product_name").change();
 				}
 				else
 				{
-					alert(data);
+					alert(data.split("$")[1]);
 				}
 			});
 		}

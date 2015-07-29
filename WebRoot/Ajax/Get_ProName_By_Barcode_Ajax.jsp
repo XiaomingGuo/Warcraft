@@ -1,3 +1,4 @@
+<%@page import="org.apache.struts2.components.Else"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
@@ -8,16 +9,23 @@
 	String barcode = request.getParameter("Bar_Code");
 	if(barcode.length() == 8)
 	{
-		rtnRst += hDBHandle.GetTypeByBarcode(barcode) + "$";
-		rtnRst += hDBHandle.GetNameByBarcode(barcode) + "$";
-		int iProRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "product_storage");
-		rtnRst += Integer.toString(iProRepertory) + "$";
-		int iMatRepertory = hDBHandle.GetRepertoryByBarCode(barcode, "material_storage");
-		rtnRst += Integer.toString(iMatRepertory) + "$";
+		String proType = hDBHandle.GetTypeByBarcode(barcode);
+		String storeroom = hDBHandle.GetStoreroomByType(proType);
+		String proName = hDBHandle.GetNameByBarcode(barcode);
+		if (!proType.isEmpty() && !proName.isEmpty())
+		{
+			rtnRst += storeroom + "$";
+			rtnRst += proType + "$";
+			rtnRst += proName + "$";
+		}
+		else
+		{
+			rtnRst += "error:这个八码不存在?";
+		}
 	}
 	else
 	{
-		rtnRst += "error$产品订单号稍微复杂点儿行不?";
+		rtnRst += "error:八码有八位你不知道吗?";
 	}
 	out.write(rtnRst);
 %>

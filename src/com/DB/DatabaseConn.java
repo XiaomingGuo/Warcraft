@@ -335,6 +335,28 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
+	public String GetStoreroomByType(String proType)
+	{
+		String rtnRst = "";
+		String sql = "select storeroom from product_type where name='" + proType +"'";
+		if (QueryDataBase(sql))
+		{
+			if (GetRecordCount() > 0)
+			{
+				rtnRst = GetSingleString("storeroom");
+			}
+			else
+			{
+				CloseDatabase();
+			}
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
 	public String GetNameByBarcode(String barcode)
 	{
 		String rtnRst = "";

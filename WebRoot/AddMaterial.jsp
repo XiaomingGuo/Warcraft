@@ -129,7 +129,7 @@
 					<tr>
 			   			<td align="right">
 				   			<label id=lable_barcode>Bar Code:</label>
-							<input type="text" name="barcode" id="barcode" style='width:180px' onchange="checkBarcode(this)">
+							<input type="text" name="barcode" id="barcode" style='width:180px' onblur="InputBarcode();">
 						</td>
 					</tr>
 					<tr>
@@ -317,6 +317,61 @@
 		{
 			$("#barcode").val("");
 		}
+		
+		function InputBarcode(obj)
+		{
+			var checkedBarcode = $("#barcode").val();
+			if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
+			{
+				$("#barcode").val("");
+				return;
+			}
+			if (parseInt(checkedBarcode) > 60000000 && parseInt(checkedBarcode) < 70000000)
+			{
+				checkedBarcode = parseInt(checkedBarcode)-10000000;
+			}
+			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
+			{
+				if (textStatus == "success" && data.indexOf("error") < 0)
+				{
+					alert(data);
+					var proInfoList = data.split("$");
+					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
+					{
+						$("#store_name_addproduct").val("原材料库");
+					}
+					else
+					{
+						$("#store_name_addproduct").val(proInfoList[1]);
+					}
+					$("#store_name_addproduct").change();
+					$("#product_type").empty();
+					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
+					{
+						var keyWord = proInfoList[2]+"原锭";
+						var newOption = $("<option>" + keyWord + "</option>");
+						$(newOption).val(keyWord);
+						$("#product_type").append(newOption);
+					}
+					else
+					{
+						var newOption = $("<option>" + proInfoList[2] + "</option>");
+						$(newOption).val(proInfoList[2]);
+						$("#product_type").append(newOption);
+					}
+					$("#product_name").empty();
+					var newOption = $("<option>" + proInfoList[3] + "</option>");
+					$(newOption).val(proInfoList[3]);
+					$("#product_name").append(newOption);
+					$("#product_name").change();
+				}
+				else
+				{
+					alert(data.split("$")[1]);
+				}
+			});
+		}
+
 	</script>
   </body>
 </html>
