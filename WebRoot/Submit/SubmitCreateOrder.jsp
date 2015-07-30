@@ -35,17 +35,17 @@
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
 					int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
+					String strBarcode = recordList.get(0).get(iRow);
 					if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
 					{
-						String strBarcode = recordList.get(0).get(iRow);
 						String strDeliDate = recordList.get(2).get(iRow);
 						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
 						hDBHandle.execUpate(sql);
-						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
+						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 					}
 					else if(iAllOrderQTY - hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName) > 0)
 					{
-						iUpdatePOStatusFlag += iAllOrderQTY - hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName);
+						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 					}
 					else
 					{
@@ -76,7 +76,7 @@
 							{
 								sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + Integer.toString(tempOrderQty) + "','" + appPOName + "','" + OrderName + "')";
 								hDBHandle.execUpate(sql);
-								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
+								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							}
 						}
 						else if(iAllOrderQTY - hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName) > 0)
@@ -88,7 +88,7 @@
 							{
 								sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + Integer.toString(tempOrderQty) + "','" + appPOName + "','" + OrderName + "')";
 								hDBHandle.execUpate(sql);
-								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName);
+								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							}
 						}
 						else
