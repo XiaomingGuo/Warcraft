@@ -268,13 +268,16 @@ public class DatabaseConn
 	public String GetUsedBarcode(String barcode, String storage_name)
 	{
 		String rtnRst = null;
-		if (storage_name.indexOf("material") >= 0)
+		if (Integer.parseInt(barcode) > 50000000 && Integer.parseInt(barcode) < 70000000)
 		{
-			rtnRst = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
-		}
-		else if(storage_name.indexOf("product") >= 0)
-		{
-			rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
+			if (storage_name.indexOf("material") >= 0)
+			{
+				rtnRst = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
+			}
+			else if(storage_name.indexOf("product") >= 0)
+			{
+				rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
+			}
 		}
 		else
 		{
@@ -508,6 +511,40 @@ public class DatabaseConn
 		if (QueryDataBase(sql) && GetRecordCount() > 0)
 		{
 			rtnRst = GetSingleString("product_type");
+		}
+		else
+		{
+			CloseDatabase();
+		}
+		return rtnRst;
+	}
+	
+	public String GetBarcodeByName(String pro_name, String flag)
+	{
+		String rtnRst = "";
+		String sql = "select * from product_info where name='" + pro_name + "'";
+		if (QueryDataBase(sql) && GetRecordCount() > 0)
+		{
+			List<String> tempList = GetAllStringValue("Bar_Code");
+			for (int idx = 0; idx < tempList.size(); idx++)
+			{
+				String curBarcode = tempList.get(idx);
+				if (flag.indexOf("Mat") >= 0)
+				{
+					rtnRst = Integer.parseInt(curBarcode) > 60000000&&Integer.parseInt(curBarcode) < 70000000?Integer.toString(Integer.parseInt(curBarcode)-10000000):curBarcode;
+					break;
+				}
+				else if(flag.indexOf("Pro") >= 0)
+				{
+					rtnRst = Integer.parseInt(curBarcode) > 50000000&&Integer.parseInt(curBarcode) < 60000000?Integer.toString(Integer.parseInt(curBarcode)+10000000):curBarcode;
+					break;
+				}
+				else
+				{
+					rtnRst = curBarcode;
+					continue;	
+				}
+			}
 		}
 		else
 		{

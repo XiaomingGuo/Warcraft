@@ -60,7 +60,15 @@
 						</td>
 					</tr>
 				</table>
-				<br>
+				<table align="center">
+					<tr>
+						<td>
+							<label>八码查询:&nbsp;</label>
+							<input type="text" name="product_name" id="product_name" style="width:100px" onblur="findBarcode(this)">
+							<input type="text" name="disBarcode" id="disBarcode" style="width:100px" readonly>
+						</td>
+					</tr>
+				</table>
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
@@ -76,6 +84,31 @@
 	    	</td>
     	</tr>
     </table>
+  	<script type="text/javascript">
+		function findBarcode(obj)
+		{
+			var proName = $("#product_name").val();
+			if(proName == null||proName == "")
+			{
+				alert("产品类型不能为空!");
+				$("#product_name").val("");
+				return;
+			}
+			$.post("Ajax/Get_Barcode_By_ProName_Ajax.jsp", {"product_name":proName, "flag":"Mat"}, function(data, textStatus)
+			{
+				if (textStatus == "success" && data.indexOf("error") < 0)
+				{
+					var proInfoList = data.split("$");
+					$("#disBarcode").val(proInfoList[1]);
+				}
+				else
+				{
+					alert(data.split("$")[1]);
+				}
+			});
+		}
+	</script>
+    
   </body>
 </html>
 <%

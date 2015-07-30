@@ -140,7 +140,7 @@
 %>
 								</select>
 							</td>
-							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onkeydown="if (event.keyCode == 13) InputBarcode();"></td>
+							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onblur="InputBarcode()"></td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:60px" readonly></td>

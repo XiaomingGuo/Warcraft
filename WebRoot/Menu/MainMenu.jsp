@@ -28,7 +28,7 @@
 	body{background:#ECF5FF}
 	</style>
   </head>
-  
+  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
 <!-- -->
 <br>
@@ -39,6 +39,7 @@
 					<tr>
 						<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
+						
 <%
 						int temp = mylogon.getUserRight()&2;
 						if(temp == 0)
@@ -60,7 +61,16 @@
 						</td>
 					</tr>
 				</table>
-				<br>
+				<table align="center">
+					<tr>
+						<td>
+							<label>八码查询:&nbsp;</label>
+							<input type="text" name="product_name" id="product_name" style="width:100px" onblur="findBarcode(this)">
+							<input type="text" name="disBarcode" id="disBarcode" style="width:100px" readonly>
+						</td>
+					</tr>
+				</table>
+				
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
@@ -77,6 +87,30 @@
 	    	</td>
     	</tr>
     </table>
+   	<script type="text/javascript">
+		function findBarcode(obj)
+		{
+			var proName = $("#product_name").val();
+			if(proName == null||proName == "")
+			{
+				alert("产品类型不能为空!");
+				$("#product_name").val("");
+				return;
+			}
+			$.post("Ajax/Get_Barcode_By_ProName_Ajax.jsp", {"product_name":proName, "flag":"Mat"}, function(data, textStatus)
+			{
+				if (textStatus == "success" && data.indexOf("error") < 0)
+				{
+					var proInfoList = data.split("$");
+					$("#disBarcode").val(proInfoList[1]);
+				}
+				else
+				{
+					alert(data.split("$")[1]);
+				}
+			});
+		}
+	</script>
   </body>
 </html>
 <%

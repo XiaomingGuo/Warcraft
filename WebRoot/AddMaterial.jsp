@@ -129,7 +129,7 @@
 					<tr>
 			   			<td align="right">
 				   			<label id=lable_barcode>Bar Code:</label>
-							<input type="text" name="barcode" id="barcode" style='width:180px' onblur="InputBarcode();">
+							<input type="text" name="barcode" id="barcode" style='width:180px' onblur="InputBarcode()">
 						</td>
 					</tr>
 					<tr>
@@ -334,7 +334,6 @@
 			{
 				if (textStatus == "success" && data.indexOf("error") < 0)
 				{
-					alert(data);
 					var proInfoList = data.split("$");
 					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
 					{

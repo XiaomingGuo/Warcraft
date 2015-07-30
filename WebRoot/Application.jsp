@@ -64,7 +64,7 @@
 					for(int i = 0; i < store_name.size(); i++)
 					{
 %>
-				  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
+				  	<option value = <%= store_name.get(i) %>><%=store_name.get(i)%></option>
 <%
 					}
 %>
@@ -90,9 +90,7 @@
 		<tr>
 			<td align="right">
 				<label>Bar Code:</label>
-				<select name="bar_code" id="bar_code" style="width:180px">
-				  	<option value = "--请选择--">--请选择--</option>
-				</select>
+				<input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:180px">
 			</td>
 		</tr>
 		<tr>
@@ -133,10 +131,9 @@
 			{
 				$product_type.empty();
 				$product_name.empty();
-				$bar_code.empty();
+				$bar_code.val("");
 				$product_type.append('<option value="请选择">--请选择--</option>');
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
 				$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":$("#store_name").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -156,9 +153,8 @@
 			$product_type.change(function()
 			{
 				$product_name.empty();
-				$bar_code.empty();
+				$bar_code.val("");
 				$product_name.append('<option value="请选择">--请选择--</option>');
-				$bar_code.append('<option value="请选择">--请选择--</option>');
 				$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
 					if (textStatus == "success")
@@ -182,14 +178,48 @@
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
-						var newOption = $("<option>" + code_list[1] + "</option>");
-						$(newOption).val(code_list[1]);
-						$bar_code.append(newOption);
+						$bar_code.val(code_list[1]);
 						$Total_QTY.attr("value", code_list[4]);
 					}
 				});
 			});				
 		});
+		
+		function InputBarcode(obj)
+		{
+			var checkedBarcode = $("#bar_code").val();
+			if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
+			{
+				$("#barcode").val("");
+				return;
+			}
+			if (parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
+			{
+				alert("注意不能申请生产物料!");
+				return;
+			}
+			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
+			{
+				if (textStatus == "success" && data.indexOf("error") < 0)
+				{
+					var proInfoList = data.split("$");
+					$("#store_name").val(proInfoList[1]);
+					$("#product_type").empty();
+					var newOption = $("<option>" + proInfoList[2] + "</option>");
+					$(newOption).val(proInfoList[2]);
+					$("#product_type").append(newOption);
+					$("#product_name").empty();
+					var newOption = $("<option>" + proInfoList[3] + "</option>");
+					$(newOption).val(proInfoList[3]);
+					$("#product_name").append(newOption);
+					$("#product_name").change();
+				}
+				else
+				{
+					alert(data.split("$")[1]);
+				}
+			});
+		}
 	</script>
   </body>
 </html>
