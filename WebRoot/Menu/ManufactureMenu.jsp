@@ -64,7 +64,7 @@
 					<tr>
 						<td>
 							<label>八码查询:&nbsp;</label>
-							<input type="text" name="product_name" id="product_name" style="width:100px" onblur="findBarcode(this)">
+							<input type="text" name="search_name" id="search_name" style="width:100px" onblur="findBarcode(this)">
 							<input type="text" name="disBarcode" id="disBarcode" style="width:100px" readonly>
 						</td>
 					</tr>
@@ -90,14 +90,14 @@
    	<script type="text/javascript">
 		function findBarcode(obj)
 		{
-			var proName = $("#product_name").val();
+			var proName = $("#search_name").val();
 			if(proName == null||proName == "")
 			{
 				alert("产品类型不能为空!");
-				$("#product_name").val("");
+				$("#search_name").val("");
 				return;
 			}
-			$.post("Ajax/Get_Barcode_By_ProName_Ajax.jsp", {"product_name":proName, "flag":"Pro"}, function(data, textStatus)
+			$.post("Ajax/Get_Barcode_By_ProName_Ajax.jsp", {"search_name":proName, "flag":"Pro"}, function(data, textStatus)
 			{
 				if (textStatus == "success" && data.indexOf("error") < 0)
 				{

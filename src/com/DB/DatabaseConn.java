@@ -267,7 +267,7 @@ public class DatabaseConn
 
 	public String GetUsedBarcode(String barcode, String storage_name)
 	{
-		String rtnRst = null;
+		String rtnRst = barcode;
 		if (Integer.parseInt(barcode) > 50000000 && Integer.parseInt(barcode) < 70000000)
 		{
 			if (storage_name.indexOf("material") >= 0)
@@ -278,10 +278,6 @@ public class DatabaseConn
 			{
 				rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
 			}
-		}
-		else
-		{
-			rtnRst = barcode;
 		}
 		return rtnRst;
 	}

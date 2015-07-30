@@ -6,7 +6,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String proName = request.getParameter("product_name");
+	String proName = request.getParameter("search_name");
 	String flag = request.getParameter("flag");
 	if(proName.length() > 0)
 	{
