@@ -55,14 +55,14 @@
     		<td width="5"></td>
     		<td align="right" valign="bottom">输入文件名：</td>
     		<td valign="bottom">
-    			<input type="text" name="fileName" id="fileName" />
+    			<input type="text" name="fileName" id="fileName" value="五金.xls" />
     		</td>
     	</tr>   
     	<tr>
     		<td width="5"></td>
-    		<td align="right" valign="bottom">保存地址：</td>
+    		<td align="right" valign="bottom">地址：</td>
     		<td valign="bottom">
-    			<input type="text" name="filePath" id="filePath" />
+    			<input type="text" name="filePath" id="filePath" value="e:\"/>
     		</td>
     	</tr>  	   	
     	<tr>

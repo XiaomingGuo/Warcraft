@@ -4,8 +4,9 @@
 	request.setCharacterEncoding("UTF-8");
 	String filePath = request.getParameter("filePath");
 	String fileName = request.getParameter("fileName");
-	ExcelOperationUtil excelUtil = new ExcelOperationUtil();  
-	boolean res = excelUtil.CreateExcelFile(filePath,fileName);
-	if(res)
+	ExcelOperationUtil excelUtil = new ExcelOperationUtil();
+	int[] startCell = {3,1}, endCell = {28,3};
+	List<List<String>> res = excelUtil.ReadExcel(filePath, fileName, "Sheet1", startCell, endCell);
+	if(res.size() > 0)
 		out.println("<script>alert('创建成功！');window.location.href = 'index.jsp';</script>");	
  %>
