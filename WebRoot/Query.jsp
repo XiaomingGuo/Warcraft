@@ -16,32 +16,24 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&2048;
-		if(temp == 0)
+		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		String sql = "select * from other_record";
+		hDBHandle.QueryDataBase(sql);
+		int recordCount = hDBHandle.GetRecordCount();
+		hDBHandle.CloseDatabase();
+		String tempBP = request.getParameter("BeginPage");
+		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
+		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
+		if (hDBHandle.QueryDataBase(limitSql))
 		{
-			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
 		}
 		else
 		{
-			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-			String path = request.getContextPath();
-			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from other_record";
-			hDBHandle.QueryDataBase(sql);
-			int recordCount = hDBHandle.GetRecordCount();
 			hDBHandle.CloseDatabase();
-			String tempBP = request.getParameter("BeginPage");
-			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hDBHandle.QueryDataBase(limitSql))
-			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+		}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -130,6 +122,5 @@
   </body>
 </html>
 <%
-		}
 	}
 %>

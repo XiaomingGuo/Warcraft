@@ -25,7 +25,7 @@
 			if (hDBHandle.QueryDataBase(sql))
 			{
  				String ship_no = String.format("%s%04d", currentDate, hDBHandle.GetRecordCount() + 1);
-				sql = "INSERT INTO shipping_no (print_mark, shipping_no) VALUES ('" + date_of_delivery + "','" + ship_no + "')";
+				sql = "INSERT INTO shipping_no (customer_po, print_mark, shipping_no) VALUES ('" + po_name + "','" + date_of_delivery + "','" + ship_no + "')";
 				hDBHandle.execUpate(sql);
 			}
 		}

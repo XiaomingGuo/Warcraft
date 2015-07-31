@@ -677,10 +677,10 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public int GetShipQTYByBarcode(String barcode, String Delivery_Date)
+	public int GetShipQTYByBarcode(String po_name, String barcode, String Delivery_Date)
 	{
 		int rtnRst = 0;
-		String sql = "select ship_QTY from shipping_record where Bar_Code='" + GetUsedBarcode(barcode, "shipping_record") +"' and print_mark='" + Delivery_Date + "'";
+		String sql = "select ship_QTY from shipping_record where customer_po='" + po_name + "' and Bar_Code='" + GetUsedBarcode(barcode, "shipping_record") +"' and print_mark='" + Delivery_Date + "'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)
@@ -703,10 +703,10 @@ public class DatabaseConn
 		return rtnRst;
 	}
 	
-	public String GetShipNOByPrintMark(String PrintMark)
+	public String GetShipNOByPrintMark(String po_name, String PrintMark)
 	{
 		String rtnRst = "";
-		String sql = "select shipping_no from shipping_no where print_mark='" + PrintMark +"'";
+		String sql = "select shipping_no from shipping_no where customer_po='" + po_name + "' and print_mark='" + PrintMark +"'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)

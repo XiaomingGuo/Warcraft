@@ -18,28 +18,20 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&128;
-		if(temp == 0)
+		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		//product_type Database query
+			List<String> orderName = null;
+		String sql = "select * from product_order where status<2";
+		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
-			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			orderName = hDBHandle.GetAllStringValue("Order_Name");
 		}
 		else
 		{
-			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
-			String path = request.getContextPath();
-			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			//product_type Database query
- 			List<String> orderName = null;
-			String sql = "select * from product_order where status<2";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
-			{
-				orderName = hDBHandle.GetAllStringValue("Order_Name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			hDBHandle.CloseDatabase();
+		}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -233,6 +225,5 @@
   </body>
 </html>
 <%
-		}
 	}
 %>

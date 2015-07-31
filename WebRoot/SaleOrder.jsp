@@ -17,7 +17,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&512;
+		int temp = mylogon.getUserRight()&64;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -79,7 +79,7 @@
 		<table width="80%">
     		<tr>
 				<td width="50%" align="left"><font size="3">客户: 国贸减速机集团有限公司                     日期:<%=currentDate %></font></td>
-				<td width="50%" align="right"><font size="3">NO.		MOB<%=hDBHandle.GetShipNOByPrintMark(deliveryDate) %>		</font></td>
+				<td width="50%" align="right"><font size="3">NO.		MOB<%=hDBHandle.GetShipNOByPrintMark(POName, deliveryDate) %>		</font></td>
 			</tr>
     	</table>
     	<table width="80%" border="1">
@@ -129,7 +129,7 @@
 				    	else if(displayKeyList[iCol-1] == "数量")
 				    	{
 %>
-    			<td align="right" width="10%"><%=hDBHandle.GetShipQTYByBarcode(strBarcode, deliveryDate) %></td>
+    			<td align="right" width="10%"><%=hDBHandle.GetShipQTYByBarcode(POName, strBarcode, deliveryDate) %></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单重")

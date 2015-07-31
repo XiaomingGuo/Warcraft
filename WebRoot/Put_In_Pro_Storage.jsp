@@ -15,7 +15,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&128;
+		int temp = mylogon.getUserRight()&256;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");

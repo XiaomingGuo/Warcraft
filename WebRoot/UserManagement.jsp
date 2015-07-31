@@ -95,18 +95,16 @@
 %>
     			<td>
     				<center>
-	    				<input type="checkbox" name="permission" value="2048">查询
-	    				<input type="checkbox" name="permission" value="1024">批准
-	    				<input type="checkbox" name="permission" value="512">生产单生成
-	    				<input type="checkbox" name="permission" value="256">生产单审核
-	    				<input type="checkbox" name="permission" value="128">入待检库
-	    				<input type="checkbox" name="permission" value="64">材料报废
+	    				<input type="checkbox" name="permission" value="2048">仓库管理员
+	    				<input type="checkbox" name="permission" value="1024">计划员
+	    				<input type="checkbox" name="permission" value="512">计划审核
+	    				<input type="checkbox" name="permission" value="256">生产管理
+	    				<input type="checkbox" name="permission" value="128">质量检验员
+	    				<input type="checkbox" name="permission" value="64">出货管理员
+	    				<input type="checkbox" name="permission" value="32">会计员
 	    				<br>
-	    				<input type="checkbox" name="permission" value="32">成品出货
-	    				<input type="checkbox" name="permission" value="16">物料录入
-	    				<input type="checkbox" name="permission" value="8">月报表
-	    				<input type="checkbox" name="permission" value="4">库存
-	    				<input type="checkbox" name="permission" value="2">用户管理
+	    				<input type="checkbox" name="permission" value="4092">管理员
+	    				<input type="checkbox" name="permission" value="4095">超级管理员
     				</center>
     			</td>
 <%
@@ -146,18 +144,16 @@
 %>
     			<td>
     				<center>
-	    				<input type="checkbox" name="AddPermission" value="2048">查询
-	    				<input type="checkbox" name="AddPermission" value="1024">批准
-	    				<input type="checkbox" name="AddPermission" value="512">生产单生成
-	    				<input type="checkbox" name="AddPermission" value="256">生产单审核
-	    				<input type="checkbox" name="AddPermission" value="128">入待检库
-	    				<input type="checkbox" name="AddPermission" value="64">材料报废
+	    				<input type="checkbox" name="permission" value="2048">仓库管理员
+	    				<input type="checkbox" name="permission" value="1024">计划员
+	    				<input type="checkbox" name="permission" value="512">计划审核
+	    				<input type="checkbox" name="permission" value="256">生产管理
+	    				<input type="checkbox" name="permission" value="128">质量检验员
+	    				<input type="checkbox" name="permission" value="64">出货管理员
+	    				<input type="checkbox" name="permission" value="32">会计员
 	    				<br>
-	    				<input type="checkbox" name="AddPermission" value="32">成品出货
-	    				<input type="checkbox" name="AddPermission" value="16">物料录入
-	    				<input type="checkbox" name="AddPermission" value="8">月报表
-	    				<input type="checkbox" name="AddPermission" value="4">库存
-	    				<input type="checkbox" name="AddPermission" value="2">用户管理
+	    				<input type="checkbox" name="permission" value="4092">管理员
+	    				<input type="checkbox" name="permission" value="4095">超级管理员
     				</center>
     			</td>
 <%
