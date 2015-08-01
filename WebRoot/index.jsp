@@ -55,20 +55,20 @@
     		<td width="5"></td>
     		<td align="right" valign="bottom">输入文件名：</td>
     		<td valign="bottom">
-    			<input type="text" name="fileName" id="fileName" value="五金.xls" />
+    			<input type="text" name="fileName" id="fileName" value="Summary-other.xls" />
     		</td>
     	</tr>   
     	<tr>
     		<td width="5"></td>
     		<td align="right" valign="bottom">地址：</td>
     		<td valign="bottom">
-    			<input type="text" name="filePath" id="filePath" value="e:\"/>
+    			<input type="text" name="filePath" id="filePath" value="d:\"/>
     		</td>
     	</tr>  	   	
     	<tr>
     		<td width="5"></td>
     		<td align="center" colspan="2" valign="top">
-    			<input type="submit" value="创 建" onclick="getFilePath()" name="submit">
+    			<input type="submit" value="上传" onclick="getFilePath()" name="submit">
     		</td>
     	</tr>
     	<tr>

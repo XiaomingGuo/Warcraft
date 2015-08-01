@@ -144,16 +144,16 @@
 %>
     			<td>
     				<center>
-	    				<input type="checkbox" name="permission" value="2048">仓库管理员
-	    				<input type="checkbox" name="permission" value="1024">计划员
-	    				<input type="checkbox" name="permission" value="512">计划审核
-	    				<input type="checkbox" name="permission" value="256">生产管理
-	    				<input type="checkbox" name="permission" value="128">质量检验员
-	    				<input type="checkbox" name="permission" value="64">出货管理员
-	    				<input type="checkbox" name="permission" value="32">会计员
+	    				<input type="checkbox" name="AddPermission" value="2048">仓库管理员
+	    				<input type="checkbox" name="AddPermission" value="1024">计划员
+	    				<input type="checkbox" name="AddPermission" value="512">计划审核
+	    				<input type="checkbox" name="AddPermission" value="256">生产管理
+	    				<input type="checkbox" name="AddPermission" value="128">质量检验员
+	    				<input type="checkbox" name="AddPermission" value="64">出货管理员
+	    				<input type="checkbox" name="AddPermission" value="32">会计员
 	    				<br>
-	    				<input type="checkbox" name="permission" value="4092">管理员
-	    				<input type="checkbox" name="permission" value="4095">超级管理员
+	    				<input type="checkbox" name="AddPermission" value="4092">管理员
+	    				<input type="checkbox" name="AddPermission" value="4095">超级管理员
     				</center>
     			</td>
 <%
