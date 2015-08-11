@@ -4,9 +4,10 @@
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+
     <constant name="struts.enable.DynamicMethodInvocation" value="false" />
-    <constant name="struts.devMode" value="false" />
-<!--
+    <constant name="struts.devMode" value="true" />
+
     <package name="default" namespace="/" extends="struts-default">
 
         <default-action-ref name="index" />
@@ -26,15 +27,9 @@
             </result>
         </action>
     </package>
+
     <include file="example.xml"/>
--->
-	<package name="degault" namespace="/" extends="struts-default">
-		<action name="login">
-			<result>
-				/Login.jsp
-			</result>
-		</action>
-	</package>
+
     <!-- Add packages here -->
 
 </struts>

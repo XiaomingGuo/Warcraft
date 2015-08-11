@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="sx"  uri="/struts-dojo-tags"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
@@ -11,7 +11,7 @@
 <%
 	String message="";
 	Calendar mData = Calendar.getInstance();
-	String currentDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
+	String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
 	String beginDate = String.format("%s%s", currentDate, "01");
 	String endDate = String.format("%s%s", currentDate, "31");
 	if(session.getAttribute("logonuser")==null)
@@ -64,6 +64,7 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	<sx:head/>
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
@@ -77,9 +78,9 @@
     			<th><label>截止日期:</label></th>
     		</tr>
     		<tr>
-    			<td><input type="text" name="DateOfBegin" id="DateOfBegin" style='width:100px' value="<%=beginDate%>"></td>
-    			<td><input type="text" name="DateOfEnd" id="DateOfEnd" style='width:100px' value="<%=endDate%>"></td>
-    		</tr>
+				<td><sx:datetimepicker id="DateOfBegin" name="DateOfBegin" displayFormat="yyyyMMdd" value="%{date}" /></td>
+   				<td><sx:datetimepicker id="DateOfEnd" name="DateOfEnd" displayFormat="yyyyMMdd" value="%{date}" /></td>
+     		</tr>
     	</table>
 		<input type="button" value="查询" onclick="Query(this)" style='width:80px'>
     	<table border="1">
