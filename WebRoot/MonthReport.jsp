@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sx"  uri="/struts-dojo-tags"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
@@ -64,7 +65,8 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<sx:head/>
+	<s:head/>
+    <sx:head parseContent="true"/>
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
@@ -78,8 +80,10 @@
     			<th><label>截止日期:</label></th>
     		</tr>
     		<tr>
-				<td><sx:datetimepicker id="DateOfBegin" name="DateOfBegin" displayFormat="yyyyMMdd" value="%{date}" /></td>
-   				<td><sx:datetimepicker id="DateOfEnd" name="DateOfEnd" displayFormat="yyyyMMdd" value="%{date}" /></td>
+				<s:form action="">
+					<td><sx:datetimepicker id="DateOfBegin" name="DateOfBegin" displayFormat="yyyy-MM-dd" value="%{'today'}" /></td>
+	   				<td><sx:datetimepicker id="DateOfEnd" name="DateOfEnd" displayFormat="yyyy-MM-dd" value="%{'today'}" /></td>
+				</s:form>
      		</tr>
     	</table>
 		<input type="button" value="查询" onclick="Query(this)" style='width:80px'>
@@ -157,8 +161,12 @@
     </center>
 	<script type="text/javascript">
 		function Query(obj)
-		{	
-			window.location.href="MonthReport.jsp?BeginDate="+$('#DateOfBegin').val()+"&EndDate="+$('#DateOfEnd').val();
+		{
+			var beginData = dojo.widget.byId("DateOfBegin");
+			var endData = dojo.widget.byId("DateOfEnd");
+			alert(beginData.getValue().split("T")[0]);
+			alert(endData.getValue().split("T")[0]);
+			window.location.href="MonthReport.jsp?BeginDate="+beginData.getValue().split("T")[0]+"&EndDate="+endData.getValue().split("T")[0];
 		}
 	</script>
   </body>
