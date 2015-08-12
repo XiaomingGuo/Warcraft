@@ -75,6 +75,7 @@
 			    		<li><a href="PersonReport.jsp">个人报表</a></li>
 			    		<li><a href="MonthReport.jsp">月报表</a></li>
 			    		<li><a href="Summary.jsp">库存</a></li>
+			    		<li><a href="Storeroom_Summary.jsp">库房报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

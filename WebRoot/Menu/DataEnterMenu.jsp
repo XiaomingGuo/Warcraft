@@ -76,7 +76,7 @@
 			    		<li><a href="AddProductType.jsp">添加类型</a></li>
 			    		<li><a href="AddMaterial.jsp">添加物料</a></li>
 			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>
-			    		<li><a href="QueryMaterial.jsp">物料状态及报表</a></li>
+			    		<li><a href="QueryMaterial.jsp">物料状态</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>
