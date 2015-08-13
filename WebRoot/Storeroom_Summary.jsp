@@ -1,7 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
-<%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="sx"  uri="/struts-dojo-tags"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
@@ -53,12 +51,14 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<s:head/>
-    <sx:head parseContent="true"/>
-
   </head>
-  
+  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<!-- <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>  -->
+	<script src="JS/dojo-release-1.10.4/dojo/dojo.js"></script>
   <body>
+	<script type="text/javascript">
+		dojo.require("dojo.widget.*");
+	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
     <center>
 		<table align="center">
@@ -81,10 +81,7 @@
     			<th><label>截止日期:</label></th>
     		</tr>
     		<tr>
-				<s:form action="">
-					<td><sx:datetimepicker id="DateOfBegin" name="DateOfBegin" displayFormat="yyyy-MM-dd" /></td>
-	   				<td><sx:datetimepicker id="DateOfEnd" name="DateOfEnd" displayFormat="yyyy-MM-dd" /></td>
-				</s:form>
+    			<td><div dojoType="dropdowndatepicker" name="date"></div></td>
      		</tr>
     	</table>
     </center>
