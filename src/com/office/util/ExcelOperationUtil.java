@@ -87,8 +87,15 @@ public class ExcelOperationUtil
 		return rtnRst;
 	}
 	
-	public boolean CreateExcelFile(String filePath,String fileName){
-		try{
+	public boolean WriteDataToExcel(String fileFullName, String content)
+	{
+		return true;
+	}
+	
+	public boolean CreateExcelFile(String filePath,String fileName)
+	{
+		try
+		{
 			HSSFWorkbook workbook = new HSSFWorkbook();//创建Excel工作簿对象	
 			HSSFSheet sheet = workbook.createSheet();//在工作簿中创建工作表对象
 			workbook.setSheetName(0, "测试");//设置工作表的名称
@@ -112,7 +119,9 @@ public class ExcelOperationUtil
 			fos.close();
 			workbook.close();
 			return true;
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			return false;
 		} 

@@ -1,3 +1,4 @@
+<%@page import="org.apache.struts2.components.Else"%>
 <%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
@@ -26,7 +27,7 @@
 		String appDescription = request.getParameter("Description");
 		String storageName="other_storage";
 		
-		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty() && !appWeightUnit.isEmpty())
+		if (appSupplier_name.indexOf("请选择") < 0 && !appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty() && !appWeightUnit.isEmpty())
 		{
 			if(appStore_name.indexOf("原材料库") >= 0)
 			{
@@ -97,6 +98,12 @@
 				loopNum ++;
 			}
 			while(true);
+		}
+		else
+		{
+			session.setAttribute("error", "你输入的是什么啊,赶紧重新输入!");
+			response.sendRedirect("../tishi.jsp");
+			return;
 		}
 		response.sendRedirect("../AddMaterial.jsp");
 	}

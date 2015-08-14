@@ -8,6 +8,10 @@
 	String storeroom=(String)request.getParameter("FilterKey1");
 	String rtnRst = "remove$";
 	String sql = "select * from vendor_info where storeroom='" + storeroom +"'";
+	if (storeroom.indexOf("原材料库") < 0)
+	{
+		sql = "select * from vendor_info where storeroom!='原材料库'";
+	}
 	if (hDBHandle.QueryDataBase(sql))
 	{
 		vendor_name = hDBHandle.GetAllStringValue("vendor_name");

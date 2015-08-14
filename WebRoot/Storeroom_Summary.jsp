@@ -48,13 +48,9 @@
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
-    <form action="StorageReport.jsp" method="post">
-		<table align="center">
-			<tr>
-				<td>
-					<input type="text" name="testText" value="abc">
-				</td>
-			</tr>
+    <br><br><br>
+    <form action="ReportPage/StorageReport.jsp" method="post">
+		<table align="center" id="ShowContent">
 			<tr>
 		  		<td align="center">
 			  		<label>选择库名:</label>
@@ -65,25 +61,37 @@
 				  	</select>
 			  	</td>
 		  	</tr>
+	  	</table>
+	  	<br>
+	  	<table align="center">
 		  	<tr>
 		  		<td align="center">
-		  			<br>
 			  		<b><font  size="3">查询起止时间:</font></b>
 				</td>
 		  	</tr>
 		  	<tr>
-		  		<td>
-	    			<label>开始日期:</label>
-	    			<div dojoType="dropdowndatepicker" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
-	    			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	    			<label>截止日期:</label>
-	    			<div dojoType="dropdowndatepicker" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
-		  		</td>
-		  	</tr>
-		  	<tr>
-			  	<td align="center">
-					<input type="submit" value="生成报表" />
-			  	</td>
+		  	<td>
+			  	<table border="1" align="center">
+				  	<tr>
+				  		<td>
+			    			<label>开始日期:</label>
+			    			<div dojoType="dropdowndatepicker" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+		    			</td>
+		    			<td>
+			    			<label>截止日期:</label>
+			    			<div dojoType="dropdowndatepicker" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+				  		</td>
+				  	</tr>
+			  	</table>
+			  	<table align="center">
+				  	<tr>
+					  	<td align="center">
+					  		<input type="submit" value="查询" />
+							<!-- <input type="button" value="生成报表并下载" /> -->
+					  	</td>
+				  	</tr>
+			  	</table>
+		  	</td>
 		  	</tr>
 		</table>
    	</form>
