@@ -19,21 +19,10 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from material_storage UNION select * from other_storage";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		hDBHandle.CloseDatabase();
-		String tempBP = request.getParameter("BeginPage");
-		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
-		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-		}
+		Calendar mData = Calendar.getInstance();
+		String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
+		String beginDate = String.format("%s%s", currentDate, "01");
+		String endDate = String.format("%s%s", currentDate, "31");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -51,40 +40,53 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-  </head>
   	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<!-- <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>  -->
-	<script src="JS/dojo-release-1.10.4/dojo/dojo.js"></script>
+	<script language="javascript" src="dojojs/dojo.js"></script>
+  </head>
   <body>
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
-    <center>
+    <form action="StorageReport.jsp" method="post">
 		<table align="center">
 			<tr>
-		  		<td align="right">
+				<td>
+					<input type="text" name="testText" value="abc">
+				</td>
+			</tr>
+			<tr>
+		  		<td align="center">
 			  		<label>选择库名:</label>
 				  	<select name="store_name" id="store_name" style="width:180px">
 					  	<option value = "--请选择--">--请选择--</option>
-					  	<option value = "product">成品库</option>
 					  	<option value = "material">原材料库</option>
 					  	<option value = "other">其他库</option>
 				  	</select>
 			  	</td>
 		  	</tr>
+		  	<tr>
+		  		<td align="center">
+		  			<br>
+			  		<b><font  size="3">查询起止时间:</font></b>
+				</td>
+		  	</tr>
+		  	<tr>
+		  		<td>
+	    			<label>开始日期:</label>
+	    			<div dojoType="dropdowndatepicker" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+	    			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	    			<label>截止日期:</label>
+	    			<div dojoType="dropdowndatepicker" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+		  		</td>
+		  	</tr>
+		  	<tr>
+			  	<td align="center">
+					<input type="submit" value="生成报表" />
+			  	</td>
+		  	</tr>
 		</table>
-    	<label>查询起止时间:</label>
-    	<table border="1">
-    		<tr>
-    			<th><label>开始日期:</label></th>
-    			<th><label>截止日期:</label></th>
-    		</tr>
-    		<tr>
-    			<td><div dojoType="dropdowndatepicker" name="date"></div></td>
-     		</tr>
-    	</table>
-    </center>
+   	</form>
   </body>
 </html>
 <%
