@@ -9,7 +9,7 @@
 	String password = (String)request.getParameter("password");
 	String department = (String)request.getParameter("department");
 	String permission = (String)request.getParameter("Permission");
-	if (name != null&&password != null&&department != null)
+	if (name != null&&password != null&&department != null&&!name.isEmpty()&&!password.isEmpty()&&!department.isEmpty())
 	{
 		String sql = "INSERT INTO user_info (name, password, department, permission) VALUES ('" + name + "','" + password + "','" + department + "','" + permission + "')";
 		hDBHandle.execUpate(sql);

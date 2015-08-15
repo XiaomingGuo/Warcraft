@@ -87,9 +87,68 @@ public class ExcelOperationUtil
 		return rtnRst;
 	}
 	
-	public boolean WriteDataToExcel(String fileFullName, String content)
+	public boolean WriteDataToExcel(String fileFullPath, String fileName, List<List<String>> contentList)
 	{
-		return true;
+		boolean rtnRst = true;
+	    try
+	    {
+	    	if (!(new File(fileFullPath).isDirectory())) //如果文件夹不存在
+	    	{
+	    		new File(fileFullPath).mkdir();      //不存在 excel 文件夹，则建立此文件夹
+	    	}
+	    }
+	    catch(Exception e)
+	    {
+	        e.printStackTrace();        //创建文件夹失败 
+	        String ErrName=java.net.URLEncoder.encode("文件夹不存在。创建文件夹出错!");
+	        rtnRst = false;
+	    }
+	    
+	    try
+		{
+			HSSFWorkbook workbook = new HSSFWorkbook();//创建Excel工作簿对象	
+			HSSFSheet sheet = null;//在工作簿中创建工作表对象
+			String saveVendorName = "";
+			int iCount = 1;
+			int iSheetCount = 0;
+			for (int iRow = 1; iRow < contentList.size(); iRow++)
+			{
+				String vendorName = contentList.get(iRow).get(9);
+				if (!saveVendorName.contentEquals(vendorName))
+				{
+					iCount = 1;
+					sheet = workbook.createSheet();//在工作簿中创建工作表对象
+					workbook.setSheetName(iSheetCount, vendorName);//设置工作表的名称
+					saveVendorName = vendorName;
+					HSSFRow row = sheet.createRow(0);//在工作表中创建第1行对象
+					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
+					{
+						HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
+						label_num.setCellValue(contentList.get(0).get(iCol));//添加字符串
+					}
+					iSheetCount += 1;
+				}
+				
+				HSSFRow row = sheet.createRow(iCount);//在工作表中创建第1行对象
+				for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
+				{
+					HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
+					label_num.setCellValue(contentList.get(iRow).get(iCol));//添加字符串
+				}
+				iCount += 1;
+			}
+			File xlsFile = new File(fileFullPath, fileName);
+			FileOutputStream fos = new FileOutputStream(xlsFile);
+			workbook.write(fos);//将文档对象写入文件输出流
+			fos.close();
+			workbook.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			rtnRst = false;
+		} 
+		return rtnRst;
 	}
 	
 	public boolean CreateExcelFile(String filePath,String fileName)

@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="sx"  uri="/struts-dojo-tags"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -39,18 +38,10 @@
 		}
 		document.getElementById("path").value = filePath;
 	}
-	
-	function getData()
-	{
-		var beginData = dojo.widget.byId("begin_date");
-		alert(beginData.getValue().split("T")[0]);
-	}
 </script>
-	<sx:head/>
   </head>
   
   <body>
-	<sx:datetimepicker id="begin_date" name="begin_date" displayFormat="yyyy/MM/dd" label="请选择日期" value="%{'today'}"/>
   	<form id="form1" action="save.jsp" method="post">
   	<input type="hidden" id="path" name="path" />
     <table  background="bg.jpg"  width="280">
@@ -81,7 +72,6 @@
     		<td width="5"></td>
     		<td align="center" colspan="2" valign="top">
     			<input type="submit" value="上传" onclick="getFilePath()" name="submit">
-    			<input type="button" value="获取日期" onclick="getData()" name="Data_Info">
     		</td>
     	</tr>
     	<tr>
