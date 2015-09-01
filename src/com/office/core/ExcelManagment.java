@@ -1,4 +1,4 @@
-package com.office;
+package com.office.core;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,15 +19,16 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
-import com.office.Interface.*;
+import com.office.operation.*;
 
-public class ExcelOperationUtil extends ExcelManager
+public class ExcelManagment extends MSExcel
 {
-	public ExcelOperationUtil(String path, String fileName) throws IOException
+	private IExcelExecute hExcelHandle;
+	public ExcelManagment(IExcelExecute hExcelHandle)
 	{
-		setPath(path);
-		setFileName(fileName);
-		setWorkBook();
+		this.hExcelHandle = hExcelHandle;
+		CheckAndCreatePath(this.hExcelHandle.getPath());
+		this.hExcelHandle.setWorkBook();
 	}
 	
 	private List<String> getARowContent(int startCol, int endCol)
@@ -35,8 +36,8 @@ public class ExcelOperationUtil extends ExcelManager
 		List<String> rtnRst = new ArrayList<String>();
 		for (int iCol = startCol-1; iCol < endCol; iCol++)
 		{
-			sethWorkCell(iCol);
-			String tempValue = getStringCellValue();
+			hExcelHandle.setWorkCell(iCol);
+			String tempValue = hExcelHandle.getCellValue();
 			if(tempValue != null)
 			{
 				rtnRst.add(tempValue);
@@ -54,10 +55,10 @@ public class ExcelOperationUtil extends ExcelManager
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		try
 		{
-			setWorkSheet(sheet);
+			hExcelHandle.setWorkSheet(sheet);
 			for (int iRow = startCell[0]-1; iRow < EndCell[0]; iRow++)
 			{
-				sethWorkRow(iRow);
+				hExcelHandle.setWorkRow(iRow);
 				rtnRst.add(getARowContent(startCell[1], EndCell[1]));
 			}
 		}
@@ -159,13 +160,14 @@ public class ExcelOperationUtil extends ExcelManager
 			int iSheetCount = 0;
 			for (int iRow = 1; iRow < contentList.size(); iRow++)
 			{
-				String vendorName = contentList.get(iRow).get(sheetIdx);
-				if (!saveSheetName.contentEquals(vendorName))
+				String sheetName = contentList.get(iRow).get(sheetIdx);
+				setWorkSheet(sheetName);
+				if (!saveSheetName.contentEquals(sheetName))
 				{
 					iCount = 1;
 					sheet = workbook.createSheet();//在工作簿中创建工作表对象
-					workbook.setSheetName(iSheetCount, vendorName);//设置工作表的名称
-					saveVendorName = vendorName;
+					workbook.setSheetName(iSheetCount, sheetName);//设置工作表的名称
+					saveSheetName = sheetName;
 					HSSFRow row = sheet.createRow(0);//在工作表中创建第1行对象
 					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
 					{

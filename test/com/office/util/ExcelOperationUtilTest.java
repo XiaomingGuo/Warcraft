@@ -5,7 +5,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Cell;
 
-import com.office.ExcelOperationUtil;
+import com.office.core.ExcelManagment;
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
 import org.mockito.Mock;
@@ -24,7 +24,7 @@ import org.junit.Test;
 public class ExcelOperationUtilTest
 {
 	@Mock
-	ExcelOperationUtil hTester = new ExcelOperationUtil("", "");
+	ExcelManagment hTester = new ExcelManagment("", "");
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
 	{

@@ -1,4 +1,4 @@
-package com.office;
+package com.office.core;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,15 +12,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.mockito.asm.util.CheckAnnotationAdapter;
 
-public class ExcelManager
+public class MSExcel
 {
-	private String path, fileName;
-	private FileInputStream file = null;
-	private HSSFWorkbook hWorkBook = null;
-	private HSSFSheet hWorkSheet = null;
-	private HSSFRow hWorkRow = null;
-	private HSSFCell hWorkCell = null;
-	
 	public String getStringCellValue()
 	{
 		String tempValue = "";
@@ -63,21 +56,6 @@ public class ExcelManager
 	    return rtnRst;
 	}
 	
-	public HSSFWorkbook gethWorkBook()
-	{
-		return hWorkBook;
-	}
-
-	public void setWorkBook() throws IOException
-	{
-		CheckAndCreatePath(getPath());
-		CheckAndCreateFile(getPath(), getFileName());
-		CloseFile();
-		CloseWorkBook();
-		file = new FileInputStream(new File(getPath() + "\\" + getFileName()));
-		hWorkBook = new HSSFWorkbook(file);
-	}
-
 	public void CheckAndCreateFile(String filePath, String fileName)
 	{
 		try
