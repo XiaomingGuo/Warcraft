@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.* ,java.io.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ page import="com.jspsmart.upload.*"  %>
-<%@ page import="com.office.util.ExcelOperationUtil"  %>
+<%@ page import="com.office.ExcelOperationUtil"  %>
 <%@ page import="com.DB.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
@@ -9,9 +9,9 @@
 	request.setCharacterEncoding("UTF-8");
 	String filePath = request.getParameter("filePath");
 	String fileName = request.getParameter("fileName");
-	ExcelOperationUtil excelUtil = new ExcelOperationUtil();
+	ExcelOperationUtil excelUtil = new ExcelOperationUtil(filePath, fileName);
 	int[] startCell = {2,1}, endCell = {1237,6};
-	List<List<String>> res = excelUtil.ReadExcel(filePath, fileName, "Sheet1", startCell, endCell);
+	List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
 	if(res.size() > 0)
 	{
 		for(int iRow = 0; iRow < res.size(); iRow++)

@@ -1,11 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%@ page import="com.jspsmart.upload.*"  %>
-<%@ page import="com.office.util.ExcelOperationUtil"  %>
+<%@ page import="com.office.ExcelOperationUtil"  %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	ExcelOperationUtil excelUtil = new ExcelOperationUtil();
 %>
 <%
 	String message="";
@@ -51,6 +50,7 @@
 				}
 				recordList.add(tempList);
 			}
+			ExcelOperationUtil excelUtil = new ExcelOperationUtil("d:\\tempFolder", "tempExcel.xls");
 			excelUtil.WriteDataToExcel("d:\\tempFolder", "tempExcel.xls", recordList);
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
