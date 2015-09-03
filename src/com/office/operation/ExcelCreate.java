@@ -3,82 +3,62 @@ package com.office.operation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 
-public class ExcelRead implements IExcelExecute
+public class ExcelCreate implements IExcelExecute
 {
 	String path, fileName;
-	private FileInputStream fileStream = null;
+	private FileOutputStream fileStream = null;
 	private HSSFWorkbook hWorkBook = null;
 	private HSSFSheet hWorkSheet = null;
 	private HSSFRow hWorkRow = null;
 	private HSSFCell hWorkCell = null;
-	
+
 	//construct
-	public ExcelRead(String path, String fileName)
+	public ExcelCreate(String path, String fileName)
 	{
 		this.path = path;
 		this.fileName = fileName;
-	}
-
-	//Support
-	private String parseCellValue()
-	{
-		String rtnVal = "";
-		switch(hWorkCell.getCellType())
-		{
-		case HSSFCell.CELL_TYPE_STRING:
-			rtnVal = hWorkCell.getStringCellValue();
-			break;
-		case HSSFCell.CELL_TYPE_NUMERIC:
-			rtnVal = String.valueOf(hWorkCell.getNumericCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_BLANK:
-			rtnVal = null;
-			break;
-		default:
-			rtnVal = null;
-			break;
-		}
-		return (rtnVal != null)?rtnVal:"";
 	}
 	
 	//Implement interface
 	@Override
 	public String getPath()
 	{
-		return path;
+		return this.path;
 	}
 
 	@Override
 	public String getFileName()
 	{
-		return fileName;
+		return this.fileName;
 	}
 
 	@Override
 	public void setWorkBook()
 	{
-		try
+		//fileStream = new FileOutputStream(new File(path + "\\" + fileName));
+		if(null != hWorkBook)
 		{
-			fileStream = new FileInputStream(new File(path + "\\" + fileName));
-			hWorkBook = new HSSFWorkbook(fileStream);
+			hWorkBook = new HSSFWorkbook();
 		}
-		catch (FileNotFoundException e)
-		{
-			closeFile();
-			e.printStackTrace();
-		}
-		catch (IOException e)
+		else
 		{
 			closeWorkBook();
-			closeFile();
-			e.printStackTrace();
+			hWorkBook = new HSSFWorkbook();
 		}
 	}
 
@@ -88,10 +68,12 @@ public class ExcelRead implements IExcelExecute
 		if (null != hWorkBook)
 		{
 			hWorkSheet = hWorkBook.getSheet(sheet);
-		}
-		else
-		{
-			hWorkSheet = null;
+			if(null == hWorkSheet)
+			{
+				hWorkSheet = hWorkBook.createSheet();
+				hWorkBook.setSheetName(hWorkBook.getSheetIndex(hWorkSheet), sheet);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -101,11 +83,7 @@ public class ExcelRead implements IExcelExecute
 	{
 		if (null != hWorkSheet)
 		{
-			hWorkRow = hWorkSheet.getRow(iRow);
-		}
-		else
-		{
-			hWorkRow = null;
+			hWorkRow = hWorkSheet.createRow(hWorkSheet.getPhysicalNumberOfRows());
 		}
 	}
 
@@ -114,27 +92,25 @@ public class ExcelRead implements IExcelExecute
 	{
 		if (null != hWorkRow)
 		{
-			hWorkCell = hWorkRow.getCell(iCol);
-		}
-		else
-		{
-			hWorkCell = null;
+			hWorkCell = hWorkRow.createCell(iCol);
 		}
 	}
-
+	
+	@Override
+	public void setCellValue(String setVal)
+	{
+		if(null != hWorkCell)
+		{
+			hWorkCell.setCellValue(setVal);
+		}
+	}
+	
 	@Override
 	public String getCellValue()
 	{
-		if (null != hWorkCell)
-		{
-			return parseCellValue();
-		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
-
+	
 	@Override
 	public void closeFile()
 	{
@@ -171,16 +147,28 @@ public class ExcelRead implements IExcelExecute
 		}
 	}
 
-	@Override
-	public void setCellValue(String setVal)
-	{
-		
-	}
-
 	
 	@Override
 	public void saveToFile()
 	{
-		
+		try
+		{
+			fileStream = new FileOutputStream(new File(path, fileName));
+			hWorkBook.write(fileStream);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			closeFile();
+			closeWorkBook();
+		}
 	}
+
 }

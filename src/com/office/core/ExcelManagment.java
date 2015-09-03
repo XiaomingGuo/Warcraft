@@ -77,8 +77,8 @@ public class ExcelManagment extends MSExcel
 	{
 		try
 		{
-			CloseWorkBook();
-			CloseFile();
+			hExcelHandle.closeWorkBook();
+			hExcelHandle.closeFile();
 		}
 		catch(Exception e)
 		{
@@ -138,6 +138,7 @@ public class ExcelManagment extends MSExcel
 				}
 				rtnRst.add(rowList);
 			}
+			hWorkBook.close();
 			file.close();
 		}
 		catch(Exception e)
@@ -151,51 +152,41 @@ public class ExcelManagment extends MSExcel
 		return rtnRst;
 	}
 	
-	public boolean execWriteExcelBlock(List<List<String>> contentList, int sheetIdx)
+	public boolean execWriteExcelBlock(List<List<String>> contentList, int splitSheetCol)
 	{
+		boolean rtnRst = true;
 	    try
 		{
-			String saveSheetName = "";
-			int iCount = 1;
-			int iSheetCount = 0;
 			for (int iRow = 1; iRow < contentList.size(); iRow++)
 			{
-				String sheetName = contentList.get(iRow).get(sheetIdx);
-				setWorkSheet(sheetName);
-				if (!saveSheetName.contentEquals(sheetName))
+				String sheetName = contentList.get(iRow).get(splitSheetCol);
+				if(hExcelHandle.setWorkSheet(sheetName))
 				{
-					iCount = 1;
-					sheet = workbook.createSheet();//在工作簿中创建工作表对象
-					workbook.setSheetName(iSheetCount, sheetName);//设置工作表的名称
-					saveSheetName = sheetName;
-					HSSFRow row = sheet.createRow(0);//在工作表中创建第1行对象
+					hExcelHandle.setWorkRow(0);
 					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
 					{
-						HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
-						label_num.setCellValue(contentList.get(0).get(iCol));//添加字符串
+						hExcelHandle.setWorkCell(iCol);
+						hExcelHandle.setCellValue(contentList.get(0).get(iCol));
 					}
-					iSheetCount += 1;
 				}
-				
-				HSSFRow row = sheet.createRow(iCount);//在工作表中创建第1行对象
+				hExcelHandle.setWorkRow(0);
 				for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
 				{
-					HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
-					label_num.setCellValue(contentList.get(iRow).get(iCol));//添加字符串
+					hExcelHandle.setWorkCell(iCol);
+					hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
 				}
-				iCount += 1;
 			}
-			File xlsFile = new File(fileFullPath, fileName);
-			FileOutputStream fos = new FileOutputStream(xlsFile);
-			workbook.write(fos);//将文档对象写入文件输出流
-			fos.close();
-			workbook.close();
+			hExcelHandle.saveToFile();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			rtnRst = false;
 		} 
+		finally
+		{
+			CleanExcelHandle();
+		}
 		return rtnRst;
 	}
 	
