@@ -1,12 +1,6 @@
 package com.DB;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.DB.core.DataBaseCore;
 
@@ -187,10 +181,12 @@ public class DatabaseConn extends DataBaseCore
 		return rtnRst;
 	}
 	
-	public double GetPrice_Pre_Unit(String bar_code, String Batch_Lot)
+	public double GetPrice_Pre_Unit(String store_name, String bar_code, String Batch_Lot)
 	{
 		double rtnRst = 0.0;
-		String sql = "select Price_Per_Unit from material_storage where Bar_Code='" + GetUsedBarcode(bar_code, "material_storage") +"' and Batch_Lot='" + Batch_Lot + "'";
+		String sql = "select Price_Per_Unit from " + store_name + "_storage where Bar_Code = '" + GetUsedBarcode(bar_code, store_name) + "' and Batch_Lot = '" + Batch_Lot
+		+ "' UNION ALL select Price_Per_Unit from exhausted_" + store_name + " where Bar_Code = '" + GetUsedBarcode(bar_code, store_name) + "' and Batch_Lot = '" + Batch_Lot + "'";
+		//sql = "select Price_Per_Unit from " + storeName + " where Bar_Code='" + GetUsedBarcode(bar_code, storeName) +"' and Batch_Lot='" + Batch_Lot + "'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)

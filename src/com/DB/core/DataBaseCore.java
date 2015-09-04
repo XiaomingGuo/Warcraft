@@ -10,9 +10,14 @@ import java.util.List;
 
 public class DataBaseCore
 {
-	private static String url = "jdbc:mysql://localhost:3306/earthquake?characterEncoding=UTF-8";
-	private static String userName = "root";
-	private static String password = "gxm4907806";
+	private String url = "jdbc:mysql://localhost:3306/earthquake?characterEncoding=UTF-8";
+	private String userName = "root";
+	private String password = "gxm4907806";
+	private Connection Conn;
+	private Statement Stmt;
+	private String ErrorMsg;
+	private ResultSet result;
+	
 	//Perpare Database connection
 	public void SetDatabaseAddr(String tUrl)
 	{
@@ -29,10 +34,6 @@ public class DataBaseCore
 		this.password = tPassword;
 	}
 	//End Prepare Database connection
-	private Connection Conn;
-	private Statement Stmt;
-	private String ErrorMsg;
-	private ResultSet result;
 	
 	public boolean InitConnect()
 	{
