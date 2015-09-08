@@ -1,4 +1,4 @@
-package com.Warcraft;
+package com.Warcraft.SupportUnit;
 
 public class Person {
 	private String name;

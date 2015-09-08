@@ -1,9 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.Warcraft.SupportUnit.SubmitDiscardMaterial" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 
 <%!
+	SubmitDiscardMaterial hProcessor = new SubmitDiscardMaterial();
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 %>
@@ -24,8 +26,7 @@
 		//product_type Database query
 		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&appreason != ""&&appreason != null)
 		{
-			String POName = hDBHandle.GetPONameFromOrderRecord(appBarcode, appOrderName);
-			if (hDBHandle.GetInProcessQty(appBarcode, POName) - hDBHandle.GetCompleteQty(appBarcode, POName) < used_count)
+			if (hProcessor.CheckPOStatus(appBarcode, appOrderName) < used_count)
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 你这报废的也太狠了吧, 加上报废数量都比客户生产单数量大了!");
 				response.sendRedirect("../tishi.jsp");
@@ -45,25 +46,17 @@
 						int recordCount = sql_in_count - sql_out_count;
 						if (recordCount >= used_count)
 						{
-							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_in_count-used_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
+							sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, BatchLot, QTY, reason) VALUE ('" + appOrderName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "discard_material_record") + "', '" + batchLot + "', '" + appProduct_QTY + "', '" + appreason +"')";
 							hDBHandle.execUpate(sql);
-							if (recordCount == used_count)
-							{
-								hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
-							}
+							response.sendRedirect("../Discard_Material.jsp");
 							break;
 						}
 						else
 						{
-							sql= "UPDATE material_storage SET IN_QTY='" + Integer.toString(sql_out_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "material_storage") +"' and Batch_Lot='" + batchLot +"'";
+							sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, BatchLot, QTY, reason) VALUE ('" + appOrderName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "discard_material_record") + "', '" + batchLot + "', '"  + recordCount + "', '" + appreason +"')";
 							hDBHandle.execUpate(sql);
-							hDBHandle.MoveToExhaustedTable(appBarcode, batchLot, "material_storage", "exhausted_material");
-							used_count -= recordCount;
 						}
 					}
-					sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, QTY, reason) VALUE ('" + appOrderName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "discard_material_record") + "', '" + appProduct_QTY + "', '" + appreason +"')";
-					hDBHandle.execUpate(sql);
-					response.sendRedirect("../Discard_Material.jsp");
 				}
 				else
 				{

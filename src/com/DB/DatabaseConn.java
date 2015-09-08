@@ -385,10 +385,10 @@ public class DatabaseConn extends DataBaseCore
 	public int GetCompleteQty(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		String sql = "select QTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
+		String sql = "select completeQTY from product_order_record where Bar_Code='" + GetUsedBarcode(barcode, "product_order_record") +"' and po_name='" + po_name + "'";
 		if (QueryDataBase(sql)&&GetRecordCount() > 0)
 		{
-			List<String> po_Qty_List = GetAllStringValue("OQC_QTY");
+			List<String> po_Qty_List = GetAllStringValue("completeQTY");
 			for (int i = 0; i < po_Qty_List.size(); i++)
 			{
 				rtnRst += Integer.parseInt(po_Qty_List.get(i));
