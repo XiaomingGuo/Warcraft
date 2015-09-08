@@ -120,7 +120,11 @@
 		<tr>
 			<td align="right">
 				<label>报废原因:</label>
-				<input name="discard_reason" id="discard_reason" style="width:260px">
+			  	<select name="discard_reason" id="discard_reason" style="width:260px">
+				  	<option value = "--请选择--">--请选择--</option>
+				  	<option value = "报废">报废</option>
+				  	<option value = "料废">料废</option>
+			  	</select>
 			</td>
 		</tr>
 		<tr>

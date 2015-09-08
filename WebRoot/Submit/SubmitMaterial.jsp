@@ -43,9 +43,9 @@
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "', '" + appDescription + "')";
 					hDBHandle.execUpate(sql);
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "material_info") + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "', '" + appDescription + "')";
+					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "material_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
 					hDBHandle.execUpate(sql);
 				}
 				else

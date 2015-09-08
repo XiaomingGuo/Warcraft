@@ -252,6 +252,7 @@
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
+					alert(data);
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
@@ -347,7 +348,11 @@
 					$("#product_type").empty();
 					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
 					{
-						var keyWord = proInfoList[2]+"原锭";
+						var keyWord = proInfoList[2];
+						if (keyWord.indexOf("原锭") < 0)
+						{
+							keyWord += "原锭";
+						}
 						var newOption = $("<option>" + keyWord + "</option>");
 						$(newOption).val(keyWord);
 						$("#product_type").append(newOption);

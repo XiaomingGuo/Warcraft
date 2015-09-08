@@ -1,9 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.DatabaseConn" %>
 <%@ page import="com.Warcraft.SupportUnit.SubmitDiscardMaterial" %>
-<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-
+<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <%!
 	SubmitDiscardMaterial hProcessor = new SubmitDiscardMaterial();
 	DatabaseConn hDBHandle = new DatabaseConn();
