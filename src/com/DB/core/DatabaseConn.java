@@ -1,8 +1,6 @@
-package com.DB;
+package com.DB.core;
 
 import java.util.List;
-
-import com.DB.core.DataBaseCore;
 
 public class DatabaseConn extends DataBaseCore
 {

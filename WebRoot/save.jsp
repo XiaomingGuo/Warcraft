@@ -2,7 +2,7 @@
 <%@ page import="com.jspsmart.upload.*" %>
 <%@ page import="com.office.core.ExcelManagment" %>
 <%@ page import="com.office.operation.ExcelRead" %>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.core.DatabaseConn" %>
 <%!DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	request.setCharacterEncoding("UTF-8");

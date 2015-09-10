@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.core.DatabaseConn" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
@@ -49,7 +49,7 @@
 				recordList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
-			excelUtil.execWriteExcelBlock(recordList, 4);
+			excelUtil.execWriteExcelBlock(recordList, 9);
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	

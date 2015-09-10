@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.core.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "操作"};

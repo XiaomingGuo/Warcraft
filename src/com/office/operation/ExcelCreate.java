@@ -18,9 +18,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 
+import com.Warcraft.Interface.IExcelExecute;
+
 public class ExcelCreate implements IExcelExecute
 {
-	String path, fileName;
+	private String path, fileName;
 	private FileOutputStream fileStream = null;
 	private HSSFWorkbook hWorkBook = null;
 	private HSSFSheet hWorkSheet = null;

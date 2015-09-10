@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.core.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	List<String> pro_info = null;

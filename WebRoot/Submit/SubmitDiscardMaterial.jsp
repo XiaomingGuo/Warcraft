@@ -1,12 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.DatabaseConn" %>
+<%@ page import="com.DB.core.DatabaseConn" %>
 <%@ page import="com.Warcraft.SupportUnit.SubmitDiscardMaterial" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <%!
 	SubmitDiscardMaterial hProcessor = new SubmitDiscardMaterial();
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 %>
 <%
 	if(session.getAttribute("logonuser")==null)
@@ -29,7 +28,15 @@
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 你这报废的也太狠了吧, 加上报废数量都比客户生产单数量大了!");
 				response.sendRedirect("../tishi.jsp");
+				return;
 			}
+			if (!hProcessor.ExcuteDiscardMaterial(appBarcode, appOrderName, appProduct_QTY, appreason, used_count))
+			{
+				session.setAttribute("error", "("+ appBarcode + "): 库存数量不足,都不够你报废的!");
+				response.sendRedirect("../tishi.jsp");
+				return;
+			}
+/*
 			int repertory_count = hDBHandle.GetRepertoryByBarCode(appBarcode, "material_storage");
 			if (repertory_count >= used_count)
 			{
@@ -47,7 +54,6 @@
 						{
 							sql= "INSERT INTO discard_material_record (Order_Name, Bar_Code, BatchLot, QTY, reason) VALUE ('" + appOrderName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "discard_material_record") + "', '" + batchLot + "', '" + appProduct_QTY + "', '" + appreason +"')";
 							hDBHandle.execUpate(sql);
-							response.sendRedirect("../Discard_Material.jsp");
 							break;
 						}
 						else
@@ -66,12 +72,16 @@
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 库存数量不足,都不够你报废的!");
 				response.sendRedirect("../tishi.jsp");
-			}			
+				return;
+			}
+*/
 		}
 		else
 		{
 			session.setAttribute("error", "你输入的是什么啊,赶紧重新输入!");
 			response.sendRedirect("../tishi.jsp");
+			return;
 		}
+		response.sendRedirect("../Discard_Material.jsp");
 	}
 %>

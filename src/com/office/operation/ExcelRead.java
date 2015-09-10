@@ -10,9 +10,11 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.Warcraft.Interface.IExcelExecute;
+
 public class ExcelRead implements IExcelExecute
 {
-	String path, fileName;
+	private String path, fileName;
 	private FileInputStream fileStream = null;
 	private HSSFWorkbook hWorkBook = null;
 	private HSSFSheet hWorkSheet = null;

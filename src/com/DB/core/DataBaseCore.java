@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataBaseCore
+import com.Warcraft.Interface.IDataBaseCore;
+
+public class DataBaseCore implements IDataBaseCore
 {
 	private String url = "jdbc:mysql://localhost:3306/earthquake?characterEncoding=UTF-8";
 	private String userName = "root";
