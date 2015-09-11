@@ -1,4 +1,3 @@
-<%@page import="org.apache.struts2.components.Else"%>
 <%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.core.DatabaseConn" %>

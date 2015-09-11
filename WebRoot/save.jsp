@@ -9,7 +9,17 @@
 	String filePath = request.getParameter("filePath");
 	String fileName = request.getParameter("fileName");
 	ExcelManagment excelUtil = new ExcelManagment(new ExcelRead(filePath, fileName));
-	int[] startCell = {2,1}, endCell = {261,6};
+	int[] startCell, endCell;
+	if (fileName.contains("Summary-other"))
+	{
+		startCell = new int[] {2,1};
+		endCell = new int[] {261,6};
+	}
+	else
+	{
+		startCell = new int[] {2,1};
+		endCell = new int[] {261,6};
+	}
 	List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
 	if(res.size() > 0)
 	{

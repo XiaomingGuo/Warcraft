@@ -252,7 +252,6 @@
 				$("#PriceUnit").val("");
 				$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":$("#product_name").find("option:selected").text(),"product_type":$("#product_type").find("option:selected").text()}, function(data, textStatus)
 				{
-					alert(data);
 					if (textStatus == "success")
 					{
 						var code_list = data.split("$");
