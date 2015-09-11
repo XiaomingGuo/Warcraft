@@ -8,9 +8,9 @@
 %>
 <%
 	String message="";
-	String POName = request.getParameter("PO_Name");
-	String vendor = request.getParameter("vendor");
-	String delivery_Date = request.getParameter("Delivery_Date");
+	String POName = request.getParameter("PO_Name").replace(" ", "");
+	String vendor = request.getParameter("vendor").replace(" ", "");
+	String delivery_Date = request.getParameter("Delivery_Date").replace(" ", "");
 	
 	if(session.getAttribute("logonuser")==null)
 	{

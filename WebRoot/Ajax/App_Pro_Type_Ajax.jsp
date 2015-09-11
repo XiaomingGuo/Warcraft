@@ -5,7 +5,7 @@
 	List<String> pro_type = null, vendor_name = null;
 %>
 <%
-	String storeroom=(String)request.getParameter("FilterKey1");
+	String storeroom=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
 	String sql = "select * from vendor_info where storeroom='" + storeroom +"'";
 	if (storeroom.indexOf("原材料库") < 0)

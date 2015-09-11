@@ -36,14 +36,14 @@
 			for(int iRow = 0; ;iRow++)
 			{
 				List<String> tempList = new ArrayList<String>();
-				String breakFlag = request.getParameter(Integer.toString(iRow*10));
+				String breakFlag = request.getParameter(Integer.toString(iRow*10)).replace(" ", "");
 				if (breakFlag == null)
 				{
 					break;
 				}
 				for(int iCol = 0; iCol < displayKeyList.length;iCol++)
 				{
-					String tempValue = request.getParameter(Integer.toString(iRow*10+iCol));
+					String tempValue = request.getParameter(Integer.toString(iRow*10+iCol)).replace(" ", "");
 					tempList.add(tempValue);
 				}
 				recordList.add(tempList);

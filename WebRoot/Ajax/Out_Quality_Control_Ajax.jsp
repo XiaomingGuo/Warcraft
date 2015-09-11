@@ -6,8 +6,8 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String pro_id = request.getParameter("product_id");
-	String QTYOfStore = request.getParameter("PutInQTY");
+	String pro_id = request.getParameter("product_id").replace(" ", "");
+	String QTYOfStore = request.getParameter("PutInQTY").replace(" ", "");
 	String sql = "";
 	
 	if (pro_id != null && QTYOfStore != null)

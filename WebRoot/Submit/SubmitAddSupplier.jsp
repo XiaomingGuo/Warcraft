@@ -15,13 +15,13 @@
 	{
 		String proposerName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
-		String appStorename = request.getParameter("store_name_addproduct");
-		String appSupplier = request.getParameter("suppliername");
-		String appFaxinfo = request.getParameter("faxinfo");
-		String appTelinfo = request.getParameter("telinfo");
-		String appMailaddress = request.getParameter("mailaddress");
-		String appAddress = request.getParameter("address");
-		String description = request.getParameter("description");
+		String appStorename = request.getParameter("store_name_addproduct").replace(" ", "");
+		String appSupplier = request.getParameter("suppliername").replace(" ", "");
+		String appFaxinfo = request.getParameter("faxinfo").replace(" ", "");
+		String appTelinfo = request.getParameter("telinfo").replace(" ", "");
+		String appMailaddress = request.getParameter("mailaddress").replace(" ", "");
+		String appAddress = request.getParameter("address").replace(" ", "");
+		String description = request.getParameter("description").replace(" ", "");
 		
 		//product_type Database query
 		if (!appStorename.isEmpty() && !appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())

@@ -5,12 +5,12 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String bar_code = (String)request.getParameter("bar_code");
-	String deliv_date = (String)request.getParameter("delivery_date");
-	String cpo_qty = (String)request.getParameter("cpo_QTY");
-	String vendorname = (String)request.getParameter("vendor_name");
-	String poname = (String)request.getParameter("po_name");
-	String percent = (String)request.getParameter("percent");
+	String bar_code = (String)request.getParameter("bar_code").replace(" ", "");
+	String deliv_date = (String)request.getParameter("delivery_date").replace(" ", "");
+	String cpo_qty = (String)request.getParameter("cpo_QTY").replace(" ", "");
+	String vendorname = (String)request.getParameter("vendor_name").replace(" ", "");
+	String poname = (String)request.getParameter("po_name").replace(" ", "");
+	String percent = (String)request.getParameter("percent").replace(" ", "");
 	
 	if (poname != null&&!poname.isEmpty())
 	{

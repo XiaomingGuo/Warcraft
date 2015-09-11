@@ -29,6 +29,7 @@
 		}
 		store_name.remove("成品库");
 		store_name.remove("原材料库");
+		store_name.remove("半成品库");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

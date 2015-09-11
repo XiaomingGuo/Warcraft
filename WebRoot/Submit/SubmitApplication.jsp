@@ -15,12 +15,12 @@
 	{
 		String proposerName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
-		String appProduct_type = request.getParameter("product_type");
-		String appProduct_name = request.getParameter("product_name");
-		String appBarcode = request.getParameter("bar_code");
-		String appUserName = request.getParameter("user_name");
-		String appProduct_QTY = request.getParameter("QTY");
-		String Total_QTY = request.getParameter("Total_QTY");
+		String appProduct_type = request.getParameter("product_type").replace(" ", "");
+		String appProduct_name = request.getParameter("product_name").replace(" ", "");
+		String appBarcode = request.getParameter("bar_code").replace(" ", "");
+		String appUserName = request.getParameter("user_name").replace(" ", "");
+		String appProduct_QTY = request.getParameter("QTY").replace(" ", "");
+		String Total_QTY = request.getParameter("Total_QTY").replace(" ", "");
 		
 		//product_type Database query
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && !appProduct_QTY.isEmpty() && !Total_QTY.isEmpty())

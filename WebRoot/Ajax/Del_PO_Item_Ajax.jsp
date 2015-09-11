@@ -5,7 +5,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String pro_id = (String)request.getParameter("product_id");
+	String pro_id = (String)request.getParameter("product_id").replace(" ", "");
 	
 	if (pro_id != null)
 	{

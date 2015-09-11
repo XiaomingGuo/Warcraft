@@ -8,8 +8,8 @@
 	int iProRepertory = 0, iMatRepertory = 0;
 	String rtnRst = "remove$";
 	String strBarcode = null;
-	String pro_name = (String)request.getParameter("product_name");
-	String pro_type = (String)request.getParameter("product_type");
+	String pro_name = (String)request.getParameter("product_name").replace(" ", "");
+	String pro_type = (String)request.getParameter("product_type").replace(" ", "");
 	String sql= "select Bar_Code from product_info where name='"+pro_name+"' and product_type='"+ pro_type + "'";
 	if (hDBHandle.QueryDataBase(sql))
 	{

@@ -6,7 +6,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String order_name = request.getParameter("order_name");
+	String order_name = request.getParameter("order_name").replace(" ", "");
 	
 	if (order_name != null||order_name.indexOf("生产单号") < 0)
 	{

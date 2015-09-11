@@ -5,9 +5,9 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String appPOName = (String)request.getParameter("PO_Name");
-	String appVendor = (String)request.getParameter("vendor");
-	String appDelivDate = (String)request.getParameter("Delivery_Date");
+	String appPOName = (String)request.getParameter("PO_Name").replace(" ", "");
+	String appVendor = (String)request.getParameter("vendor").replace(" ", "");
+	String appDelivDate = (String)request.getParameter("Delivery_Date").replace(" ", "");
 	if (appPOName != null && appDelivDate.length() == 8)
 	{
 		String sql = "select * from customer_po_record where po_name='" + appPOName + "' and vendor='" + appVendor + "'";

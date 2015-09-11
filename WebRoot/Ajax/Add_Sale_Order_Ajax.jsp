@@ -5,8 +5,8 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String date_of_delivery = (String)request.getParameter("date_of_delivery");
-	String po_name = (String)request.getParameter("POName");
+	String date_of_delivery = (String)request.getParameter("date_of_delivery").replace(" ", "");
+	String po_name = (String)request.getParameter("POName").replace(" ", "");
 	if (po_name != null && date_of_delivery != null)
 	{
 		Calendar mData = Calendar.getInstance();

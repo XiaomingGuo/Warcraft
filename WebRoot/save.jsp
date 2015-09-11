@@ -6,8 +6,8 @@
 <%!DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	request.setCharacterEncoding("UTF-8");
-	String filePath = request.getParameter("filePath");
-	String fileName = request.getParameter("fileName");
+	String filePath = request.getParameter("filePath").replace(" ", "");
+	String fileName = request.getParameter("fileName").replace(" ", "");
 	ExcelManagment excelUtil = new ExcelManagment(new ExcelRead(filePath, fileName));
 	int[] startCell, endCell;
 	if (fileName.contains("Summary-other"))

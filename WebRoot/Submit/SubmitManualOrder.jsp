@@ -18,8 +18,8 @@
 		request.setCharacterEncoding("UTF-8");
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		String appOrderHeader = request.getParameter("OrderHeader");
-		String appOrderName = request.getParameter("OrderName");
+		String appOrderHeader = request.getParameter("OrderHeader").replace(" ", "");
+		String appOrderName = request.getParameter("OrderName").replace(" ", "");
 		String OrderName = appOrderHeader + appOrderName;
 		String sql = null;
 		

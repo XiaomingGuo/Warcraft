@@ -14,8 +14,8 @@
 	boolean bLoginSuccessful = false;
 	request.setCharacterEncoding("UTF-8");
 
-	String name = request.getParameter("name");
-	String key = request.getParameter("key");
+	String name = request.getParameter("name").replace(" ", "");
+	String key = request.getParameter("key").replace(" ", "");
 	if(name == null || key == null || name.isEmpty() || key.isEmpty())
 	{
 		response.sendRedirect("tishi.jsp");
@@ -41,7 +41,7 @@
 			mylogon.setUserRight(userRight);
 			mess = mylogon.checkuser();
 			
-			if (KeyWord != null && KeyWord.equals(request.getParameter("key")))
+			if (KeyWord != null && KeyWord.equals(request.getParameter("key").replace(" ", "")))
 			{
 				bLoginSuccessful = true;
 				session.setAttribute("logonuser", mylogon);

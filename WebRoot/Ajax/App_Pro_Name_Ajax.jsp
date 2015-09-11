@@ -5,7 +5,7 @@
 	List<String> proInfo = null;
 %>
 <%
-	String pro_type=(String)request.getParameter("FilterKey1");
+	String pro_type=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
 	proInfo = hDBHandle.GetProductInfo(pro_type);
 	if (proInfo != null)

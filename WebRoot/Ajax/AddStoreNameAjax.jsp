@@ -6,7 +6,7 @@
 %>
 <%
 	String rtnRst = "";
-	String storeroom = (String)request.getParameter("storeroom");
+	String storeroom = (String)request.getParameter("storeroom").replace(" ", "");
 	String sql = "select * from storeroom_name where name='" + storeroom +"'" ;
 	if (!storeroom.isEmpty()&&hDBHandle.QueryDataBase(sql))
 	{	

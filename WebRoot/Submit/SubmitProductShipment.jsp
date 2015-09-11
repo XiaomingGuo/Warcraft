@@ -15,7 +15,7 @@
 	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
-		String appPONum = request.getParameter("po_select");
+		String appPONum = request.getParameter("po_select").replace(" ", "");
 		//product_type Database query
 		if (appPONum!=null && appPONum!="")
 		{

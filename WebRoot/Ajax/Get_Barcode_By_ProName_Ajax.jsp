@@ -6,8 +6,8 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String proName = request.getParameter("search_name");
-	String flag = request.getParameter("flag");
+	String proName = request.getParameter("search_name").replace(" ", "");
+	String flag = request.getParameter("flag").replace(" ", "");
 	if(proName.length() > 0)
 	{
 		String barcode = hDBHandle.GetBarcodeByName(proName, flag);

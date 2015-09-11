@@ -6,7 +6,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String barcode = request.getParameter("Bar_Code");
+	String barcode = request.getParameter("Bar_Code").replace(" ", "");
 	if(barcode.length() == 8)
 	{
 		String proType = hDBHandle.GetTypeByBarcode(barcode);

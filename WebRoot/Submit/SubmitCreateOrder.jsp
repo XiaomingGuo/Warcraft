@@ -18,7 +18,7 @@
 		request.setCharacterEncoding("UTF-8");
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		String appPOName = request.getParameter("po_select");
+		String appPOName = request.getParameter("po_select").replace(" ", "");
 		String OrderName = null, sql = null;
 		
 		if (!appPOName.isEmpty())
@@ -33,7 +33,7 @@
 				hDBHandle.execUpate(sql);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
-					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
+					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
 					int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
 					String strBarcode = recordList.get(0).get(iRow);
 					if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
@@ -65,7 +65,7 @@
 					hDBHandle.execUpate(sql);
 					for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 					{
-						String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY");
+						String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
 						int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
 						if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
 						{

@@ -24,9 +24,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String store_name = request.getParameter("store_name");
-			String beginDate = request.getParameter("BeginDate");
-			String endDate = request.getParameter("EndDate");
+			String store_name = request.getParameter("store_name").replace(" ", "");
+			String beginDate = request.getParameter("BeginDate").replace(" ", "");
+			String endDate = request.getParameter("EndDate").replace(" ", "");
 			//product_type Database query
 			if (store_name.indexOf("请选择") < 0)
 			{

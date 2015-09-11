@@ -6,7 +6,7 @@
 	List<String> pro_type = null;
 %>
 <%
-	String pro_order=(String)request.getParameter("FilterKey1");
+	String pro_order=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
 	//product_info Database query
 	String sql = "select * from product_order_record where Order_Name='" + pro_order +"'";

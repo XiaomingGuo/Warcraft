@@ -7,7 +7,7 @@
 <%
 	String message="";
 	List<String> vendorList = null;
-	String OrderName = request.getParameter("Order_Name");
+	String OrderName = request.getParameter("Order_Name").replace(" ", "");
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");

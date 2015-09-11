@@ -5,9 +5,9 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String pro_id = (String)request.getParameter("product_id");
-	String Order_Name = (String)request.getParameter("Order_Name");
-	String Bar_Code = (String)request.getParameter("Bar_Code");
+	String pro_id = (String)request.getParameter("product_id").replace(" ", "");
+	String Order_Name = (String)request.getParameter("Order_Name").replace(" ", "");
+	String Bar_Code = (String)request.getParameter("Bar_Code").replace(" ", "");
 	
 	if (pro_id != null)
 	{

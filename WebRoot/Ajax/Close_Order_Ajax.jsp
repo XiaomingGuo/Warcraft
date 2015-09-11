@@ -5,7 +5,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String ordername = (String)request.getParameter("Order_Name");
+	String ordername = (String)request.getParameter("Order_Name").replace(" ", "");
 	
 	if (ordername != null)
 	{

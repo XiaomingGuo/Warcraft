@@ -15,9 +15,9 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String cur_PWD = request.getParameter("cur_password");
-		String new_PWD = request.getParameter("new_password");
-		String confirm_PWD = request.getParameter("confirm_password");
+		String cur_PWD = request.getParameter("cur_password").replace(" ", "");
+		String new_PWD = request.getParameter("new_password").replace(" ", "");
+		String confirm_PWD = request.getParameter("confirm_password").replace(" ", "");
 		String user_name = mylogon.getUsername();
 		String sql_PWD = "";
 		if (!cur_PWD.isEmpty() && !new_PWD.isEmpty() && !confirm_PWD.isEmpty() && new_PWD.equals(confirm_PWD))

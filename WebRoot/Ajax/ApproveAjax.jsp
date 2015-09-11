@@ -6,9 +6,9 @@
 %>
 <%
 	String rtnRst = "";
-	String barcode = (String)request.getParameter("Barcode");
-	String recordID = (String)request.getParameter("material_id");
-	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY"));
+	String barcode = (String)request.getParameter("Barcode").replace(" ", "");
+	String recordID = (String)request.getParameter("material_id").replace(" ", "");
+	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY").replace(" ", ""));
 	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode, "other_storage");
 	if (repertory_count >= used_count)
 	{

@@ -15,15 +15,15 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String appStore_name = request.getParameter("store_name_addproduct");
-		String appSupplier_name = request.getParameter("supplier_name");
-		String appProduct_type = request.getParameter("product_type");
-		String appProductname = request.getParameter("productname");
-		String appBarcode = request.getParameter("barcode");
-		String appPriceUnit = request.getParameter("PriceUnit");
-		String appWeightUnit = request.getParameter("WeightUnit");
-		String appProductQTY = request.getParameter("QTY");
-		String appDescription = request.getParameter("Description");
+		String appStore_name = request.getParameter("store_name_addproduct").replace(" ", "");
+		String appSupplier_name = request.getParameter("supplier_name").replace(" ", "");
+		String appProduct_type = request.getParameter("product_type").replace(" ", "");
+		String appProductname = request.getParameter("productname").replace(" ", "");
+		String appBarcode = request.getParameter("barcode").replace(" ", "");
+		String appPriceUnit = request.getParameter("PriceUnit").replace(" ", "");
+		String appWeightUnit = request.getParameter("WeightUnit").replace(" ", "");
+		String appProductQTY = request.getParameter("QTY").replace(" ", "");
+		String appDescription = request.getParameter("Description").replace(" ", "");
 		String storageName="other_storage";
 		
 		if (appSupplier_name.indexOf("请选择") < 0 && !appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty() && !appWeightUnit.isEmpty())

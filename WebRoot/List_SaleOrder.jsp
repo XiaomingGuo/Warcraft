@@ -7,7 +7,7 @@
 <%
 	String message="";
 	List<String> print_mark = null;
-	String POName = request.getParameter("PO_Name");
+	String POName = request.getParameter("PO_Name").replace(" ", "");
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");

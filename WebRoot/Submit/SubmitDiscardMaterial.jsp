@@ -16,10 +16,10 @@
 	{
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
-		String appOrderName = request.getParameter("product_order");
-		String appBarcode = request.getParameter("bar_code");
-		String appProduct_QTY = request.getParameter("QTY");
-		String appreason = request.getParameter("discard_reason");
+		String appOrderName = request.getParameter("product_order").replace(" ", "");
+		String appBarcode = request.getParameter("bar_code").replace(" ", "");
+		String appProduct_QTY = request.getParameter("QTY").replace(" ", "");
+		String appreason = request.getParameter("discard_reason").replace(" ", "");
 		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
 		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&appreason != ""&&appreason != null)

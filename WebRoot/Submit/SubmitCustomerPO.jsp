@@ -16,7 +16,7 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		String appPOName = request.getParameter("POName");
+		String appPOName = request.getParameter("POName").replace(" ", "");
 		if (!appPOName.isEmpty())
 		{
 			String sql = "select * from customer_po where po_name='" + appPOName + "'";

@@ -5,7 +5,7 @@
 %>
 <%
 	String rtnRst = "";
-	String id = (String)request.getParameter("Index");
+	String id = (String)request.getParameter("Index").replace(" ", "");
 	String sql = "select * from user_info where id='" + id +"'";
 	if (hDBHandle.QueryDataBase(sql))
 	{	

@@ -5,7 +5,7 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String barcode = (String)request.getParameter("Bar_Code");
+	String barcode = (String)request.getParameter("Bar_Code").replace(" ", "");
 	
 	if (barcode != null)
 	{

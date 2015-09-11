@@ -6,8 +6,8 @@
 %>
 <%
 	String message="";
-	String POName = request.getParameter("PO_Name");
-	String deliveryDate = request.getParameter("Delivery_Date");
+	String POName = request.getParameter("PO_Name").replace(" ", "");
+	String deliveryDate = request.getParameter("Delivery_Date").replace(" ", "");
 	String[] displayKeyList = {"行号", "品名规格", "单位", "数量", "单重", "总重", "备注"};
 	List<List<String>> recordList = null, vendorInfo = null;
 	

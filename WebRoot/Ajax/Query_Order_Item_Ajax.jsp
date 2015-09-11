@@ -8,8 +8,8 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String order_name = request.getParameter("order_name");
-	String status = request.getParameter("status");
+	String order_name = request.getParameter("order_name").replace(" ", "");
+	String status = request.getParameter("status").replace(" ", "");
 	
 	if (order_name.length() > 11)
 	{

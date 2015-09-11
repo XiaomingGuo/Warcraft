@@ -5,9 +5,9 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String appBarcode = (String)request.getParameter("Bar_Code");
-	String appPONum = (String)request.getParameter("po_name");
-	String out_QTY = request.getParameter("OUT_QTY");
+	String appBarcode = (String)request.getParameter("Bar_Code").replace(" ", "");
+	String appPONum = (String)request.getParameter("po_name").replace(" ", "");
+	String out_QTY = request.getParameter("OUT_QTY").replace(" ", "");
 	int used_count = Integer.parseInt(out_QTY);
 	//product_type Database query
 	if (appBarcode != null && appPONum != null && out_QTY != null && used_count > 0 && appBarcode.length()==8 && appPONum!="")
