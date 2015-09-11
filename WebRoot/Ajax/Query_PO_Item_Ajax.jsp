@@ -9,7 +9,7 @@
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
-	String status = request.getParameter("status").replace(" ", "");
+	String status = request.getParameter("status");
 	String po_status = null;
 	if(po_name.length() > 6)
 	{

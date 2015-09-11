@@ -203,7 +203,20 @@
 		function ShowSalePage(obj)
 		{
 			var po_name = $("#po_select").find("option:selected").text();
-			location.href ="List_SaleOrder.jsp?PO_Name="+po_name;
+			if (po_name.indexOf("请选择") >= 0)
+			{
+				$displayOrder.empty();
+				$confirmOrder.empty();
+				return;
+			}
+			$.post("Ajax/Add_Sale_Order_Ajax.jsp", {"POName": po_name}, function(data, textStatus)
+			{
+				if (!(textStatus == "success") || data.indexOf("error") >= 0)
+				{
+					alert(data.split("$")[1]);
+				}
+				location.href ="List_SaleOrder.jsp?PO_Name="+po_name;
+			});
 		}
 	</script>
   </body>

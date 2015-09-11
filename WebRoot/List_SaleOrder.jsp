@@ -6,7 +6,7 @@
 %>
 <%
 	String message="";
-	List<String> print_mark = null;
+	List<String> shipping_no = null;
 	String POName = request.getParameter("PO_Name").replace(" ", "");
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -24,17 +24,15 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from shipping_record where customer_po='" + POName + "' group by print_mark";
+			String sql = "select * from shipping_record where customer_po='" + POName + "' group by shipping_no";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
-				print_mark = hDBHandle.GetAllStringValue("print_mark");
+				shipping_no = hDBHandle.GetAllStringValue("shipping_no");
 			}
 			else
 			{
 				hDBHandle.CloseDatabase();
 			}
-			Calendar mData = Calendar.getInstance();
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -60,28 +58,15 @@
     <br><br><br>
     <table align="center" width="20%">
 <%
-			for (int iRow = 0; iRow < print_mark.size(); iRow++)
+			for (int iRow = 0; iRow < shipping_no.size(); iRow++)
 			{
-				if(print_mark.get(iRow).indexOf("00000000") >= 0)
-				{
 %>
 			<tr>
-				<td align="center"><label>销售日期:</label></td>
-				<td align="center"><input type="text" id="date_of_delivery" name="date_of_delivery" value="<%=DeliveryDate %>"></td>
-				<td align="center" width="10%"><input type="button" id="add" value="添加销售单" name="<%=POName %>" onclick="addSaleOrder(this)"></td>
-			</tr>
-<%			
-				}
-				else
-				{
-%>
-			<tr>
-				<td align="center"><label>销售日期:</label></td>
-				<td align="center"><h1><a onclick="func(this)" name="<%=POName %>$<%=print_mark.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=print_mark.get(iRow) %></a></h1></td>
+				<td align="center"><label>销售单号:</label></td>
+				<td align="center"><h1><a onclick="func(this)" name="<%=POName %>$<%=shipping_no.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=shipping_no.get(iRow) %></a></h1></td>
 				<td align="center"><label></label></td>
 			</tr>
 <%
-				}
 			}
 %>
    	</table>
@@ -91,31 +76,13 @@
 		{
 			var paramList = obj.name.split("$");
 			var vPOName = paramList[0];
-			var print_mark = paramList[1];
-			if(vPOName==""||vPOName == null||print_mark == ""||print_mark == null)
+			var shipping_no = paramList[1];
+			if(vPOName==""||vPOName == null||shipping_no == ""||shipping_no == null)
 			{
 				alert("我说大姐,你这PO号和供应商名称我没见过啊?");
 				return;
 			}
-			location.href = "SaleOrder.jsp?PO_Name=" + vPOName + "&Delivery_Date=" + print_mark;
-		}
-		
-		function addSaleOrder(obj)
-		{
-			var date_of_delivery = $("#date_of_delivery").val();
-			if (date_of_delivery.length != 8)
-			{
-				alert("我说大姐,日期要写全啊!");
-				return;
-			}
-			$.post("Ajax/Add_Sale_Order_Ajax.jsp", {"POName": obj.name, "date_of_delivery":date_of_delivery}, function(data, textStatus)
-			{
-				if (!(textStatus == "success") || data.indexOf("error") >= 0)
-				{
-					alert(data.split("$")[1]);
-				}
-				location.href = "List_SaleOrder.jsp?PO_Name=" + obj.name;
-			});
+			location.href = "SaleOrder.jsp?PO_Name=" + vPOName + "&shipping_no=" + shipping_no;
 		}
 	</script>
 </html>

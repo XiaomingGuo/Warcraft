@@ -99,7 +99,7 @@
 				var order_name=$(this).html();
 				var $OrderBlock = $("#OrderBlock");
 				$("#TitleName").html(order_name);
-				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
+				$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 				{
 					if (textStatus == "success")
 					{
@@ -170,7 +170,7 @@
 			$orderdisplay.attr("border", 1);
 			$orderdisplay.attr("align", "center");
 			var order_name = $("#OrderHeader").val() + $("#OrderName").val();
-			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)//Query_Order_Item_Ajax
+			$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 			{
 				if (textStatus == "success")
 				{

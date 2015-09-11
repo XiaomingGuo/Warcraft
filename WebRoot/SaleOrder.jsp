@@ -7,7 +7,7 @@
 <%
 	String message="";
 	String POName = request.getParameter("PO_Name").replace(" ", "");
-	String deliveryDate = request.getParameter("Delivery_Date").replace(" ", "");
+	String ship_no = request.getParameter("shipping_no").replace(" ", "");
 	String[] displayKeyList = {"行号", "品名规格", "单位", "数量", "单重", "总重", "备注"};
 	List<List<String>> recordList = null, vendorInfo = null;
 	
@@ -27,7 +27,7 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from shipping_record where customer_po='" + POName + "' and print_mark='" + deliveryDate + "' group by Bar_Code";
+			String sql = "select * from shipping_record where customer_po='" + POName + "' and shipping_no='" + ship_no + "' group by Bar_Code";
 			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "ship_QTY"};
@@ -79,7 +79,7 @@
 		<table width="80%">
     		<tr>
 				<td width="50%" align="left"><font size="3">客户: 国贸减速机集团有限公司                     日期:<%=currentDate %></font></td>
-				<td width="50%" align="right"><font size="3">NO.		MOB<%=hDBHandle.GetShipNOByPrintMark(POName, deliveryDate) %>		</font></td>
+				<td width="50%" align="right"><font size="3">NO.		MOB<%=ship_no %>		</font></td>
 			</tr>
     	</table>
     	<table width="80%" border="1">
@@ -129,7 +129,7 @@
 				    	else if(displayKeyList[iCol-1] == "数量")
 				    	{
 %>
-    			<td align="right" width="10%"><%=hDBHandle.GetShipQTYByBarcode(POName, strBarcode, deliveryDate) %></td>
+    			<td align="right" width="10%"><%=hDBHandle.GetShipQTYByBarcode(POName, strBarcode, ship_no) %></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单重")

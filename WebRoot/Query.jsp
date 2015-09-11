@@ -23,7 +23,7 @@
 		hDBHandle.QueryDataBase(sql);
 		int recordCount = hDBHandle.GetRecordCount();
 		hDBHandle.CloseDatabase();
-		String tempBP = request.getParameter("BeginPage").replace(" ", "");
+		String tempBP = request.getParameter("BeginPage");
 		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
 		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
 		if (hDBHandle.QueryDataBase(limitSql))

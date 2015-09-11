@@ -30,8 +30,8 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String tempBeginDate = request.getParameter("BeginDate").replace(" ", "");
-			String tempEndDate = request.getParameter("EndDate").replace(" ", "");
+			String tempBeginDate = request.getParameter("BeginDate");
+			String tempEndDate = request.getParameter("EndDate");
 			if (tempBeginDate != null&&tempEndDate != null)
 			{
 				beginDate = tempBeginDate;

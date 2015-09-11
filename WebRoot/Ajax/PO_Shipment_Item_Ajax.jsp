@@ -9,7 +9,7 @@
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
-	String status = request.getParameter("status").replace(" ", "");
+	String status = request.getParameter("status");
 	String po_status = null;
 	String sql = "select * from customer_po_record where po_name='" + po_name + "' order by id asc";
 	if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)

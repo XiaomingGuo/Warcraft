@@ -436,10 +436,10 @@ public class DatabaseConn extends DataBaseCore
 		return rtnRst;
 	}
 	
-	public int GetShipQTYByBarcode(String po_name, String barcode, String Delivery_Date)
+	public int GetShipQTYByBarcode(String po_name, String barcode, String ship_no)
 	{
 		int rtnRst = 0;
-		String sql = "select ship_QTY from shipping_record where customer_po='" + po_name + "' and Bar_Code='" + GetUsedBarcode(barcode, "shipping_record") +"' and print_mark='" + Delivery_Date + "'";
+		String sql = "select ship_QTY from shipping_record where customer_po='" + po_name + "' and Bar_Code='" + GetUsedBarcode(barcode, "shipping_record") +"' and shipping_no='" + ship_no + "'";
 		if (QueryDataBase(sql))
 		{
 			if (GetRecordCount() > 0)

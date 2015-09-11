@@ -3,11 +3,11 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-	int PageRecordCount = Integer.parseInt(request.getParameter("PageRecordCount").replace(" ", ""));
-	int recordCount = Integer.parseInt(request.getParameter("recordCount").replace(" ", ""));
+	int PageRecordCount = Integer.parseInt(request.getParameter("PageRecordCount"));
+	int recordCount = Integer.parseInt(request.getParameter("recordCount"));
 	int pageNum = (recordCount%PageRecordCount == 0)?recordCount/PageRecordCount:1 + recordCount/PageRecordCount;
-	int BeginPage = Integer.parseInt(request.getParameter("BeginPage").replace(" ", ""));
-	String JSPPage = request.getParameter("PageName").replace(" ", "");
+	int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
+	String JSPPage = request.getParameter("PageName");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

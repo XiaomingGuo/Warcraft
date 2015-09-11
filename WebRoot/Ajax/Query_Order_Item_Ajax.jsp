@@ -9,7 +9,7 @@
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name").replace(" ", "");
-	String status = request.getParameter("status").replace(" ", "");
+	String status = request.getParameter("status");
 	
 	if (order_name.length() > 11)
 	{
