@@ -18,7 +18,7 @@
 	else
 	{
 		startCell = new int[] {2,1};
-		endCell = new int[] {261,6};
+		endCell = new int[] {1237,6};
 	}
 	List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
 	if(res.size() > 0)

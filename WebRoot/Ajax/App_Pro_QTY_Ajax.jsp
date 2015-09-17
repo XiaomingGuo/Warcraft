@@ -9,7 +9,7 @@
 	String rtnRst = "remove$";
 	String pro_name = (String)request.getParameter("product_name").replace(" ", "");
 	String pro_type = (String)request.getParameter("product_type").replace(" ", "");
-	String storageName = (String)request.getParameter("storage").replace(" ", "");
+	String storageName = (String)request.getParameter("storage");
 	if(storageName == null||storageName == "")
 	{
 		storageName = "other_storage";

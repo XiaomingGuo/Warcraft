@@ -12,11 +12,13 @@ public class Discard_Material_Record implements IDBExecute
 		
 	}
 	
+	@Override
 	public String getTableName()
 	{
 		return tableName;
 	}
 
+	@Override
 	public String[] getTableKeyList()
 	{
 		return tableKeyList;

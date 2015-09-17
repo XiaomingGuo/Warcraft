@@ -1,4 +1,4 @@
-package com.office.util;
+package com.office.core;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -20,11 +20,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import com.office.operation.*;
 
 public class ExcelOperationUtilTest
 {
 	@Mock
-	ExcelManagment hTester = new ExcelManagment("", "");
+	ExcelManagment hTester = new ExcelManagment(new ExcelRead("", ""));
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
 	{

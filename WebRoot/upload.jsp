@@ -65,7 +65,7 @@
     		<td width="5"></td>
     		<td align="right" valign="bottom">地址：</td>
     		<td valign="bottom">
-    			<input type="text" name="filePath" id="filePath" value="d:\"/>
+    			<input type="text" name="filePath" id="filePath" value="D:\MB_File_Share\"/>
     		</td>
     	</tr>  	   	
     	<tr>
