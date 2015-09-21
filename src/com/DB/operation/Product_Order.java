@@ -24,4 +24,22 @@ public class Product_Order implements IDBExecute
 		return tableKeyList;
 	}
 
+	@Override
+	public String getWhereString()
+	{
+		return null;
+	}
+
+	@Override
+	public String getOrderByString()
+	{
+		return null;
+	}
+
+	@Override
+	public String getLimitString()
+	{
+		return null;
+	}
+
 }

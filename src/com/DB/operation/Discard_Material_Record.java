@@ -1,26 +1,33 @@
 package com.DB.operation;
 
-import com.Warcraft.Interface.IDBExecute;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-public class Discard_Material_Record implements IDBExecute
+import com.DB.operation.DiscardMaterialRecord;
+import com.Hibernate.Util.HibernateSessionFactory;
+
+public class Discard_Material_Record
 {
-	private String[] tableKeyList = {"id", "Order_Name", "Bar_Code", "Batch_Lot", "QTY", "reason"};
-	private final String tableName = "discard_material_record";
+	Session session = null;
+	Transaction tx = null;
 	
-	public Discard_Material_Record()
+	public void getRecord()
 	{
-		
-	}
-	
-	@Override
-	public String getTableName()
-	{
-		return tableName;
-	}
-
-	@Override
-	public String[] getTableKeyList()
-	{
-		return tableKeyList;
+		try
+		{
+			session = HibernateSessionFactory.getSession();
+			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)session.get(DiscardMaterialRecord.class, new Integer(1));
+			String str1 = tempRecord.getBarCode();
+			String str2 = tempRecord.getBatchLot();
+			String str3 = tempRecord.getOrderName();
+			String str4 = tempRecord.getReason();
+			int str5 = tempRecord.getId();
+			int str6 = tempRecord.getQty();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();						//打印异常信息
+			tx.rollback();
+		}
 	}
 }

@@ -81,10 +81,10 @@ public class DBManagement
 		if (hDBCoreHandle.QueryDataBase(sql)&&hDBCoreHandle.GetRecordCount()>0)
 		{
 			int recordCount = hDBCoreHandle.GetRecordCount();
-			if (recordCount > 1)
+			/*if (recordCount > 1)
 				hDBExecHandle.SetRecordContent(hDBCoreHandle.Get);
 			else
-				hDBExecHandle.SetRecordContent(hDBCoreHandle.GetAllStringValue(colName))
+				hDBExecHandle.SetRecordContent(hDBCoreHandle.GetAllStringValue(colName));*/
 		}
 		else
 		{

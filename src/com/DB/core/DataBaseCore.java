@@ -245,7 +245,7 @@ public class DataBaseCore implements IDataBaseCore
 		{
 			ErrorMsg = "Error in GetSingleValue Detail info:" + e.getMessage();
 			this.CloseDatabase();
-			return 0;
+			return -1;
 		}
 		return rtnRst;
 	}

@@ -32,6 +32,7 @@
 			String weight = res.get(iRow).get(4);
 			String description = res.get(iRow).get(5);
 			String sql = "select * from product_info where Bar_Code='" + Barcode +"'";
+
 			if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
 			{
 				hDBHandle.CloseDatabase();
@@ -41,23 +42,31 @@
 			else
 			{
 				sql = "select * from storeroom_name where name='" + storename +"'";
-				if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				if(hDBHandle.QueryDataBase(sql))
 				{
+					int recordCount = hDBHandle.GetRecordCount();
 					hDBHandle.CloseDatabase();
-					sql = "INSERT INTO storeroom_name (name) VALUES ('" + storename + "')";
-					hDBHandle.execUpate(sql);
+					if (recordCount == 0)
+					{
+						sql = "INSERT INTO storeroom_name (name) VALUES ('" + storename + "')";
+						hDBHandle.execUpate(sql);
+					}
 				}
 				
 				sql = "select * from product_type where name='" + product_type +"' and storeroom='" + storename + "'";
-				if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				if(hDBHandle.QueryDataBase(sql))
 				{
+					int recordCount = hDBHandle.GetRecordCount();
 					hDBHandle.CloseDatabase();
-					sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + product_type + "', '"+ storename + "')";
-					hDBHandle.execUpate(sql);
+					if (recordCount == 0)
+					{
+						sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + product_type + "', '"+ storename + "')";
+						hDBHandle.execUpate(sql);
+					}
 				}
 				
 				sql = "select * from product_info where Bar_Code='" + Barcode +"' and name='" + product_name + "' and product_type='" + product_type + "'";
-				if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() == 0)
 				{
 					hDBHandle.CloseDatabase();
 					sql = "INSERT INTO product_info (Bar_Code, name, product_type, weight, description) VALUES ('" + Barcode + "', '"+ product_name + "', '"+ product_type + "', '"+ weight + "', '"+ description + "')";

@@ -7,8 +7,8 @@
 <%
 	int iRepertory = 0;
 	String rtnRst = "remove$";
-	String pro_name = (String)request.getParameter("product_name").replace(" ", "");
-	String pro_type = (String)request.getParameter("product_type").replace(" ", "");
+	String pro_name = (String)request.getParameter("product_name");
+	String pro_type = (String)request.getParameter("product_type");
 	String storageName = (String)request.getParameter("storage");
 	if(storageName == null||storageName == "")
 	{
