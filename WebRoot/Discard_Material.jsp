@@ -8,7 +8,8 @@
 	Discard_Material_Record hDMRHandle = new Discard_Material_Record();
 %>
 <%
-	hDMRHandle.getRecord();
+	hDMRHandle.updateRecord(1);
+	hDMRHandle.QueryRecord();
 	String message="";
 	if(session.getAttribute("logonuser")==null)
 	{
