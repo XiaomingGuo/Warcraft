@@ -1,15 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%@ page import="com.DB.operation.Discard_Material_Record" %>
+<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	List<String> product_order = null, product_info = null;
-	Discard_Material_Record hDMRHandle = new Discard_Material_Record();
 %>
 <%
-	hDMRHandle.updateRecord(1);
-	hDMRHandle.QueryRecord();
 	String message="";
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -30,15 +29,8 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
 			//storeroom name Database query
-			String sql = "select * from product_order where status=1";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				product_order = hDBHandle.GetAllStringValue("Order_Name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			product_order = hPOHandle.GetOrderNameByStatus(1);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

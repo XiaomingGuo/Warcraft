@@ -23,6 +23,7 @@
 		<property name="show_sql">true</property>
 		<mapping
 			resource="com/DB/operation/DiscardMaterialRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/ProductOrder.hbm.xml" />
 
 	</session-factory>
 

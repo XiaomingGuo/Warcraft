@@ -1,24 +1,13 @@
 package com.DB.operation;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import com.DB.operation.DiscardMaterialRecord;
 import com.Hibernate.Util.HibernateSessionFactory;
-import com.Warcraft.Interface.IDiscard_Material_Record;
 
 public class Discard_Material_Record implements IDiscard_Material_Record
 {
-	Session session = null;
-	Transaction tx = null;
-	
-	public Discard_Material_Record()
-	{
-		
-	}
-	
 	@Override
 	public void addANewRecord(int id, String strOrderName, String strBarcode,
 			String strBatchLot, int iQty, String strReason)
@@ -48,6 +37,7 @@ public class Discard_Material_Record implements IDiscard_Material_Record
 		}
 	}
 	
+	@Override
 	public void DeleteRecord(int id)
 	{
 		try
@@ -71,6 +61,7 @@ public class Discard_Material_Record implements IDiscard_Material_Record
 
 	}
 	
+	@Override
 	public void getRecord()
 	{
 		try
@@ -97,6 +88,7 @@ public class Discard_Material_Record implements IDiscard_Material_Record
 		}
 	}
 	
+	@Override
 	public void updateRecord(int id)
 	{
 		try
@@ -122,14 +114,19 @@ public class Discard_Material_Record implements IDiscard_Material_Record
 		}
 	}
 	
-	public List<DiscardMaterialRecord> QueryRecord()
+	@Override
+	public List<String> QueryARecord(String hql)
 	{
-		List<DiscardMaterialRecord> tempRecord = null;
+		List<String> tempRecord = new ArrayList<String>();
 		try
 		{
 			session = HibernateSessionFactory.getSession();
 			tx=session.beginTransaction();
-			tempRecord = session.createQuery("from DiscardMaterialRecord").list();
+			List<DiscardMaterialRecord> tempQ = session.createQuery(hql).list();
+			for(Iterator<DiscardMaterialRecord> idx=tempQ.iterator(); idx.hasNext();)
+			{
+				tempRecord.add(idx.next().getOrderName());
+			}
 			tx.commit();
 		}
 		catch (Exception e)
