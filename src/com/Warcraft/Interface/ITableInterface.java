@@ -9,7 +9,5 @@ import com.DB.operation.EarthquakeManagement;
 public interface ITableInterface
 {
 	public List<String> getDBRecordList(String keyWord);
-	public void sethEQMHandle(IEQManagement hEQMHandle);
-	public IEQManagement gethEQMHandle();
 	public void setResult(Query query);
 }

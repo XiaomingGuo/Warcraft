@@ -1,31 +1,31 @@
 package com.office.core;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.ss.usermodel.Cell;
+import java.io.FileNotFoundException;
 
 import com.office.core.ExcelManagment;
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.ArgumentCaptor;
-
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import mockit.Mocked;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+
 import com.office.operation.*;
 
 public class ExcelOperationUtilTest
 {
-	@Mock
-	ExcelManagment hTester = new ExcelManagment(new ExcelRead("", ""));
+	ExcelManagment hTester;
+	
+	@Mocked
+	final HSSFWorkbook mockWorkbook = new HSSFWorkbook();
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception
 	{
@@ -39,8 +39,7 @@ public class ExcelOperationUtilTest
 	@Before
 	public void setUp() throws Exception
 	{
-		MockitoAnnotations.initMocks(this);
-		
+		//MockitoAnnotations.initMocks(this);
 	}
 
 	@After
@@ -48,16 +47,14 @@ public class ExcelOperationUtilTest
 	{
 	}
 
-/*	@Test
-	public void testReadExcel()
+	@Test
+	public void testReadExcel() throws FileNotFoundException
 	{
-		HSSFWorkbook mockWorkbook = mock(HSSFWorkbook.class);
 		int[] startPos = {1,2};
 		int[] endPos   = {3,6};
 		hTester.ReadExcel("123", "123", "abc", startPos, endPos);
 		assertTrue(true);
 	}
-*/
 
 	@Test
 	public void testCheckPathStatus()

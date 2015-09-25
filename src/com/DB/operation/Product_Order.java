@@ -6,66 +6,66 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.ITableInterface;
+import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Order implements ITableInterface
+public class Product_Order extends DBTableParent implements ITableInterface
 {
-	private IEQManagement hEQMHandle = null;
 	private List<ProductOrder> resultList = null;
 	
 	public Product_Order(IEQManagement hEQMHandle)
 	{
-		this.hEQMHandle = hEQMHandle;
-		this.hEQMHandle.setTableHandle(this);
-	}
-	
-	public List<String> GetOrderNameByStatus(int iStatus)
-	{
-		List<String> rtnRst = new ArrayList<String>();
-		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
-		hEQMHandle.EQQuery(hql);
-		Iterator<ProductOrder> it = resultList.iterator();
-		while(it.hasNext())
-		{
-			ProductOrder tempRecord = (ProductOrder)it.next();
-			rtnRst.add(tempRecord.getOrderName());
-		}
-		return rtnRst;
+		super(hEQMHandle);
 	}
 
 	@Override
 	public List<String> getDBRecordList(String keyWord)
 	{
-		return null;
-	}
-
-	@Override
-	public IEQManagement gethEQMHandle()
-	{
-		return this.hEQMHandle;
-	}
-
-	@Override
-	public void sethEQMHandle(IEQManagement hEQMHandle)
-	{
-		this.hEQMHandle = hEQMHandle;
+		List<String> rtnRst = new ArrayList<String>();
+		Iterator<ProductOrder> it = getResultList().iterator();
+		while(it.hasNext())
+		{
+			ProductOrder tempRecord = (ProductOrder)it.next();
+			switch (keyWord)
+			{
+			case "id":
+				rtnRst.add(tempRecord.getId().toString());
+				break;
+			case "Order_Name":
+				rtnRst.add(tempRecord.getOrderName());
+				break;
+			case "status":
+				rtnRst.add(tempRecord.getStatus().toString());
+				break;
+			default:
+				break;
+			}
+		}
+		return rtnRst;
 	}
 
 	@Override
 	public void setResult(Query query)
 	{
-		this.resultList = query.list();
-		
+		this.setResultList(query.list());
 	}
 
-	public List<ProductOrder> getQueryResultList()
+	public List<ProductOrder> getResultList()
 	{
-		return this.resultList;
+		return resultList;
 	}
 
-	public void setResultList(List<ProductOrder> ResultList)
+	public void setResultList(List<ProductOrder> resultList)
 	{
-		this.resultList = ResultList;
+		this.resultList = resultList;
 	}
+	
+	public List<String> GetOrderNameByStatus(int iStatus)
+	{
+		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
+		getEQMHandle().EQQuery(hql);
+		return getDBRecordList("Order_Name");
+	}
+
 }

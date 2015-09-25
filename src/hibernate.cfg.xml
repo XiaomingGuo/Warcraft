@@ -24,6 +24,8 @@
 		<mapping
 			resource="com/DB/operation/DiscardMaterialRecord.hbm.xml" />
 		<mapping resource="com/DB/operation/ProductOrder.hbm.xml" />
+		<mapping resource="com/DB/operation/ProductOrderRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/UserInfo.hbm.xml" />
 
 	</session-factory>
 

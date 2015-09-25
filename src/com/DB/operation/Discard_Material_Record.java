@@ -4,140 +4,69 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.Hibernate.Util.HibernateSessionFactory;
+import org.hibernate.Query;
 
-public class Discard_Material_Record implements IDiscard_Material_Record
+import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.ITableInterface;
+import com.Warcraft.SupportUnit.DBTableParent;
+
+public class Discard_Material_Record extends DBTableParent implements ITableInterface
 {
-	@Override
-	public void addANewRecord(int id, String strOrderName, String strBarcode,
-			String strBatchLot, int iQty, String strReason)
+	private List<DiscardMaterialRecord> resultList = null;
+	
+	public Discard_Material_Record(IEQManagement hEQMHandle)
 	{
-		DiscardMaterialRecord tempRecord = new DiscardMaterialRecord();
-		tempRecord.setId(id);
-		tempRecord.setOrderName(strOrderName);
-		tempRecord.setBarCode(strOrderName);
-		tempRecord.setBatchLot(strBatchLot);
-		tempRecord.setQty(iQty);
-		tempRecord.setReason(strReason);
-		try
-		{
-			session = HibernateSessionFactory.getSession();		//获取Session
-			tx = session.beginTransaction();			//开启事物
-			session.save(tempRecord);							//保存User到数据库
-			tx.commit();								//提交事物
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();						//打印异常信息
-			tx.rollback();								//回滚事物
-		}
-		finally
-		{
-			HibernateSessionFactory.closeSession();		//关闭Session
-		}
+		super(hEQMHandle);
 	}
 	
 	@Override
-	public void DeleteRecord(int id)
+	public List<String> getDBRecordList(String keyWord)
 	{
-		try
+		List<String> rtnRst = new ArrayList<String>();
+		Iterator<DiscardMaterialRecord> it = getResultList().iterator();
+		while(it.hasNext())
 		{
-			session=HibernateSessionFactory.getSessionFactory().openSession();
-			tx=session.beginTransaction();
-			DiscardMaterialRecord emp=(DiscardMaterialRecord)session.load(DiscardMaterialRecord.class, id);
-			session.delete(emp);
-			tx.commit();
-			session.clear();
+			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)it.next();
+			switch (keyWord)
+			{
+			case "id":
+				rtnRst.add(tempRecord.getId().toString());
+				break;
+			case "Order_Name":
+				rtnRst.add(tempRecord.getOrderName());
+				break;
+			case "Bar_Code":
+				rtnRst.add(tempRecord.getBarCode());
+				break;
+			case "Batch_Lot":
+				rtnRst.add(tempRecord.getBatchLot());
+				break;
+			case "QTY":
+				rtnRst.add(tempRecord.getQty().toString());
+				break;
+			case "reason":
+				rtnRst.add(tempRecord.getReason());
+				break;
+			default:
+				break;
+			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();						//打印异常信息
-			tx.rollback();								//回滚事物
-		}
-		finally
-		{
-			HibernateSessionFactory.closeSession();		//关闭Session
-		}
+		return rtnRst;
+	}
 
-	}
-	
 	@Override
-	public void getRecord()
+	public void setResult(Query query)
 	{
-		try
-		{
-			session = HibernateSessionFactory.getSession();
-			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)session.get(DiscardMaterialRecord.class, new Integer(1));
-			if (null != tempRecord)
-			{
-				String str1 = tempRecord.getBarCode();
-				String str2 = tempRecord.getBatchLot();
-				String str3 = tempRecord.getOrderName();
-				String str4 = tempRecord.getReason();
-				int str5 = tempRecord.getId();
-				int str6 = tempRecord.getQty();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();						//打印异常信息
-		}
-		finally
-		{
-			HibernateSessionFactory.closeSession();
-		}
+		this.setResultList(query.list());
 	}
-	
-	@Override
-	public void updateRecord(int id)
+
+	public List<DiscardMaterialRecord> getResultList()
 	{
-		try
-		{
-			session = HibernateSessionFactory.getSession();
-			tx=session.beginTransaction();
-			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)session.get(DiscardMaterialRecord.class, id);
-			if (null != tempRecord)
-			{
-				tempRecord.setReason("报废");
-				session.update(tempRecord);
-				tx.commit();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();						//打印异常信息
-			tx.rollback();
-		}
-		finally
-		{
-			HibernateSessionFactory.closeSession();
-		}
+		return resultList;
 	}
-	
-	@Override
-	public List<String> QueryARecord(String hql)
+
+	public void setResultList(List<DiscardMaterialRecord> resultList)
 	{
-		List<String> tempRecord = new ArrayList<String>();
-		try
-		{
-			session = HibernateSessionFactory.getSession();
-			tx=session.beginTransaction();
-			List<DiscardMaterialRecord> tempQ = session.createQuery(hql).list();
-			for(Iterator<DiscardMaterialRecord> idx=tempQ.iterator(); idx.hasNext();)
-			{
-				tempRecord.add(idx.next().getOrderName());
-			}
-			tx.commit();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();						//打印异常信息
-			tx.rollback();
-		}
-		finally
-		{
-			HibernateSessionFactory.closeSession();
-		}
-		return tempRecord;
+		this.resultList = resultList;
 	}
 }

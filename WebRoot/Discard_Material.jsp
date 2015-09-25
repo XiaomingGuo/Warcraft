@@ -1,11 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%@ page import="com.DB.operation.Discard_Material_Record" %>
 <%@ page import="com.DB.operation.Product_Order" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
-	DatabaseConn hDBHandle = new DatabaseConn();
 	List<String> product_order = null, product_info = null;
 %>
 <%

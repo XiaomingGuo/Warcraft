@@ -2,13 +2,11 @@ package com.DB.operation;
 
 import java.util.List;
 
-import com.Warcraft.Interface.IDBTablePublic;
-
 /**
  * ProductOrder entity. @author MyEclipse Persistence Tools
  */
 
-public class ProductOrder implements IDBTablePublic, java.io.Serializable {
+public class ProductOrder implements java.io.Serializable {
 
 	// Fields
 
@@ -53,21 +51,4 @@ public class ProductOrder implements IDBTablePublic, java.io.Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
-	@Override
-	public String getDBRecordList(String keyWord)
-	{
-		if ("Order_Name" == keyWord)
-		{
-			return getOrderName();
-		}
-		return "";
-	}
-
-	@Override
-	public void setDBRecordList(String keyWord)
-	{
-		
-	}
-
 }

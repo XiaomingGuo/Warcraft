@@ -1,5 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	List<String> pro_info = null;
@@ -9,6 +11,9 @@
 	String pro_order=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
 	//product_info Database query
+	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+	pro_info = hPORHandle.GetBarCodeByOrderName(pro_order);
+	
 	String sql = "select * from product_order_record where Order_Name='" + pro_order +"'";
 	if (hDBHandle.QueryDataBase(sql))
 	{
