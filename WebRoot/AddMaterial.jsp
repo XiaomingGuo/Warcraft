@@ -330,12 +330,16 @@
 			{
 				checkedBarcode = parseInt(checkedBarcode)-10000000;
 			}
+			else if (parseInt(checkedBarcode) > 70000000 && parseInt(checkedBarcode) < 80000000)
+			{
+				checkedBarcode = parseInt(checkedBarcode)-20000000;
+			}
 			$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
 			{
 				if (textStatus == "success" && data.indexOf("error") < 0)
 				{
 					var proInfoList = data.split("$");
-					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
+					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
 					{
 						$("#store_name_addproduct").val("原材料库");
 					}
@@ -345,12 +349,16 @@
 					}
 					$("#store_name_addproduct").change();
 					$("#product_type").empty();
-					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 70000000)
+					if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
 					{
 						var keyWord = proInfoList[2];
 						if (keyWord.indexOf("原锭") < 0)
 						{
 							keyWord += "原锭";
+						}
+						else if (keyWord.indexOf("半成品"))
+						{
+							keyWord.replace("半成品", "原锭");
 						}
 						var newOption = $("<option>" + keyWord + "</option>");
 						$(newOption).val(keyWord);

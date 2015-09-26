@@ -78,7 +78,7 @@
 		</table>
 		<table width="80%">
     		<tr>
-				<td width="50%" align="left"><font size="3">客户: 国贸减速机集团有限公司                     日期:<%=currentDate %></font></td>
+				<td width="50%" align="left"><font size="3">客户: 国茂减速机集团有限公司                     日期:<%=currentDate %></font></td>
 				<td width="50%" align="right"><font size="3">NO.		MOB<%=ship_no %>		</font></td>
 			</tr>
     	</table>
