@@ -14,15 +14,6 @@
 	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
 	pro_info = hPORHandle.GetBarCodeByOrderName(pro_order);
 	
-	String sql = "select * from product_order_record where Order_Name='" + pro_order +"'";
-	if (hDBHandle.QueryDataBase(sql))
-	{
-		pro_info = hDBHandle.GetAllStringValue("Bar_Code");
-	}
-	else
-	{
-		hDBHandle.CloseDatabase();
-	}
 	if (pro_info != null)
 	{
 		pro_type = new ArrayList<String>();

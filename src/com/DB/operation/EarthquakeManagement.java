@@ -34,7 +34,8 @@ public class EarthquakeManagement implements IEQManagement
 		{
 			session = HibernateSessionFactory.getSession();
 			tx=session.beginTransaction();
-			hTableHandle.setResult(session.createQuery(hql));
+			Query tempQuery = session.createQuery(hql);
+			hTableHandle.setResult(tempQuery);
 			tx.commit();
 		}
 		catch (Exception e)

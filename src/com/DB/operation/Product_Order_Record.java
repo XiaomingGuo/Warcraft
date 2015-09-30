@@ -84,7 +84,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	
 	public List<String> GetBarCodeByOrderName(String pro_order)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.Order_Name='%s'", pro_order);
+		String hql = String.format("from ProductOrderRecord por where por.orderName='%s'", pro_order);
 		getEQMHandle().EQQuery(hql);
 		return getDBRecordList("Bar_Code");
 	}
