@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.page.support.Product_Order;
+
 public class Product_OrderTest
 {
 	@Tested

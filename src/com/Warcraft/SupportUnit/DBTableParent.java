@@ -1,10 +1,5 @@
 package com.Warcraft.SupportUnit;
 
-
-import java.util.List;
-
-import org.hibernate.Query;
-
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 

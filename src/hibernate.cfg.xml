@@ -26,6 +26,24 @@
 		<mapping resource="com/DB/operation/ProductOrder.hbm.xml" />
 		<mapping resource="com/DB/operation/ProductOrderRecord.hbm.xml" />
 		<mapping resource="com/DB/operation/UserInfo.hbm.xml" />
+		<mapping resource="com/DB/operation/CustomerPoRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/CustomerPo.hbm.xml" />
+		<mapping resource="com/DB/operation/ExhaustedMaterial.hbm.xml" />
+		<mapping resource="com/DB/operation/ExhaustedOther.hbm.xml" />
+		<mapping resource="com/DB/operation/ExhaustedProduct.hbm.xml" />
+		<mapping resource="com/DB/operation/MaterialRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/MaterialStorage.hbm.xml" />
+		<mapping resource="com/DB/operation/MbMaterialPoRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/MbMaterialPo.hbm.xml" />
+		<mapping resource="com/DB/operation/OtherRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/OtherStorage.hbm.xml" />
+		<mapping resource="com/DB/operation/ProductInfo.hbm.xml" />
+		<mapping resource="com/DB/operation/ProductStorage.hbm.xml" />
+		<mapping resource="com/DB/operation/ProductType.hbm.xml" />
+		<mapping resource="com/DB/operation/ShippingNo.hbm.xml" />
+		<mapping resource="com/DB/operation/ShippingRecord.hbm.xml" />
+		<mapping resource="com/DB/operation/StoreroomName.hbm.xml" />
+		<mapping resource="com/DB/operation/VendorInfo.hbm.xml" />
 
 	</session-factory>
 

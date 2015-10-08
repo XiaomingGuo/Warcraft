@@ -1,4 +1,4 @@
-package com.DB.operation;
+package com.page.support;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.operation.DiscardMaterialRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
