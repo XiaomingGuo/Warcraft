@@ -74,11 +74,11 @@ public class User_Info extends DBTableParent implements ITableInterface
 		this.resultList = resultList;
 	}
 	
-	public List<String> GetBarCodeByOrderName(String pro_order)
+	public String GetPasswordByName(String name)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.Order_Name='%s'", pro_order);
+		String hql = String.format("from UserInfo ui where ui.name='%s'", name);
 		getEQMHandle().EQQuery(hql);
-		return getDBRecordList("Bar_Code");
+		return getDBRecordList("password").get(0);
 	}
 
 }

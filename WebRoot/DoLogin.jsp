@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
+<%@ page import="com.page.support.User_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
@@ -23,6 +25,8 @@
 	else
 	{
 		String mess = "";
+		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+		KeyWord = hUIHandle.GetPasswordByName(name);
 		String sql = "select password from user_info where name=\"" + name +"\"" ;
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
