@@ -74,11 +74,10 @@ public class User_Info extends DBTableParent implements ITableInterface
 		this.resultList = resultList;
 	}
 	
-	public String GetPasswordByName(String name)
+	public void GetPasswordByName(String name)
 	{
 		String hql = String.format("from UserInfo ui where ui.name='%s'", name);
 		getEQMHandle().EQQuery(hql);
-		return getDBRecordList("password").get(0);
 	}
 
 }

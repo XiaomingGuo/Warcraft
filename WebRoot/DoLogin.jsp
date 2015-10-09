@@ -1,12 +1,10 @@
 <%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
 <%@ page import="com.page.support.User_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 
 <%!
-	DatabaseConn hDBHandle = new DatabaseConn();
 	String KeyWord = "";
 	int userRight = 0;
 %>
@@ -26,20 +24,15 @@
 	{
 		String mess = "";
 		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-		KeyWord = hUIHandle.GetPasswordByName(name);
-		String sql = "select password from user_info where name=\"" + name +"\"" ;
-		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+		hUIHandle.GetPasswordByName(name);
+		List<String> tempList = hUIHandle.getDBRecordList("password");
+		
+		if(tempList.size() > 0)
 		{
-			KeyWord = hDBHandle.GetSingleString("password");
-			sql = "select permission from user_info where name=\"" + name +"\"" ;
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				userRight = hDBHandle.GetSingleInt("permission");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			KeyWord = tempList.get(0);
+			tempList = hUIHandle.getDBRecordList("permission");
+			userRight = Integer.parseInt( tempList.get(0));
+			
 			mylogon.setUsername(name);
 			mylogon.setUserpassword(KeyWord);
 			mylogon.setUserRight(userRight);
@@ -52,10 +45,7 @@
 				response.sendRedirect("MainPage.jsp");
 			}
 		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-		}
+		
 		if(!bLoginSuccessful)
 		{
 			session.setAttribute("logonuser", "");
