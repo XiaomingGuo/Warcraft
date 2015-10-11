@@ -1,22 +1,17 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.page.support.Product_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String proName = request.getParameter("search_name").replace(" ", "");
-	String flag = request.getParameter("flag").replace(" ", "");
 	if(proName.length() > 0)
 	{
-		String barcode = hDBHandle.GetBarcodeByName(proName, flag);
-		if (!barcode.isEmpty())
+		Product_Info hUIHandle = new Product_Info(new EarthquakeManagement());
+		hUIHandle.GetBarCodeByName(proName);
+		List<String> tempList = hUIHandle.getDBRecordList("Bar_Code");
+		for(int idx = 0; idx < tempList.size(); idx++)
 		{
-			rtnRst += barcode + "$";
-		}
-		else
-		{
-			rtnRst += "error:八码为空?";
+			rtnRst += tempList.get(idx) + (idx+1==tempList.size()?"$":",");
 		}
 	}
 	else

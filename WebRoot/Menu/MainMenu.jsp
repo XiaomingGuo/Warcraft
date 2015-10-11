@@ -29,6 +29,7 @@
 	</style>
   </head>
   	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="Page_JS/MenuJS.js"></script>
   <body>
 <!-- -->
 <br>
@@ -66,7 +67,7 @@
 						<td>
 							<label>八码查询:&nbsp;</label>
 							<input type="text" name="search_name" id="search_name" style="width:100px" onblur="findBarcode(this)">
-							<input type="text" name="disBarcode" id="disBarcode" style="width:100px" readonly>
+							<input type="text" name="disBarcode" id="disBarcode" style="width:180px" readonly>
 						</td>
 					</tr>
 				</table>
@@ -87,30 +88,6 @@
 	    	</td>
     	</tr>
     </table>
-   	<script type="text/javascript">
-		function findBarcode(obj)
-		{
-			var proName = $("#search_name").val();
-			if(proName == null||proName == "")
-			{
-				alert("产品类型不能为空!");
-				$("#search_name").val("");
-				return;
-			}
-			$.post("Ajax/Get_Barcode_By_ProName_Ajax.jsp", {"search_name":proName, "flag":"Mat"}, function(data, textStatus)
-			{
-				if (textStatus == "success" && data.indexOf("error") < 0)
-				{
-					var proInfoList = data.split("$");
-					$("#disBarcode").val(proInfoList[1]);
-				}
-				else
-				{
-					alert(data.split("$")[1]);
-				}
-			});
-		}
-	</script>
   </body>
 </html>
 <%
