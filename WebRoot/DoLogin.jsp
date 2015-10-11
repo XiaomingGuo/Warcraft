@@ -3,12 +3,6 @@
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-
-<%!
-	String KeyWord = "";
-	int userRight = 0;
-%>
-
 <%
 	//session.invalidate();
 	boolean bLoginSuccessful = false;
@@ -29,9 +23,9 @@
 		
 		if(tempList.size() > 0)
 		{
-			KeyWord = tempList.get(0);
+			String KeyWord = tempList.get(0);
 			tempList = hUIHandle.getDBRecordList("permission");
-			userRight = Integer.parseInt( tempList.get(0));
+			int userRight = Integer.parseInt( tempList.get(0));
 			
 			mylogon.setUsername(name);
 			mylogon.setUserpassword(KeyWord);
