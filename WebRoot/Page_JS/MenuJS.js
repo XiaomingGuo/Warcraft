@@ -23,7 +23,7 @@ function checkInput()
 	var proName = $("#search_name").val();
 	if(proName == null||proName == "")
 	{
-		alert("产品类型不能为空!");
+		alert("浜у搧绫诲瀷涓嶈兘涓虹┖!");
 		return false;
 	}
 	return true;

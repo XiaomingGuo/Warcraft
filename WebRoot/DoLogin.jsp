@@ -4,7 +4,6 @@
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
-	//session.invalidate();
 	boolean bLoginSuccessful = false;
 	request.setCharacterEncoding("UTF-8");
 
