@@ -11,10 +11,6 @@ function findBarcode(obj)
 		{
 			$("#disBarcode").val(data.split("$")[1]);
 		}
-		else
-		{
-			alert(data.split("$")[1]);
-		}
 	});
 }
 
