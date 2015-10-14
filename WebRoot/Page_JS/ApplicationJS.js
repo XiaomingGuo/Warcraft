@@ -56,7 +56,7 @@ $(function()
 	});				
 });
 
-function InputBarcode(obj)
+function InputBarcode()
 {
 	if(!CheckBarcode())
 	{
@@ -80,6 +80,7 @@ function InputBarcode(obj)
 function CheckBarcode()
 {
 	var Barcode = $("#bar_code").val();
+	alert(Barcode);
 	if(Barcode == null||Barcode.length != 8)
 	{
 		$("#barcode").val("");

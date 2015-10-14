@@ -20,7 +20,7 @@ function IsProductionMaterial(Barcode)
 	{
 		return true;
 	}
-	return false
+	return false;
 }
 
 function GetSelectedContent(keyWord)
