@@ -80,7 +80,6 @@ function InputBarcode()
 function CheckBarcode()
 {
 	var Barcode = $("#bar_code").val();
-	alert(Barcode);
 	if(Barcode == null||Barcode.length != 8)
 	{
 		$("#barcode").val("");
@@ -88,6 +87,8 @@ function CheckBarcode()
 	}
 	if (IsProductionMaterial(Barcode))
 	{
+		ClearSelectContent("product_type");
+		ClearSelectContent("product_name");
 		alert("注意不能申请生产物料!");
 		return false;
 	}
