@@ -15,9 +15,9 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		
 		//storeroom name Database query
-		Storeroom_Name hUIHandle = new Storeroom_Name(new EarthquakeManagement());
-		hUIHandle.GetAllRecord();
-		List<String> store_name = hUIHandle.getDBRecordList("name");
+		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+		hSNHandle.GetAllRecord();
+		List<String> store_name = hSNHandle.getDBRecordList("name");
 		
 		store_name.remove("成品库");
 		store_name.remove("原材料库");
