@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Product_Order extends DBTableParent implements ITableInterface
 {
 	private List<ProductOrder> resultList = null;
+	private ProductOrder aWriteRecord = null;
 	
 	public Product_Order(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ProductOrder> it = getResultList().iterator();
+		Iterator<ProductOrder> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			ProductOrder tempRecord = (ProductOrder)it.next();
@@ -47,26 +48,21 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
-	}
-
-	public List<ProductOrder> getResultList()
-	{
-		return resultList;
-	}
-
-	public void setResultList(List<ProductOrder> resultList)
-	{
-		this.resultList = resultList;
+		this.resultList = query.list();
 	}
 	
+	@Override
+	public Object getAWriteRecord()
+	{
+		return aWriteRecord;
+	}
+
 	public List<String> GetOrderNameByStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
 		getEQMHandle().EQQuery(hql);
 		return getDBRecordList("Order_Name");
 	}
-
 }

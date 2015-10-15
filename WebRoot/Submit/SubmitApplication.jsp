@@ -1,11 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.page.support.Other_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -25,10 +22,10 @@
 		//product_type Database query
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 && !appProduct_QTY.isEmpty() && !Total_QTY.isEmpty())
 		{
-			String sql = "INSERT INTO other_record (proposer, Bar_Code, user_name, QTY) VALUES ('" + proposerName + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "other_record") + "', '" + appUserName + "', " + appProduct_QTY + ")";
+			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
 			if ((Integer.parseInt(Total_QTY)-Integer.parseInt(appProduct_QTY)) >= 0)
 			{
-				hDBHandle.execUpate(sql);
+				hORHandle.AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName);
 				response.sendRedirect("../Query.jsp");
 			}
 			else

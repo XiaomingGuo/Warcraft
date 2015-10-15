@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Storeroom_Name extends DBTableParent implements ITableInterface
 {
 	private List<StoreroomName> resultList = null;
+	private StoreroomName aWriteRecord = null;
 	
 	public Storeroom_Name(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<StoreroomName> it = getResultList().iterator();
+		Iterator<StoreroomName> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			StoreroomName tempRecord = (StoreroomName)it.next();
@@ -44,19 +45,15 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
+		this.resultList = query.list();
 	}
 
-	public List<StoreroomName> getResultList()
+	@Override
+	public Object getAWriteRecord()
 	{
-		return resultList;
-	}
-
-	public void setResultList(List<StoreroomName> resultList)
-	{
-		this.resultList = resultList;
+		return aWriteRecord;
 	}
 	
 	public void GetAllRecord()

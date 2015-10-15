@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Product_Order_Record extends DBTableParent implements ITableInterface
 {
 	private List<ProductOrderRecord> resultList = null;
+	private ProductOrderRecord aWriteRecord = null;
 	
 	public Product_Order_Record(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ProductOrderRecord> it = getResultList().iterator();
+		Iterator<ProductOrderRecord> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			ProductOrderRecord tempRecord = (ProductOrderRecord)it.next();
@@ -68,19 +69,15 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
+		this.resultList = query.list();
 	}
 
-	public List<ProductOrderRecord> getResultList()
+	@Override
+	public Object getAWriteRecord()
 	{
-		return resultList;
-	}
-
-	public void setResultList(List<ProductOrderRecord> resultList)
-	{
-		this.resultList = resultList;
+		return aWriteRecord;
 	}
 	
 	public List<String> GetBarCodeByOrderName(String pro_order)
@@ -89,5 +86,4 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		getEQMHandle().EQQuery(hql);
 		return getDBRecordList("Bar_Code");
 	}
-
 }

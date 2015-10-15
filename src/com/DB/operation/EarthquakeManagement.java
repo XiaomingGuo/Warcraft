@@ -35,7 +35,7 @@ public class EarthquakeManagement implements IEQManagement
 			session = HibernateSessionFactory.getSession();
 			tx=session.beginTransaction();
 			Query tempQuery = session.createQuery(hql);
-			hTableHandle.setResult(tempQuery);
+			hTableHandle.setResultList(tempQuery);
 			tx.commit();
 		}
 		catch (Exception e)
@@ -52,22 +52,14 @@ public class EarthquakeManagement implements IEQManagement
 		return rtnRst;
 	}
 	
-	public void addANewRecord(int id, String strOrderName, String strBarcode,
-			String strBatchLot, int iQty, String strReason)
+	public void addANewRecord()
 	{
-		DiscardMaterialRecord tempRecord = new DiscardMaterialRecord();
-		tempRecord.setId(id);
-		tempRecord.setOrderName(strOrderName);
-		tempRecord.setBarCode(strOrderName);
-		tempRecord.setBatchLot(strBatchLot);
-		tempRecord.setQty(iQty);
-		tempRecord.setReason(strReason);
 		try
 		{
-			session = HibernateSessionFactory.getSession();		//获取Session
-			tx = session.beginTransaction();			//开启事物
-			session.save(tempRecord);							//保存User到数据库
-			tx.commit();								//提交事物
+			session = HibernateSessionFactory.getSession();	//获取Session
+			tx = session.beginTransaction();				//开启事物
+			session.save(hTableHandle.getAWriteRecord());	//保存User到数据库
+			tx.commit();									//提交事物
 		}
 		catch (Exception e)
 		{

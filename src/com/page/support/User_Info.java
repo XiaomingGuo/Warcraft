@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class User_Info extends DBTableParent implements ITableInterface
 {
 	private List<UserInfo> resultList = null;
+	private User_Info aWriteRecord = null;
 	
 	public User_Info(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class User_Info extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<UserInfo> it = getResultList().iterator();
+		Iterator<UserInfo> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			UserInfo tempRecord = (UserInfo)it.next();
@@ -59,25 +60,20 @@ public class User_Info extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
-	}
-
-	public List<UserInfo> getResultList()
-	{
-		return resultList;
-	}
-
-	public void setResultList(List<UserInfo> resultList)
-	{
-		this.resultList = resultList;
+		this.resultList = query.list();
 	}
 	
+	@Override
+	public Object getAWriteRecord()
+	{
+		return aWriteRecord;
+	}
+
 	public void GetPasswordByName(String name)
 	{
 		String hql = String.format("from UserInfo ui where ui.name='%s'", name);
 		getEQMHandle().EQQuery(hql);
 	}
-
 }

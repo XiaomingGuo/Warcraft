@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Discard_Material_Record extends DBTableParent implements ITableInterface
 {
 	private List<DiscardMaterialRecord> resultList = null;
+	private DiscardMaterialRecord aWriteRecord = null;
 	
 	public Discard_Material_Record(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<DiscardMaterialRecord> it = getResultList().iterator();
+		Iterator<DiscardMaterialRecord> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)it.next();
@@ -56,18 +57,14 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
+		this.resultList = query.list();
 	}
 
-	public List<DiscardMaterialRecord> getResultList()
+	@Override
+	public Object getAWriteRecord()
 	{
-		return resultList;
-	}
-
-	public void setResultList(List<DiscardMaterialRecord> resultList)
-	{
-		this.resultList = resultList;
+		return aWriteRecord;
 	}
 }

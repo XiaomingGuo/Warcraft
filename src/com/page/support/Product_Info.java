@@ -14,6 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Product_Info extends DBTableParent implements ITableInterface
 {
 	private List<ProductInfo> resultList = null;
+	private ProductInfo aWriteRecord = null;
 	
 	public Product_Info(IEQManagement hEQMHandle)
 	{
@@ -24,7 +25,7 @@ public class Product_Info extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ProductInfo> it = getResultList().iterator();
+		Iterator<ProductInfo> it = resultList.iterator();
 		while(it.hasNext())
 		{
 			ProductInfo tempRecord = (ProductInfo)it.next();
@@ -59,25 +60,20 @@ public class Product_Info extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public void setResult(Query query)
+	public void setResultList(Query query)
 	{
-		this.setResultList(query.list());
-	}
-
-	public List<ProductInfo> getResultList()
-	{
-		return resultList;
-	}
-
-	public void setResultList(List<ProductInfo> resultList)
-	{
-		this.resultList = resultList;
+		this.resultList = query.list();
 	}
 	
+	@Override
+	public Object getAWriteRecord()
+	{
+		return aWriteRecord;
+	}
+
 	public void GetBarCodeByName(String name)
 	{
 		String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
 		getEQMHandle().EQQuery(hql);
 	}
-
 }
