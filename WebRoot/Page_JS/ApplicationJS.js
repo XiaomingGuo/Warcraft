@@ -95,6 +95,3 @@ function CheckBarcode()
 	return true;
 }
 
-
-
-

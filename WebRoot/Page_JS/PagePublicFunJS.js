@@ -30,8 +30,6 @@ function GetSelectedContent(keyWord)
 
 function AddNewSelectItem(keyWord, value)
 {
-	alert(keyWord);
-	alert(value);
 	var newOption = $("<option>" + value + "</option>");
 	$(newOption).val(value);
 	$("#"+keyWord).append(newOption);

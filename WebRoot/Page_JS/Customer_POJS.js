@@ -194,9 +194,7 @@ function InputBarcode(obj)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
-			alert(data);
 			var proInfoList = data.split("$");
-			alert(proInfoList[2]);
 			$("#product_type").val(proInfoList[2]);
 			AddNewSelectItem("product_name", proInfoList[3]);
 			$("#product_name").change();
