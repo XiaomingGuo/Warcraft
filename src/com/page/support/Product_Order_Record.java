@@ -80,7 +80,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		return aWriteRecord;
 	}
 	
-	public List<String> GetBarCodeByOrderName(String pro_order)
+	public List<String> GetRecordByOrderName(String pro_order)
 	{
 		String hql = String.format("from ProductOrderRecord por where por.orderName='%s'", pro_order);
 		getEQMHandle().EQQuery(hql);

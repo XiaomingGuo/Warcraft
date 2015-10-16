@@ -27,3 +27,18 @@ function GetSelectedContent(keyWord)
 {
 	return $("#"+keyWord).find("option:selected").text();
 }
+
+function AddNewSelectItem(keyWord, value)
+{
+	alert(keyWord);
+	alert(value);
+	var newOption = $("<option>" + value + "</option>");
+	$(newOption).val(value);
+	$("#"+keyWord).append(newOption);
+}
+
+function ClearSelectContent(keyWord)
+{
+	$("#"+keyWord).empty();
+	$("#"+keyWord).append('<option value="请选择">--请选择--</option>');
+}

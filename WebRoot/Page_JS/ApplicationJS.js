@@ -95,19 +95,6 @@ function CheckBarcode()
 	return true;
 }
 
-function ClearSelectContent(keyWord)
-{
-	$("#"+keyWord).empty();
-	$("#"+keyWord).append('<option value="请选择">--请选择--</option>');
-}
-
-function AddNewSelectItem(keyWord, value)
-{
-	var newOption = $("<option>" + value + "</option>");
-	$(newOption).val(value);
-	$("#"+keyWord).append(newOption);
-}
-
 
 
 

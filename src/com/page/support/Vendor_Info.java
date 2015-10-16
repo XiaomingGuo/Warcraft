@@ -6,17 +6,17 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.operation.ProductInfo;
+import com.DB.operation.VendorInfo;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Info extends DBTableParent implements ITableInterface
+public class Vendor_Info extends DBTableParent implements ITableInterface
 {
-	private List<ProductInfo> resultList = null;
-	private ProductInfo aWriteRecord = null;
+	private List<VendorInfo> resultList = null;
+	private VendorInfo aWriteRecord = null;
 	
-	public Product_Info(IEQManagement hEQMHandle)
+	public Vendor_Info(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
 	}
@@ -25,32 +25,35 @@ public class Product_Info extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ProductInfo> it = resultList.iterator();
+		Iterator<VendorInfo> it = resultList.iterator();
 		while(it.hasNext())
 		{
-			ProductInfo tempRecord = (ProductInfo)it.next();
+			VendorInfo tempRecord = (VendorInfo)it.next();
 			switch (keyWord)
 			{
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "Bar_Code":
-				rtnRst.add(tempRecord.getBarCode());
+			case "vendor_name":
+				rtnRst.add(tempRecord.getVendorName());
 				break;
-			case "name":
-				rtnRst.add(tempRecord.getName());
+			case "storeroom":
+				rtnRst.add(tempRecord.getStoreroom());
 				break;
-			case "product_type":
-				rtnRst.add(tempRecord.getProductType());
+			case "vendor_fax":
+				rtnRst.add(tempRecord.getVendorFax());
 				break;
-			case "weight":
-				rtnRst.add(tempRecord.getWeight().toString());
+			case "vendor_tel":
+				rtnRst.add(tempRecord.getVendorTel());
+				break;
+			case "vendor_e_mail":
+				rtnRst.add(tempRecord.getVendorEMail());
+				break;
+			case "vendor_address":
+				rtnRst.add(tempRecord.getVendorAddress());
 				break;
 			case "description":
 				rtnRst.add(tempRecord.getDescription());
-				break;
-			case "picture":
-				rtnRst.add(tempRecord.getPicture());
 				break;
 			default:
 				break;
@@ -71,9 +74,9 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void GetRecordByName(String name)
+	public void GetRecordByStoreroom(String storeroom)
 	{
-		String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
+		String hql = String.format("from VendorInfo vi where vi.storeroom='%s'", storeroom);
 		getEQMHandle().EQQuery(hql);
 	}
 }

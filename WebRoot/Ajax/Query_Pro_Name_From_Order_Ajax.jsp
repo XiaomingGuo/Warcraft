@@ -12,7 +12,7 @@
 	String rtnRst = "remove$";
 	//product_info Database query
 	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-	pro_info = hPORHandle.GetBarCodeByOrderName(pro_order);
+	pro_info = hPORHandle.GetRecordByOrderName(pro_order);
 	
 	if (pro_info != null)
 	{

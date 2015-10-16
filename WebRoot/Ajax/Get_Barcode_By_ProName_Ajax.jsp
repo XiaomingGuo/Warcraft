@@ -6,9 +6,9 @@
 	String proName = request.getParameter("search_name").replace(" ", "");
 	if(proName.length() > 0)
 	{
-		Product_Info hUIHandle = new Product_Info(new EarthquakeManagement());
-		hUIHandle.GetBarCodeByName(proName);
-		List<String> tempList = hUIHandle.getDBRecordList("Bar_Code");
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		hPIHandle.GetRecordByName(proName);
+		List<String> tempList = hPIHandle.getDBRecordList("Bar_Code");
 		for(int idx = 0; idx < tempList.size(); idx++)
 		{
 			rtnRst += tempList.get(idx) + (idx+1==tempList.size()?"$":",");

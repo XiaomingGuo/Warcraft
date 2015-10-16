@@ -6,17 +6,17 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.operation.ProductInfo;
+import com.DB.operation.ProductType;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Info extends DBTableParent implements ITableInterface
+public class Product_Type extends DBTableParent implements ITableInterface
 {
-	private List<ProductInfo> resultList = null;
-	private ProductInfo aWriteRecord = null;
+	private List<ProductType> resultList = null;
+	private ProductType aWriteRecord = null;
 	
-	public Product_Info(IEQManagement hEQMHandle)
+	public Product_Type(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
 	}
@@ -25,32 +25,20 @@ public class Product_Info extends DBTableParent implements ITableInterface
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ProductInfo> it = resultList.iterator();
+		Iterator<ProductType> it = resultList.iterator();
 		while(it.hasNext())
 		{
-			ProductInfo tempRecord = (ProductInfo)it.next();
+			ProductType tempRecord = (ProductType)it.next();
 			switch (keyWord)
 			{
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "Bar_Code":
-				rtnRst.add(tempRecord.getBarCode());
-				break;
 			case "name":
 				rtnRst.add(tempRecord.getName());
 				break;
-			case "product_type":
-				rtnRst.add(tempRecord.getProductType());
-				break;
-			case "weight":
-				rtnRst.add(tempRecord.getWeight().toString());
-				break;
-			case "description":
-				rtnRst.add(tempRecord.getDescription());
-				break;
-			case "picture":
-				rtnRst.add(tempRecord.getPicture());
+			case "storeroom":
+				rtnRst.add(tempRecord.getStoreroom());
 				break;
 			default:
 				break;
@@ -71,9 +59,9 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void GetRecordByName(String name)
+	public void GetRecordByName(String storeName)
 	{
-		String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
+		String hql = String.format("from ProductType pt where pt.storeroom='%s'", storeName);
 		getEQMHandle().EQQuery(hql);
 	}
 }
