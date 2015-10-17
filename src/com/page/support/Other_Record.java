@@ -14,7 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class Other_Record extends DBTableParent implements ITableInterface
 {
 	private List<OtherRecord> resultList = null;
-	private OtherRecord aWriteRecord = new OtherRecord();
+	private OtherRecord aWriteRecord = null;
 	
 	public Other_Record(IEQManagement hEQMHandle)
 	{
@@ -79,6 +79,7 @@ public class Other_Record extends DBTableParent implements ITableInterface
 
 	public void AddARecord(String appBarcode, String proposerName, String appProduct_QTY, String appUserName)
 	{
+		aWriteRecord = new OtherRecord();
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setProposer(proposerName);
 		aWriteRecord.setQty(Integer.parseInt(appProduct_QTY));

@@ -14,7 +14,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 public class User_Info extends DBTableParent implements ITableInterface
 {
 	private List<UserInfo> resultList = null;
-	private User_Info aWriteRecord = null;
+	private UserInfo aWriteRecord = null;
 	
 	public User_Info(IEQManagement hEQMHandle)
 	{
