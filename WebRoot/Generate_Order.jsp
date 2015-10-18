@@ -45,12 +45,6 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/Generate_OrderJS.js"></script>
-  	<script type="text/javascript">
-  		function winload()
-  		{
-			$("#display_page_order").load("Generate_Order_Manual.jsp");
-  		}
-  	</script>
   </head>
   <body onload="winload()">
     <jsp:include page="Menu/ManufactureMenu.jsp"/>

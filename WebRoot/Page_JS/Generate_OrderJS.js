@@ -1,6 +1,11 @@
 /**
  * 
  */
+function winload()
+{
+	$("#display_page_order").load("Generate_Order_Manual.jsp");
+}
+
 $(function()
 {
 	var $po_select = $('#po_select');
