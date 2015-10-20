@@ -34,21 +34,14 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "Bar_Code":
+			case "mb_material_po":
+				rtnRst.add(tempRecord.getMbMaterialPoId().toString());
 				break;
-			case "po_name":
+			case "IN_QTY":
+				rtnRst.add(tempRecord.getInQty().toString());
 				break;
-			case "delivery_date":
-				break;
-			case "QTY":
-				break;
-			case "OUT_QTY":
-				break;
-			case "vendor":
-				break;
-			case "percent":
-				break;
-			case "create_date":
+			case "IN_DATE":
+				rtnRst.add(tempRecord.getInDate().toString());
 				break;
 			default:
 				break;

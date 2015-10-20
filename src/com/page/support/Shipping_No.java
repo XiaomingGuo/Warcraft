@@ -34,17 +34,14 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "Bar_Code":
+			case "customer_po":
+				rtnRst.add(tempRecord.getCustomerPo());
 				break;
 			case "name":
+				rtnRst.add(tempRecord.getDeliveryDate().toString());
 				break;
-			case "product_type":
-				break;
-			case "weight":
-				break;
-			case "description":
-				break;
-			case "picture":
+			case "shipping_no":
+				rtnRst.add(tempRecord.getShippingNo().toString());
 				break;
 			default:
 				break;

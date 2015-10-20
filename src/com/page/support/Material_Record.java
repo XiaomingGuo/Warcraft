@@ -37,21 +37,23 @@ public class Material_Record extends DBTableParent implements ITableInterface
 			case "Bar_Code":
 				rtnRst.add(tempRecord.getBarCode());
 				break;
-			case "po_name":
+			case "Batch_Lot":
+				rtnRst.add(tempRecord.getBatchLot());
 				break;
-			case "delivery_date":
+			case "proposer":
+				rtnRst.add(tempRecord.getProposer());
 				break;
 			case "QTY":
 				rtnRst.add(tempRecord.getQty().toString());
 				break;
-			case "OUT_QTY":
-				break;
-			case "vendor":
-				break;
-			case "percent":
-				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
+				break;
+			case "isApprove":
+				rtnRst.add(tempRecord.getIsApprove().toString());
+				break;
+			case "Merge_Mark":
+				rtnRst.add(tempRecord.getMergeMark().toString());
 				break;
 			default:
 				break;

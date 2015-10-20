@@ -34,7 +34,29 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "name":
+			case "Bar_Code":
+				rtnRst.add(tempRecord.getBarCode());
+				break;
+			case "Batch_Lot":
+				rtnRst.add(tempRecord.getBatchLot());
+				break;
+			case "IN_QTY":
+				rtnRst.add(tempRecord.getInQty().toString());
+				break;
+			case "OUT_QTY":
+				rtnRst.add(tempRecord.getOutQty().toString());
+				break;
+			case "Price_Per_Unit":
+				rtnRst.add(tempRecord.getPricePerUnit().toString());
+				break;
+			case "Total_Price":
+				rtnRst.add(tempRecord.getTotalPrice().toString());
+				break;
+			case "vendor_name":
+				rtnRst.add(tempRecord.getVendorName());
+				break;
+			case "create_date":
+				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;
 			default:
 				break;

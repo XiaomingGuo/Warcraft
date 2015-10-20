@@ -34,22 +34,23 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
+			case "customer_po":
+				rtnRst.add(tempRecord.getCustomerPo());
+				break;
 			case "Bar_Code":
 				rtnRst.add(tempRecord.getBarCode());
 				break;
-			case "po_name":
+			case "Batch_Lot":
+				rtnRst.add(tempRecord.getBatchLot());
 				break;
-			case "delivery_date":
+			case "Order_Name":
+				rtnRst.add(tempRecord.getOrderName());
 				break;
-			case "QTY":
+			case "ship_QTY":
+				rtnRst.add(tempRecord.getShipQty().toString());
 				break;
-			case "OUT_QTY":
-				break;
-			case "vendor":
-				break;
-			case "percent":
-				break;
-			case "create_date":
+			case "shipping_no":
+				rtnRst.add(tempRecord.getShippingNo().toString());
 				break;
 			default:
 				break;

@@ -37,18 +37,23 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 			case "Bar_Code":
 				rtnRst.add(tempRecord.getBarCode());
 				break;
-			case "po_name":
+			case "Batch_Lot":
+				rtnRst.add(tempRecord.getBatchLot());
 				break;
-			case "delivery_date":
-				break;
-			case "QTY":
+			case "IN_QTY":
+				rtnRst.add(tempRecord.getInQty().toString());
 				break;
 			case "OUT_QTY":
 				rtnRst.add(tempRecord.getOutQty().toString());
 				break;
-			case "vendor":
+			case "Price_Per_Unit":
+				rtnRst.add(tempRecord.getPricePerUnit().toString());
 				break;
-			case "percent":
+			case "Total_Price":
+				rtnRst.add(tempRecord.getTotalPrice().toString());
+				break;
+			case "vendor_name":
+				rtnRst.add(tempRecord.getVendorName().toString());
 				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
