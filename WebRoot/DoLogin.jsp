@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
 <%@ page import="com.DB.operation.User_Info" %>
-<%@ page import="com.DB.support.EarthquakeManagement" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.support.EarthquakeManagement" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";

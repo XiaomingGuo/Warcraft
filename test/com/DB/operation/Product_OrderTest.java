@@ -14,7 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.DB.operation.Product_Order;
-import com.DB.support.EarthquakeManagement;
 
 public class Product_OrderTest
 {

@@ -1,7 +1,6 @@
 <%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po_Record" %>
-<%@ page import="com.DB.support.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.SubmitCreateOrder" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
@@ -17,6 +16,7 @@
 	}
 	else
 	{
+		SubmitCreateOrder hPageSupport = new SubmitCreateOrder();
 		request.setCharacterEncoding("UTF-8");
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
@@ -26,17 +26,12 @@
 		if (!appPOName.isEmpty())
 		{
 			String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
-			recordList = hDBHandle.GetCustomerPORecord(appPOName, sqlKeyList);
-			
-			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-			hCPRHandle.GetRecordByPoName(appPOName);
-			List<String> barcodeList = hCPRHandle.getDBRecordList("Bar_Code");
-			if (barcodeList != null)
+			recordList = hPageSupport.getCustomerPORecord(appPOName, sqlKeyList);
+			if (recordList != null)
 			{
 				int iUpdatePOStatusFlag = 0;
-				OrderName = hDBHandle.GenOrderName("MB_" + createDate + "_" + appPOName);
-				sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
-				hDBHandle.execUpate(sql);
+				OrderName = hPageSupport.GenOrderName("MB_" + createDate + "_" + appPOName);
+				hPageSupport.InsertProductOrderRecord(OrderName);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
@@ -115,7 +110,7 @@
 			}
 		}
 		
-		/*
+		//End of jsp page
 		if (!appPOName.isEmpty())
 		{
 			String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
@@ -203,7 +198,6 @@
 				;
 			}
 		}
-		*/
 		response.sendRedirect("../Query_Order.jsp");
 	}
 %>

@@ -65,4 +65,10 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 		return getDBRecordList("Order_Name");
 	}
+	
+	public void GetRecordByOrderName(String orderName)
+	{
+		String hql = String.format("from ProductOrder po where po.orderName='%d'", orderName);
+		getEQMHandle().EQQuery(hql);
+	}
 }

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.support.EarthquakeManagement" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String proName = request.getParameter("search_name").replace(" ", "");
