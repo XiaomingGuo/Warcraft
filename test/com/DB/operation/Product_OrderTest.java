@@ -13,7 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.page.support.Product_Order;
+import com.DB.operation.Product_Order;
+import com.DB.support.EarthquakeManagement;
 
 public class Product_OrderTest
 {
