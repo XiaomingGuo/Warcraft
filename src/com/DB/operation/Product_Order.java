@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.support.CustomerPoRecord;
 import com.DB.support.ProductOrder;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
@@ -59,11 +60,10 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public List<String> GetOrderNameByStatus(int iStatus)
+	public void GetOrderNameByStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
 		getEQMHandle().EQQuery(hql);
-		return getDBRecordList("Order_Name");
 	}
 	
 	public void GetRecordByOrderName(String orderName)
@@ -71,4 +71,12 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		String hql = String.format("from ProductOrder po where po.orderName='%d'", orderName);
 		getEQMHandle().EQQuery(hql);
 	}
+	
+	public void AddARecord(String orderName)
+	{
+		aWriteRecord = new ProductOrder();
+		aWriteRecord.setOrderName(orderName);
+		getEQMHandle().addANewRecord();
+	}
+
 }

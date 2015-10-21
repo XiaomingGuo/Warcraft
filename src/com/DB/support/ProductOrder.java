@@ -1,7 +1,5 @@
 package com.DB.support;
 
-import java.util.List;
-
 /**
  * ProductOrder entity. @author MyEclipse Persistence Tools
  */

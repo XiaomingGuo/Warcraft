@@ -36,11 +36,16 @@ public class SubmitCreateOrder
 		return orderName;
 	}
 	
-	public void InsertProductOrderRecord(String orderName)
+	public void InsertProductOrder(String orderName)
 	{
 		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-		//hPOHandle.AddRecord();
-		//sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
-		//hDBHandle.execUpate(sql);
+		hPOHandle.AddARecord(orderName);
 	}
+	
+	public void InsertProductOrderRecord(String barCode, String deliveryDate, int qty, String poName, String orderName)
+	{
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		hPORHandle.AddARecord(barCode, deliveryDate, qty, poName, orderName);
+	}
+	
 }

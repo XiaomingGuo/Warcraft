@@ -31,7 +31,7 @@
 			{
 				int iUpdatePOStatusFlag = 0;
 				OrderName = hPageSupport.GenOrderName("MB_" + createDate + "_" + appPOName);
-				hPageSupport.InsertProductOrderRecord(OrderName);
+				hPageSupport.InsertProductOrder(OrderName);
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
@@ -40,8 +40,7 @@
 					if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
 					{
 						String strDeliDate = recordList.get(2).get(iRow);
-						sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + iOrderQTY + "','" + appPOName + "','" + OrderName + "')";
-						hDBHandle.execUpate(sql);
+						hPageSupport.InsertProductOrderRecord(strBarcode, strDeliDate, Integer.parseInt(iOrderQTY), appPOName, OrderName);
 						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 					}
 					else if(iAllOrderQTY - hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName) > 0)
@@ -62,8 +61,7 @@
 				{
 					iUpdatePOStatusFlag = 0;
 					OrderName = hDBHandle.GenOrderName("MB_" + createDate + "_" + appPOName);
-					sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
-					hDBHandle.execUpate(sql);
+					hPageSupport.InsertProductOrder(OrderName);
 					for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 					{
 						String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
@@ -75,8 +73,7 @@
 							int tempOrderQty = iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							if(tempOrderQty > 0)
 							{
-								sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + Integer.toString(tempOrderQty) + "','" + appPOName + "','" + OrderName + "')";
-								hDBHandle.execUpate(sql);
+								hPageSupport.InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
 								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							}
 						}
@@ -87,8 +84,7 @@
 							int tempOrderQty = iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							if(tempOrderQty > 0)
 							{
-								sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(strBarcode, "product_order_record") + "','" + strDeliDate + "','" + Integer.toString(tempOrderQty) + "','" + appPOName + "','" + OrderName + "')";
-								hDBHandle.execUpate(sql);
+								hPageSupport.InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
 								iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							}
 						}
@@ -110,6 +106,7 @@
 			}
 		}
 		
+		/*
 		//End of jsp page
 		if (!appPOName.isEmpty())
 		{
@@ -198,6 +195,7 @@
 				;
 			}
 		}
+		*/
 		response.sendRedirect("../Query_Order.jsp");
 	}
 %>
