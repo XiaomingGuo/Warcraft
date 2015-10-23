@@ -1,14 +1,15 @@
 package com.jsp.support;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.DB.operation.*;
 
-public class SubmitCreateOrder
+public class SubmitCreateOrder extends PageParentClass
 {
 	public List<List<String>> getCustomerPORecord(String PO_Name, String[] sqlKeyList)
 	{
-		List<List<String>> rtnRst = null;
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
 		hCPRHandle.GetRecordByPoName(PO_Name);
 		for (int i = 0; i < sqlKeyList.length; i++)

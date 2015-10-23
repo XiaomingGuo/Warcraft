@@ -16,7 +16,6 @@
 	}
 	else
 	{
-		SubmitCreateOrder hPageSupport = new SubmitCreateOrder();
 		request.setCharacterEncoding("UTF-8");
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
@@ -25,6 +24,7 @@
 		
 		if (!appPOName.isEmpty())
 		{
+			SubmitCreateOrder hPageSupport = new SubmitCreateOrder();
 			String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
 			recordList = hPageSupport.getCustomerPORecord(appPOName, sqlKeyList);
 			if (recordList != null)
@@ -35,11 +35,11 @@
 				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
-					int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
+					int iAllOrderQTY = hPageSupport.CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
 					String strBarcode = recordList.get(0).get(iRow);
+					String strDeliDate = recordList.get(2).get(iRow);
 					if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
 					{
-						String strDeliDate = recordList.get(2).get(iRow);
 						hPageSupport.InsertProductOrderRecord(strBarcode, strDeliDate, Integer.parseInt(iOrderQTY), appPOName, OrderName);
 						iUpdatePOStatusFlag += iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 					}
@@ -65,11 +65,11 @@
 					for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 					{
 						String iOrderQTY = request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", "");
-						int iAllOrderQTY = Integer.parseInt(recordList.get(1).get(iRow)) * (100 + Integer.parseInt(recordList.get(3).get(iRow)))/100;
+						int iAllOrderQTY = hPageSupport.CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
+						String strBarcode = recordList.get(0).get(iRow);
+						String strDeliDate = recordList.get(2).get(iRow);
 						if(iOrderQTY != null&&Integer.parseInt(iOrderQTY) > 0)
 						{
-							String strBarcode = recordList.get(0).get(iRow);
-							String strDeliDate = recordList.get(2).get(iRow);
 							int tempOrderQty = iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							if(tempOrderQty > 0)
 							{
@@ -79,8 +79,6 @@
 						}
 						else if(iAllOrderQTY - hDBHandle.GetInProcessQty(recordList.get(0).get(iRow), appPOName) > 0)
 						{
-							String strBarcode = recordList.get(0).get(iRow);
-							String strDeliDate = recordList.get(2).get(iRow);
 							int tempOrderQty = iAllOrderQTY-hDBHandle.GetInProcessQty(strBarcode, appPOName)-hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
 							if(tempOrderQty > 0)
 							{
