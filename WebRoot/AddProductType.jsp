@@ -1,10 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.DB.operation.Storeroom_Name" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> product_type = null, store_name = null;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -25,15 +22,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from storeroom_name";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				store_name = hDBHandle.GetAllStringValue("name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+			hSNHandle.GetAllRecord();
+			List<String> store_name = hSNHandle.getDBRecordList("name");
 			for (int index = 0; index < store_name.size(); index++)
 			{
 				if (store_name.get(index).indexOf("成品库") == 0)

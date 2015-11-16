@@ -20,6 +20,15 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 	{
 		super(hEQMHandle);
 	}
+	
+	@Override
+	public int RecordDBCount()
+	{
+		int rtnRst = 0;
+		if (resultList != null)
+			rtnRst = resultList.size();
+		return rtnRst;
+	}
 
 	@Override
 	public List<String> getDBRecordList(String keyWord)

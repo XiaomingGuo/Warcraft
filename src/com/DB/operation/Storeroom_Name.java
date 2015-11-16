@@ -22,6 +22,15 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public int RecordDBCount()
+	{
+		int rtnRst = 0;
+		if (resultList != null)
+			rtnRst = resultList.size();
+		return rtnRst;
+	}
+	
+	@Override
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
@@ -60,6 +69,19 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	{
 		String hql = String.format("from StoreroomName");
 		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void GetRecordByName(String name)
+	{
+		String hql = String.format("from StoreroomName sn where sn.name='%s'", name);
+		getEQMHandle().EQQuery(hql);
+	}
+
+	public void AddARecord(String poName)
+	{
+		aWriteRecord = new StoreroomName();
+		aWriteRecord.setName(poName);
+		getEQMHandle().addANewRecord();
 	}
 
 }

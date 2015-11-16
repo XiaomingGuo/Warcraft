@@ -20,6 +20,15 @@ public class Product_Type extends DBTableParent implements ITableInterface
 	{
 		super(hEQMHandle);
 	}
+	
+	@Override
+	public int RecordDBCount()
+	{
+		int rtnRst = 0;
+		if (resultList != null)
+			rtnRst = resultList.size();
+		return rtnRst;
+	}
 
 	@Override
 	public List<String> getDBRecordList(String keyWord)
@@ -59,9 +68,24 @@ public class Product_Type extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void GetRecordByName(String storeName)
+	public void GetRecordByStoreroom(String storeName)
 	{
 		String hql = String.format("from ProductType pt where pt.storeroom='%s'", storeName);
 		getEQMHandle().EQQuery(hql);
 	}
+	
+	public void GetRecordByName(String name)
+	{
+		String hql = String.format("from ProductType pt where pt.name='%s'", name);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void AddARecord(String proType, String storeroom)
+	{
+		aWriteRecord = new ProductType();
+		aWriteRecord.setName(proType);
+		aWriteRecord.setStoreroom(storeroom);
+		getEQMHandle().addANewRecord();
+	}
+
 }

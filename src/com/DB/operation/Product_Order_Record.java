@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.ProductOrder;
 import com.DB.support.ProductOrderRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
@@ -20,6 +19,15 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	public Product_Order_Record(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
+	}
+	
+	@Override
+	public int RecordDBCount()
+	{
+		int rtnRst = 0;
+		if (resultList != null)
+			rtnRst = resultList.size();
+		return rtnRst;
 	}
 	
 	@Override

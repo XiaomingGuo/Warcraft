@@ -20,6 +20,15 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	{
 		super(hEQMHandle);
 	}
+	
+	@Override
+	public int RecordDBCount()
+	{
+		int rtnRst = 0;
+		if (resultList != null)
+			rtnRst = resultList.size();
+		return rtnRst;
+	}
 
 	@Override
 	public List<String> getDBRecordList(String keyWord)
@@ -79,4 +88,24 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		String hql = String.format("from VendorInfo vi where vi.storeroom='%s'", storeroom);
 		getEQMHandle().EQQuery(hql);
 	}
+	
+	public void GetRecordByNameAndStoreroom(String supplier, String storeroom)
+	{
+		String hql = String.format("from VendorInfo vi where vi.vendor_name='%s' and vi.storeroom = '%s'", supplier, storeroom);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void AddARecord(String vendor_name, String storeroom, String vendor_fax, String vendor_tel, String vendor_e_mail, String vendor_address, String description)
+	{
+		aWriteRecord = new VendorInfo();
+		aWriteRecord.setVendorName(vendor_name);
+		aWriteRecord.setStoreroom(storeroom);
+		aWriteRecord.setVendorFax(vendor_fax);
+		aWriteRecord.setVendorTel(vendor_tel);
+		aWriteRecord.setVendorEMail(vendor_e_mail);
+		aWriteRecord.setVendorAddress(vendor_address);
+		aWriteRecord.setDescription(description);
+		getEQMHandle().addANewRecord();
+	}
+
 }

@@ -22,28 +22,28 @@
 		</property>
 		<property name="show_sql">true</property>
 		<mapping
-			resource="com/DB/operation/DiscardMaterialRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/ProductOrder.hbm.xml" />
-		<mapping resource="com/DB/operation/ProductOrderRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/UserInfo.hbm.xml" />
-		<mapping resource="com/DB/operation/CustomerPoRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/CustomerPo.hbm.xml" />
-		<mapping resource="com/DB/operation/ExhaustedMaterial.hbm.xml" />
-		<mapping resource="com/DB/operation/ExhaustedOther.hbm.xml" />
-		<mapping resource="com/DB/operation/ExhaustedProduct.hbm.xml" />
-		<mapping resource="com/DB/operation/MaterialRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/MaterialStorage.hbm.xml" />
-		<mapping resource="com/DB/operation/MbMaterialPoRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/MbMaterialPo.hbm.xml" />
-		<mapping resource="com/DB/operation/OtherRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/OtherStorage.hbm.xml" />
-		<mapping resource="com/DB/operation/ProductInfo.hbm.xml" />
-		<mapping resource="com/DB/operation/ProductStorage.hbm.xml" />
-		<mapping resource="com/DB/operation/ProductType.hbm.xml" />
-		<mapping resource="com/DB/operation/ShippingNo.hbm.xml" />
-		<mapping resource="com/DB/operation/ShippingRecord.hbm.xml" />
-		<mapping resource="com/DB/operation/StoreroomName.hbm.xml" />
-		<mapping resource="com/DB/operation/VendorInfo.hbm.xml" />
+			resource="com/DB/support/DiscardMaterialRecord.hbm.xml" />
+		<mapping resource="com/DB/support/ProductOrder.hbm.xml" />
+		<mapping resource="com/DB/support/ProductOrderRecord.hbm.xml" />
+		<mapping resource="com/DB/support/UserInfo.hbm.xml" />
+		<mapping resource="com/DB/support/CustomerPoRecord.hbm.xml" />
+		<mapping resource="com/DB/support/CustomerPo.hbm.xml" />
+		<mapping resource="com/DB/support/ExhaustedMaterial.hbm.xml" />
+		<mapping resource="com/DB/support/ExhaustedOther.hbm.xml" />
+		<mapping resource="com/DB/support/ExhaustedProduct.hbm.xml" />
+		<mapping resource="com/DB/support/MaterialRecord.hbm.xml" />
+		<mapping resource="com/DB/support/MaterialStorage.hbm.xml" />
+		<mapping resource="com/DB/support/MbMaterialPoRecord.hbm.xml" />
+		<mapping resource="com/DB/support/MbMaterialPo.hbm.xml" />
+		<mapping resource="com/DB/support/OtherRecord.hbm.xml" />
+		<mapping resource="com/DB/support/OtherStorage.hbm.xml" />
+		<mapping resource="com/DB/support/ProductInfo.hbm.xml" />
+		<mapping resource="com/DB/support/ProductStorage.hbm.xml" />
+		<mapping resource="com/DB/support/ProductType.hbm.xml" />
+		<mapping resource="com/DB/support/ShippingNo.hbm.xml" />
+		<mapping resource="com/DB/support/ShippingRecord.hbm.xml" />
+		<mapping resource="com/DB/support/StoreroomName.hbm.xml" />
+		<mapping resource="com/DB/support/VendorInfo.hbm.xml" />
 
 	</session-factory>
 

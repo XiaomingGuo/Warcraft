@@ -26,7 +26,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
 			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-			hPTHandle.GetRecordByName("成品库");
+			hPTHandle.GetRecordByStoreroom("成品库");
 			product_type = hPTHandle.getDBRecordList("name");
 			
 			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());

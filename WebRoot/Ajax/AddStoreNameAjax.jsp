@@ -1,25 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	int sql_out_count = 0, sql_in_count = 0, used_count = 0;
-%>
+<%@ page import="com.DB.operation.Storeroom_Name" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "";
 	String storeroom = (String)request.getParameter("storeroom").replace(" ", "");
-	String sql = "select * from storeroom_name where name='" + storeroom +"'" ;
-	if (!storeroom.isEmpty()&&hDBHandle.QueryDataBase(sql))
+
+	if (!storeroom.isEmpty())
 	{	
-		if(hDBHandle.GetRecordCount() > 0)
+		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+		hSNHandle.GetRecordByName(storeroom);
+		if(hSNHandle.RecordDBCount() > 0)
 		{
-			hDBHandle.CloseDatabase();
 			rtnRst = "库名已经存在!";
 		}
 		else
 		{
-			hDBHandle.CloseDatabase();
-			sql = "INSERT INTO storeroom_name (name) VALUES ('" + storeroom + "')";
-			hDBHandle.execUpate(sql);
+			hSNHandle.AddARecord(storeroom);
 		}
 	}
 	else
