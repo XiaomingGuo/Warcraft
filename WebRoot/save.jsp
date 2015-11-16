@@ -3,7 +3,8 @@
 <%@ page import="com.office.core.ExcelManagment" %>
 <%@ page import="com.office.operation.ExcelRead" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
-<%!DatabaseConn hDBHandle = new DatabaseConn();%>
+<%!
+	DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String filePath = request.getParameter("filePath").replace(" ", "");

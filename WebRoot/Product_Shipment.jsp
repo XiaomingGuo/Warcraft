@@ -1,10 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.DB.operation.Customer_Po" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
- 	List<String> po_list = null, product_type = null;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -25,15 +22,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from customer_po where status <= 1";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				po_list = hDBHandle.GetAllStringValue("po_name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+			hCPHandle.GetRecordLessThanStatus(1);
+			List<String> po_list = hCPHandle.getDBRecordList("po_name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

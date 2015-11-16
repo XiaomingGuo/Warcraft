@@ -68,9 +68,15 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void GetOrderNameByStatus(int iStatus)
+	public void GetRecordByStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void GetRecordLessThanStatus(int iStatus)
+	{
+		String hql = String.format("from ProductOrder po where po.status<'%d'", iStatus);
 		getEQMHandle().EQQuery(hql);
 	}
 	

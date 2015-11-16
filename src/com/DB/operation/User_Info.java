@@ -80,7 +80,7 @@ public class User_Info extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void GetPasswordByName(String name)
+	public void GetRecordByName(String name)
 	{
 		String hql = String.format("from UserInfo ui where ui.name='%s'", name);
 		getEQMHandle().EQQuery(hql);

@@ -17,7 +17,7 @@
 	{
 		String mess = "";
 		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-		hUIHandle.GetPasswordByName(name);
+		hUIHandle.GetRecordByName(name);
 		List<String> tempList = hUIHandle.getDBRecordList("password");
 		
 		if(tempList.size() > 0)

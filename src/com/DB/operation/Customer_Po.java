@@ -78,6 +78,12 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		execQuery("status", Integer.toString(istatus));
 	}
 	
+	public void GetRecordLessThanStatus(int istatus)
+	{
+		String hql = String.format("from CustomerPo cp where cp.status<='%d'", istatus);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	private void execQuery(String keyWord, String value)
 	{
 		String hql = String.format("from CustomerPo cp where cp.%s='%s'", keyWord, value);

@@ -1,10 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> product_type = null, product_info = null;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -16,17 +11,6 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		
-		//product_type Database query
-		String sql = "select * from user_info where name='" + mylogon.getUsername() + "'";
-		if (hDBHandle.QueryDataBase(sql))
-		{
-			product_type = hDBHandle.GetAllStringValue("name");
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-		}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

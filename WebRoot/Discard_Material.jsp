@@ -27,7 +27,7 @@
 			
 			//storeroom name Database query
 			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.GetOrderNameByStatus(1);
+			hPOHandle.GetRecordByStatus(1);
 			product_order = hPOHandle.getDBRecordList("Order_Name");
 %>
 

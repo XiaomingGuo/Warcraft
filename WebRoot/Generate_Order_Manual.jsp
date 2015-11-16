@@ -1,15 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.DB.operation.Product_Type" %>
+<%@ page import="com.DB.operation.Vendor_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
-	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "余量", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
 %>
 <%
 	String message="";
-	List<String> product_type = null, vendorList = null;
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -28,25 +28,13 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			String sql = "select * from product_type where storeroom='成品库'";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				product_type = hDBHandle.GetAllStringValue("name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+			hPTHandle.GetRecordByStoreroom("成品库");
+			List<String> product_type = hPTHandle.getDBRecordList("name");
 			
-			sql = "select * from vendor_info where storeroom='原材料库'";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				vendorList = hDBHandle.GetAllStringValue("vendor_name");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			hVIHandle.GetRecordByStoreroom("原材料库");
+			List<String> vendorList = hVIHandle.getDBRecordList("vendor_name");
 			
 			Calendar mData = Calendar.getInstance();
 			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
