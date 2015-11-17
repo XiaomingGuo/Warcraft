@@ -89,6 +89,12 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
+	public void GetRecordExceptStoreroom(String storeroom)
+	{
+		String hql = String.format("from VendorInfo vi where vi.storeroom!='%s'", storeroom);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void GetRecordByNameAndStoreroom(String supplier, String storeroom)
 	{
 		String hql = String.format("from VendorInfo vi where vi.vendor_name='%s' and vi.storeroom = '%s'", supplier, storeroom);

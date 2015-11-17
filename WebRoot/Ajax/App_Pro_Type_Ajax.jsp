@@ -1,25 +1,20 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	List<String> pro_type = null, vendor_name = null;
-%>
+<%@ page import="com.DB.operation.Vendor_Info" %>
+<%@ page import="com.DB.operation.Product_Type" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String storeroom=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
-	String sql = "select * from vendor_info where storeroom='" + storeroom +"'";
+	Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
 	if (storeroom.indexOf("原材料库") < 0)
 	{
-		sql = "select * from vendor_info where storeroom!='原材料库'";
-	}
-	if (hDBHandle.QueryDataBase(sql))
-	{
-		vendor_name = hDBHandle.GetAllStringValue("vendor_name");
+		hVIHandle.GetRecordExceptStoreroom("原材料库");
 	}
 	else
 	{
-		hDBHandle.CloseDatabase();
+		hVIHandle.GetRecordByStoreroom(storeroom);
 	}
+	List<String> vendor_name = hVIHandle.getDBRecordList("vendor_name");
 	if (vendor_name != null)
 	{
 		for(int i = 0; i < vendor_name.size(); i++)
@@ -30,15 +25,9 @@
 	}
 	
 	rtnRst += "#remove$";
-	sql = "select * from product_type where storeroom='" + storeroom +"'";
-	if (hDBHandle.QueryDataBase(sql))
-	{
-		pro_type = hDBHandle.GetAllStringValue("name");
-	}
-	else
-	{
-		hDBHandle.CloseDatabase();
-	}
+	Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+	hPTHandle.GetRecordByStoreroom(storeroom);
+	List<String> pro_type = hPTHandle.getDBRecordList("name");
 	if (pro_type != null)
 	{
 		for(int i = 0; i < pro_type.size(); i++)
