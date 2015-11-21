@@ -97,4 +97,24 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 		getEQMHandle().addANewRecord();
 	}
 
+	@Override
+	public int GetIntSumOfValue(String storage_name, String getValue,
+			String keyword, String keyValue) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double GetDblSumOfValue(String storage_name, String getValue,
+			String keyword, String keyValue) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String GetDatabaseKeyWord(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

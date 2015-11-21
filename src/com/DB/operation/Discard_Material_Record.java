@@ -76,4 +76,24 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 	{
 		return aWriteRecord;
 	}
+
+	@Override
+	public int GetIntSumOfValue(String storage_name, String getValue,
+			String keyword, String keyValue) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double GetDblSumOfValue(String storage_name, String getValue,
+			String keyword, String keyValue) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String GetDatabaseKeyWord(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

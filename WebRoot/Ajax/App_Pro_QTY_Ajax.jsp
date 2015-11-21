@@ -1,36 +1,27 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	List<List<String>> proInfo = null;
-%>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.App_Pro_QTY_Ajax" %>
 <%
 	int iRepertory = 0;
 	String rtnRst = "remove$";
 	String pro_name = (String)request.getParameter("product_name");
 	String pro_type = (String)request.getParameter("product_type");
-	String storageName = (String)request.getParameter("storage");
-	if(storageName == null||storageName == "")
+	
+	Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+	hPIHandle.GetRecordByNameAndProType(pro_name, pro_type);
+	List<String> barcodeList = hPIHandle.getDBRecordList("Bar_Code");
+	List<String> weightList = hPIHandle.getDBRecordList("weight");
+	List<String> descList = hPIHandle.getDBRecordList("description");
+	
+	if (barcodeList != null && weightList != null && descList != null)
 	{
-		storageName = "other_storage";
-	}
-	String sql= "select * from product_info where name='"+pro_name+"' and product_type='"+ pro_type + "'";
-	if (hDBHandle.QueryDataBase(sql))
-	{
-		String[] keyWord = {"Bar_Code", "weight", "description"};
-		proInfo = hDBHandle.GetAllDBColumnsByList(keyWord);
-	}
-	else
-	{
-		hDBHandle.CloseDatabase();
-	}
-	if (proInfo != null && proInfo.size() > 0)
-	{
-		for (int i = 0; i < proInfo.get(0).size(); i++)
+		App_Pro_QTY_Ajax hSupport = new App_Pro_QTY_Ajax();
+		for (int i = 0; i < barcodeList.size(); i++)
 		{
-			String bar_Code = proInfo.get(0).get(i);
-			iRepertory += hDBHandle.GetIN_QTYByBarCode(bar_Code, storageName) - hDBHandle.GetOUT_QTYByBarCode(bar_Code, storageName);
-			rtnRst += bar_Code + "$" + proInfo.get(1).get(i) + "$" + proInfo.get(2).get(i) + "$" ;
+			String bar_Code = barcodeList.get(i);
+			iRepertory += hSupport.GetIN_QTYByBarCode(bar_Code) - hSupport.GetOUT_QTYByBarCode(bar_Code);
+			rtnRst += bar_Code + "$" + weightList.get(i) + "$" + descList.get(i) + "$" ;
 		}
 	}
 	rtnRst += Integer.toString(iRepertory);
