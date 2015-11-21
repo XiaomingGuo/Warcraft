@@ -80,12 +80,18 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
+	public void GetRecordByBarcode(String bar_code)
+	{
+		String hql = String.format("from ProductInfo pi where pi.barCode='%s'", bar_code);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void GetRecordByName(String name)
 	{
 		String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
 		getEQMHandle().EQQuery(hql);
 	}
-	
+
 	public void GetRecordByProType(String product_type)
 	{
 		String hql = String.format("from ProductInfo pi where pi.productType='%s'", product_type);
@@ -99,14 +105,14 @@ public class Product_Info extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue,
+	public int GetIntSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue,
+	public double GetDblSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;

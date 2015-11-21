@@ -1,24 +1,18 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String barcode = (String)request.getParameter("Bar_Code").replace(" ", "");
 	
 	if (barcode != null)
 	{
-		String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "product_info") + "'";
-		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
-		{
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		hPIHandle.GetRecordByBarcode(barcode);
+		if (hPIHandle.RecordDBCount() > 0)
 			rtnRst += "1$";
-		}
 		else
-		{
 			rtnRst += "0$";
-		}
-		hDBHandle.CloseDatabase();
 	}
 	out.write(rtnRst);
 %>

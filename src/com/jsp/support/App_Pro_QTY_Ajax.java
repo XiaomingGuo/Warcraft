@@ -27,13 +27,13 @@ public class App_Pro_QTY_Ajax extends PageParentClass
 	{
 		String storeroom = GetStorageNameByBarCode(barcode, false);
 		ITableInterface hHandle = GenDBHandle(storeroom);
-		return hHandle.GetIntSumOfValue(storeroom, "IN_QTY", "Bar_Code", barcode);
+		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", barcode);
 	}
 	
 	public int GetOUT_QTYByBarCode(String barcode)
 	{
 		String storeroom = GetStorageNameByBarCode(barcode, false);
 		ITableInterface hHandle = GenDBHandle(storeroom);
-		return hHandle.GetIntSumOfValue(storeroom, "OUT_QTY", "Bar_Code", barcode);
+		return hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", barcode);
 	}
 }

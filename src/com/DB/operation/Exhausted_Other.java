@@ -93,15 +93,15 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
+		return super.GetDblSumOfValue("ExhaustedOther", getValue, keyword, keyValue);
 	}
 	
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
+		return super.GetIntSumOfValue("ExhaustedOther", getValue, keyword, keyValue);
 	}
 
 	@Override

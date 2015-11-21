@@ -107,14 +107,14 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	}
 
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue,
+	public int GetIntSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue,
+	public double GetDblSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -124,6 +124,22 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	public String GetDatabaseKeyWord(String keyword) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public int GetQtyByBarcodeAndPOName(String strBarcode, String appPOName, String getKeyValue)
+	{
+		int rtnRst = 0;
+		String hql = String.format("from ProductOrderRecord por where por.barCode='%s' and por.poName='%s'", GetUsedBarcode(strBarcode, "Product_Order_Record"), appPOName);
+		getEQMHandle().EQQuery(hql);
+		if (RecordDBCount() > 0)
+		{
+			List<String> po_Qty_List = getDBRecordList(getKeyValue);
+			for (int i = 0; i < po_Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(i));
+			}
+		}
+		return rtnRst;
 	}
 	
 }

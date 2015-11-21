@@ -1,7 +1,5 @@
 package com.jsp.support;
 
-import com.Warcraft.Interface.ITableInterface;
-
 public class PageParentClass
 {
 	public int CalcOrderQty(String po_Num, String percent)

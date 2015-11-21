@@ -111,14 +111,14 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 		//aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
 	}
-	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
+		return super.GetDblSumOfValue("ProductStorage", getValue, keyword, keyValue);
 	}
 	
-	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
+		return super.GetIntSumOfValue("ProductStorage", getValue, keyword, keyValue);
 	}
 
 	@Override

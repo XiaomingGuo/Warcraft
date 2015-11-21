@@ -78,14 +78,14 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 	}
 
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue,
+	public int GetIntSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue,
+	public double GetDblSumOfValue(String getValue,
 			String keyword, String keyValue) {
 		// TODO Auto-generated method stub
 		return 0;
