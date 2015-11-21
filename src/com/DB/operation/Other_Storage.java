@@ -1,6 +1,5 @@
 package com.DB.operation;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +10,7 @@ import com.DB.support.OtherStorage;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Other_Storage extends DBTableParent implements ITableInterface
 {
@@ -116,35 +116,13 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 	@Override
 	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
 	{
-		double rtnRst = 0.0;
-		String hql = String.format("from %s st where st.%s='%s'", storage_name, GetDatabaseKeyWord(keyword), keyValue);
-		getEQMHandle().EQQuery(hql);
-		if (RecordDBCount() > 0)
-		{
-			List<String> in_Qty_List = getDBRecordList(getValue);
-			for (int i = 0; i < in_Qty_List.size(); i++)
-			{
-				rtnRst += Double.parseDouble(in_Qty_List.get(i));
-			}
-		}
-		return rtnRst;
+		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
 	
 	@Override
 	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
 	{
-		int rtnRst = 0;
-		String hql = String.format("from %s st where st.%s='%s'", storage_name, GetDatabaseKeyWord(keyword), keyValue);
-		getEQMHandle().EQQuery(hql);
-		if (RecordDBCount() > 0)
-		{
-			List<String> in_Qty_List = getDBRecordList(getValue);
-			for (int i = 0; i < in_Qty_List.size(); i++)
-			{
-				rtnRst += Integer.parseInt(in_Qty_List.get(i));
-			}
-		}
-		return rtnRst;
+		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
 	
 	@Override

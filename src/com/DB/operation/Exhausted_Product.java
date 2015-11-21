@@ -93,23 +93,48 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
+	}
+	
+	@Override
+	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
 
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String GetDatabaseKeyWord(String keyword)
+	{
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
+			rtnRst = "batchLot";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("in_qty") >= 0) {
+			rtnRst = "inQty";
+		}
+		else if(keyword.toLowerCase().indexOf("out_qty") >= 0) {
+			rtnRst = "outQty";
+		}
+		else if(keyword.toLowerCase().indexOf("price_per_unit") >= 0) {
+			rtnRst = "pricePerUnit";
+		}
+		else if(keyword.toLowerCase().indexOf("total_price") >= 0) {
+			rtnRst = "totalPrice";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		return rtnRst;
 	}
-
-	@Override
-	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

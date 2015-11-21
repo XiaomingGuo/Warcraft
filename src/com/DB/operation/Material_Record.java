@@ -110,17 +110,15 @@ public class Material_Record extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public int GetIntSumOfValue(String storage_name, String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
-
+	
 	@Override
-	public double GetDblSumOfValue(String storage_name, String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
 
 	@Override

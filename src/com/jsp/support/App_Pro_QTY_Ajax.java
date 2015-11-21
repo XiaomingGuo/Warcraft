@@ -36,5 +36,4 @@ public class App_Pro_QTY_Ajax extends PageParentClass
 		ITableInterface hHandle = GenDBHandle(storeroom);
 		return hHandle.GetIntSumOfValue(storeroom, "OUT_QTY", "Bar_Code", barcode);
 	}
-	
 }

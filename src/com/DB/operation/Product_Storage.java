@@ -97,39 +97,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	//String sql = "select IN_QTY from "+storage_name+" where Bar_Code='" + GetUsedBarcode(barcode, storage_name) +"'";
-	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
-	{
-		double rtnRst = 0.0;
-		String hql = String.format("from %s st where st.%s='%s'", storage_name, keyword, keyValue);
-		getEQMHandle().EQQuery(hql);
-		if (RecordDBCount() > 0)
-		{
-			List<String> in_Qty_List = getDBRecordList(getValue);
-			for (int i = 0; i < in_Qty_List.size(); i++)
-			{
-				rtnRst += Double.parseDouble(in_Qty_List.get(i));
-			}
-		}
-		return rtnRst;
-	}
-	
-	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
-	{
-		int rtnRst = 0;
-		String hql = String.format("from %s st where st.%s='%s'", storage_name, keyword, keyValue);
-		getEQMHandle().EQQuery(hql);
-		if (RecordDBCount() > 0)
-		{
-			List<String> in_Qty_List = getDBRecordList(getValue);
-			for (int i = 0; i < in_Qty_List.size(); i++)
-			{
-				rtnRst += Integer.parseInt(in_Qty_List.get(i));
-			}
-		}
-		return rtnRst;
-	}
-
 	/*
 	private void execQueryDesc(String keyWord, String value, String orderKey)
 	{
@@ -144,11 +111,47 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 		//aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
 	}
-
-	@Override
-	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+	public double GetDblSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
+	}
+	
+	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	{
+		return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
 	}
 
+	@Override
+	public String GetDatabaseKeyWord(String keyword)
+	{
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
+			rtnRst = "batchLot";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("in_qty") >= 0) {
+			rtnRst = "inQty";
+		}
+		else if(keyword.toLowerCase().indexOf("out_qty") >= 0) {
+			rtnRst = "outQty";
+		}
+		else if(keyword.toLowerCase().indexOf("price_per_unit") >= 0) {
+			rtnRst = "pricePerUnit";
+		}
+		else if(keyword.toLowerCase().indexOf("total_price") >= 0) {
+			rtnRst = "totalPrice";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		return rtnRst;
+	}
 }
