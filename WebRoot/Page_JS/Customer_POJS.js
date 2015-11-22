@@ -182,7 +182,6 @@ function CreatePO(obj)
 
 function InputBarcode(obj)
 {
-	$("#product_name").empty();
 	var barcode = $("#bar_code").val();
 	if(barcode == null||barcode.length != 8)
 	{
@@ -190,6 +189,18 @@ function InputBarcode(obj)
 		$("#bar_code").val("");
 		return;
 	}
+	if(!IsProductionMaterial(barcode))
+	{
+		alert("请检查您输入的八码,确认它是产品吗？");
+		return;
+	}
+	var tempBarcode = ReplaceInputWithProductBarcode(barcode);
+	if(barcode != tempBarcode)
+	{
+		$("#bar_code").val(tempBarcode);
+		barcode = tempBarcode;
+	}
+	$("#product_name").empty();
 	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":barcode}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))

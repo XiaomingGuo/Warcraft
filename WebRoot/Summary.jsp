@@ -87,8 +87,7 @@
 					String bar_code = recordList.get(1).get(iRow-1);
 					if (Integer.parseInt(bar_code) >= 60000000 && Integer.parseInt(bar_code) < 70000000)
 					{
-						continue;
-						//storageName = "product_storage";
+						storageName = "product_storage";
 					}
 %>
   			<tr>

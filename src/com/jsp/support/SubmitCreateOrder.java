@@ -1,6 +1,7 @@
 package com.jsp.support;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -8,24 +9,6 @@ import com.Warcraft.Interface.ITableInterface;
 
 public class SubmitCreateOrder extends PageParentClass
 {
-	private ITableInterface GenDBHandle(String storeroom)
-	{
-		ITableInterface rtnRst = null;
-		if (storeroom.toLowerCase().indexOf("material") >= 0)
-		{
-			rtnRst = new Material_Storage(new EarthquakeManagement());
-		}
-		else if(storeroom.toLowerCase().indexOf("product") >= 0)
-		{
-			rtnRst = new Product_Storage(new EarthquakeManagement());
-		}
-		else
-		{
-			rtnRst = new Other_Storage(new EarthquakeManagement());
-		}
-		return rtnRst;
-	}
-
 	public List<List<String>> getCustomerPORecord(String PO_Name)
 	{
 		String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
@@ -33,9 +16,7 @@ public class SubmitCreateOrder extends PageParentClass
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
 		hCPRHandle.GetRecordByPoName(PO_Name);
 		for (int i = 0; i < sqlKeyList.length; i++)
-		{
 			rtnRst.add(hCPRHandle.getDBRecordList(sqlKeyList[i]));
-		}
 		return rtnRst;
 	}
 	
@@ -49,9 +30,7 @@ public class SubmitCreateOrder extends PageParentClass
 			orderName = OrderHeader + "_" + Integer.toString(iCount);
 			hPOHandle.GetRecordByOrderName(orderName);
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
-			{
 				break;
-			}
 			iCount += 1;
 		}while(true);
 		return orderName;
@@ -85,5 +64,70 @@ public class SubmitCreateOrder extends PageParentClass
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
 		hCPHandle.UpdateStatusByPoName(1, poName);
+	}
+	
+	public void CreateCustomerOrder(String appPOName, List<List<String>> recordList, List<String> customerQty)
+	{
+		Calendar mData = Calendar.getInstance();
+		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String OrderName = null;
+		
+		if (recordList != null)
+		{
+			int iUpdatePOStatusFlag = 0;
+			OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
+			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+			{
+				String strOrderQTY = customerQty.get(iRow);
+				int iAllOrderQTY = CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
+				String strBarcode = recordList.get(0).get(iRow);
+				String strDeliDate = recordList.get(2).get(iRow);
+				if(strOrderQTY != null&&Integer.parseInt(strOrderQTY) > 0)
+				{
+					InsertProductOrderRecord(strBarcode, strDeliDate, Integer.parseInt(strOrderQTY), appPOName, OrderName);
+				}
+				if(iAllOrderQTY - GetInProcessQty(strBarcode, appPOName) > 0)
+				{
+					iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
+				}
+			}
+			InsertProductOrder(OrderName);
+			if (iUpdatePOStatusFlag == 0)
+			{
+				UpdateCustomerPoStatus("1", appPOName);
+			}
+			else
+			{
+				iUpdatePOStatusFlag = 0;
+				OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
+				InsertProductOrder(OrderName);
+				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+				{
+					String strOrderQTY = customerQty.get(iRow);
+					int iAllOrderQTY = CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
+					String strBarcode = recordList.get(0).get(iRow);
+					String strDeliDate = recordList.get(2).get(iRow);
+					
+					int tempOrderQty = iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
+					if (tempOrderQty > 0)
+					{
+						if(strOrderQTY != null&&Integer.parseInt(strOrderQTY) > 0)
+						{
+							InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
+							iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
+						}
+						else if(iAllOrderQTY - GetInProcessQty(strBarcode, appPOName) > 0)
+						{
+							InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
+							iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
+						}
+					}
+				}
+				if (iUpdatePOStatusFlag == 0)
+				{
+					UpdateCustomerPoStatus("1", appPOName);
+				}
+			}
+		}
 	}
 }

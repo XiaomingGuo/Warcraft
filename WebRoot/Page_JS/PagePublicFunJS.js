@@ -23,6 +23,33 @@ function IsProductionMaterial(Barcode)
 	return false;
 }
 
+function ReplaceInputWithProductBarcode(Barcode)
+{
+	if (parseInt(Barcode) >= 50000000 && parseInt(Barcode) < 60000000)
+		return parseInt(Barcode) + 10000000;
+	else if(parseInt(Barcode) >= 70000000 && parseInt(Barcode) < 80000000)
+		return parseInt(Barcode) - 10000000;
+	return parseInt(Barcode);
+}
+
+function ReplaceInputWithMaterialBarcode(Barcode)
+{
+	if (parseInt(Barcode) >= 60000000 && parseInt(Barcode) < 70000000)
+		return parseInt(Barcode) - 10000000;
+	else if(parseInt(Barcode) >= 70000000 && parseInt(Barcode) < 80000000)
+		return parseInt(Barcode) - 20000000;
+	return parseInt(Barcode);
+}
+
+function ReplaceInputWithProcessBarcode(Barcode)
+{
+	if (parseInt(Barcode) >= 50000000 && parseInt(Barcode) < 60000000)
+		return parseInt(Barcode) + 20000000;
+	else if(parseInt(Barcode) >= 60000000 && parseInt(Barcode) < 70000000)
+		return parseInt(Barcode) + 10000000;
+	return parseInt(Barcode);
+}
+
 function GetSelectedContent(keyWord)
 {
 	return $("#"+keyWord).find("option:selected").text();

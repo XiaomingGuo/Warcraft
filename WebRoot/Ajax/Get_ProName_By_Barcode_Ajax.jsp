@@ -14,7 +14,7 @@
 
 		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
 		hPTHandle.GetRecordByName(proType);
-		String storeroom = hPIHandle.getDBRecordList("storeroom").get(0);
+		String storeroom = hPTHandle.getDBRecordList("storeroom").get(0);
 		
 		if (!proType.isEmpty() && !proName.isEmpty())
 		{
