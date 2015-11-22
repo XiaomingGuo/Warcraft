@@ -122,19 +122,15 @@ public class EarthquakeManagement implements IEQManagement
 		}
 	}
 	
-	public void updateRecord(int id)
+	public void updateRecord(String hql)
 	{
 		try
 		{
 			session = HibernateSessionFactory.getSession();
 			tx=session.beginTransaction();
-			DiscardMaterialRecord tempRecord = (DiscardMaterialRecord)session.get(DiscardMaterialRecord.class, id);
-			if (null != tempRecord)
-			{
-				tempRecord.setReason("±¨·Ï");
-				session.update(tempRecord);
-				tx.commit();
-			}
+			Query tempQuery = session.createQuery(hql);
+			tempQuery.executeUpdate();
+			tx.commit();
 		}
 		catch (Exception e)
 		{

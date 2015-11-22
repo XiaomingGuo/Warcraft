@@ -117,4 +117,10 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		return null;
 	}
 
+	public void UpdateStatusByPoName(int updateVal, String filterVal)
+	{
+		String hql = String.format("update CustomerPo cp set cp.status = '%d' WHERE cp.poName='%s'", updateVal, filterVal);
+		getEQMHandle().updateRecord(hql);
+	}
+
 }
