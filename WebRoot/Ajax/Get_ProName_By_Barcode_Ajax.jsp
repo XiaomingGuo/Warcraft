@@ -9,15 +9,15 @@
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(barcode, "product_storage"));
-		String proType = hPIHandle.getDBRecordList("product_type").get(0);
-		String proName = hPIHandle.getDBRecordList("name").get(0);
-
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		hPTHandle.GetRecordByName(proType);
-		String storeroom = hPTHandle.getDBRecordList("storeroom").get(0);
-		
-		if (!proType.isEmpty() && !proName.isEmpty())
+		if(hPIHandle.RecordDBCount() > 0)
 		{
+			String proType = hPIHandle.getDBRecordList("product_type").get(0);
+			String proName = hPIHandle.getDBRecordList("name").get(0);
+	
+			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+			hPTHandle.GetRecordByName(proType);
+			String storeroom = hPTHandle.getDBRecordList("storeroom").get(0);
+			
 			rtnRst += storeroom + "$";
 			rtnRst += proType + "$";
 			rtnRst += proName + "$";
