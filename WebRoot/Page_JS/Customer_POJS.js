@@ -48,7 +48,7 @@ function changePOName(obj)
 	var po_name = $.trim($("#POName").val());
 	if (po_name.length < 6)
 	{
-		alert("我的乖乖,你就不能起个长点儿的PO单名吗?");
+		alert("你就不能取个长点儿的PO单号吗?");
 		return;
 	}
 	$.post("Ajax/Query_PO_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
@@ -91,7 +91,7 @@ function changePOName(obj)
 							}
 							else
 							{
-								td.append("<label>已提交</label>");
+								td.append("<label>已录入</label>");
 							}
 						}
 						else
@@ -127,7 +127,7 @@ function addpoitem(obj)
 	var po_name = $("#POName").val();
 	if(po_name==""||$("#bar_code").val() == null||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
 	{
-		alert("我说大姐,你这输入信息糊弄谁呢?");
+		alert("能输入点儿正常值不?");
 		return;
 	}
 	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#cpo_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
@@ -185,13 +185,13 @@ function InputBarcode(obj)
 	var barcode = $("#bar_code").val();
 	if(barcode == null||barcode.length != 8)
 	{
-		alert("八码的内容和位数不符合要求");
+		alert("输入八码不对吧!");
 		$("#bar_code").val("");
 		return;
 	}
 	if(!IsProductionMaterial(barcode))
 	{
-		alert("请检查您输入的八码,确认它是产品吗？");
+		alert("这里只能输入产品八码?");
 		return;
 	}
 	var tempBarcode = ReplaceInputWithProductBarcode(barcode);

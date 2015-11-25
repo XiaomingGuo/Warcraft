@@ -5,11 +5,11 @@
 %>
 <%
 	String rtnRst = "remove$";
-	String vendor = (String)request.getParameter("vendor").replace(" ", "");
+	String vendor = (String)request.getParameter("vendor_name").replace(" ", "");
 	String bar_code = (String)request.getParameter("bar_code").replace(" ", "");
 	String deliv_date = (String)request.getParameter("delivery_date").replace(" ", "");
-	String pro_qty = (String)request.getParameter("order_QTY").replace(" ", "");
-	String percent = (String)request.getParameter("present").replace(" ", "");
+	String pro_qty = (String)request.getParameter("corder_QTY").replace(" ", "");
+	String percent = (String)request.getParameter("percent").replace(" ", "");
 	String order_name = (String)request.getParameter("order_name").replace(" ", "");
 	
 	if (order_name != null&&order_name != "")

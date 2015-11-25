@@ -2,7 +2,7 @@
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "采购量", "客户PO单名", "生产单名", "创建时间", "操作"};
 	String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
 	List<List<String>> recordList = null;
 %>
@@ -11,17 +11,29 @@
 	String order_name = request.getParameter("order_name").replace(" ", "");
 	String status = request.getParameter("status");
 	
-	if (order_name.length() > 11)
+	String order_status = null;
+	if (order_name.length() > 12)
 	{
 		String sql = null;
-		if (status == null)
+		if (status != null)
 		{
-			sql = "select * from product_order_record where Order_Name='" + order_name + "'";
+			sql = "select * from product_order where Order_Name='" + order_name + "'";
+			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			{
+				order_status = hDBHandle.GetSingleString("status");
+				if (Integer.parseInt(order_status) > Integer.parseInt(status))
+				{
+					rtnRst += "error:该PO单已经存在!";
+					out.write(rtnRst);
+				}
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
 		}
-		else
-		{
-			sql = "select * from product_order_record where Order_Name='" + order_name + "' and status='" + status+ "'";
-		}
+		rtnRst += order_status + "$";
+		sql = "select * from product_order_record where Order_Name='" + order_name + "'";
 		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
 		{
 			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
@@ -40,7 +52,7 @@
 				{
 					if("ID" == displayList[iCol])
 					{
-						rtnRst += recordList.get(0).get(iRow) + "$";
+						rtnRst += Integer.toString(iRow+1) + "$";
 					}
 					else if("产品类型" == displayList[iCol])
 					{
@@ -92,6 +104,19 @@
 							rtnRst += iMaterialQTY + "$";
 						}
 					}
+					else if("采购量" == displayList[iCol])
+					{
+						int orderCount = Integer.parseInt(recordList.get(3).get(iRow)) * (100 + 8)/100;
+						int iRepertory = iMat_storage;
+						if (iRepertory >= orderCount)
+						{
+							rtnRst += "0$";
+						}
+						else
+						{
+							rtnRst += Integer.toString(orderCount - iRepertory) + "$";
+						}
+					}
 					else if("客户PO单名" == displayList[iCol])
 					{
 						rtnRst += recordList.get(6).get(iRow) + "$";
@@ -106,7 +131,7 @@
 					}
 					else if("操作" == displayList[iCol])
 					{
-						rtnRst += recordList.get(9).get(iRow) + "$";
+						rtnRst += recordList.get(0).get(iRow) + "#" + recordList.get(1).get(iRow) + "$";
 					}
 				}
 			}

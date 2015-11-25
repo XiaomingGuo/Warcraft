@@ -19,13 +19,22 @@
 
 		if(delPoList != null && delPoList.size() > 0)
 		{
-			hPORHandle.GetRecordByPOName(delPoList.get(0));
-			List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
-			hPORHandle.DeleteRecordByPOName(delPoList);
-			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.DeleteRecordByOrderNameName(delOrderList);
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.DeleteRecordByPOName(delPoList);
+			if(delPoList.get(0).indexOf("Internal_po") < 0)
+			{
+				hPORHandle.GetRecordByPOName(delPoList.get(0));
+				List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
+				hPORHandle.DeleteRecordByPOName(delPoList);
+				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+				hPOHandle.DeleteRecordByOrderNameName(delOrderList);
+				Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+				hCPHandle.DeleteRecordByPOName(delPoList);
+			}
+			else
+			{
+				List<String> delOrderList = Arrays.asList(order_name);
+				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+				hPOHandle.DeleteRecordByOrderNameName(delOrderList);
+			}
 		}
 	}
 	out.write(rtnRst);

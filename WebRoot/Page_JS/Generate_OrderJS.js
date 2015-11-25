@@ -1,92 +1,218 @@
 /**
  * 
  */
-function winload()
-{
-	$("#display_page_order").load("Generate_Order_Manual.jsp");
-}
-
 $(function()
 {
-	var $po_select = $('#po_select');
-	$po_select.change(function()
+	var $product_type = $('#product_type');
+	var $product_name = $('#product_name');
+	var $bar_code = $('#bar_code');
+	
+	$product_type.change(function()
 	{
-		var po_name = $.trim($po_select.find("option:selected").text());
-		if (po_name.indexOf("请选择") >= 0)
+		$product_name.empty();
+		$bar_code.empty();
+		$product_name.append('<option value="请选择">--请选择--</option>');
+		$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":GetSelectedContent("product_type")}, function(data, textStatus)
 		{
-			$("#display_page_po").hide();
-			$("#display_page_order").show();
-			$("#display_page_order").load("Generate_Order_Manual.jsp");
+			if (CheckAjaxResult(textStatus, data))
+			{
+				var pro_list = data.split("$");
+				for (var i = 1; i < pro_list.length - 1; i++)
+				{
+					AddNewSelectItem("product_name", pro_list[i]);
+				}
+			}
+		});
+	});
+	
+	$product_name.change(function()
+	{
+		$.post("Ajax/App_Order_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"), "product_type":GetSelectedContent("product_type")}, function(data, textStatus)
+		{
+			if (CheckAjaxResult(textStatus, data))
+			{
+				var code_list = data.split("$");
+				$bar_code.attr("value", code_list[1]);
+				$("#product_QTY").attr("value", code_list[2]);
+				$("#material_QTY").attr("value", code_list[3]);
+				Qty_Calc();
+			}
+		});
+	});	
+});
+
+function changeOrderName(obj)
+{
+	var $displayOrder = $("#display_po");
+	var $confirmOrder = $("#confirm_po");
+	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
+	if (order_name.length < 6)
+	{
+		alert("我的乖乖,你就不能起个长点儿的PO单名吗?");
+		return;
+	}
+	$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name, "status":"0"}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			$displayOrder.empty();
+			$confirmOrder.empty();
+			var Count = 0;
+			var data_list = data.split("$");
+			var status = data_list[1], iColCount = data_list[2], iRowCount = data_list[3];
+			if (status != "null")
+			{
+				$("#confirm_button").attr("disabled", "disabled");
+			}
+			else
+			{
+				$("#confirm_button").removeAttr("disabled");
+			}
+			if (iColCount > 0&&iRowCount > 0)
+			{
+				var tr = $("<tr></tr>");
+				for (var iHead = 1; iHead <= iColCount; iHead++)
+				{
+					var th = $("<th>" + data_list[iHead + 3] + "</th>");
+					tr.append(th);
+				}
+				$displayOrder.append(tr);
+				for(var iRow = 1; iRow <= iRowCount; iRow++)
+				{
+					var tr = $("<tr></tr>");
+					for (var iCol = 1; iCol <= iColCount; iCol++)
+					{
+						var td = $("<td></td>");
+						if (0 == iColCount - iCol)
+						{
+							if(status == "null")
+							{
+								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + iCol + 3] + " onclick=deleteRecord(this)>");
+							}
+							else
+							{
+								td.append("<label>已提交</label>");
+							}
+						}
+						else
+						{
+							td.append(data_list[iRow*iColCount + iCol + 3]);
+						}
+						if(4 == iColCount - iCol)
+						{
+							Count += parseInt(data_list[iRow*iColCount + iCol + 3]);
+						}
+						tr.append(td);
+					}
+					$displayOrder.append(tr);
+				}
+				
+				var cmdtr = $("<tr></tr>");
+				if (status == "null")
+				{
+					cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
+				}
+				if (Count > 0)
+				{
+					cmdtr.append("<td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td>");
+				}
+				$confirmOrder.append(cmdtr);
+			}
+		}
+	});
+}
+
+function addorderitem(obj)
+{
+	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
+	if(order_name==""||$("#bar_code").val() == null||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
+	{
+		alert("我说大姐,你这输入信息糊弄谁呢?");
+		return;
+	}
+	$.post("Ajax/Add_Order_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "corder_QTY":$("#corder_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "order_name":order_name}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			changeOrderName();
+		}
+	});
+}
+
+function deleteRecord(obj)
+{
+	var delID = obj.name.split("#")[0];
+	var barcode = obj.name.split("#")[1];
+	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
+
+	$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID, "Order_Name":order_name, "Bar_Code":barcode}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			changeOrderName();
+		}
+	});
+}
+
+function Qty_Calc(obj)
+{
+	var poCount = parseInt($("#corder_QTY").val());
+	var proCount = parseInt($("#product_QTY").val());
+	var matCount = parseInt($("#material_QTY").val());
+	var tempQTY = (proCount + matCount) - poCount;
+	if (poCount > 0&&proCount >= 0&&matCount >= 0)
+	{
+		if (tempQTY >= 0)
+		{
+			$("#Need_QTY").val(0);
 		}
 		else
 		{
-			$("#display_page_order").hide();
-			$("#display_page_po").show();
-			var $displayOrder = $("#display_order_po");
-			var $confirmOrder = $("#confirm_order_po");
-			$displayOrder.empty();
-			$confirmOrder.empty();
-			$displayOrder.attr("border", 1);
-			$displayOrder.attr("align", "center");
-			$confirmOrder.attr("align", "center");
-			$.post("Ajax/Generate_Order_Item_Ajax.jsp", {"po_name":$.trim(po_name), "status":"0"}, function(data, textStatus)
-			{
-				if (textStatus == "success")
-				{
-					var Count = 0;
-					var data_list = data.split("$");
-					var iColCount = data_list[1], iRowCount = data_list[2];
-					if (iColCount > 0&&iRowCount > 0)
-					{
-						var tr = $("<tr></tr>");
-						for (var iHead = 1; iHead <= iColCount; iHead++)
-						{
-							var th = $("<th>" + data_list[iHead + 2] + "</th>");
-							tr.append(th);
-						}
-						$displayOrder.append(tr);
-						for(var iRow = 1; iRow <= iRowCount; iRow++)
-						{
-							var tr = $("<tr></tr>");
-							for (var iCol = 1; iCol <= iColCount; iCol++)
-							{
-								var td = $("<td></td>");
-								if (0 == iColCount - iCol)
-								{
-									if(data_list[iRow*iColCount + iCol + 2] > 0)
-									{
-										td.append("<input type='text' name='" + iRow + "_QTY' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + ">");
-									}
-									else if (data_list[iRow*iColCount + iCol + 2] < 0)
-									{
-										td.append("<label>缺料中</label>");
-									}
-									else
-									{
-										td.append("<label>已完成</label>");
-									}
-								}
-								else
-								{
-									td.append(data_list[iRow*iColCount + iCol + 2]);
-								}
-								if(2 == iColCount - iCol)
-								{
-									Count += parseInt(data_list[iRow*iColCount + iCol + 2]);
-								}
-								tr.append(td);
-							}
-							$displayOrder.append(tr);
-						}
-						if (Count > 0)
-						{
-							var cmdtr = $("<tr></tr>");
-							cmdtr.append("<td><input align='middle' type='submit' value='提交生产单'></td>");
-							$confirmOrder.append(cmdtr);
-						}
-					}
-				}
-			});
+			$("#Need_QTY").val(-tempQTY);
+		}
+	}
+	else
+	{
+		$("#corder_QTY").val("");
+	}
+}
+
+function CreateOrder(obj)
+{
+	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
+	location.href ="List_Purchase.jsp?PO_Name="+order_name;
+}
+
+function InputBarcode(obj)
+{
+	var barcode = $("#bar_code").val();
+	if(barcode == null||barcode.length != 8)
+	{
+		alert("八码的内容和位数不符合要求");
+		$("#bar_code").val("");
+		return;
+	}
+	if(!IsProductionMaterial(barcode))
+	{
+		alert("请检查您输入的八码,确认它是产品吗？");
+		return;
+	}
+	var tempBarcode = ReplaceInputWithProductBarcode(barcode);
+	if(barcode != tempBarcode)
+	{
+		$("#bar_code").val(tempBarcode);
+		barcode = tempBarcode;
+	}
+	$("#product_name").empty();
+	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":barcode}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			var proInfoList = data.split("$");
+			$("#product_type").val(proInfoList[2]);
+			AddNewSelectItem("product_name", proInfoList[3]);
+			$("#product_name").change();
 		}
 	});
-});
+}
+

@@ -66,67 +66,49 @@ public class SubmitCreateOrder extends PageParentClass
 		hCPHandle.UpdateStatusByPoName(1, poName);
 	}
 	
-	public void CreateCustomerOrder(String appPOName, List<List<String>> recordList, List<String> customerQty)
+	public void CreateCustomerOrder(String appPOName, List<List<String>> recordList)
 	{
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		String OrderName = null;
+		List<Integer> nextOrderQty = new ArrayList<Integer>();
 		
 		if (recordList != null)
 		{
-			int iUpdatePOStatusFlag = 0;
-			OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
+			int recordCount = 0;
+			String OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
-				String strOrderQTY = customerQty.get(iRow);
 				int iAllOrderQTY = CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
 				String strBarcode = recordList.get(0).get(iRow);
 				String strDeliDate = recordList.get(2).get(iRow);
-				if(strOrderQTY != null&&Integer.parseInt(strOrderQTY) > 0)
-				{
-					InsertProductOrderRecord(strBarcode, strDeliDate, Integer.parseInt(strOrderQTY), appPOName, OrderName);
-				}
-				if(iAllOrderQTY - GetInProcessQty(strBarcode, appPOName) > 0)
-				{
-					iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
-				}
+				int surplusOrderQty = iAllOrderQTY - GetRepertoryByBarCode(strBarcode);
+				nextOrderQty.add(surplusOrderQty);
+				if(surplusOrderQty == iAllOrderQTY)
+					recordCount++;
+				else if(surplusOrderQty >= 0)
+					InsertProductOrderRecord(strBarcode, strDeliDate, GetRepertoryByBarCode(strBarcode), appPOName, OrderName);
+				else
+					InsertProductOrderRecord(strBarcode, strDeliDate, iAllOrderQTY, appPOName, OrderName);
 			}
-			InsertProductOrder(OrderName);
-			if (iUpdatePOStatusFlag == 0)
+			if(recordCount != nextOrderQty.size())
 			{
-				UpdateCustomerPoStatus("1", appPOName);
-			}
-			else
-			{
-				iUpdatePOStatusFlag = 0;
-				OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
 				InsertProductOrder(OrderName);
-				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+				OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
+			}
+			recordCount = 0;
+			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+			{
+				String strBarcode = recordList.get(0).get(iRow);
+				String strDeliDate = recordList.get(2).get(iRow);
+				if(nextOrderQty.get(iRow) > 0)
 				{
-					String strOrderQTY = customerQty.get(iRow);
-					int iAllOrderQTY = CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
-					String strBarcode = recordList.get(0).get(iRow);
-					String strDeliDate = recordList.get(2).get(iRow);
-					
-					int tempOrderQty = iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
-					if (tempOrderQty > 0)
-					{
-						if(strOrderQTY != null&&Integer.parseInt(strOrderQTY) > 0)
-						{
-							InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
-							iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
-						}
-						else if(iAllOrderQTY - GetInProcessQty(strBarcode, appPOName) > 0)
-						{
-							InsertProductOrderRecord(strBarcode, strDeliDate, tempOrderQty, appPOName, OrderName);
-							iUpdatePOStatusFlag += iAllOrderQTY-GetInProcessQty(strBarcode, appPOName)-GetRepertoryByBarCode(strBarcode);
-						}
-					}
+					InsertProductOrderRecord(strBarcode, strDeliDate, nextOrderQty.get(iRow), appPOName, OrderName);
+					recordCount++;
 				}
-				if (iUpdatePOStatusFlag == 0)
-				{
-					UpdateCustomerPoStatus("1", appPOName);
-				}
+			}
+			if(recordCount > 0)
+			{
+				InsertProductOrder(OrderName);
 			}
 		}
 	}
