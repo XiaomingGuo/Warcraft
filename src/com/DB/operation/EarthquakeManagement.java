@@ -73,27 +73,29 @@ public class EarthquakeManagement implements IEQManagement
 		}
 	}
 	
-	public void DeleteRecord(int id)
+	public boolean DeleteRecord(String hql)
 	{
+		boolean rtnRst = true;
 		try
 		{
-			session=HibernateSessionFactory.getSessionFactory().openSession();
+			session = HibernateSessionFactory.getSession();
 			tx=session.beginTransaction();
-			DiscardMaterialRecord emp=(DiscardMaterialRecord)session.load(DiscardMaterialRecord.class, id);
-			session.delete(emp);
+			Query tempQuery = session.createQuery(hql);
+			tempQuery.executeUpdate();
 			tx.commit();
-			session.clear();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();						//打印异常信息
-			tx.rollback();								//回滚事物
+			tx.rollback();
+			rtnRst = false;
 		}
 		finally
 		{
-			HibernateSessionFactory.closeSession();		//关闭Session
+			HibernateSessionFactory.closeSession();
 		}
-
+		
+		return rtnRst;
 	}
 	
 	public void getRecord()

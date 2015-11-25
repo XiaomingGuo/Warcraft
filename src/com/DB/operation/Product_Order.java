@@ -82,7 +82,7 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	
 	public void GetRecordByOrderName(String orderName)
 	{
-		String hql = String.format("from ProductOrder po where po.orderName='%d'", orderName);
+		String hql = String.format("from ProductOrder po where po.orderName='%s'", orderName);
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -112,5 +112,13 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public void DeleteRecordByOrderNameName(List<String> delPoList)
+	{
+		for (String orderName : delPoList)
+		{
+			String hql = String.format("delete ProductOrder po where po.orderName='%s'", orderName);
+			getEQMHandle().DeleteRecord(hql);
+		}
+	}
 }

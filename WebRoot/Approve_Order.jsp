@@ -91,7 +91,8 @@
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
 	   			<br><br>
-	   			<input align="middle" type="button" onclick="Approve(this)" value="Approve">
+	   			<input align="middle" type="button" onclick="ApproveProduceOrder(this)" value="Approve">
+	   			<input align="middle" type="button" onclick="RejectProduceOrder(this)" value="Reject">
    			</td>
 		</tr>
    	</table>
@@ -141,10 +142,23 @@
 			});
 		});
 		
-		function Approve(obj)
+		function ApproveProduceOrder(obj)
 		{
 			var value = $("#TitleName").html();
 			$.post("Ajax/Approve_Order_Ajax.jsp", {"order_name":value}, function(data, textStatus)
+			{
+				if (!(textStatus == "success")||data.indexOf("error") >= 0)
+				{
+					alert(data.split("$")[1]);
+				}
+				location.reload();
+			});
+		}
+		
+		function RejectProduceOrder(obj)
+		{
+			var value = $("#TitleName").html();
+			$.post("Ajax/Reject_Order_Ajax.jsp", {"order_name":value}, function(data, textStatus)
 			{
 				if (!(textStatus == "success")||data.indexOf("error") >= 0)
 				{

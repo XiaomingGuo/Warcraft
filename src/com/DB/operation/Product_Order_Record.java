@@ -95,6 +95,12 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		getEQMHandle().EQQuery(hql);
 	}
 	
+	public void GetRecordByPOName(String poName)
+	{
+		String hql = String.format("from ProductOrderRecord por where por.poName='%s'", poName);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void AddARecord(String barCode, String deliveryDate, int qty, String poName, String orderName)
 	{
 		aWriteRecord = new ProductOrderRecord();
@@ -142,4 +148,12 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		return rtnRst;
 	}
 	
+	public void DeleteRecordByPOName(List<String> delPoList)
+	{
+		for (String poName : delPoList)
+		{
+			String hql = String.format("delete ProductOrderRecord por where por.poName='%s'", poName);
+			getEQMHandle().DeleteRecord(hql);
+		}
+	}
 }

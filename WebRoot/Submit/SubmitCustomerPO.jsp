@@ -19,7 +19,12 @@
 		if (!appPOName.isEmpty())
 		{
 			hPageSupport.SubmitPoOrder(appPOName);
-			hPageSupport.CreateProduceOrder(appPOName);
+			List<List<String>> recordList = hPageSupport.getCustomerPORecord(appPOName);
+			List<Integer> nextOrderQty = hPageSupport.getCustomerPOTotalQty(recordList);
+
+			nextOrderQty = hPageSupport.CreateProduceOrderFromProductStorage(appPOName, recordList, nextOrderQty);
+			nextOrderQty = hPageSupport.CreateProduceOrderFromMaterialStorage(appPOName, recordList, nextOrderQty);
+			hPageSupport.CreateProduceOrderFromMaterialLack(appPOName, recordList, nextOrderQty);
 		}
 		else
 		{

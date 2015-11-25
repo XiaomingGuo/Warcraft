@@ -15,19 +15,17 @@
 		SubmitCreateOrder hPageSupport = new SubmitCreateOrder();
 		
 		List<List<String>> recordList = null;
-		List<String> customerQty = new ArrayList<String>();
 		if (!appPOName.isEmpty())
 		{
 			recordList = hPageSupport.getCustomerPORecord(appPOName);
 		}
-		if (recordList != null)
+		if(recordList != null)
+			hPageSupport.CreateCustomerOrder(appPOName, recordList);
+		else
 		{
-			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
-			{
-				customerQty.add(request.getParameter(Integer.toString(iRow+1) + "_QTY").replace(" ", ""));
-			}
+			session.setAttribute("error", "无订单数据!");
+			response.sendRedirect("tishi.jsp");
 		}
-		hPageSupport.CreateCustomerOrder(appPOName, recordList, customerQty);
 		
 		response.sendRedirect("../Query_Order.jsp");
 	}

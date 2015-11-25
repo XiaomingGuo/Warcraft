@@ -122,5 +122,14 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		String hql = String.format("update CustomerPo cp set cp.status = '%d' WHERE cp.poName='%s'", updateVal, filterVal);
 		getEQMHandle().updateRecord(hql);
 	}
+	
+	public void DeleteRecordByPOName(List<String> delPoList)
+	{
+		for (String poName : delPoList)
+		{
+			String hql = String.format("delete CustomerPo cp where cp.poName='%s'", poName);
+			getEQMHandle().DeleteRecord(hql);
+		}
+	}
 
 }
