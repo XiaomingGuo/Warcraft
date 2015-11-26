@@ -116,5 +116,4 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

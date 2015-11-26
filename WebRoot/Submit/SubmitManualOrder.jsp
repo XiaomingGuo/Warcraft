@@ -1,13 +1,7 @@
-<%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.jsp.support.SubmitManualOrder" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	List<List<String>> recordList = null;
-%>
 <%
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -18,24 +12,16 @@
 		request.setCharacterEncoding("UTF-8");
 		Calendar mData = Calendar.getInstance();
 		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		String appOrderHeader = request.getParameter("OrderHeader").replace(" ", "");
-		String appOrderName = request.getParameter("OrderName").replace(" ", "");
-		String OrderName = appOrderHeader + appOrderName;
-		String sql = null;
+		String OrderName = request.getParameter("OrderHeader").replace(" ", "") + request.getParameter("OrderName").replace(" ", "");
+		SubmitManualOrder hPageSupport = new SubmitManualOrder();
 		
-		if (!appOrderName.isEmpty())
+		if (OrderName.length() > 12)
 		{
-			sql = "select * from product_order where Order_Name='" + OrderName + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
-			{
-				hDBHandle.CloseDatabase();
-				sql = "INSERT INTO product_order (Order_Name) VALUES ('" + OrderName + "')";
-				hDBHandle.execUpate(sql);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			hPageSupport.SubmitPoOrder(OrderName);
+			List<List<String>> recordList = hPageSupport.getCustomerPORecord(OrderName);
+			List<Integer> nextOrderQty = hPageSupport.getCustomerPOTotalQty(recordList);
+
+			hPageSupport.CreateProduceOrderFromMaterialLack(OrderName, recordList, nextOrderQty);
 		}
 		response.sendRedirect("../Query_Order.jsp");
 	}

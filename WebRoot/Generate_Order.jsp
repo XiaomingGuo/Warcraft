@@ -2,6 +2,7 @@
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.Vendor_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Generate_Order" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
@@ -36,9 +37,11 @@
 			hVIHandle.GetRecordByStoreroom("原材料库");
 			List<String> vendorList = hVIHandle.getDBRecordList("vendor_name");
 			
+			Generate_Order hPageSupport = new Generate_Order();
 			Calendar mData = Calendar.getInstance();
 			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
+			String OrderName = hPageSupport.GenOrderName(createDate);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -70,10 +73,10 @@
 		  		<form name="Create_Order" action = "Submit/SubmitManualOrder.jsp" method = "post">
 	  				<h1>
 				  		<label>生产单号:</label>
-				  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB-" style="width:30px" readonly>
-				  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=createDate %>-" style="width:200px">
+				  		<input type="text" name="OrderHeader" id="OrderHeader" value="MB_" style="width:30px" readonly>
+				  		<input type="text" name="OrderName" id="OrderName" onblur="changeOrderName(this)" value="<%=OrderName %>" style="width:200px">
 			  		</h1>
-			    				    	<table align="center" border="1">
+			    	<table align="center" border="1">
 	    				<tr>
 <%
 						for(int iCol = 1; iCol <= displayKeyList.length; iCol++)

@@ -7,7 +7,7 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.ITableInterface;
 
-public class SubmitCustomerPO extends PageParentClass
+public class SubmitManualOrder extends PageParentClass
 {
 	public List<List<String>> getCustomerPORecord(String PO_Name)
 	{
@@ -155,18 +155,14 @@ public class SubmitCustomerPO extends PageParentClass
 	
 	public void CreateProduceOrderFromMaterialLack(String appPOName, List<List<String>> recordList, List<Integer> nextOrderQty)
 	{
-		Calendar mData = Calendar.getInstance();
-		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		
 		if (recordList != null)
 		{
-			String OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
 				String strBarcode = recordList.get(0).get(iRow);
-				InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), nextOrderQty.get(iRow), appPOName, OrderName);
+				InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), nextOrderQty.get(iRow), appPOName, appPOName);
 			}
-			CheckAndInsertProductOrder(appPOName, OrderName);
+			CheckAndInsertProductOrder(appPOName, appPOName);
 		}
 	}
 	

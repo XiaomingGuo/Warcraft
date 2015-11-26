@@ -51,7 +51,7 @@ function changeOrderName(obj)
 		alert("我的乖乖,你就不能起个长点儿的PO单名吗?");
 		return;
 	}
-	$.post("Ajax/Query_Order_Item_Ajax.jsp", {"order_name":order_name, "status":"0"}, function(data, textStatus)
+	$.post("Ajax/Query_PO_Item_Ajax.jsp", {"po_name":order_name, "status":"0"}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
@@ -91,14 +91,14 @@ function changeOrderName(obj)
 							}
 							else
 							{
-								td.append("<label>已提交</label>");
+								td.append("<label>已录入</label>");
 							}
 						}
 						else
 						{
 							td.append(data_list[iRow*iColCount + iCol + 3]);
 						}
-						if(4 == iColCount - iCol)
+						if(3 == iColCount - iCol)
 						{
 							Count += parseInt(data_list[iRow*iColCount + iCol + 3]);
 						}
@@ -114,7 +114,7 @@ function changeOrderName(obj)
 				}
 				if (Count > 0)
 				{
-					cmdtr.append("<td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td>");
+					cmdtr.append("<td><input align='middle' type='button' onclick=CreateOrder(this) value='生成采购单'></td>");
 				}
 				$confirmOrder.append(cmdtr);
 			}
@@ -130,7 +130,7 @@ function addorderitem(obj)
 		alert("我说大姐,你这输入信息糊弄谁呢?");
 		return;
 	}
-	$.post("Ajax/Add_Order_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "corder_QTY":$("#corder_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "order_name":order_name}, function(data, textStatus)
+	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#corder_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":order_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{

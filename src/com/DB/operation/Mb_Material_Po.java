@@ -125,5 +125,14 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void DeleteRecordByPOName(List<String> delPoList)
+	{
+		for (String poName : delPoList)
+		{
+			String hql = String.format("delete MbMaterialPo mmp where mmp.poName='%s'", poName);
+			getEQMHandle().DeleteRecord(hql);
+		}
+	}
 
 }

@@ -27,7 +27,7 @@ public class SubmitCreateOrder extends PageParentClass
 		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
 		do
 		{
-			orderName = OrderHeader + "_" + Integer.toString(iCount);
+			orderName = String.format("%s_%04d", OrderHeader, iCount);
 			hPOHandle.GetRecordByOrderName(orderName);
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
 				break;

@@ -2,6 +2,7 @@
 <%@ page import="com.DB.operation.Product_Order_Record" %>
 <%@ page import="com.DB.operation.Product_Order" %>
 <%@ page import="com.DB.operation.Customer_Po" %>
+<%@ page import="com.DB.operation.Mb_Material_Po" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%!
@@ -19,22 +20,15 @@
 
 		if(delPoList != null && delPoList.size() > 0)
 		{
-			if(delPoList.get(0).indexOf("Internal_po") < 0)
-			{
-				hPORHandle.GetRecordByPOName(delPoList.get(0));
-				List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
-				hPORHandle.DeleteRecordByPOName(delPoList);
-				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-				hPOHandle.DeleteRecordByOrderNameName(delOrderList);
-				Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-				hCPHandle.DeleteRecordByPOName(delPoList);
-			}
-			else
-			{
-				List<String> delOrderList = Arrays.asList(order_name);
-				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-				hPOHandle.DeleteRecordByOrderNameName(delOrderList);
-			}
+			hPORHandle.GetRecordByPOName(delPoList.get(0));
+			List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
+			hPORHandle.DeleteRecordByPOName(delPoList);
+			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			hPOHandle.DeleteRecordByOrderNameName(delOrderList);
+			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+			hCPHandle.DeleteRecordByPOName(delPoList);
+			Mb_Material_Po hMMPRHandle = new Mb_Material_Po(new EarthquakeManagement());
+			hMMPRHandle.DeleteRecordByPOName(delPoList);
 		}
 	}
 	out.write(rtnRst);
