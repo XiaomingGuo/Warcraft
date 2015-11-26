@@ -160,9 +160,9 @@ public class SubmitManualOrder extends PageParentClass
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
 				String strBarcode = recordList.get(0).get(iRow);
-				InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), nextOrderQty.get(iRow), appPOName, appPOName);
+				InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), nextOrderQty.get(iRow), "Internal_Po", appPOName);
 			}
-			CheckAndInsertProductOrder(appPOName, appPOName);
+			CheckAndInsertProductOrder("Internal_Po", appPOName);
 		}
 	}
 	

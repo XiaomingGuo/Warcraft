@@ -12,7 +12,7 @@ public class Generate_Order extends PageParentClass
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);
-			hPOHandle.GetRecordByOrderName(orderName);
+			hPOHandle.GetRecordByOrderName("MB_"+orderName);
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
 				break;
 			iCount += 1;

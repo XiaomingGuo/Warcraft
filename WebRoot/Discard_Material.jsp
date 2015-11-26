@@ -93,24 +93,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right">
-				<label>报废数量:</label>
-				<select name="QTY" id="QTY" style="width:260px">
-<%
-					for(int i = 1; i <= 20; i++)
-					{
-%>
-			  		<option value = <%=i%>><%=i%></option>
-<%
-					}
-%>		
-				</select>
+   			<td align="right">
+	   			<label id=lable_barcode>Bar Code:</label>
+				<input type="text" name="barcode" id="barcode" style='width:260px' onblur="InputBarcode()">
 			</td>
 		</tr>
 		<tr>
 			<td align="right">
-				<label>库存数量:</label>
-				<input name="Total_QTY" id="Total_QTY" style="width:260px" readonly>
+				<label>报废数量:</label>
+				<input type="text" name="QTY" id="QTY" style='width:260px'>
 			</td>
 		</tr>
 		<tr>

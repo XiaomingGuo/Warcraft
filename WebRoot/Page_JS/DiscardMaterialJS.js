@@ -12,8 +12,8 @@ $(function()
 	{
 		$product_name.empty();
 		$bar_code.empty();
-		$product_name.append('<option value="��ѡ��">--��ѡ��--</option>');
-		$bar_code.append('<option value="��ѡ��">--��ѡ��--</option>');
+		$product_name.append('<option value="请选择">--请选择--</option>');
+		$bar_code.append('<option value="请选择">--请选择--</option>');
 		$.post("Ajax/Query_Pro_Name_From_Order_Ajax.jsp", {"FilterKey1":$("#product_order").find("option:selected").text()}, function(data, textStatus)
 		{
 			if (textStatus == "success")
@@ -44,5 +44,62 @@ $(function()
 				$Total_QTY.attr("value", code_list[4]);
 			}
 		});
-	});				
+	});
+
 });
+
+function InputBarcode(obj)
+{
+	var checkedBarcode = $("#barcode").val();
+	if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
+	{
+		$("#barcode").val("");
+		return;
+	}
+	if (parseInt(checkedBarcode) < 50000000 || parseInt(checkedBarcode) > 80000000)
+	{
+		alert("你输入的不是生产物料, 五金和工具不能报废!");
+		return;
+	}
+	if (parseInt(checkedBarcode) >= 50000000 && parseInt(checkedBarcode) < 60000000)
+	{
+		checkedBarcode = parseInt(checkedBarcode) + 10000000;
+	}
+	else if (parseInt(checkedBarcode) >= 70000000 && parseInt(checkedBarcode) < 80000000)
+	{
+		checkedBarcode = parseInt(checkedBarcode) - 10000000;
+	}
+	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			var proInfoList = data.split("$");
+			if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
+			{
+				$("#store_name_addproduct").val("原材料库");
+			}
+			else
+			{
+				$("#store_name_addproduct").val(proInfoList[1]);
+			}
+			$("#store_name_addproduct").change();
+			$("#product_type").empty();
+			var keyWord = proInfoList[2];
+			if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
+			{
+				if (keyWord.indexOf("原锭") < 0)
+				{
+					keyWord += "原锭";
+				}
+				else if (keyWord.indexOf("半成品"))
+				{
+					keyWord.replace("半成品", "原锭");
+				}
+			}
+			AddNewSelectItem("product_type", keyWord);
+			$("#product_name").empty();
+			AddNewSelectItem("product_name", proInfoList[3]);
+			$("#product_name").change();
+		}
+	});
+}

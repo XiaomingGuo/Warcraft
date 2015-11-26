@@ -88,7 +88,7 @@ $(function()
 				}
 				else
 				{
-					$bar_code.append('<option value="ÇëÑ¡Ôñ">--ÇëÑ¡Ôñ--</option>');
+					$bar_code.append('<option value="è¯·é€‰æ‹©">--è¯·é€‰æ‹©--</option>');
 					$("#barcode").val("");
 					$("#WeightUnit").val(code_list[2]);
 				}
@@ -100,7 +100,7 @@ $(function()
 	{
 		$("#barcode").val("");
 		var selectedBarcode = GetSelectedContent("bar_code");
-		if (selectedBarcode.indexOf("ÇëÑ¡Ôñ") >= 0)
+		if (selectedBarcode.indexOf("è¯·é€‰æ‹©") >= 0)
 		{
 			$("#barcode").val("");
 		}
@@ -116,7 +116,7 @@ function checkBarcode(obj)
 	var checkedBarcode = $("#barcode").val();
 	if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
 	{
-		alert("°ËÂëµÄÄÚÈÝºÍÎ»Êý²»·ûºÏÒªÇó");
+		alert("å…«ç çš„å†…å®¹å’Œä½æ•°ä¸ç¬¦åˆè¦æ±‚");
 		$("#barcode").val("");
 		return;
 	}
@@ -160,7 +160,7 @@ function InputBarcode(obj)
 			var proInfoList = data.split("$");
 			if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
 			{
-				$("#store_name_addproduct").val("Ô­²ÄÁÏ¿â");
+				$("#store_name_addproduct").val("åŽŸææ–™åº“");
 			}
 			else
 			{
@@ -171,13 +171,13 @@ function InputBarcode(obj)
 			var keyWord = proInfoList[2];
 			if(parseInt(checkedBarcode) > 50000000 && parseInt(checkedBarcode) < 80000000)
 			{
-				if (keyWord.indexOf("Ô­¶§") < 0)
+				if (keyWord.indexOf("åŽŸé”­") < 0)
 				{
-					keyWord += "Ô­¶§";
+					keyWord += "åŽŸé”­";
 				}
-				else if (keyWord.indexOf("°ë³ÉÆ·"))
+				else if (keyWord.indexOf("åŠæˆå“"))
 				{
-					keyWord.replace("°ë³ÉÆ·", "Ô­¶§");
+					keyWord.replace("åŠæˆå“", "åŽŸé”­");
 				}
 			}
 			AddNewSelectItem("product_type", keyWord);
