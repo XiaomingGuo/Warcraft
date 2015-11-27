@@ -129,6 +129,10 @@
 								{
 									td.append("<label>待审核</label>");
 								}
+								else if(iCol == 1)
+								{
+									td.append(iRow);
+								}
 								else
 								{
 									td.append(data_list[iRow*iColCount + iCol + 3]);

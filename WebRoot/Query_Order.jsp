@@ -95,7 +95,7 @@
 					{
 						$OrderBlock.empty();
 						var data_list = data.split("$");
-						var iColCount = data_list[1], iRowCount = data_list[2];
+						var iColCount = data_list[2], iRowCount = data_list[3];
 						var tr = $("<tr></tr>");
 						for (var iHead = 1; iHead < iColCount; iHead++)
 						{
@@ -139,6 +139,10 @@
 									{
 										td.append("<label>未知状态</label>");
 									}
+								}
+								else if(iCol == 1)
+								{
+									td.append(iRow);
 								}
 								else
 								{

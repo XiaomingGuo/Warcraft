@@ -102,7 +102,7 @@
 					{
 						$OrderBlock.empty();
 						var data_list = data.split("$");
-						var iColCount = data_list[1], iRowCount = data_list[2];
+						var iColCount = data_list[2], iRowCount = data_list[3];
 						var tr = $("<tr></tr>");
 						for (var iHead = 1; iHead <= iColCount; iHead++)
 						{
@@ -121,31 +121,35 @@
 						for(var iRow = 1; iRow <= iRowCount; iRow++)
 						{
 							var tr = $("<tr></tr>");
-							var execID = data_list[iRow*iColCount + 3];
+							var execID = data_list[iRow*iColCount + 4];
 							for (var iCol = 1; iCol <= iColCount; iCol++)
 							{
 								var td = $("<td></td>");
 								if (1 == iColCount - iCol)
 								{
-									if (data_list[iRow*iColCount + 8] == data_list[iRow*iColCount + 9])
+									if (data_list[iRow*iColCount + 9] == data_list[iRow*iColCount + 10])
 									{
 										td.append("<input type='button' value='入库' disabled>");
 									}
 									else
 									{
-										td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 3] + "$" + execID.toString() + "' onclick='PutInStorage(this)'>");
+										td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 4] + "$" + execID.toString() + "' onclick='PutInStorage(this)'>");
 									}
 								}
 								else if(0 == iColCount - iCol)
 								{
-									if (data_list[(iRow)*iColCount + 8] == data_list[(iRow)*iColCount + 9])
+									if (data_list[(iRow)*iColCount + 9] == data_list[(iRow)*iColCount + 10])
 									{
 										td.append("<label>生产已完成</label>");
 									}
 									else
 									{
-										td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 9] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
+										td.append("<input type='text' value='0' name='" + data_list[iRow*iColCount + 9] + "$" + data_list[iRow*iColCount + 10] + "' id='" + execID.toString() + "' style='width:70px' onblur='CheckQTY(this)'>");
 									}
+								}
+								else if(iCol == 1)
+								{
+									td.append(iRow);
 								}
 								else
 								{

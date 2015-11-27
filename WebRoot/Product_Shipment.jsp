@@ -25,6 +25,11 @@
 			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
 			hCPHandle.GetRecordLessThanStatus(1);
 			List<String> po_list = hCPHandle.getDBRecordList("po_name");
+			for(int iRow = 0; iRow <= po_list.size(); iRow++)
+			{
+				if(po_list.get(iRow).indexOf("MB_") >= 0)
+					po_list.remove(iRow);
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

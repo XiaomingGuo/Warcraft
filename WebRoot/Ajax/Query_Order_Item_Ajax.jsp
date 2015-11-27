@@ -2,7 +2,7 @@
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "采购量", "客户PO单名", "生产单名", "创建时间", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "状态",  "操作"};
 	String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
 	List<List<String>> recordList = null;
 %>
@@ -52,7 +52,7 @@
 				{
 					if("ID" == displayList[iCol])
 					{
-						rtnRst += Integer.toString(iRow+1) + "$";
+						rtnRst += recordList.get(0).get(iRow) + "$";
 					}
 					else if("产品类型" == displayList[iCol])
 					{
@@ -104,19 +104,6 @@
 							rtnRst += iMaterialQTY + "$";
 						}
 					}
-					else if("采购量" == displayList[iCol])
-					{
-						int orderCount = Integer.parseInt(recordList.get(3).get(iRow)) * (100 + 8)/100;
-						int iRepertory = iMat_storage;
-						if (iRepertory >= orderCount)
-						{
-							rtnRst += "0$";
-						}
-						else
-						{
-							rtnRst += Integer.toString(orderCount - iRepertory) + "$";
-						}
-					}
 					else if("客户PO单名" == displayList[iCol])
 					{
 						rtnRst += recordList.get(6).get(iRow) + "$";
@@ -128,6 +115,10 @@
 					else if("创建时间" == displayList[iCol])
 					{
 						rtnRst += recordList.get(8).get(iRow)  + "$";
+					}
+					else if("状态" == displayList[iCol])
+					{
+						rtnRst += recordList.get(9).get(iRow)  + "$";
 					}
 					else if("操作" == displayList[iCol])
 					{

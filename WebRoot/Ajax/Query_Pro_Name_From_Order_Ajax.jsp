@@ -8,7 +8,7 @@
 	List<String> pro_type = null;
 %>
 <%
-	String pro_order=(String)request.getParameter("FilterKey1").replace(" ", "");
+	String pro_order=(String)request.getParameter("product_order").replace(" ", "");
 	String rtnRst = "remove$";
 	//product_info Database query
 	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
@@ -21,7 +21,7 @@
 		{
 			String temp_type = "";
 			String temp_Code = Integer.toString(Integer.parseInt(pro_info.get(i)) - 10000000);
-			pro_type.add(hDBHandle.GetTypeByBarcode(temp_Code)+"-"+hDBHandle.GetNameByBarcode(temp_Code));
+			pro_type.add(hDBHandle.GetTypeByBarcode(temp_Code)+"$"+hDBHandle.GetNameByBarcode(temp_Code));
 		}
 		for(int i = 0; i < pro_info.size(); i++)
 		{

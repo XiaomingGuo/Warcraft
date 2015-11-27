@@ -78,6 +78,14 @@
 	  	</tr>
 		<tr>
 			<td align="right">
+				<label>类型:</label>
+				<select name="product_type" id="product_type" style="width:260px">
+				  	<option value = "--请选择--">--请选择--</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
 				<label>名称:</label>
 				<select name="product_name" id="product_name" style="width:260px">
 				  	<option value = "--请选择--">--请选择--</option>
@@ -95,7 +103,7 @@
 		<tr>
    			<td align="right">
 	   			<label id=lable_barcode>Bar Code:</label>
-				<input type="text" name="barcode" id="barcode" style='width:260px' onblur="InputBarcode()">
+				<input type="text" name="inputBarcode" id="inputBarcode" style='width:260px' onblur="InputBarcode()">
 			</td>
 		</tr>
 		<tr>
