@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
+<%@ page import="com.DB.operation.Product_Order" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -22,15 +22,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.GetRecordLessThanStatus(1);
-			List<String> temp_list = hCPHandle.getDBRecordList("po_name");
-			List<String> po_list = new ArrayList<String>();
-			for(int iRow = 0; iRow < temp_list.size(); iRow++)
-			{
-				if(temp_list.get(iRow).indexOf("MB_") < 0)
-					po_list.add(temp_list.get(iRow));
-			}
+			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			hPOHandle.GetRecordMoreThanStatus(1);
+			List<String> po_list = hPOHandle.getDBRecordList("Order_Name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -38,7 +32,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>成品出货</title>
+    <title>关闭生产单</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -57,13 +51,13 @@
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="Create_Order" action = "Submit/SubmitProductShipment.jsp" method = "post">
+		  		<form name="Create_Order" action = "Submit/SubmitCloseOrder.jsp" method = "post">
 			  		<table align="center">
 			  			<tr>
 			  				<td>
 				  				<h1>
-							  		<label>客户PO单号:</label>
-								  	<select name="po_select" id="po_select" style="width:300px">
+							  		<label>生产单号:</label>
+								  	<select name="Pro_Order_select" id="Pro_Order_select" style="width:300px">
 									  	<option value = "--请选择--">--请选择--</option>
 <%
 							if (po_list != null)
@@ -93,20 +87,21 @@
   	<script type="text/javascript">
 		$(function()
 		{
-			var $po_select = $('#po_select');
-			$po_select.change(function()
+			var $Pro_Order_select = $('#Pro_Order_select');
+			$Pro_Order_select.change(function()
 			{
 				var $displayOrder = $("#display_order");
 				var $confirmOrder = $("#confirm_order");
-				var po_name = $po_select.find("option:selected").text();
-				if (po_name.indexOf("请选择") >= 0)
+				var order_name = $Pro_Order_select.find("option:selected").text();
+				if (order_name.indexOf("请选择") >= 0)
 				{
 					$displayOrder.empty();
 					$confirmOrder.empty();
 					return;
 				}
-				$.post("Ajax/PO_Shipment_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
+				$.post("Ajax/Product_Order_Close_Item_Ajax.jsp", {"order_name":order_name}, function(data, textStatus)
 				{
+					alert(data);
 					if (textStatus == "success")
 					{
 						$displayOrder.empty();
@@ -130,25 +125,49 @@
 									var td = $("<td></td>");
 									if (1 == iColCount - iCol)
 									{
-										if(parseInt(data_list[iRow*iColCount + 9]) > parseInt(data_list[iRow*iColCount + 10]))
+										if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 0)
 										{
-											td.append("<input type='text' style='width:68px' name='" + data_list[iRow*iColCount + 9] + "$" + data_list[iRow*iColCount + 10] + "' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + " onblur='CheckQTY(this)'>");
+											td.append("<label>待审核</label>");
+										}
+										else if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 1)
+										{
+											td.append("<label>待加工</label>");
+										}
+										else if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 2)
+										{
+											td.append("<label>加工中...</label>");
+										}
+										else if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 3)
+										{
+											td.append("<label>待检验</label>");
+										}
+										else if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 4)
+										{
+											td.append("<label>检验中...</label>");
+										}
+										else if(parseInt(data_list[iRow*iColCount + iCol + 2]) == 5)
+										{
+											td.append("<label>已完成</label>");
 										}
 										else
 										{
-											td.append("<label>已完成</label>");
+											td.append("<label>未知状态</label>");
 										}
 									}
 									else if (0 == iColCount - iCol)
 									{
-										if (parseInt(data_list[iRow*iColCount + iCol + 2]) == 0)
+										if (parseInt(data_list[iRow*iColCount + iCol + 3]) < 0)
 										{
-											td.append("<input type='button' value='出库' disabled>");
+											td.append("<label>已关闭</label>");
 										}
 										else
 										{
-											td.append("<input type='button' value='出库' name='" + data_list[iRow*iColCount + 6] + "$" + data_list[iRow*iColCount + 7] + "$" + iRow + "' onclick='PutOutQtyInCPO(this)'>");
+											td.append("<input type='button' value='关闭' name='" + data_list[iRow*iColCount + 6] + "$" + data_list[iRow*iColCount + 7] + "$" + iRow + "' onclick='CloseOrder(this)'>");
 										}
+									}
+									else if(iCol == 1)
+									{
+										td.append(iRow);
 									}
 									else
 									{
@@ -159,7 +178,6 @@
 								$displayOrder.append(tr);
 							}
 							var cmdtr = $("<tr></tr>");
-							cmdtr.append("<td><input align='middle' type='button' value='打印销售单' onclick='ShowSalePage(this)'></td>");
 							cmdtr.append("<td><input align='middle' type='submit' value='关闭订单'></td>");
 							$confirmOrder.append(cmdtr);
 						}
@@ -185,14 +203,9 @@
 			});
 		}
 		
-		function CheckQTY(obj)
+		function CloseOrder(obj)
 		{
-			var splitList = obj.name.split("$");
-			if (parseInt(splitList[0]) < parseInt(splitList[1]) + parseInt(obj.value))
-			{
-				alert("出货量不能大于客户PO数量!!!!!");
-				obj.value = parseInt(splitList[0]) - parseInt(splitList[1]);
-			}
+			return;
 		}
 		
 		function ShowSalePage(obj)

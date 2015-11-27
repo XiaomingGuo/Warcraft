@@ -82,6 +82,7 @@
 			    		<li><a href="Out_Quality_Control.jsp">入库检验</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
+			    		<li><a href="Product_Order_Close.jsp">关闭生产单</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

@@ -73,7 +73,7 @@ public class EarthquakeManagement implements IEQManagement
 		}
 	}
 	
-	public boolean DeleteRecord(String hql)
+	public boolean DeleteAndUpdateRecord(String hql)
 	{
 		boolean rtnRst = true;
 		try

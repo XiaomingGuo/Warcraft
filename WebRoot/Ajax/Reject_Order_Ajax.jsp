@@ -24,7 +24,7 @@
 			List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
 			hPORHandle.DeleteRecordByPOName(delPoList);
 			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.DeleteRecordByOrderNameName(delOrderList);
+			hPOHandle.DeleteRecordByOrderName(delOrderList);
 			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
 			hCPHandle.DeleteRecordByPOName(delPoList);
 			Mb_Material_Po hMMPRHandle = new Mb_Material_Po(new EarthquakeManagement());

@@ -6,5 +6,5 @@ public interface IEQManagement
 	public void setTableHandle(ITableInterface hTableHandle);
 	public void addANewRecord();
 	public void updateRecord(String hql);
-	public boolean DeleteRecord(String hql);
+	public boolean DeleteAndUpdateRecord(String hql);
 }

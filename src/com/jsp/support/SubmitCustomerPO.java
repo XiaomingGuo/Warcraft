@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.dialect.function.VarArgsSQLFunction;
+
 import com.DB.operation.*;
 import com.Warcraft.Interface.ITableInterface;
 
@@ -57,15 +59,25 @@ public class SubmitCustomerPO extends PageParentClass
 	public int GetRepertoryByBarCode(String storageName, String strBarcode)
 	{
 		ITableInterface hHandle = null;
+		String tempBarcode = "";
 		if(storageName.indexOf("Product") >= 0)
+		{
 			hHandle = new Product_Storage(new EarthquakeManagement());
+			tempBarcode = ((Product_Storage)hHandle).GetUsedBarcode(strBarcode, storageName);
+		}
 		else if(storageName.indexOf("Material") >= 0)
+		{
 			hHandle = new Material_Storage(new EarthquakeManagement());
+			tempBarcode = ((Material_Storage)hHandle).GetUsedBarcode(strBarcode, storageName);
+		}
 		else if(storageName.indexOf("Other") >= 0)
+		{
 			hHandle = new Other_Storage(new EarthquakeManagement());
+			tempBarcode = ((Material_Storage)hHandle).GetUsedBarcode(strBarcode, storageName);
+		}
 		else
 			return -1;
-		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", strBarcode) - hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", strBarcode);
+		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", tempBarcode) - hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", tempBarcode);
 	}
 	
 	public void UpdateCustomerPoStatus(String status, String poName)
@@ -79,9 +91,7 @@ public class SubmitCustomerPO extends PageParentClass
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
 		hCPHandle.GetRecordByPoName(appPOName);
 		if (hCPHandle.getDBRecordList("id").size() <= 0)
-		{
 			hCPHandle.AddARecord(appPOName);
-		}
 	}
 	
 	public List<Integer> getCustomerPOTotalQty(List<List<String>> recordList)
@@ -97,7 +107,7 @@ public class SubmitCustomerPO extends PageParentClass
 	public void CheckAndInsertProductOrder(String poName, String pro_order)
 	{
 		Product_Order_Record hHandle = new Product_Order_Record(new EarthquakeManagement());
-		hHandle.GetRecordByPOName(poName);
+		hHandle.GetRecordByOrderName(pro_order);
 		if(hHandle.RecordDBCount() > 0)
 			InsertProductOrder(pro_order);
 	}
@@ -143,10 +153,13 @@ public class SubmitCustomerPO extends PageParentClass
 				String strBarcode = recordList.get(0).get(iRow);
 				int repertory = GetRepertoryByBarCode("Material_Storage", strBarcode);
 				rtnRst.add(iAllOrderQTY - repertory);
-				if(rtnRst.get(iRow) >= 0&&rtnRst.get(iRow) < iAllOrderQTY)
-					InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), repertory, appPOName, OrderName);
-				else if(rtnRst.get(iRow) < 0)
-					InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), iAllOrderQTY, appPOName, OrderName);
+				if(iAllOrderQTY > 0)
+				{
+					if(rtnRst.get(iRow) >= 0&&rtnRst.get(iRow) < iAllOrderQTY)
+						InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), repertory, appPOName, OrderName);
+					else if(rtnRst.get(iRow) < 0)
+						InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), iAllOrderQTY, appPOName, OrderName);
+				}
 			}
 			CheckAndInsertProductOrder(appPOName, OrderName);
 		}
@@ -163,8 +176,12 @@ public class SubmitCustomerPO extends PageParentClass
 			String OrderName = GenOrderName("MB_" + createDate + "_" + appPOName);
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
-				String strBarcode = recordList.get(0).get(iRow);
-				InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), nextOrderQty.get(iRow), appPOName, OrderName);
+				int iAllOrderQTY = nextOrderQty.get(iRow);
+				if(iAllOrderQTY > 0)
+				{
+					String strBarcode = recordList.get(0).get(iRow);
+					InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), iAllOrderQTY, appPOName, OrderName);
+				}
 			}
 			CheckAndInsertProductOrder(appPOName, OrderName);
 		}
@@ -172,6 +189,27 @@ public class SubmitCustomerPO extends PageParentClass
 	
 	public void PushOrderToDown(String OrderName)
 	{
-		
+		UpdateProductOrderRecordStatusToFinish(OrderName);
+		UpdateProductOrderStatusToFinish(OrderName);
+	}
+
+	private void UpdateProductOrderRecordStatusToFinish(String OrderName)
+	{
+		Product_Order_Record hHandle = new Product_Order_Record(new EarthquakeManagement());
+		hHandle.GetRecordByOrderName(OrderName);
+		List<String> orderBarcodeList = hHandle.getDBRecordList("Bar_Code");
+		List<String> orderQTY = hHandle.getDBRecordList("QTY");
+		for (int idx = 0; idx < orderBarcodeList.size(); idx++)
+		{
+			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "status", "5");
+			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "completeQty", orderQTY.get(idx));
+			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "oqcQty", orderQTY.get(idx));
+		}
+	}
+	
+	private void UpdateProductOrderStatusToFinish(String OrderName)
+	{
+		Product_Order hHandle = new Product_Order(new EarthquakeManagement());
+		hHandle.UpdatetRecordByOrderName(OrderName, "status", "1");
 	}
 }

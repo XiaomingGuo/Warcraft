@@ -128,7 +128,7 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		for (String poName : delPoList)
 		{
 			String hql = String.format("delete CustomerPo cp where cp.poName='%s'", poName);
-			getEQMHandle().DeleteRecord(hql);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
 

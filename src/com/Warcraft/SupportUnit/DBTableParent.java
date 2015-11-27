@@ -30,11 +30,11 @@ public abstract class DBTableParent
 		String rtnRst = barcode;
 		if (Integer.parseInt(barcode) > 50000000 && Integer.parseInt(barcode) < 70000000)
 		{
-			if (storage_name.indexOf("material") >= 0)
+			if (storage_name.toLowerCase().indexOf("material") >= 0)
 			{
 				rtnRst = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
 			}
-			else if(storage_name.indexOf("product") >= 0)
+			else if(storage_name.toLowerCase().indexOf("product") >= 0)
 			{
 				rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
 			}

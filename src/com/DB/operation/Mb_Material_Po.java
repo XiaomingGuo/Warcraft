@@ -131,7 +131,7 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		for (String poName : delPoList)
 		{
 			String hql = String.format("delete MbMaterialPo mmp where mmp.poName='%s'", poName);
-			getEQMHandle().DeleteRecord(hql);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
 

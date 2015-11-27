@@ -153,7 +153,13 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		for (String poName : delPoList)
 		{
 			String hql = String.format("delete ProductOrderRecord por where por.poName='%s'", poName);
-			getEQMHandle().DeleteRecord(hql);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
+	}
+	
+	public void UpdatetRecordByOrderName(String orderName, String barcode, String keyWord, String value)
+	{
+		String hql = String.format("update ProductOrderRecord por set por.%s='%s' where por.orderName='%s' and por.barCode='%s'", keyWord, value, orderName, barcode);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 }

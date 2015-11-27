@@ -80,6 +80,12 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
+	public void GetRecordMoreThanStatus(int iStatus)
+	{
+		String hql = String.format("from ProductOrder po where po.status>='%d'", iStatus);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void GetRecordByOrderName(String orderName)
 	{
 		String hql = String.format("from ProductOrder po where po.orderName='%s'", orderName);
@@ -113,12 +119,18 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		return null;
 	}
 	
-	public void DeleteRecordByOrderNameName(List<String> delPoList)
+	public void DeleteRecordByOrderName(List<String> delPoList)
 	{
 		for (String orderName : delPoList)
 		{
 			String hql = String.format("delete ProductOrder po where po.orderName='%s'", orderName);
-			getEQMHandle().DeleteRecord(hql);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
+	}
+	
+	public void UpdatetRecordByOrderName(String orderName, String keyWord, String value)
+	{
+		String hql = String.format("update ProductOrder po set po.%s='%s' where po.orderName='%s'", keyWord, value, orderName);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 }
