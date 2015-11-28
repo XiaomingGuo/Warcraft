@@ -126,11 +126,11 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		return null;
 	}
 	
-	public void DeleteRecordByPOName(List<String> delPoList)
+	public void DeleteRecordKeyWord(String keyWord, List<String> delPoList)
 	{
 		for (String poName : delPoList)
 		{
-			String hql = String.format("delete MbMaterialPo mmp where mmp.poName='%s'", poName);
+			String hql = String.format("delete MbMaterialPo mmp where mmp.%s='%s'", keyWord, poName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}

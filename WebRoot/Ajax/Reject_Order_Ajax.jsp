@@ -1,3 +1,4 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Order_Record" %>
 <%@ page import="com.DB.operation.Product_Order" %>
@@ -17,18 +18,27 @@
 		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
 		hPORHandle.GetRecordByOrderName(order_name);
 		List<String> delPoList = hPORHandle.getDBRecordList("po_name");
+		String delPoKeyWord = "poName", delOrderKeyWord = "orderName";
+		for(int idx = 0; idx < delPoList.size(); idx++)
+		{
+			if(delPoList.get(idx).toLowerCase().indexOf("internal_po") >= 0)
+			{
+				delPoList.set(idx, order_name);
+				delPoKeyWord = "orderName";
+			}
+		}
 
 		if(delPoList != null && delPoList.size() > 0)
 		{
-			hPORHandle.GetRecordByPOName(delPoList.get(0));
+			hPORHandle.GetRecordByKeyWord(delPoKeyWord, delPoList.get(0));
 			List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
-			hPORHandle.DeleteRecordByPOName(delPoList);
+			hPORHandle.DeleteRecordByKeyWord(delPoKeyWord, delPoList);
 			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.DeleteRecordByOrderName(delOrderList);
+			hPOHandle.DeleteRecordByKeyWord(delOrderKeyWord, delOrderList);
 			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.DeleteRecordByPOName(delPoList);
+			hCPHandle.DeleteRecordByKeyWord("poName", delPoList);
 			Mb_Material_Po hMMPRHandle = new Mb_Material_Po(new EarthquakeManagement());
-			hMMPRHandle.DeleteRecordByPOName(delPoList);
+			hMMPRHandle.DeleteRecordKeyWord("poName", delPoList);
 		}
 	}
 	out.write(rtnRst);

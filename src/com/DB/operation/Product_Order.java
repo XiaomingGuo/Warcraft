@@ -119,11 +119,11 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		return null;
 	}
 	
-	public void DeleteRecordByOrderName(List<String> delPoList)
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
 	{
 		for (String orderName : delPoList)
 		{
-			String hql = String.format("delete ProductOrder po where po.orderName='%s'", orderName);
+			String hql = String.format("delete ProductOrder po where po.%s='%s'", keyWord, orderName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}

@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Other_Storage" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
@@ -19,7 +21,8 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from material_storage";
+		//Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
+		String sql = "select * from other_storage";
 		hDBHandle.QueryDataBase(sql);
 		int recordCount = hDBHandle.GetRecordCount();
 		hDBHandle.CloseDatabase();

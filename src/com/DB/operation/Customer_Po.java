@@ -123,11 +123,11 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		getEQMHandle().updateRecord(hql);
 	}
 	
-	public void DeleteRecordByPOName(List<String> delPoList)
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
 	{
 		for (String poName : delPoList)
 		{
-			String hql = String.format("delete CustomerPo cp where cp.poName='%s'", poName);
+			String hql = String.format("delete CustomerPo cp where cp.%s='%s'", keyWord, poName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
