@@ -133,4 +133,11 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		String hql = String.format("update ProductOrder po set po.%s='%s' where po.orderName='%s'", keyWord, value, orderName);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
+
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
+			String keyWord, String keyValue) {
+		// TODO Auto-generated method stub
+		
+	}
 }

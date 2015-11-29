@@ -116,4 +116,17 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
+			String keyWord, String keyValue) {
+		// TODO Auto-generated method stub
+		
+	}
 }

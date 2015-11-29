@@ -89,6 +89,7 @@
    	</table>
    	<br>
    	<table id="display_storage" border='1' align="center"></table>
+   	<br><br><br>
   </body>
 </html>
 <%

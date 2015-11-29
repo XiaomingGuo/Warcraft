@@ -123,6 +123,24 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 	{
 		return super.GetIntSumOfValue("MaterialStorage", getValue, keyword, keyValue);
 	}
+	
+	@Override
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
+		for (String item : delList)
+		{
+			String hql = String.format("delete MaterialStorage por where por.%s='%s'", keyWord, item);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
+		}
+	}
+	
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue, String keyWord, String keyValue)
+	{
+		String hql = String.format("update MaterialStorage por set por.%s='%s' where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue,
+				GetDatabaseKeyWord(keyWord), keyValue);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	}
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
@@ -151,6 +169,9 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
+		}
+		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
+			rtnRst = "isEnsure";
 		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";

@@ -132,9 +132,25 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
 		}
+		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
+			rtnRst = "isEnsure";
+		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";
 		}
 		return rtnRst;
+	}
+
+	@Override
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
+			String keyWord, String keyValue) {
+		// TODO Auto-generated method stub
+		
 	}
 }

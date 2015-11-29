@@ -13,4 +13,6 @@ public interface ITableInterface
 	public void setResultList(Query query);
 	public Object getAWriteRecord();
 	public int RecordDBCount();
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList);
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue, String keyWord, String keyValue);
 }

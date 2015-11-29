@@ -1,3 +1,4 @@
+<%@page import="org.apache.struts2.components.Else"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Other_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
@@ -5,8 +6,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"};
+	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
+	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
 %>
@@ -56,7 +57,9 @@
 	-->
 
   </head>
-  
+  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+  	<script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
   <body>
     <jsp:include page="Menu/DataEnterMenu.jsp"/>
     <center>
@@ -149,6 +152,25 @@
 %>
     			<td><%= hDBHandle.GetDescByBarcode(recordList.get(0).get(iRow-1)) %></td>
 <%
+			    	}
+			    	else if (displayKeyList[iCol-1] == "操作")
+			    	{
+			    		if(recordList.get(8).get(iRow-1).equals("0"))
+			    		{
+%>
+    			<td>
+    				<input type='button' value='确认' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='SubmitQty(this)'>
+    				&nbsp;
+    				<input type='button' value='删除' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='RejectQty(this)'>
+    			</td>
+<%
+			    		}
+			    		else
+			    		{
+			    			%>
+    			<td><label>已确认</label></td>
+			    			<%
+			    		}
 			    	}
 		    	}
 %>

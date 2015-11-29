@@ -112,7 +112,12 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 		//aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
 	}
-
+	
+	public double GetDblPriceOfStorage(String keyword, String keyValue)
+	{
+		return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
+	}
+	
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
@@ -153,9 +158,32 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
 		}
+		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
+			rtnRst = "isEnsure";
+		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";
 		}
 		return rtnRst;
+	}
+
+	@Override
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
+		for (String item : delList)
+		{
+			String hql = String.format("delete OtherStorage por where por.%s='%s'", keyWord, item);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
+		}
+	}
+
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
+			String keyWord, String keyValue)
+	{
+		String hql = String.format("update OtherStorage por set por.%s='%s' where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue,
+				GetDatabaseKeyWord(keyWord), keyValue);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	
 	}
 }

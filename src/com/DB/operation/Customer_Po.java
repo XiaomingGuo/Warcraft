@@ -132,4 +132,11 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		}
 	}
 
+	@Override
+	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
+			String keyWord, String keyValue) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

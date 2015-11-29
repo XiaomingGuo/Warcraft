@@ -13,7 +13,8 @@
   <property generated="never" lazy="false" name="barCode" type="java.lang.String">
    <column length="8" name="Bar_Code" not-null="true"/>
   </property>
-  <property generated="never" lazy="false" name="batchLot" type="java.lang.String">
+  <property generated="never" insert="false" lazy="false"
+   name="batchLot" type="java.lang.String">
    <column length="11" name="Batch_Lot"/>
   </property>
   <property generated="never" lazy="false" name="proposer" type="java.lang.String">

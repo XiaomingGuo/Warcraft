@@ -73,4 +73,23 @@ public abstract class DBTableParent
 		}
 		return rtnRst;
 	}
+
+	public double GetDblPriceOfStorage(String storage_name, String getValIN, String getValOUT, String getValPerPrice, String keyword, String keyValue)
+	{
+		double rtnRst = 0.0;
+		String hql = String.format("from %s st where st.%s='%s'", storage_name, ((ITableInterface)this).GetDatabaseKeyWord(keyword), keyValue);
+		getEQMHandle().EQQuery(hql);
+		if (((ITableInterface)this).RecordDBCount() > 0)
+		{
+			List<String> in_Qty_List = ((ITableInterface)this).getDBRecordList(getValIN);
+			List<String> out_Qty_List = ((ITableInterface)this).getDBRecordList(getValOUT);
+			List<String> perPrice = ((ITableInterface)this).getDBRecordList(getValPerPrice);
+			for (int i = 0; i < in_Qty_List.size(); i++)
+			{
+				int repertory = Integer.parseInt(in_Qty_List.get(i)) - Integer.parseInt(out_Qty_List.get(i));
+				rtnRst += repertory*Double.parseDouble(perPrice.get(i));
+			}
+		}
+		return rtnRst;
+	}
 }

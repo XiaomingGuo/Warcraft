@@ -40,11 +40,11 @@ public class QueryStorageItemAjax extends PageParentClass
 			Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
 			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", barcodeList.get(idx));
 			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", barcodeList.get(idx));
-			double perPrice = hOSHandle.GetDblSumOfValue("Price_Per_Unit", "Bar_Code", barcodeList.get(idx));
+			double totalPrice = hOSHandle.GetDblPriceOfStorage("Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));
 			rtnRst.add(Integer.toString(in_Qty-out_Qty));
-			rtnRst.add(Double.toString((in_Qty-out_Qty)*perPrice));
+			rtnRst.add(Double.toString(totalPrice));
 		}
 		return rtnRst;
 	}

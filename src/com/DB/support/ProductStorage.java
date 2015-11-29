@@ -18,6 +18,7 @@ public class ProductStorage implements java.io.Serializable {
 	private Integer outQty;
 	private Float pricePerUnit;
 	private Double totalPrice;
+	private Integer isEnsure;
 	private Timestamp createDate;
 
 	// Constructors
@@ -29,7 +30,7 @@ public class ProductStorage implements java.io.Serializable {
 	/** full constructor */
 	public ProductStorage(String barCode, String batchLot, String orderName,
 			Integer inQty, Integer outQty, Float pricePerUnit,
-			Double totalPrice, Timestamp createDate) {
+			Double totalPrice, Integer isEnsure, Timestamp createDate) {
 		this.barCode = barCode;
 		this.batchLot = batchLot;
 		this.orderName = orderName;
@@ -37,6 +38,7 @@ public class ProductStorage implements java.io.Serializable {
 		this.outQty = outQty;
 		this.pricePerUnit = pricePerUnit;
 		this.totalPrice = totalPrice;
+		this.isEnsure = isEnsure;
 		this.createDate = createDate;
 	}
 
@@ -104,6 +106,14 @@ public class ProductStorage implements java.io.Serializable {
 
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public Integer getIsEnsure() {
+		return this.isEnsure;
+	}
+
+	public void setIsEnsure(Integer isEnsure) {
+		this.isEnsure = isEnsure;
 	}
 
 	public Timestamp getCreateDate() {

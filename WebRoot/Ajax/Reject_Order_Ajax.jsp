@@ -5,10 +5,6 @@
 <%@ page import="com.DB.operation.Customer_Po" %>
 <%@ page import="com.DB.operation.Mb_Material_Po" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name").replace(" ", "");
