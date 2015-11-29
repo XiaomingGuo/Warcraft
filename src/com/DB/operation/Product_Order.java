@@ -76,13 +76,19 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	
 	public void GetRecordLessThanStatus(int iStatus)
 	{
-		String hql = String.format("from ProductOrder po where po.status<'%d'", iStatus);
+		String hql = String.format("from ProductOrder po where po.status<='%d'", iStatus);
 		getEQMHandle().EQQuery(hql);
 	}
 	
 	public void GetRecordMoreThanStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status>='%d'", iStatus);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void GetRecordMoreThanAndLessThanStatus(int iMoreThanStatus, int iLessThanStatus)
+	{
+		String hql = String.format("from ProductOrder po where po.status>'%d' and po.status < '%d'", iMoreThanStatus, iLessThanStatus);
 		getEQMHandle().EQQuery(hql);
 	}
 	
