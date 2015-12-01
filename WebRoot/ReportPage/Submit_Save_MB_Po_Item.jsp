@@ -1,24 +1,24 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.SaveMBPoItemAjax" %>
 <%@ page import="com.jspsmart.upload.*" %>
-<%@ page import="com.office.core.ExcelManagment" %>
-<%@ page import="com.office.operation.ExcelRead" %>
 <%
 	String rtnRst = "remove$";
-	String appPOName = (String)request.getParameter("poName");
-	String filePath = "", fileName = "";
+	request.setCharacterEncoding("UTF-8");
+	String appPOName = (String)request.getParameter("POName");
+	String vendor = (String)request.getParameter("vendor");
+	String delivery_Date = (String)request.getParameter("delivery_Date");
+	String filePath = "D:\\MB_File_Share\\", fileName = "MBond_Po_Template.xls";
 	if (appPOName != null && appPOName.length() > 5)
 	{
-		ExcelManagment excelUtil = new ExcelManagment(new ExcelRead(filePath, fileName));
-		SaveMBPoItemAjax hPageSupport = new SaveMBPoItemAjax();
-		hPageSupport.SaveToExcel(appPOName);
+		SaveMBPoItemAjax hPageSupport = new SaveMBPoItemAjax(filePath, fileName);
+		hPageSupport.SaveToExcelByPoName(appPOName, vendor, delivery_Date);
 	}
 	else
 	{
 		rtnRst += "error:po单不完整!";
 	}
 	
-	response.setCharacterEncoding("utf-8");
+	/*response.setCharacterEncoding("utf-8");
 	String fileFullPath = filePath + fileName;
 	fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 	SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
@@ -29,9 +29,8 @@
 	//doc时，浏览器将自动用word打开它。扩展名为pdf时， 
 	//浏览器将用acrobat打开。 
 	su.setContentDisposition(null);
-	 
 	su.downloadFile(fileFullPath); // 下载文件
 	out.clear();
-	out=pageContext.pushBody();
-	out.println("<script>alert('创建成功！');window.location.href = 'index.jsp';</script>");
+	out=pageContext.pushBody();Generate_PO.jsp?PO_Name=1180022&vendor=新航铸造&Delivery_Date=20151130*/
+	out.println("<script>alert('下载成功！');window.location.href = \"../Generate_PO.jsp?PO_Name="+appPOName+"&vendor="+vendor+"&Delivery_Date="+delivery_Date+"\";</script>");	
 %>

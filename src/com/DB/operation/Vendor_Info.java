@@ -97,7 +97,7 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	
 	public void GetRecordByNameAndStoreroom(String supplier, String storeroom)
 	{
-		String hql = String.format("from VendorInfo vi where vi.vendor_name='%s' and vi.storeroom = '%s'", supplier, storeroom);
+		String hql = String.format("from VendorInfo vi where vi.vendorName='%s' and vi.storeroom = '%s'", supplier, storeroom);
 		getEQMHandle().EQQuery(hql);
 	}
 	

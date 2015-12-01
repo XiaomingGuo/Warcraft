@@ -38,18 +38,6 @@ public class ExcelCreate implements IExcelExecute
 	
 	//Implement interface
 	@Override
-	public String getPath()
-	{
-		return this.path;
-	}
-
-	@Override
-	public String getFileName()
-	{
-		return this.fileName;
-	}
-
-	@Override
 	public void setWorkBook()
 	{
 		//fileStream = new FileOutputStream(new File(path + "\\" + fileName));
@@ -62,6 +50,18 @@ public class ExcelCreate implements IExcelExecute
 			closeWorkBook();
 			hWorkBook = new HSSFWorkbook();
 		}
+	}
+
+	@Override
+	public String getPath()
+	{
+		return this.path;
+	}
+
+	@Override
+	public String getFileName()
+	{
+		return this.fileName;
 	}
 
 	@Override

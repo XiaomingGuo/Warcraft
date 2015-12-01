@@ -70,8 +70,6 @@
 
   </head>
   	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/GeneratePOJS.js"></script>
   <body>
     <center>
        	<br><br>
@@ -204,8 +202,12 @@
     	</table>
     	<br><br>
     	<h3>注:接到订单之后，务必认真核对确认,再以电话或者传真方式回复.所有供货件将需符合铸件（灰铸铁）国标GB9439-2010.务必在交货日期之前把货全部供清。<br></h3>
-    	<!-- <input type="button" value='导出到Excel' name='<%=POName %>' onclick='SaveToExcel(this)'> -->
-    	<input type="button" value='导出到Excel' name='<%=POName %>'>
+   		<form action="ReportPage/Submit_Save_MB_Po_Item.jsp" method="post">
+    		<input type="text" value=<%=POName %> id='POName' name='POName' style="display:none;">
+    		<input type="text" value=<%=vendor %> id='vendor' name='vendor' style="display:none;">
+    		<input type="text" value=<%=delivery_Date %> id='delivery_Date' name='delivery_Date' style="display:none;"><br>
+   			<input type="submit" value='导出到Excel'>
+   		</form>
     </center>
   </body>
 </html>
