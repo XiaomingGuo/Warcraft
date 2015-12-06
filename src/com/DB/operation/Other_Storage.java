@@ -65,6 +65,9 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName());
 				break;
+			case "isEnsure":
+				rtnRst.add(tempRecord.getIsEnsure().toString());
+				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;
@@ -181,7 +184,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
 			String keyWord, String keyValue)
 	{
-		String hql = String.format("update OtherStorage por set por.%s='%s' where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue,
+		String hql = String.format("update OtherStorage por set por.%s=%d where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), Integer.parseInt(setValue),
 				GetDatabaseKeyWord(keyWord), keyValue);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	

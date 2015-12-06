@@ -24,8 +24,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "八码", "名称", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商"};
-		
+			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商"};
+			
+			String splitFlag=(String)request.getParameter("OrderItemSelect");
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			List<String> headList = new ArrayList<String>();
 			for (int iHead = 0; iHead < displayKeyList.length; iHead++)
@@ -36,20 +37,20 @@
 			for(int iRow = 0; ;iRow++)
 			{
 				List<String> tempList = new ArrayList<String>();
-				String breakFlag = request.getParameter(Integer.toString(iRow*10)).replace(" ", "");
+				String breakFlag = request.getParameter(Integer.toString(iRow*11));
 				if (breakFlag == null)
 				{
 					break;
 				}
 				for(int iCol = 0; iCol < displayKeyList.length;iCol++)
 				{
-					String tempValue = request.getParameter(Integer.toString(iRow*10+iCol)).replace(" ", "");
+					String tempValue = request.getParameter(Integer.toString(iRow*11+iCol)).replace(" ", "");
 					tempList.add(tempValue);
 				}
 				recordList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
-			excelUtil.execWriteExcelBlock(recordList, 9);
+			excelUtil.execWriteExcelBlock(recordList, Integer.parseInt(splitFlag));
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	

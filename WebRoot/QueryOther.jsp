@@ -185,7 +185,7 @@
    	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
    	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
    	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="QueryMaterial.jsp" name="PageName"/>
+   	    	<jsp:param value="QueryOther.jsp" name="PageName"/>
    	    </jsp:include>
     </center>
   </body>
