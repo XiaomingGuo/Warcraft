@@ -7,7 +7,7 @@
 	String appPOName = (String)request.getParameter("POName");
 	String vendor = (String)request.getParameter("vendor");
 	String delivery_Date = (String)request.getParameter("delivery_Date");
-	String filePath = "D:\\MB_File_Share\\", fileName = "MBond_Po_Template.xls";
+	String filePath = "D:\\tempFolder\\", fileName = "MBond_Po_Template.xls";
 	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
 	
 	if (appPOName != null && appPOName.length() > 5)
