@@ -1,4 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.Product_Type" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
@@ -27,11 +30,13 @@
 			String store_name = request.getParameter("store_name").replace(" ", "");
 			String beginDate = request.getParameter("BeginDate").replace(" ", "");
 			String endDate = request.getParameter("EndDate").replace(" ", "");
+			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
 			//product_type Database query
 			if (store_name.indexOf("请选择") < 0)
 			{
 				List<List<String>> record_list = null;
-				String[] displayKeyList = {"ID", "八码", "名称", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商"};
+				String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商"};
 				String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"};
 				String sql = "select * from (select * from " + store_name + "_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
 						+ "' UNION ALL select * from exhausted_" + store_name + " where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
@@ -92,67 +97,77 @@
 							if ("ID" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly></td>
 <%
 							}
 							else if ("八码" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("名称" == displayKeyList[iCol])
 							{
+								hPIHandle.GetRecordByBarcode(barcode);
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= hDBHandle.GetNameByBarcode(barcode) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= hPIHandle.getDBRecordList("name").get(0) %> style='width:100px' readonly></td>
+<%
+							}
+							else if ("库名" == displayKeyList[iCol])
+							{
+								hPIHandle.GetRecordByBarcode(barcode);
+								hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
+%>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= hPTHandle.getDBRecordList("storeroom").get(0) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("规格" == displayKeyList[iCol])
 							{
+								hPIHandle.GetRecordByBarcode(barcode);
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= hDBHandle.GetDescByBarcode(barcode) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= hPIHandle.getDBRecordList("description").get(0) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("批号" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(2).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(2).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("进货数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("消耗数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("单价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("总价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("供应商" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value=<%= record_list.get(7).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(7).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else
 							{
 %>
-				<td><input name="<%=iRow*10+iCol %>" value="无此列" style='width:100px' readonly></td>
+				<td><input name="<%=iRow*11+iCol %>" value="无此列" style='width:100px' readonly></td>
 <%
 							}
 						}
@@ -164,7 +179,27 @@
 %>
    		</table>
    		<br>
-		<div align="center"><input type="submit" value="下载报表"></div>
+	  	<table align="center">
+		<tr>
+	  		<td align="right">
+		  		<label>分页列:</label>
+			  	<select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
+				  	<option value = "--请选择--">--请选择--</option>
+<%
+					for(int i = 0; i < displayKeyList.length; i++)
+					{
+%>
+				  	<option value=<%=i%>><%=displayKeyList[i]%></option>
+<%
+					}
+%>
+			  	</select>
+		  	</td>
+		  	<td align="center">
+		  		<input type="submit" value="下载报表" style='width:80px'/>
+		  	</td>
+	  	</tr>
+ 		</table>
    	</form>
   </body>
 </html>
