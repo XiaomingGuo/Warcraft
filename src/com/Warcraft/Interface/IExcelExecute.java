@@ -16,6 +16,7 @@ public interface IExcelExecute
 	public String getCellValue();
 	
 	//For Write function
+	public void setWorkCellWithBorder(int iRow);
 	public void setCellValue(String setVal);
 	public void createWorkRow(int iRow);
 	public void saveToFile();

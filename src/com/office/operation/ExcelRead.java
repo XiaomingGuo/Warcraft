@@ -191,4 +191,10 @@ public class ExcelRead implements IExcelExecute
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setWorkCellWithBorder(int iRow) {
+		// TODO Auto-generated method stub
+		
+	}
 }

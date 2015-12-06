@@ -179,4 +179,10 @@ public class ExcelCreate implements IExcelExecute
 		
 	}
 
+	@Override
+	public void setWorkCellWithBorder(int iRow) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

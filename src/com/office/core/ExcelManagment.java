@@ -264,7 +264,7 @@ public class ExcelManagment extends MSExcel
 					hExcelHandle.createWorkRow(splitSheetCol[0]+iRow);
 					for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
 					{
-						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
+						hExcelHandle.setWorkCellWithBorder(splitSheetCol[1]+iCol);
 						hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
 					}
 				}

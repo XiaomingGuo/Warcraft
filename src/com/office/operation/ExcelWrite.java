@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -169,7 +170,25 @@ public class ExcelWrite implements IExcelExecute
 			hWorkCell = null;
 		}
 	}
-
+	
+	@Override
+	public void setWorkCellWithBorder(int iCol)
+	{
+		if (null != hWorkRow)
+		{
+			HSSFCellStyle cellStyle = hWorkBook.createCellStyle();
+			cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			hWorkCell = hWorkRow.createCell(iCol);
+		}
+		else
+		{
+			hWorkCell = null;
+		}
+	}
+	
 	@Override
 	public String getCellValue()
 	{
