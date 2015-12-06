@@ -10,10 +10,12 @@ import com.DB.operation.*;
 public class SaveMBPoItemAjax extends PageParentClass
 {
 	private ExcelManagment excelUtil = null;
+	private String filePath, fileName;
 
 	public SaveMBPoItemAjax(String filePath, String fileName)
 	{
-		excelUtil = new ExcelManagment(new ExcelWrite(filePath, fileName));
+		this.filePath = filePath;
+		this.fileName = fileName;
 	}
 	
 	public void SaveToExcelByPoName(String poName, String vendor, String delivery_Date)
@@ -31,52 +33,14 @@ public class SaveMBPoItemAjax extends PageParentClass
 		List<List<String>> tempWriteList = new ArrayList<List<String>>();
 		tempWriteList.add(writeList);
 		int [] writeBegin = new int[]{9, 2};
+		excelUtil = new ExcelManagment(new ExcelWrite(filePath, fileName));
 		excelUtil.WriteDataToExcelCol("Report", tempWriteList, writeBegin);
-		
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-		hMMPHandle.GetRecordByPoName(poName);
-		//				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
-		hMMPHandle.getDBRecordList("Bar_Code");
-		hMMPHandle.getDBRecordList("PO_QTY");
-		hMMPHandle.getDBRecordList("date_of_delivery");
 	}
 	
-	public int CalcOrderQty(String po_Num, String percent)
+	public void SavePoRecordToExcel(List<List<String>> recordList)
 	{
-		return Integer.parseInt(po_Num) * (100 + Integer.parseInt(percent))/100;
-	}
-	
-	public int CalcOrderQty(int po_Num, String percent)
-	{
-		return po_Num * (100 + Integer.parseInt(percent))/100;
-	}
-	
-	public int CalcOrderQty(String po_Num, int percent)
-	{
-		return Integer.parseInt(po_Num) * (100 + percent)/100;
-	}
-	
-	public int CalcOrderQty(int po_Num, int percent)
-	{
-		return po_Num * (100 + percent)/100;
-	}
-	
-	public String GetStorageNameByBarCode(String Bar_Code, boolean isExhausted)
-	{
-		String rtnRst = "";
-		int barcode = Integer.parseInt(Bar_Code);
-		if(barcode >= 50000000 && barcode < 60000000) {
-			rtnRst = isExhausted?"ExhaustedMaterial":"MaterialStorage";
-		}
-		else if(barcode >= 60000000 && barcode < 70000000) {
-			rtnRst = isExhausted?"ExhaustedProduct":"ProductStorage";
-		}
-		else if(barcode >= 70000000 && barcode < 80000000) {
-			rtnRst = isExhausted?"":"";
-		}
-		else {
-			rtnRst = isExhausted?"ExhaustedOther":"OtherStorage";
-		}
-		return rtnRst;
+		int [] beginCell = new int[]{18, 1};
+		excelUtil = new ExcelManagment(new ExcelWrite(filePath, fileName));
+		excelUtil.WriteDataToExcelBlock("Report", recordList, beginCell);
 	}
 }

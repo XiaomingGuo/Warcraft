@@ -8,10 +8,29 @@
 	String vendor = (String)request.getParameter("vendor");
 	String delivery_Date = (String)request.getParameter("delivery_Date");
 	String filePath = "D:\\MB_File_Share\\", fileName = "MBond_Po_Template.xls";
+	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
+	
 	if (appPOName != null && appPOName.length() > 5)
 	{
 		SaveMBPoItemAjax hPageSupport = new SaveMBPoItemAjax(filePath, fileName);
 		hPageSupport.SaveToExcelByPoName(appPOName, vendor, delivery_Date);
+		List<List<String>> recordList = new ArrayList<List<String>>();
+		for(int iRow = 0; ;iRow++)
+		{
+			List<String> tempList = new ArrayList<String>();
+			String breakFlag = request.getParameter(Integer.toString(iRow*7));
+			if (breakFlag == null)
+			{
+				break;
+			}
+			for(int iCol = 0; iCol < displayKeyList.length;iCol++)
+			{
+				String tempValue = request.getParameter(Integer.toString(iRow*7+iCol)).replace(" ", "");
+				tempList.add(tempValue);
+			}
+			recordList.add(tempList);
+		}
+		hPageSupport.SavePoRecordToExcel(recordList);
 	}
 	else
 	{

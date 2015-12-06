@@ -112,97 +112,97 @@
 			</tr>
     	</table>
     	<br><br><br><br>
-    	<table width="80%" border="1">
-    		<tr>
+   		<form action="ReportPage/Submit_Save_MB_Po_Item.jsp" method="post">
+    		<table width="80%" border="1">
+    			<tr>
 <%
-			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+			for(int iCol = 0; iCol < displayKeyList.length; iCol++)
 			{
 %>
-	   			<th><%= displayKeyList[iCol-1]%></th>
+	   				<th><%= displayKeyList[iCol]%></th>
 <%
 			}
 %>
-    		</tr>
+    			</tr>
  
 <%
 			if (!recordList.isEmpty())
 			{ 
-				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 %>
-  			<tr>
+  				<tr>
 <%
-					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+					for(int iCol = 0; iCol < displayKeyList.length; iCol++)
 					{
-						String strBarcode = recordList.get(0).get(iRow-1);
+						String strBarcode = recordList.get(0).get(iRow);
 						
-				    	if (displayKeyList[iCol-1] == "模具号" || displayKeyList[iCol-1] == "备注" )
+				    	if (displayKeyList[iCol] == "模具号" || displayKeyList[iCol] == "备注" )
 				    	{
 %>
-    			<td width="20%"><input type="text"></td>
+    				<td width="20%"><input name="<%=iRow*7+iCol %>" type="text" value="无"></td>
 <%
 				    	}
-				    	else if(displayKeyList[iCol-1] == "交货日期")
+				    	else if(displayKeyList[iCol] == "交货日期")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="<%=recordList.get(2).get(iRow-1) %>" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=recordList.get(2).get(iRow) %>" readonly></td>
 <%
 				    	}
-				    	else if(displayKeyList[iCol-1] == "单位")
+				    	else if(displayKeyList[iCol] == "单位")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="件" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="件" readonly></td>
 <%
 				    	}
-				    	else if(displayKeyList[iCol-1] == "名称")
+				    	else if(displayKeyList[iCol] == "名称")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="<%=hDBHandle.GetTypeByBarcode(strBarcode)%>" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hDBHandle.GetTypeByBarcode(strBarcode)%>" readonly></td>
 <%
 				    	}
-				    	else if(displayKeyList[iCol-1] == "型号")
+				    	else if(displayKeyList[iCol] == "型号")
 				    	{
 %>
-    			<td width="2%"><input type="text" value="<%=hDBHandle.GetNameByBarcode(strBarcode)%>" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hDBHandle.GetNameByBarcode(strBarcode)%>" readonly></td>
 <%
 				    	}
-				    	else if(displayKeyList[iCol-1] == "数量")
+				    	else if(displayKeyList[iCol] == "数量")
 				    	{
 %>
-    			<td width="15%"><input type="text" value=<%=recordList.get(1).get(iRow-1) %> readonly></td>
+    				<td width="15%"><input name="<%=iRow*7+iCol %>" type="text" value=<%=recordList.get(1).get(iRow) %> readonly></td>
 <%
 				    	}
 				    	else
 				    	{
 %>
-    			<td width="8%"><input type="text" value=<%=recordList.get(iCol-1).get(iRow-1) %> readonly></td>
+    				<td width="8%"><input name="<%=iRow*7+iCol %>" type="text" value=<%=recordList.get(iCol).get(iRow) %> readonly></td>
 <%
 						}
     				}
 %>
-			</tr>
+				</tr>
 <%
 				}
 			}
 %>
-    	</table>
-    	<br><br>
-    	<h3>另:请按交货期日期之前送至我公司，逾期将按比例扣款,请知悉!!!<br>以前的订单将全部取消,请以此份订单为准!</h3>
-    	<table width="80%">
-	    	<tr>
-	    		<td>签字确认并回传:</td>
-	    		<td>采购: </td>
-	    		<td>审批:</td>
-	    	</tr>
-	    	<tr>
-	    		<td>日期:</td>
-	    		<td>日期: </td>
-	    		<td>日期:</td>
-	    	</tr>
-    	</table>
-    	<br><br>
-    	<h3>注:接到订单之后，务必认真核对确认,再以电话或者传真方式回复.所有供货件将需符合铸件（灰铸铁）国标GB9439-2010.务必在交货日期之前把货全部供清。<br></h3>
-   		<form action="ReportPage/Submit_Save_MB_Po_Item.jsp" method="post">
+	    	</table>
+	    	<br><br>
+	    	<h3>另:请按交货期日期之前送至我公司，逾期将按比例扣款,请知悉!!!<br>以前的订单将全部取消,请以此份订单为准!</h3>
+    		<table width="80%">
+		    	<tr>
+		    		<td>签字确认并回传:</td>
+		    		<td>采购: </td>
+		    		<td>审批:</td>
+		    	</tr>
+		    	<tr>
+		    		<td>日期:</td>
+		    		<td>日期: </td>
+		    		<td>日期:</td>
+		    	</tr>
+    		</table>
+    		<br><br>
+    		<h3>注:接到订单之后，务必认真核对确认,再以电话或者传真方式回复.所有供货件将需符合铸件（灰铸铁）国标GB9439-2010.务必在交货日期之前把货全部供清。<br></h3>
     		<input type="text" value=<%=POName %> id='POName' name='POName' style="display:none;">
     		<input type="text" value=<%=vendor %> id='vendor' name='vendor' style="display:none;">
     		<input type="text" value=<%=delivery_Date %> id='delivery_Date' name='delivery_Date' style="display:none;"><br>

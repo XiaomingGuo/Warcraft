@@ -195,15 +195,15 @@ public class ExcelManagment extends MSExcel
 		boolean rtnRst = true;
 	    try
 		{
-			for (int iRow = 1; iRow < contentList.get(0).size(); iRow++)
+			for (int iRow = 0; iRow < contentList.get(0).size(); iRow++)
 			{
 				if(hExcelHandle.setWorkSheet(sheetName))
 				{
-					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow-1);
+					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow);
 					for(int iCol=0; iCol < contentList.size(); iCol++)
 					{
 						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
-						hExcelHandle.setCellValue(contentList.get(iCol).get(iRow-1));
+						hExcelHandle.setCellValue(contentList.get(iCol).get(iRow));
 					}
 				}
 			}
@@ -221,6 +221,68 @@ public class ExcelManagment extends MSExcel
 		return rtnRst;
 	}
 	
+	public boolean WriteDataToExcelRow(String sheetName, List<List<String>> contentList, int[] splitSheetCol)
+	{
+		boolean rtnRst = true;
+	    try
+		{
+			for (int iRow = 0; iRow < contentList.size(); iRow++)
+			{
+				if(hExcelHandle.setWorkSheet(sheetName))
+				{
+					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow);
+					for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
+					{
+						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
+						hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
+					}
+				}
+			}
+			hExcelHandle.saveToFile();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			rtnRst = false;
+		} 
+		finally
+		{
+			CleanExcelHandle();
+		}
+		return rtnRst;
+	}
+	
+	public boolean WriteDataToExcelBlock(String sheetName, List<List<String>> contentList, int[] splitSheetCol)
+	{
+		boolean rtnRst = true;
+	    try
+		{
+			for (int iRow = 0; iRow < contentList.size(); iRow++)
+			{
+				if(hExcelHandle.setWorkSheet(sheetName))
+				{
+					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow);
+					for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
+					{
+						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
+						hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
+					}
+				}
+			}
+			hExcelHandle.saveToFile();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			rtnRst = false;
+		} 
+		finally
+		{
+			CleanExcelHandle();
+		}
+		return rtnRst;
+	}
+
 	public boolean WriteDataToExcel(String fileFullPath, String fileName, List<List<String>> contentList)
 	{
 		boolean rtnRst = CheckAndCreatePath(fileFullPath);
