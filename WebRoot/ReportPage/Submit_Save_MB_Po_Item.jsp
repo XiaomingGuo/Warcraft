@@ -37,7 +37,7 @@
 		rtnRst += "error:po单不完整!";
 	}
 	
-	/*response.setCharacterEncoding("utf-8");
+	response.setCharacterEncoding("utf-8");
 	String fileFullPath = filePath + fileName;
 	fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 	SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
@@ -50,6 +50,6 @@
 	su.setContentDisposition(null);
 	su.downloadFile(fileFullPath); // 下载文件
 	out.clear();
-	out=pageContext.pushBody();Generate_PO.jsp?PO_Name=1180022&vendor=新航铸造&Delivery_Date=20151130*/
+	out=pageContext.pushBody();//Generate_PO.jsp?PO_Name=1180022&vendor=新航铸造&Delivery_Date=20151130;
 	out.println("<script>alert('下载成功！');window.location.href = \"../Generate_PO.jsp?PO_Name="+appPOName+"&vendor="+vendor+"&Delivery_Date="+delivery_Date+"\";</script>");	
 %>

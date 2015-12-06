@@ -17,5 +17,6 @@ public interface IExcelExecute
 	
 	//For Write function
 	public void setCellValue(String setVal);
+	public void createWorkRow(int iRow);
 	public void saveToFile();
 }

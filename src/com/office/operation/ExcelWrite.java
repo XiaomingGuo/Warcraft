@@ -143,6 +143,19 @@ public class ExcelWrite implements IExcelExecute
 			hWorkRow = null;
 		}
 	}
+	
+	@Override
+	public void createWorkRow(int iRow)
+	{
+		if (null != hWorkSheet)
+		{
+			hWorkRow = hWorkSheet.createRow(iRow);
+		}
+		else
+		{
+			hWorkRow = null;
+		}
+	}
 
 	@Override
 	public void setWorkCell(int iCol)

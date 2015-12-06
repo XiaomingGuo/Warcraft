@@ -261,7 +261,7 @@ public class ExcelManagment extends MSExcel
 			{
 				if(hExcelHandle.setWorkSheet(sheetName))
 				{
-					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow);
+					hExcelHandle.createWorkRow(splitSheetCol[0]+iRow);
 					for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
 					{
 						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
