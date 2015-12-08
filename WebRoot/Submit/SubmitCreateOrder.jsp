@@ -1,4 +1,3 @@
-<%@page import="com.mysql.fabric.xmlrpc.base.Data"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.SubmitCreateOrder" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>

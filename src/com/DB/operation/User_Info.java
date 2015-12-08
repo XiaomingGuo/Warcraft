@@ -114,8 +114,9 @@ public class User_Info extends DBTableParent implements ITableInterface
 
 	@Override
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
+			String keyWord, String keyValue)
+	{
+		String hql = String.format("update UserInfo ui set ui.%s='%s' where ui.%s='%s'", setKeyWord, setValue, keyWord, keyValue);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 }
