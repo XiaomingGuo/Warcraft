@@ -129,9 +129,34 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+	public String GetDatabaseKeyWord(String keyword)
+	{
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
+			rtnRst = "vendorName";
+		}
+		else if(keyword.toLowerCase().indexOf("storeroom") >= 0) {
+			rtnRst = "storeroom";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_fax") >= 0) {
+			rtnRst = "vendorFax";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_tel") >= 0) {
+			rtnRst = "vendorTel";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_e_mail") >= 0) {
+			rtnRst = "vendorEMail";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_address") >= 0) {
+			rtnRst = "vendorAddress";
+		}
+		else if(keyword.toLowerCase().indexOf("description") >= 0) {
+			rtnRst = "description";
+		}
+		return rtnRst;
 	}
 
 	@Override

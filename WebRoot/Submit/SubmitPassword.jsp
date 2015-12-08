@@ -32,13 +32,11 @@
 			}
 			else
 				session.setAttribute("error", "用户不存在或用户名重复!");
-			
-			response.sendRedirect("../tishi.jsp");
 		}
 		else
 		{
 			session.setAttribute("error", "密码为空或新密码两次输入密码不一致!");
-			response.sendRedirect("../tishi.jsp");
 		}
+		response.sendRedirect("../tishi.jsp");
 	}
 %>
