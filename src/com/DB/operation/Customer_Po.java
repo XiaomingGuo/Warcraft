@@ -86,7 +86,7 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	
 	private void execQuery(String keyWord, String value)
 	{
-		String hql = String.format("from CustomerPo cp where cp.%s='%s'", keyWord, value);
+		String hql = String.format("from CustomerPo cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), value);
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -136,7 +136,7 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	{
 		for (String poName : delPoList)
 		{
-			String hql = String.format("delete CustomerPo cp where cp.%s='%s'", keyWord, poName);
+			String hql = String.format("delete CustomerPo cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}

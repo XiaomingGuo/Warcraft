@@ -97,7 +97,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 	
 	private void execQueryAsc(String keyWord, String value, String orderKey)
 	{
-		String hql = String.format("from OtherStorage cpr where cpr.%s='%s' order by cpr.%s asc", keyWord, value, orderKey);
+		String hql = String.format("from OtherStorage cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -175,7 +175,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 	{
 		for (String item : delList)
 		{
-			String hql = String.format("delete OtherStorage por where por.%s='%s'", keyWord, item);
+			String hql = String.format("delete OtherStorage por where por.%s='%s'", GetDatabaseKeyWord(keyWord), item);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}

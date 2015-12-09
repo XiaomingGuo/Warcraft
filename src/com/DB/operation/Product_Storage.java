@@ -96,7 +96,7 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 	
 	private void execQueryAsc(String keyWord, String value, String orderKey)
 	{
-		String hql = String.format("from ProductStorage ps where ps.%s='%s' order by ps.%s asc", keyWord, value, orderKey);
+		String hql = String.format("from ProductStorage ps where ps.%s='%s' order by ps.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -114,6 +114,7 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 		//aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
 	}
+	
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
 		return super.GetDblSumOfValue("ProductStorage", getValue, keyword, keyValue);

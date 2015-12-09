@@ -93,7 +93,7 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 	
 	private void execQueryAsc(String keyWord, String value, String orderKey)
 	{
-		String hql = String.format("from CustomerPoRecord cpr where cpr.%s='%s' order by cpr.%s asc", keyWord, value, orderKey);
+		String hql = String.format("from CustomerPoRecord cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
 		getEQMHandle().EQQuery(hql);
 	}
 	

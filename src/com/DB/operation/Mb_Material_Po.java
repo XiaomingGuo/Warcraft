@@ -87,7 +87,7 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 	
 	private void execQueryAsc(String keyWord, String value, String orderKey)
 	{
-		String hql = String.format("from MbMaterialPo cpr where cpr.%s='%s' order by cpr.%s asc", keyWord, value, orderKey);
+		String hql = String.format("from MbMaterialPo cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -151,7 +151,7 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 	{
 		for (String poName : delPoList)
 		{
-			String hql = String.format("delete MbMaterialPo mmp where mmp.%s='%s'", keyWord, poName);
+			String hql = String.format("delete MbMaterialPo mmp where mmp.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}

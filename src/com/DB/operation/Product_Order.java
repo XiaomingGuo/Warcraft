@@ -138,14 +138,14 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	{
 		for (String orderName : delPoList)
 		{
-			String hql = String.format("delete ProductOrder po where po.%s='%s'", keyWord, orderName);
+			String hql = String.format("delete ProductOrder po where po.%s='%s'", GetDatabaseKeyWord(keyWord), orderName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
 	
 	public void UpdatetRecordByOrderName(String orderName, String keyWord, String value)
 	{
-		String hql = String.format("update ProductOrder po set po.%s='%s' where po.orderName='%s'", keyWord, value, orderName);
+		String hql = String.format("update ProductOrder po set po.%s='%s' where po.orderName='%s'", GetDatabaseKeyWord(keyWord), value, orderName);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 

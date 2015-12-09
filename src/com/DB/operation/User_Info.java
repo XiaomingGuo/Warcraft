@@ -137,7 +137,7 @@ public class User_Info extends DBTableParent implements ITableInterface
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
 			String keyWord, String keyValue)
 	{
-		String hql = String.format("update UserInfo ui set ui.%s='%s' where ui.%s='%s'", setKeyWord, setValue, keyWord, keyValue);
+		String hql = String.format("update UserInfo ui set ui.%s='%s' where ui.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue, GetDatabaseKeyWord(keyWord), keyValue);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 }

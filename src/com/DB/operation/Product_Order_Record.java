@@ -103,7 +103,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	
 	public void GetRecordByKeyWord(String keyWord, String poName)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.%s='%s'", keyWord, poName);
+		String hql = String.format("from ProductOrderRecord por where por.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -188,7 +188,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	{
 		for (String poName : delPoList)
 		{
-			String hql = String.format("delete ProductOrderRecord por where por.%s='%s'", keyWord, poName);
+			String hql = String.format("delete ProductOrderRecord por where por.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
