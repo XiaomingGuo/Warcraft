@@ -1,14 +1,9 @@
 package com.DB.operation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.DB.support.DiscardMaterialRecord;
 import com.Hibernate.Util.HibernateSessionFactory;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.Interface.IEQManagement;
