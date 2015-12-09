@@ -152,7 +152,8 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	@Override
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
 			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
+		String hql = String.format("update ProductOrder po set po.%s='%s' where po.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue, GetDatabaseKeyWord(keyWord), keyValue);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 		
 	}
 }

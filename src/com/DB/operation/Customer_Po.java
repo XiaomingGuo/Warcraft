@@ -129,7 +129,7 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	public void UpdateStatusByPoName(int updateVal, String filterVal)
 	{
 		String hql = String.format("update CustomerPo cp set cp.status = '%d' WHERE cp.poName='%s'", updateVal, filterVal);
-		getEQMHandle().updateRecord(hql);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 	
 	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
@@ -144,7 +144,8 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	@Override
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
 			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
+		String hql = String.format("update CustomerPo cp set cp.%s='%s' WHERE cp.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue, GetDatabaseKeyWord(keyWord), keyValue);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
 		
 	}
 
