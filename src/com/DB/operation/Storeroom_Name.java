@@ -99,9 +99,16 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+	public String GetDatabaseKeyWord(String keyword)
+	{
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("name") >= 0) {
+			rtnRst = "name";
+		}
+		return rtnRst;
 	}
 
 	@Override

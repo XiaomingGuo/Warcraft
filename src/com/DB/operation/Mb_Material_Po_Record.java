@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -113,8 +114,20 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("mb_material_po") >= 0) {
+			rtnRst = "mbMaterialPoId";
+		}
+		else if(keyword.toLowerCase().indexOf("in_qty") >= 0) {
+			rtnRst = "inQty";
+		}
+		else if(keyword.toLowerCase().indexOf("in_date") >= 0) {
+			rtnRst = "inDate";
+		}
+		return rtnRst;
 	}
 
 	@Override

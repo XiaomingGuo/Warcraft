@@ -104,8 +104,17 @@ public class Product_Type extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("name") >= 0) {
+			rtnRst = "name";
+		}
+		else if(keyword.toLowerCase().indexOf("storeroom") >= 0) {
+			rtnRst = "storeroom";
+		}
+		return rtnRst;
 	}
 
 	@Override

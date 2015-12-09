@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -128,8 +129,35 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
+		else if(keyword.toLowerCase().indexOf("delivery_date") >= 0) {
+			rtnRst = "deliveryDate";
+		}
+		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
+			rtnRst = "qty";
+		}
+		else if(keyword.toLowerCase().indexOf("out_qty") >= 0) {
+			rtnRst = "outQty";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor") >= 0) {
+			rtnRst = "vendor";
+		}
+		else if(keyword.toLowerCase().indexOf("percent") >= 0) {
+			rtnRst = "percent";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		return rtnRst;
 	}
 
 	@Override

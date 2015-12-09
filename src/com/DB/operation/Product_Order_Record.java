@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -134,8 +135,38 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("delivery_date") >= 0) {
+			rtnRst = "deliveryDate";
+		}
+		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
+			rtnRst = "qty";
+		}
+		else if(keyword.toLowerCase().indexOf("completeqty") >= 0) {
+			rtnRst = "completeQty";
+		}
+		else if(keyword.toLowerCase().indexOf("oqc_qty") >= 0) {
+			rtnRst = "oqcQty";
+		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("status") >= 0) {
+			rtnRst = "status";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		return rtnRst;
 	}
 
 	public int GetQtyByBarcodeAndPOName(String strBarcode, String appPOName, String getKeyValue)

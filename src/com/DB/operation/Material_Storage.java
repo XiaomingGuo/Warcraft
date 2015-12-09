@@ -64,6 +64,9 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName().toString());
 				break;
+			case "isEnsure":
+				rtnRst.add(tempRecord.getIsEnsure().toString());
+				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;

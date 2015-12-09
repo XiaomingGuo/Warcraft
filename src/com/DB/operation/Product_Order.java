@@ -121,8 +121,17 @@ public class Product_Order extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("status") >= 0) {
+			rtnRst = "status";
+		}
+		return rtnRst;
 	}
 	
 	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)

@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -125,8 +126,32 @@ public class Material_Record extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
+			rtnRst = "batchLot";
+		}
+		else if(keyword.toLowerCase().indexOf("proposer") >= 0) {
+			rtnRst = "proposer";
+		}
+		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
+			rtnRst = "qty";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		else if(keyword.toLowerCase().indexOf("isapprove") >= 0) {
+			rtnRst = "isApprove";
+		}
+		else if(keyword.toLowerCase().indexOf("merge_mark") >= 0) {
+			rtnRst = "mergeMark";
+		}
+		return rtnRst;
 	}
 
 	@Override

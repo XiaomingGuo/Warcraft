@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -93,8 +94,20 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("customer_po") >= 0) {
+			rtnRst = "customerPo";
+		}
+		else if(keyword.toLowerCase().indexOf("name") >= 0) {
+			rtnRst = "name";
+		}
+		else if(keyword.toLowerCase().indexOf("shipping_no") >= 0) {
+			rtnRst = "shippingNo";
+		}
+		return rtnRst;
 	}
 
 	@Override

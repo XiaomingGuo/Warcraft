@@ -93,8 +93,26 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
+			rtnRst = "batchLot";
+		}
+		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
+			rtnRst = "qty";
+		}
+		else if(keyword.toLowerCase().indexOf("reason") >= 0) {
+			rtnRst = "reason";
+		}
+		return rtnRst;
 	}
 
 	@Override

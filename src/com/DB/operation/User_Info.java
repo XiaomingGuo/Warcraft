@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -102,8 +103,29 @@ public class User_Info extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("name") >= 0) {
+			rtnRst = "name";
+		}
+		else if(keyword.toLowerCase().indexOf("password") >= 0) {
+			rtnRst = "password";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		else if(keyword.toLowerCase().indexOf("department") >= 0) {
+			rtnRst = "department";
+		}
+		else if(keyword.toLowerCase().indexOf("permission") >= 0) {
+			rtnRst = "permission";
+		}
+		else if(keyword.toLowerCase().indexOf("picture") >= 0) {
+			rtnRst = "picture";
+		}
+		return rtnRst;
 	}
 
 	@Override

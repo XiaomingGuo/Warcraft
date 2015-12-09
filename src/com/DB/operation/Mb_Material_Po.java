@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -122,8 +123,29 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor") >= 0) {
+			rtnRst = "vendor";
+		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
+		else if(keyword.toLowerCase().indexOf("po_qty") >= 0) {
+			rtnRst = "poQty";
+		}
+		else if(keyword.toLowerCase().indexOf("date_of_delivery") >= 0) {
+			rtnRst = "dateOfDelivery";
+		}
+		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
+			rtnRst = "createDate";
+		}
+		return rtnRst;
 	}
 	
 	public void DeleteRecordKeyWord(String keyWord, List<String> delPoList)

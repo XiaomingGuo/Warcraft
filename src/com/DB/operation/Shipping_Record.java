@@ -122,8 +122,29 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("customer_po") >= 0) {
+			rtnRst = "customerPo";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
+			rtnRst = "batchLot";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("ship_qty") >= 0) {
+			rtnRst = "shipQty";
+		}
+		else if(keyword.toLowerCase().indexOf("shipping_no") >= 0) {
+			rtnRst = "shippingNo";
+		}
+		return rtnRst;
 	}
 
 	@Override

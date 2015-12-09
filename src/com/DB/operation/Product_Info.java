@@ -120,8 +120,29 @@ public class Product_Info extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
+			rtnRst = "barCode";
+		}
+		else if(keyword.toLowerCase().indexOf("name") >= 0) {
+			rtnRst = "name";
+		}
+		else if(keyword.toLowerCase().indexOf("product_type") >= 0) {
+			rtnRst = "productType";
+		}
+		else if(keyword.toLowerCase().indexOf("weight") >= 0) {
+			rtnRst = "weight";
+		}
+		else if(keyword.toLowerCase().indexOf("description") >= 0) {
+			rtnRst = "description";
+		}
+		else if(keyword.toLowerCase().indexOf("picture") >= 0) {
+			rtnRst = "picture";
+		}
+		return rtnRst;
 	}
 
 	@Override

@@ -113,8 +113,17 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		String rtnRst = "";
+		if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
+		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
+		else if(keyword.toLowerCase().indexOf("status") >= 0) {
+			rtnRst = "status";
+		}
+		return rtnRst;
 	}
 
 	public void UpdateStatusByPoName(int updateVal, String filterVal)

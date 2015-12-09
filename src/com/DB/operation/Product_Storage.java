@@ -64,6 +64,9 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 			case "Total_Price":
 				rtnRst.add(tempRecord.getTotalPrice().toString());
 				break;
+			case "isEnsure":
+				rtnRst.add(tempRecord.getIsEnsure().toString());
+				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;
