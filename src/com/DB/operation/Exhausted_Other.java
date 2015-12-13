@@ -64,6 +64,9 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName());
 				break;
+			case "in_store_date":
+				rtnRst.add(tempRecord.getInStoreDate());
+				break;
 			case "isEnsure":
 				rtnRst.add(tempRecord.getIsEnsure().toString());
 				break;
@@ -134,6 +137,9 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface
 		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
+		}
+		else if(keyword.toLowerCase().indexOf("in_store_date") >= 0) {
+			rtnRst = "inStoreDate";
 		}
 		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
 			rtnRst = "isEnsure";

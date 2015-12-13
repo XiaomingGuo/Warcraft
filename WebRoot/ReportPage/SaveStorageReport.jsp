@@ -24,7 +24,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商"};
+			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商", "进货单时间"};
 			
 			String splitFlag=(String)request.getParameter("OrderItemSelect");
 			List<List<String>> recordList = new ArrayList<List<String>>();
@@ -37,14 +37,14 @@
 			for(int iRow = 0; ;iRow++)
 			{
 				List<String> tempList = new ArrayList<String>();
-				String breakFlag = request.getParameter(Integer.toString(iRow*11));
+				String breakFlag = request.getParameter(Integer.toString(iRow*12));
 				if (breakFlag == null)
 				{
 					break;
 				}
 				for(int iCol = 0; iCol < displayKeyList.length;iCol++)
 				{
-					String tempValue = request.getParameter(Integer.toString(iRow*11+iCol)).replace(" ", "");
+					String tempValue = request.getParameter(Integer.toString(iRow*12+iCol)).replace(" ", "");
 					tempList.add(tempValue);
 				}
 				recordList.add(tempList);

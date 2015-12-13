@@ -46,7 +46,7 @@
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
-    <br><br><br>
+    <br><br>
     <form action="ReportPage/StorageReport.jsp" method="post">
 		<table align="center" id="ShowContent">
 			<tr>

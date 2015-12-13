@@ -18,6 +18,7 @@ public class ExhaustedOther implements java.io.Serializable {
 	private Float pricePerUnit;
 	private Double totalPrice;
 	private String vendorName;
+	private String inStoreDate;
 	private Integer isEnsure;
 	private Timestamp createDate;
 
@@ -30,7 +31,8 @@ public class ExhaustedOther implements java.io.Serializable {
 	/** full constructor */
 	public ExhaustedOther(String barCode, String batchLot, Integer inQty,
 			Integer outQty, Float pricePerUnit, Double totalPrice,
-			String vendorName, Integer isEnsure, Timestamp createDate) {
+			String vendorName, String inStoreDate, Integer isEnsure,
+			Timestamp createDate) {
 		this.barCode = barCode;
 		this.batchLot = batchLot;
 		this.inQty = inQty;
@@ -38,6 +40,7 @@ public class ExhaustedOther implements java.io.Serializable {
 		this.pricePerUnit = pricePerUnit;
 		this.totalPrice = totalPrice;
 		this.vendorName = vendorName;
+		this.inStoreDate = inStoreDate;
 		this.isEnsure = isEnsure;
 		this.createDate = createDate;
 	}
@@ -106,6 +109,14 @@ public class ExhaustedOther implements java.io.Serializable {
 
 	public void setVendorName(String vendorName) {
 		this.vendorName = vendorName;
+	}
+
+	public String getInStoreDate() {
+		return this.inStoreDate;
+	}
+
+	public void setInStoreDate(String inStoreDate) {
+		this.inStoreDate = inStoreDate;
 	}
 
 	public Integer getIsEnsure() {

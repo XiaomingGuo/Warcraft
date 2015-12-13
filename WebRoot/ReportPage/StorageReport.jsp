@@ -36,8 +36,8 @@
 			if (store_name.indexOf("请选择") < 0)
 			{
 				List<List<String>> record_list = null;
-				String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商"};
-				String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"};
+				String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
+				String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "in_store_date"};
 				String sql = "select * from (select * from " + store_name + "_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
 						+ "' UNION ALL select * from exhausted_" + store_name + " where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
 				if (hDBHandle.QueryDataBase(sql))
@@ -97,20 +97,20 @@
 							if ("ID" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly></td>
 <%
 							}
 							else if ("八码" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:80px' readonly></td>
 <%
 							}
 							else if ("名称" == displayKeyList[iCol])
 							{
 								hPIHandle.GetRecordByBarcode(barcode);
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= hPIHandle.getDBRecordList("name").get(0) %> style='width:150px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= hPIHandle.getDBRecordList("name").get(0) %> style='width:150px' readonly></td>
 <%
 							}
 							else if ("库名" == displayKeyList[iCol])
@@ -118,56 +118,62 @@
 								hPIHandle.GetRecordByBarcode(barcode);
 								hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= hPTHandle.getDBRecordList("storeroom").get(0) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= hPTHandle.getDBRecordList("storeroom").get(0) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("规格" == displayKeyList[iCol])
 							{
 								hPIHandle.GetRecordByBarcode(barcode);
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= hPIHandle.getDBRecordList("description").get(0) %> style='width:120px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= hPIHandle.getDBRecordList("description").get(0) %> style='width:120px' readonly></td>
 <%
 							}
 							else if ("批号" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(2).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(2).get(iRow) %> style='width:80px' readonly></td>
 <%
 							}
 							else if ("进货数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:50px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:50px' readonly></td>
 <%
 							}
 							else if ("消耗数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:50px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:50px' readonly></td>
 <%
 							}
 							else if ("单价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:80px' readonly></td>
 <%
 							}
 							else if ("进货总价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else if ("供应商" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value=<%= record_list.get(7).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(7).get(iRow) %> style='width:80px' readonly></td>
+<%
+							}
+							else if ("进货单时间" == displayKeyList[iCol])
+							{
+%>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(8).get(iRow) %> style='width:100px' readonly></td>
 <%
 							}
 							else
 							{
 %>
-				<td><input name="<%=iRow*11+iCol %>" value="无此列" style='width:100px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value="无此列" style='width:100px' readonly></td>
 <%
 							}
 						}

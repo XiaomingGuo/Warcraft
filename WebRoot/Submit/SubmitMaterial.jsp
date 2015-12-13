@@ -13,6 +13,7 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
+		String appInStoreDate = request.getParameter("SubmitDate").replace("-", "");
 		String appStore_name = request.getParameter("store_name_addproduct").replace(" ", "");
 		String appSupplier_name = request.getParameter("supplier_name").replace(" ", "");
 		String appProduct_type = request.getParameter("product_type").replace(" ", "");
@@ -84,7 +85,7 @@
 				{
 					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name) VALUES ('" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "')";
+					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name, in_store_date) VALUES ('" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "', '" + appInStoreDate + "')";
 					hDBHandle.execUpate(sql);
 					break;
 				}
