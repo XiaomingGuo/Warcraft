@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Query;
 
 import com.DB.support.ProductInfo;
+import com.DB.support.StoreroomName;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
@@ -143,6 +144,17 @@ public class Product_Info extends DBTableParent implements ITableInterface
 			rtnRst = "picture";
 		}
 		return rtnRst;
+	}
+	
+	public void AddARecord(String barCode, String name, String productType, String weight, String description)
+	{
+		aWriteRecord = new ProductInfo();
+		aWriteRecord.setBarCode(barCode);
+		aWriteRecord.setName(name);
+		aWriteRecord.setProductType(productType);
+		aWriteRecord.setWeight(Float.parseFloat(weight));
+		aWriteRecord.setDescription(description);
+		getEQMHandle().addANewRecord();
 	}
 
 	@Override
