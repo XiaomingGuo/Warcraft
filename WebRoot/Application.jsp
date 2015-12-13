@@ -13,6 +13,7 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		String[] displayKeyList = {"库名", "类别", "名称", "八码", "使用者", "数量", "库存数量", "操作"};
 		
 		//storeroom name Database query
 		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
@@ -44,16 +45,22 @@
   	<script language="javascript" src="Page_JS/ApplicationJS.js"></script>
   <body>
     <jsp:include page="Menu/MainMenu.jsp"/>
-  	<br><br><br>
-   	<form name="AppContent" action = "Submit/SubmitApplication.jsp" method = "post">
-  	<table align="center" border="1">
-	  	<tr>
-	  		<th align="center">申领物品</th>
-	  	</tr>
+  	<br><br>
+  	<table id="inputTab" align="center" border="1">
+  	<caption><b>申领物品</b></caption>
+		<tr>
+<%
+			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+			{
+%>
+				<th><%= displayKeyList[iCol-1]%></th>
+<%
+			}
+%>
+		</tr>
 		<tr>
 	  		<td align="right">
-		  		<label>库名:</label>
-			  	<select name="store_name" id="store_name" style="width:180px">
+			  	<select name="store_name" id="store_name" style="width:100px">
 				  	<option value = "--请选择--">--请选择--</option>
 <%
 					for(int i = 0; i < store_name.size(); i++)
@@ -65,54 +72,39 @@
 %>
 			  	</select>
 		  	</td>
-	  	</tr>
-	  	<tr>
 	  		<td align="right">
-		  		<label>类别:</label>
-			  	<select name="product_type" id="product_type" style="width:180px">
+			  	<select name="product_type" id="product_type" style="width:100px">
 				  	<option value = "--请选择--">--请选择--</option>
 			  	</select>
 		  	</td>
-	  	</tr>
-		<tr>
 			<td align="right">
-				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:180px">
+				<select name="product_name" id="product_name" style="width:200px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
-		</tr>
-		<tr>
 			<td align="right">
-				<label>Bar Code:</label>
-				<input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:180px">
+				<input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
 			</td>
-		</tr>
-		<tr>
 			<td align="right">
-				<label>使用者:</label>
-				<input name="user_name" id="user_name" style="width:180px">
+				<input name="user_name" id="user_name" style="width:100px">
 			</td>
-		</tr>
-		<tr>
 			<td align="right">
-				<label>数量:</label>
-				<input name="QTY" id="QTY" style="width:180px">
+				<input name="QTY" id="QTY" style="width:80px">
 			</td>
-		</tr>
-		<tr>
 			<td align="right">
-				<label>库存数量:</label>
-				<input name="Total_QTY" id="Total_QTY" style="width:180px" readonly>
+				<input name="Total_QTY" id="Total_QTY" style="width:80px" readonly>
 			</td>
-		</tr>
+			<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addappitem(this)"></td>
+	  	</tr>
+	</table>
+	<br>
+	<table id="display_app" border='1' align="center"></table>
+	<br>
+	<table align="center">
 		<tr>
-			<td align="center">
-				<input name="commit" type=submit value="提交" style="width:100">
-			</td>
+			<td><input name="commit" type=submit value="提交" style="width:100" onclick="submitOtherApp(this)"></td>
 		</tr>
 	</table>
-  	</form>
   </body>
 </html>
 <%

@@ -52,6 +52,7 @@
   	<script language="javascript" src="Page_JS/OtherSummaryJS.js"></script>
   <body>
     <jsp:include page="Menu/QueryMenu.jsp"/>
+    <form action="ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>其他库存筛选</caption>
 	  	<tr>
@@ -89,7 +90,10 @@
    	</table>
    	<br>
    	<table id="display_storage" border='1' align="center"></table>
-   	<br><br><br>
+   	<br>
+	<table align="center"><tr><td><input align="middle" type="submit" value="下载" style='width:80px'/></td></tr></table>
+   	</form>
+   	<br><br>
   </body>
 </html>
 <%

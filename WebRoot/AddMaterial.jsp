@@ -33,6 +33,8 @@
 					store_name.remove(index);
 				}
 			}
+			Calendar mData = Calendar.getInstance();
+			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -55,7 +57,11 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
+	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
+  	<script type="text/javascript">
+		dojo.require("dojo.widget.*");
+	</script>
     <jsp:include page="Menu/DataEnterMenu.jsp"/>
     <br><br>
     <table width="55%" align="center">
@@ -148,6 +154,12 @@
 			   			<td align="right">
 				   			<label>备注:</label>
 							<input type="text" name="Description" id="Description" style='width:180px'>
+						</td>
+					</tr>
+					<tr>
+			   			<td align="center">
+				   			<label>入库时间:</label>
+			    			<div dojoType="dropdowndatepicker" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
 						</td>
 					</tr>
 					<tr>

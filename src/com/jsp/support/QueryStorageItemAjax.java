@@ -1,5 +1,7 @@
 package com.jsp.support;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,8 @@ public class QueryStorageItemAjax extends PageParentClass
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));
 			rtnRst.add(Integer.toString(in_Qty-out_Qty));
-			rtnRst.add(Double.toString(totalPrice));
+			NumberFormat formatter = new DecimalFormat("#.####");
+			rtnRst.add(formatter.format(totalPrice));
 		}
 		return rtnRst;
 	}

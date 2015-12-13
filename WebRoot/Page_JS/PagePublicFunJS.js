@@ -67,3 +67,10 @@ function ClearSelectContent(keyWord)
 	$("#"+keyWord).empty();
 	$("#"+keyWord).append('<option value="请选择">--请选择--</option>');
 }
+
+function CreateTabCellContext(keyWord, value)
+{
+    var myCurrentCell = document.createElement(keyWord);
+    myCurrentCell.innerHTML = value;
+    return myCurrentCell;
+}
