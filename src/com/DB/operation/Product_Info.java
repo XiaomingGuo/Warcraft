@@ -153,7 +153,10 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		aWriteRecord.setName(name);
 		aWriteRecord.setProductType(productType);
 		aWriteRecord.setWeight(Float.parseFloat(weight));
-		aWriteRecord.setDescription(description);
+		if(null == description)
+			aWriteRecord.setDescription(description);
+		else
+			aWriteRecord.setDescription("ÎÞ±¸×¢");
 		getEQMHandle().addANewRecord();
 	}
 

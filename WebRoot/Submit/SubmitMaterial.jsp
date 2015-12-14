@@ -1,5 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.jsp.support.SubmitMaterial" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
@@ -24,6 +27,8 @@
 		String appProductQTY = request.getParameter("QTY").replace(" ", "");
 		String appDescription = request.getParameter("Description").replace(" ", "");
 		String storageName="other_storage";
+		SubmitMaterial hPageHandle = new SubmitMaterial();
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		
 		if (appSupplier_name.indexOf("请选择") < 0 && !appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appProductQTY.isEmpty() && !appPriceUnit.isEmpty() && !appWeightUnit.isEmpty())
 		{
@@ -36,19 +41,14 @@
 					return;
 				}
 				storageName = "material_storage";
-				String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "'";
-				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"));
+				if (hPIHandle.RecordDBCount() <= 0)
 				{
-					hDBHandle.CloseDatabase();
 					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "product_info") + "', '" + appProduct_type.replace("原锭", "") + "', '" + appWeightUnit + "', '" + appDescription + "')";
-					hDBHandle.execUpate(sql);
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "material_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
-					hDBHandle.execUpate(sql);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
+							appWeightUnit, appDescription);
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
+							appWeightUnit, appDescription);
 				}
 			}
 			else
@@ -59,43 +59,15 @@
 					response.sendRedirect("../tishi.jsp");
 					return;
 				}
-
-				String sql = "select * from product_info where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, "other_info") + "'";
-				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "other_storage"));
+				if (hPIHandle.RecordDBCount() <= 0)
 				{
-					hDBHandle.CloseDatabase();
-					//product_type Database query
-					sql = "INSERT INTO product_info (name, Bar_Code, product_type, weight, description) VALUES ('" + appProductname + "', '" + hDBHandle.GetUsedBarcode(appBarcode, "other_info") + "', '" + appProduct_type + "', '" + appWeightUnit + "', '" + appDescription + "')";
-					hDBHandle.execUpate(sql);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type, appWeightUnit, appDescription);
 				}
 			}
 			String appTotalPrice = String.format("%.2f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
-			Calendar mData = Calendar.getInstance();
-			String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-			int loopNum = 1;
-			do
-			{
-				String batch_lot = batch_lot_Head + "-" + String.format("%02d", loopNum);
- 				String sql = "select * from "+storageName+" where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "' and Batch_Lot='" + batch_lot + "' UNION select * from exhausted_" + storageName.split("_")[0] + " where Bar_Code='" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "' and Batch_Lot='" + batch_lot + "'";
-				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
-				{
-					hDBHandle.CloseDatabase();
-					//product_type Database query
-					sql = "INSERT INTO "+storageName+" (Bar_Code, Batch_Lot, IN_QTY, Price_Per_Unit, Total_Price, vendor_name, in_store_date) VALUES ('" + hDBHandle.GetUsedBarcode(appBarcode, storageName) + "', '" + batch_lot + "', '" + appProductQTY+ "', '" + appPriceUnit+ "', '" + appTotalPrice + "', '" + appSupplier_name + "', '" + appInStoreDate + "')";
-					hDBHandle.execUpate(sql);
-					break;
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
-				loopNum ++;
-			}
-			while(true);
+			String batch_lot = hPageHandle.GenBatchLot(storageName, appBarcode);
+			hPageHandle.AddARecordToStorage(storageName, appBarcode, batch_lot, appProductQTY, appPriceUnit, appTotalPrice, appSupplier_name, appInStoreDate);
 		}
 		else
 		{

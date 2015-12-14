@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.hibernate.dialect.function.VarArgsSQLFunction;
-
 import com.DB.operation.*;
 import com.Warcraft.Interface.ITableInterface;
 

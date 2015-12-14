@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.support.OtherStorage;
 import com.DB.support.ProductStorage;
 import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Storage extends DBTableParent implements ITableInterface
+public class Product_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
 	private List<ProductStorage> resultList = null;
 	private ProductStorage aWriteRecord = null;
@@ -107,14 +109,7 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	*/
-	
-	public void AddARecord(String poName)
-	{
-		aWriteRecord = new ProductStorage();
-		//aWriteRecord.setPoName(poName);
-		getEQMHandle().addANewRecord();
-	}
-	
+		
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
 		return super.GetDblSumOfValue("ProductStorage", getValue, keyword, keyValue);
@@ -172,6 +167,25 @@ public class Product_Storage extends DBTableParent implements ITableInterface
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
 			String keyWord, String keyValue) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
+	{
+		String hql = String.format("from ProductStorage ps where ps.barCode='%s' and ps.batchLot='%s'",
+				GetUsedBarcode(strBarcode, "Product_Storage"), batch_lot);
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate)
+	{
+		aWriteRecord = new ProductStorage();
+		//aWriteRecord.setPoName(poName);
+		getEQMHandle().addANewRecord();
 		
 	}
 }

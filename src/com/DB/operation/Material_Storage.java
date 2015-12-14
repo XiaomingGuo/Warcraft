@@ -8,10 +8,11 @@ import org.hibernate.Query;
 
 import com.DB.support.MaterialStorage;
 import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Material_Storage extends DBTableParent implements ITableInterface
+public class Material_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
 	private List<MaterialStorage> resultList = null;
 	private MaterialStorage aWriteRecord = null;
@@ -111,13 +112,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 	}
 	*/
 	
-	public void AddARecord(String poName)
-	{
-		aWriteRecord = new MaterialStorage();
-		//aWriteRecord.setPoName(poName);
-		getEQMHandle().addANewRecord();
-	}
-
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
@@ -186,5 +180,23 @@ public class Material_Storage extends DBTableParent implements ITableInterface
 			rtnRst = "createDate";
 		}
 		return rtnRst;
+	}
+
+	@Override
+	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
+	{
+		String hql = String.format("from MaterialStorage ms where ms.barCode='%s' and ms.batchLot='%s'",
+				GetUsedBarcode(strBarcode, "Material_Storage"), batch_lot);
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate)
+	{
+		aWriteRecord = new MaterialStorage();
+		//aWriteRecord.setPoName(poName);
+		getEQMHandle().addANewRecord();
 	}
 }

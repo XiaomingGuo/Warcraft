@@ -7,11 +7,13 @@ import java.util.List;
 import org.hibernate.Query;
 
 import com.DB.support.ExhaustedOther;
+import com.DB.support.ExhaustedProduct;
 import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Exhausted_Other extends DBTableParent implements ITableInterface
+public class Exhausted_Other extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
 	private List<ExhaustedOther> resultList = null;
 	private ExhaustedOther aWriteRecord = null;
@@ -161,5 +163,23 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface
 			String keyWord, String keyValue) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
+	{
+		String hql = String.format("from ExhaustedOther eo where eo.barCode='%s' and eo.batchLot='%s'",
+				GetUsedBarcode(strBarcode, "Exhausted_Other"), batch_lot);
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate)
+	{
+		aWriteRecord = new ExhaustedOther();
+		//aWriteRecord.setPoName(poName);
+		getEQMHandle().addANewRecord();
 	}
 }

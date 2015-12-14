@@ -6,13 +6,15 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.support.MaterialStorage;
 import com.DB.support.OtherStorage;
 import com.Warcraft.Interface.IEQManagement;
+import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-public class Other_Storage extends DBTableParent implements ITableInterface
+public class Other_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
 	private List<OtherStorage> resultList = null;
 	private OtherStorage aWriteRecord = null;
@@ -111,14 +113,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	*/
-	
-	public void AddARecord(String poName)
-	{
-		aWriteRecord = new OtherStorage();
-		//aWriteRecord.setPoName(poName);
-		getEQMHandle().addANewRecord();
-	}
-	
+		
 	public double GetDblPriceOfStorage(String keyword, String keyValue)
 	{
 		return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
@@ -194,5 +189,23 @@ public class Other_Storage extends DBTableParent implements ITableInterface
 				GetDatabaseKeyWord(keyWord), keyValue);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	
+	}
+
+	@Override
+	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
+	{
+		String hql = String.format("from OtherStorage os where os.barCode='%s' and os.batchLot='%s'",
+				GetUsedBarcode(strBarcode, "Other_Storage"), batch_lot);
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate)
+	{
+		aWriteRecord = new OtherStorage();
+		//aWriteRecord.setPoName(poName);
+		getEQMHandle().addANewRecord();
 	}
 }
