@@ -178,7 +178,13 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate) {
 		aWriteRecord = new ExhaustedMaterial();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setBarCode(appBarcode);
+		aWriteRecord.setBatchLot(batch_lot);
+		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
+		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
+		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
 }

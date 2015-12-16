@@ -5,7 +5,7 @@ import java.util.Calendar;
 import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
 
-public class SubmitMaterial extends PageParentClass
+public class Submit_Material_Ajax extends PageParentClass
 {
 	public String GenBatchLot(String storageName, String strBarcode)
 	{
@@ -32,15 +32,15 @@ public class SubmitMaterial extends PageParentClass
 	
 	private IStorageTableInterface GetExhaustedStorageHandle(String storageName)
 	{
-		if(storageName.indexOf("Product") >= 0)
+		if(storageName.toLowerCase().indexOf("product") >= 0)
 		{
 			return new Exhausted_Product(new EarthquakeManagement());
 		}
-		else if(storageName.indexOf("Material") >= 0)
+		else if(storageName.toLowerCase().indexOf("material") >= 0)
 		{
 			return new Exhausted_Material(new EarthquakeManagement());
 		}
-		else if(storageName.indexOf("Other") >= 0)
+		else if(storageName.toLowerCase().indexOf("other") >= 0)
 		{
 			return new Exhausted_Other(new EarthquakeManagement());
 		}
@@ -49,15 +49,15 @@ public class SubmitMaterial extends PageParentClass
 	
 	private IStorageTableInterface GetStorageHandle(String storageName)
 	{
-		if(storageName.indexOf("Product") >= 0)
+		if(storageName.toLowerCase().indexOf("product") >= 0)
 		{
 			return new Product_Storage(new EarthquakeManagement());
 		}
-		else if(storageName.indexOf("Material") >= 0)
+		else if(storageName.toLowerCase().indexOf("material") >= 0)
 		{
 			return new Material_Storage(new EarthquakeManagement());
 		}
-		else if(storageName.indexOf("Other") >= 0)
+		else if(storageName.toLowerCase().indexOf("other") >= 0)
 		{
 			return new Other_Storage(new EarthquakeManagement());
 		}

@@ -98,7 +98,7 @@ function CheckBarcode()
 function CheckSubmitInfo()
 {
 	if(GetSelectedContent("store_name").indexOf("请选择")>0||GetSelectedContent("product_type").indexOf("请选择")>0||GetSelectedContent("product_name").indexOf("请选择")>0||
-			$("#user_name").val() == null||$("#QTY").val() == null||$("#Total_QTY").val() == null)
+			$("#user_name").val() == ""||$("#QTY").val() == ""||$("#Total_QTY").val() == "")
 	{
 		return false;
 	}
@@ -196,12 +196,12 @@ function initRows(tab)
 
 function submitOtherApp()
 {
-	if(!CheckSubmitInfo())
+	var tab = document.getElementById('display_app');
+	if(tab.rows.length < 2)
 	{
 		alert("申领数量超出库存数量或申领信息填写不完整!");
 		return;
 	}
-	var tab = document.getElementById('display_app');
 	for(var iRow=1; iRow < tab.rows.length; iRow++)
 	{
 		$.post("Ajax/Submit_Application_Ajax.jsp", {"product_type":tab.rows[iRow].cells[2].innerText, "product_name":tab.rows[iRow].cells[3].innerText,

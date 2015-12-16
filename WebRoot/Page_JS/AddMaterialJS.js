@@ -187,3 +187,146 @@ function InputBarcode(obj)
 		}
 	});
 }
+
+function CheckSubmitInfo()
+{
+	if(GetSelectedContent("store_name_addproduct").indexOf("请选择")>0||GetSelectedContent("product_type").indexOf("请选择")>0||GetSelectedContent("supplier_name").indexOf("请选择")>0||
+			$("#productname").val() == ""||$("#barcode").val() == ""||$("#QTY").val() == ""||$("#PriceUnit").val() == ""||$("#Description").val() == "")
+	{
+		return false;
+	}
+	if(parseInt($("#QTY").val()) <= 0||parseInt($("#PriceUnit").val()) <= 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+function additem(obj)
+{
+	if(!CheckSubmitInfo())
+	{
+		alert("申领数量超出库存数量或申领信息填写不完整!");
+		return;
+	}
+	var tab = document.getElementById('display_add');
+	var inputHead = ["库名", "类别", "产品名称", "八码", "入库数量", "单重", "单价", "备注", "供应商"];
+	var sampleCount = inputHead.length;
+    if(1 > tab.rows.length)
+	{
+        var myHeadRow = document.createElement("tr");
+        myHeadRow.setAttribute("align", "center");
+    	myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
+        for(var iCol=0; iCol < sampleCount; iCol++)
+    	{
+        	myHeadRow.appendChild(CreateTabCellContext("th", inputHead[iCol]));
+    	}
+        myHeadRow.appendChild(CreateTabCellContext("th", "操作"));
+        tab.appendChild(myHeadRow);
+	}
+
+    var myCurrentRow = document.createElement("tr");
+    var index = tab.rows.length;
+    myCurrentRow.appendChild(CreateTabCellContext("td", index));
+    for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
+	{
+    	var val = "";
+    	if("库名" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = GetSelectedContent("store_name_addproduct");
+		}
+    	else if("类别" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = GetSelectedContent("product_type");
+		}
+    	else if("产品名称" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#productname").val();
+		}
+    	else if("八码" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#barcode").val();
+		}
+    	else if("入库数量" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#QTY").val();
+		}
+    	else if("单重" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#WeightUnit").val();
+		}
+    	else if("单价" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#PriceUnit").val();
+		}
+    	else if("备注" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#Description").val();
+		}
+    	else if("供应商" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = GetSelectedContent("supplier_name");
+		}
+    	myCurrentRow.appendChild(CreateTabCellContext("td", val));
+	}
+    myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='deladditem(this)'>"));
+    tab.appendChild(myCurrentRow);
+}
+
+function deladditem(obj)
+{
+	var tab = document.getElementById('display_add');
+	for(var iRow=1; iRow < tab.rows.length; iRow++)
+	{
+		if(tab.rows[iRow].cells[0].innerText == obj.name)
+		{
+			tab.deleteRow(iRow);
+			if(tab.rows.length == 1)
+				tab.deleteRow(0);
+			break;
+		}
+	}
+	initRows(tab);
+}
+
+function initRows(tab)
+{
+	var tabRows = tab.rows.length;  
+	for(var i = 1; i<tabRows; i++)
+	{
+		tab.rows[i].cells[0].innerText=i;
+		tab.rows[i].cells[tab.rows[i].cells.length-1].innerHTML="<input align='middle' type='button' name='"+ i +"' value='删除' onclick='deladditem(this)'>";  
+	}
+}
+
+function AddMaterialFun()
+{
+	var tab = document.getElementById('display_add');
+	if(tab.rows.length < 2)
+	{
+		alert("申领数量超出库存数量或申领信息填写不完整!");
+		return;
+	}
+	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
+	for(var iRow=1; iRow < tab.rows.length; iRow++)
+	{
+		$.post("Ajax/Submit_Material_Ajax.jsp", {"store_name_addproduct":tab.rows[iRow].cells[1].innerText,
+			"product_type":tab.rows[iRow].cells[2].innerText, "productname":tab.rows[iRow].cells[3].innerText,
+			"barcode":tab.rows[iRow].cells[4].innerText, "QTY":tab.rows[iRow].cells[5].innerText,
+			"WeightUnit":tab.rows[iRow].cells[6].innerText, "PriceUnit":tab.rows[iRow].cells[7].innerText,
+			"Description":tab.rows[iRow].cells[8].innerText, "supplier_name":tab.rows[iRow].cells[9].innerText,
+			"SubmitDate":addDate},
+			function(data, textStatus)
+		{
+			if (!CheckAjaxResult(textStatus, data))
+			{
+				alert(data);
+				return;
+			}
+		});
+	}
+	while(tab.rows.length > 0)
+	{
+		tab.deleteRow(0);
+	}
+}

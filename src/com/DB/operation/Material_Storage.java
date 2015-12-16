@@ -196,7 +196,13 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 			String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new MaterialStorage();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setBarCode(appBarcode);
+		aWriteRecord.setBatchLot(batch_lot);
+		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
+		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
+		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
 }

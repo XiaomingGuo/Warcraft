@@ -170,10 +170,15 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate)
+			String appOrderName, String appInStoreDate)
 	{
 		aWriteRecord = new ExhaustedProduct();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setBarCode(appBarcode);
+		aWriteRecord.setBatchLot(batch_lot);
+		aWriteRecord.setOrderName(appOrderName);
+		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
+		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
+		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
 		getEQMHandle().addANewRecord();
 	}
 }

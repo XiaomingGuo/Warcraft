@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.support.ExhaustedMaterial;
 import com.DB.support.ExhaustedOther;
 import com.DB.support.ExhaustedProduct;
 import com.Warcraft.Interface.IEQManagement;
@@ -179,7 +180,13 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 			String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new ExhaustedOther();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setBarCode(appBarcode);
+		aWriteRecord.setBatchLot(batch_lot);
+		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
+		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
+		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
 }

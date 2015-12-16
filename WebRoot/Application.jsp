@@ -102,7 +102,7 @@
 	<br>
 	<table align="center">
 		<tr>
-			<td><input name="commit" type=submit value="提交" style="width:100" onclick="submitOtherApp(this)"></td>
+			<td><input name="commit" type="button" value="提交" style="width:100" onclick="submitOtherApp(this)"></td>
 		</tr>
 	</table>
   </body>

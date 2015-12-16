@@ -7,7 +7,7 @@
 	String rtnRst = "remove$";
 	if(session.getAttribute("logonuser")==null)
 	{
-		response.sendRedirect("tishi.jsp");
+		rtnRst += "error:未登陆";
 	}
 	else
 	{

@@ -40,19 +40,28 @@
 	
 	List<String> recordList = hPageHandle.GetAllRecordByBarCodeList(bar_code_List);
 	double totalPrice = 0.0;
+	int inSum=0, outSum=0, repertorySum=0;
 	for(int idx = 0; idx < recordList.size(); idx++)
 	{
 		rtnRst += recordList.get(idx) + "$";
 		if(idx%displayList.length == 7)
 			totalPrice+=Double.parseDouble(recordList.get(idx));
+		else if(idx%displayList.length == 6)
+			repertorySum += Integer.parseInt(recordList.get(idx));
+		else if(idx%displayList.length == 5)
+			outSum += Integer.parseInt(recordList.get(idx));
+		else if(idx%displayList.length == 4)
+			inSum += Integer.parseInt(recordList.get(idx));
 	}
 	
-	for(int idx = 0; idx < displayList.length-2; idx++)
+	for(int idx = 0; idx < displayList.length-5; idx++)
 	{
 		rtnRst += "$";
 	}
 	
-	rtnRst += "总价值$"+Double.toString(totalPrice)+"$";
-
+	rtnRst += "汇总$"+Integer.toString(inSum)+"$";
+	rtnRst += Integer.toString(outSum)+"$";
+	rtnRst += Integer.toString(repertorySum)+"$";
+	rtnRst += Double.toString(totalPrice)+"$";
 	out.write(rtnRst);
 %>
