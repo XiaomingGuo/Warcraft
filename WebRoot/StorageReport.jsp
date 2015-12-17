@@ -188,7 +188,7 @@
 							else if ("八码" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:65px' readonly></td>
 <%
 							}
 							else if ("名称" == displayKeyList[iCol])
@@ -222,25 +222,25 @@
 							else if ("进货数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:50px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:70px' readonly></td>
 <%
 							}
 							else if ("消耗数量" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:50px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:70px' readonly></td>
 <%
 							}
 							else if ("单价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:80px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:50px' readonly></td>
 <%
 							}
 							else if ("进货总价" == displayKeyList[iCol])
 							{
 %>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:100px' readonly></td>
+				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:80px' readonly></td>
 <%
 							}
 							else if ("供应商" == displayKeyList[iCol])
