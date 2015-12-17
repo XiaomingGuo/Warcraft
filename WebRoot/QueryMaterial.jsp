@@ -41,7 +41,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>物料录入查询</title>
+    <title>原材料状态</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
