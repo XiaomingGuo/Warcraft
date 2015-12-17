@@ -28,7 +28,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>物料录入查询</title>
+    <title>库房报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -85,7 +85,6 @@
 				  	<tr>
 					  	<td align="center">
 					  		<input type="submit" value="查询" />
-							<!-- <input type="button" value="生成报表并下载" /> -->
 					  	</td>
 				  	</tr>
 			  	</table>

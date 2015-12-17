@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.Product_Type" %>
+<%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
@@ -27,6 +28,20 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
+			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期"};
+			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+			hSNHandle.GetAllRecord();
+			List<String> store_nameList = hSNHandle.getDBRecordList("name");
+
+			for (int index = 0; index < store_nameList.size(); index++)
+			{
+				if (store_nameList.get(index).indexOf("成品库") == 0)
+				{
+					store_nameList.remove(index);
+				}
+			}
+			Calendar mData = Calendar.getInstance();
+			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 			String store_name = request.getParameter("store_name").replace(" ", "");
 			String beginDate = request.getParameter("BeginDate").replace(" ", "");
 			String endDate = request.getParameter("EndDate").replace(" ", "");
@@ -55,7 +70,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>生产单生成</title>
+    <title>库房报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -66,12 +81,68 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   </head>
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+  	<script language="javascript" src="Page_JS/StorageReportJS.js"></script>
+	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
+  	<script type="text/javascript">
+		dojo.require("dojo.widget.*");
+	</script>
     <jsp:include page="../Menu/QueryMenu.jsp"/>
     <br><br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
+    <table align="center" border="1">
+   		<caption><b>库房报表</b></caption>
+			<tr>
+<%
+				for(int iCol = 1; iCol <= selectKeyList.length; iCol++)
+				{
+%>
+				<th><%= selectKeyList[iCol-1]%></th>
+<%
+				}
+%>
+			</tr>
+			<tr>
+		  		<td align="right">
+				  	<select name="store_name" id="store_name" style="width:120px">
+					  	<option value = "--请选择--">--请选择--</option>
+<%
+				for(int i = 0; i < store_nameList.size(); i++)
+				{
+%>
+				  		<option value = <%=store_nameList.get(i) %>><%=store_nameList.get(i)%></option>
+<%
+				}
+%>
+				  	</select>
+			  	</td>
+		  		<td align="right">
+				  	<select name="product_type" id="product_type" style="width:100px">
+					  	<option value = "--请选择--">--请选择--</option>
+				  	</select>
+			  	</td>
+				<td align="right">
+					<select name="product_name" id="product_name" style="width:150px">
+					  	<option value = "--请选择--">--请选择--</option>
+					</select>
+				</td>
+				<td align="right">
+				  	<select name="supplier_name" id="supplier_name" style="width:120px">
+					  	<option value = "--请选择--">--请选择--</option>
+				  	</select>
+			  	</td>
+	   			<td align="center">
+		   			<label>入库时间:</label>
+	    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
+				</td>
+		  	</tr>
+	  	</table>
+	  	<br><br>
+  		<table id="display_add" border='1' align="center"></table>
+	  	<br>
 	    <table border="1" align="center">
 	    	<tr>
 <%
