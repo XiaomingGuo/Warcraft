@@ -29,6 +29,11 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
 			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期"};
+			Calendar mData = Calendar.getInstance();
+			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
+			String beginDate = String.format("%s%s", currentDate, "01");
+			String endDate = String.format("%s%s", currentDate, "31");
+			
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 			hSNHandle.GetAllRecord();
 			List<String> store_nameList = hSNHandle.getDBRecordList("name");
@@ -40,29 +45,22 @@
 					store_nameList.remove(index);
 				}
 			}
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-			String store_name = request.getParameter("store_name").replace(" ", "");
-			String beginDate = request.getParameter("BeginDate").replace(" ", "");
-			String endDate = request.getParameter("EndDate").replace(" ", "");
 			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
 			//product_type Database query
-			if (store_name.indexOf("请选择") < 0)
+			List<List<String>> record_list = null;
+			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
+			String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "in_store_date"};
+			String sql = "select * from (select * from other_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
+					+ "' UNION ALL select * from exhausted_other where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
+			if (hDBHandle.QueryDataBase(sql))
 			{
-				List<List<String>> record_list = null;
-				String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
-				String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "in_store_date"};
-				String sql = "select * from (select * from " + store_name + "_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
-						+ "' UNION ALL select * from exhausted_" + store_name + " where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
-				if (hDBHandle.QueryDataBase(sql))
-				{
-					record_list = hDBHandle.GetAllDBColumnsByList(keyWords);
-				}
-				else
-				{
-					hDBHandle.CloseDatabase();
-				}
+				record_list = hDBHandle.GetAllDBColumnsByList(keyWords);
+			}
+			else
+			{
+				hDBHandle.CloseDatabase();
+			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -90,8 +88,8 @@
   	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="../Menu/QueryMenu.jsp"/>
-    <br><br>
+    <jsp:include page="Menu/QueryMenu.jsp"/>
+    <br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
     <table align="center" border="1">
    		<caption><b>库房报表</b></caption>
@@ -140,7 +138,30 @@
 				</td>
 		  	</tr>
 	  	</table>
-	  	<br><br>
+  	  	<table align="center">
+		  	<tr>
+		  		<td align="center">
+			  		<b><font  size="3">查询起止时间:</font></b>
+				</td>
+		  	</tr>
+		  	<tr>
+			  	<td>
+				  	<table border="1" align="center">
+					  	<tr>
+					  		<td>
+				    			<label>开始日期:</label>
+				    			<div dojoType="dropdowndatepicker" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+			    			</td>
+			    			<td>
+				    			<label>截止日期:</label>
+				    			<div dojoType="dropdowndatepicker" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+					  		</td>
+					  	</tr>
+				  	</table>
+			  	</td>
+		  	</tr>
+		</table>
+	  	<br>
   		<table id="display_add" border='1' align="center"></table>
 	  	<br>
 	    <table border="1" align="center">
@@ -258,20 +279,6 @@
    		<br>
 	  	<table align="center">
 		<tr>
-	  		<td align="right">
-		  		<label>分页列:</label>
-			  	<select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
-				  	<option value = "--请选择--">--请选择--</option>
-<%
-					for(int i = 0; i < displayKeyList.length; i++)
-					{
-%>
-				  	<option value=<%=i%>><%=displayKeyList[i]%></option>
-<%
-					}
-%>
-			  	</select>
-		  	</td>
 		  	<td align="center">
 		  		<input type="submit" value="下载报表" style='width:80px'/>
 		  	</td>
@@ -281,12 +288,6 @@
   </body>
 </html>
 <%
-			}
-			else
-			{
-				session.setAttribute("error", "你是要查询那个库的数据!");
-				response.sendRedirect("../tishi.jsp");
-			}
 		}
 	}
 %>
