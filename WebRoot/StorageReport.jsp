@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.Product_Type" %>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.StorageReport" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
@@ -28,28 +28,21 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
+			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
 			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期"};
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
+			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-			hSNHandle.GetAllRecord();
-			List<String> store_nameList = hSNHandle.getDBRecordList("name");
+			StorageReport hPageHandle = new StorageReport();
+			List<String> store_nameList = hPageHandle.GetAllStorageroom();
 
-			for (int index = 0; index < store_nameList.size(); index++)
-			{
-				if (store_nameList.get(index).indexOf("成品库") == 0)
-				{
-					store_nameList.remove(index);
-				}
-			}
 			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
 			//product_type Database query
 			List<List<String>> record_list = null;
-			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
 			String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "in_store_date"};
 			String sql = "select * from (select * from other_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
 					+ "' UNION ALL select * from exhausted_other where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
@@ -134,7 +127,7 @@
 			  	</td>
 	   			<td align="center">
 		   			<label>入库时间:</label>
-	    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
+	    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>"></div>
 				</td>
 		  	</tr>
 	  	</table>
