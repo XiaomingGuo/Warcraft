@@ -81,6 +81,12 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
+	public void GetAllRecord()
+	{
+		String hql = String.format("from ProductInfo pi");
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void GetRecordByBarcode(String bar_code)
 	{
 		String hql = String.format("from ProductInfo pi where pi.barCode='%s'", bar_code);

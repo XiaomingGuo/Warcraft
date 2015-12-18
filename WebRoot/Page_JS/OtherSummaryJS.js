@@ -57,7 +57,7 @@ $(function()
 	});				
 });
 
-function DisplayStorageList(obj)
+function DisplayStorageList()
 {
 	var storage_name = $.trim($("#store_name").val());
 	var product_type = $.trim($("#product_type").val());
