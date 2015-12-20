@@ -1,6 +1,8 @@
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.QueryStorageItemAjax" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.text.DecimalFormat" %>
 <%!
 	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
 	String[] displayList = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "总价值"};
@@ -59,9 +61,10 @@
 		rtnRst += "$";
 	}
 	
+	NumberFormat formatter = new DecimalFormat("#.###");
 	rtnRst += "汇总$"+Integer.toString(inSum)+"$";
 	rtnRst += Integer.toString(outSum)+"$";
 	rtnRst += Integer.toString(repertorySum)+"$";
-	rtnRst += Double.toString(totalPrice)+"$";
+	rtnRst += formatter.format(totalPrice)+"$";
 	out.write(rtnRst);
 %>

@@ -192,14 +192,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 
 	@Override
-	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
-	{
-		String hql = String.format("from OtherStorage os where os.barCode='%s' and os.batchLot='%s'",
-				GetUsedBarcode(strBarcode, "Other_Storage"), batch_lot);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate)
@@ -213,5 +205,32 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from OtherStorage os where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("os.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("os.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
+			List<String> keyList, List<String> valueList, String beginDate,
+			String endDate)
+	{
+		String hql = "from OtherStorage os where ";
+		for(int idx=0; idx<keyList.size(); idx++)
+		{
+			hql += String.format("os.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("os.createDate>='%s' and os.createDate<='%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
 	}
 }

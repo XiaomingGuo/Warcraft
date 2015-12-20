@@ -53,8 +53,13 @@ $(function()
 	$('#supplier_name').change(function()
 	{
 		DisplayAddList();
-	});	
+	});
 });
+
+function SubmitDateChange()
+{
+	DisplayAddList();
+}
 
 function DisplayAddList()
 {
@@ -65,7 +70,6 @@ function DisplayAddList()
 	var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
 	var endDate = dojo.widget.byId("EndDate").inputNode.value;
 	var submitDate = dojo.widget.byId("SubmitDate").inputNode.value;
-	
 	$.post("Ajax/Query_Storage_Report_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name,
 		"supplier_name":supplier_name, "beginDate":beginDate, "endDate":endDate, "submitDate":submitDate}, function(data, textStatus)
 	{
@@ -79,17 +83,18 @@ function DisplayAddList()
 				var tr = $("<tr></tr>");
 				for (var iHead = 1; iHead <= iColCount; iHead++)
 				{
-					var th = $("<th>" + data_list[iHead + 2] + "</th>");
+					var th = $("<th><label name="+iHead+">" + data_list[iHead + 2] + "</label></th>");
 					tr.append(th);
 				}
 				$("#display_add").append(tr);
+				//<input name="<%=iRow*12+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly>
 				for(var iRow = 1; iRow <= iRowCount; iRow++)
 				{
 					var tr = $("<tr></tr>");
 					for (var iCol = 1; iCol <= iColCount; iCol++)
 					{
 						var td = $("<td></td>");
-						td.append(data_list[iRow*iColCount + iCol + 2]);
+						td.append("<label name="+ iRow*iColCount+iCol +">"+ data_list[iRow*iColCount + iCol + 2] +"</label>");
 						tr.append(td);
 					}
 					$("#display_add").append(tr);

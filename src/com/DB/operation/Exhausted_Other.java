@@ -167,14 +167,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
-	{
-		String hql = String.format("from ExhaustedOther eo where eo.barCode='%s' and eo.batchLot='%s'",
-				GetUsedBarcode(strBarcode, "Exhausted_Other"), batch_lot);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate)
@@ -188,5 +180,32 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from ExhaustedOther eo where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("eo.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("eo.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
+			List<String> keyList, List<String> valueList, String beginDate,
+			String endDate)
+	{
+		String hql = "from ExhaustedOther eo where ";
+		for(int idx=0; idx<keyList.size(); idx++)
+		{
+			hql += String.format("eo.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("eo.createDate>='%s' and eo.createDate<='%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
 	}
 }

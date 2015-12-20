@@ -1,6 +1,8 @@
 package com.jsp.support;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
@@ -18,8 +20,9 @@ public class Submit_Material_Ajax extends PageParentClass
 		do
 		{
 			rtnRst = batch_lot_Head + "-" + String.format("%02d", loopNum);
-			hStorageHandle.QueryRecordByBarcodeAndBatchLot(strBarcode, rtnRst);
-			hExStorageHandle.QueryRecordByBarcodeAndBatchLot(strBarcode, rtnRst);
+			List<String> keyList = Arrays.asList("Bar_code", "Batch_Lot"), valueList = Arrays.asList(strBarcode, rtnRst);
+			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hExStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			if ((hStorageHandle.RecordDBCount()+hExStorageHandle.RecordDBCount()) <= 0)
 			{
 				break;

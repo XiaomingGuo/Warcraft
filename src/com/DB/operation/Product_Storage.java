@@ -171,14 +171,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void QueryRecordByBarcodeAndBatchLot(String strBarcode, String batch_lot)
-	{
-		String hql = String.format("from ProductStorage ps where ps.barCode='%s' and ps.batchLot='%s'",
-				GetUsedBarcode(strBarcode, "Product_Storage"), batch_lot);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String appInStoreDate)
@@ -191,6 +183,31 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
 		getEQMHandle().addANewRecord();
-		
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from ProductStorage ps where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("ps.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("ps.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
+			List<String> keyList, List<String> valueList, String beginDate,
+			String endDate) {
+		String hql = "from ProductStorage ps where ";
+		for(int idx=0; idx<keyList.size(); idx++)
+		{
+			hql += String.format("ps.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("ps.createDate>='%s' and ps.createDate<='%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
 	}
 }

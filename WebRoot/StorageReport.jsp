@@ -78,7 +78,7 @@
   	<script language="javascript" src="Page_JS/StorageReportJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
-  	<script type="text/javascript">
+   	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
@@ -127,7 +127,7 @@
 			  	</td>
 	   			<td align="center">
 		   			<label>入库时间:</label>
-	    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>"></div>
+	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>">
 				</td>
 		  	</tr>
 	  	</table>
@@ -143,11 +143,11 @@
 					  	<tr>
 					  		<td>
 				    			<label>开始日期:</label>
-				    			<div dojoType="dropdowndatepicker" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+				    			<div dojoType="dropdowndatepicker" id="BeginDate" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
 			    			</td>
 			    			<td>
 				    			<label>截止日期:</label>
-				    			<div dojoType="dropdowndatepicker" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+				    			<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
 					  		</td>
 					  	</tr>
 				  	</table>

@@ -187,7 +187,6 @@
 			var endData = dojo.widget.byId("DateOfEnd");
 			window.location.href="MonthReport.jsp?BeginDate="+beginData.getValue().split("T")[0]+"&EndDate="+endData.getValue().split("T")[0];
 		}
-		
 	</script>
   </body>
 </html>

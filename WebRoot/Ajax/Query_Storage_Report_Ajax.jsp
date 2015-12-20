@@ -1,10 +1,10 @@
-<%@page import="org.apache.struts2.components.Else"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.QueryStorageReportAjax" %>
+<%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.text.DecimalFormat" %>
 <%!
 	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
+	String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};
 %>
 <%
 	String rtnRst = "remove$";
@@ -43,43 +43,56 @@
 	
 	Calendar mData = Calendar.getInstance();
 	String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1) + String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-	if(currentDate.contains(submitDate))
+	List<String> recordList = null;
+	//List<String> recordList = hPageHandle.GetAllRecordByBarCodeList(bar_code_List);
+
+	if(currentDate.equals(submitDate))
 	{
-		;
+		recordList = hPageHandle.GetResultByStartEndDate(bar_code_List, supplier_name, beginDate, endDate);
 	}
 	else
 	{
-		;
+		recordList = hPageHandle.GetResultBySubmitDate(bar_code_List, supplier_name, submitDate);
 	}
 	rtnRst += displayKeyList.length + "$";
-	rtnRst += bar_code_List.size()+1 + "$";
+	rtnRst += recordList.size()/displayKeyList.length+1 + "$";
 	for(int idx = 0; idx < displayKeyList.length; idx++)
 		rtnRst += displayKeyList[idx] + "$";
 	
-	List<String> recordList = hPageHandle.GetAllRecordByBarCodeList(bar_code_List);
-	double totalPrice = 0.0;
+	double totalInPrice = 0.0, totalOutPrice = 0.0, totalRepertoryPrice = 0.0;
 	int inSum=0, outSum=0, repertorySum=0;
 	for(int idx = 0; idx < recordList.size(); idx++)
 	{
 		rtnRst += recordList.get(idx) + "$";
-		if(idx%displayKeyList.length == 7)
-			totalPrice+=Double.parseDouble(recordList.get(idx));
-		else if(idx%displayKeyList.length == 6)
+		if(idx%displayKeyList.length == 12)
+			totalRepertoryPrice+=Double.parseDouble(recordList.get(idx));
+		else if(idx%displayKeyList.length == 11)
+			totalOutPrice+=Double.parseDouble(recordList.get(idx));
+		else if(idx%displayKeyList.length == 10)
+			totalInPrice+=Double.parseDouble(recordList.get(idx));
+		else if(idx%displayKeyList.length == 8)
 			repertorySum += Integer.parseInt(recordList.get(idx));
-		else if(idx%displayKeyList.length == 5)
+		else if(idx%displayKeyList.length == 7)
 			outSum += Integer.parseInt(recordList.get(idx));
-		else if(idx%displayKeyList.length == 4)
+		else if(idx%displayKeyList.length == 6)
 			inSum += Integer.parseInt(recordList.get(idx));
 	}
 	
-	for(int idx = 0; idx < displayKeyList.length-5; idx++)
+	for(int idx = 0; idx < displayKeyList.length-10; idx++)
 	{
 		rtnRst += "$";
 	}
 	
+	//{"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};
+	NumberFormat formatter = new DecimalFormat("#.###");
 	rtnRst += "汇总$"+Integer.toString(inSum)+"$";
 	rtnRst += Integer.toString(outSum)+"$";
 	rtnRst += Integer.toString(repertorySum)+"$";
-	rtnRst += Double.toString(totalPrice)+"$";
+	rtnRst += "$";
+	rtnRst += formatter.format(totalInPrice)+"$";
+	rtnRst += formatter.format(totalOutPrice)+"$";
+	rtnRst += formatter.format(totalRepertoryPrice)+"$";
+	rtnRst += "$";
+	rtnRst += "$";
 	out.write(rtnRst);
 %>

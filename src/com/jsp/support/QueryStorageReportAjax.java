@@ -3,9 +3,11 @@ package com.jsp.support;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.IStorageTableInterface;
 
 public class QueryStorageReportAjax extends PageParentClass
 {
@@ -27,27 +29,155 @@ public class QueryStorageReportAjax extends PageParentClass
 		return rtnRst;
 	}
 	
-	public List<String> GetAllRecordByBarCodeList(List<String> barcodeList)
+	public List<String> GetResultBySubmitDate(List<String> barcodeList, String supplier_name, String submitDate)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		//{"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "总价值"}
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		int iRowNum = 1;
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
 			hPIHandle.GetRecordByBarcode(barcodeList.get(idx));
-			rtnRst.add(Integer.toString(idx+1));
-			rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
-			rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
-			rtnRst.add(hPIHandle.getDBRecordList("product_type").get(0));
-			Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
-			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", barcodeList.get(idx));
-			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", barcodeList.get(idx));
-			double totalPrice = hOSHandle.GetDblPriceOfStorage("Bar_Code", barcodeList.get(idx));
-			rtnRst.add(Integer.toString(in_Qty));
-			rtnRst.add(Integer.toString(out_Qty));
-			rtnRst.add(Integer.toString(in_Qty-out_Qty));
-			NumberFormat formatter = new DecimalFormat("#.####");
-			rtnRst.add(formatter.format(totalPrice));
+			hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
+			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
+			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
+			List<String> keyList = null, valueList = null;
+			submitDate = submitDate.replace("-", "");
+			if(supplier_name.indexOf("请选择") >= 0)
+			{
+				keyList = Arrays.asList("Bar_Code", "in_store_date");
+				valueList = Arrays.asList(strBarcode, submitDate);
+			}
+			else
+			{
+				keyList = Arrays.asList("Bar_Code", "in_store_date", "vendor_name");
+				valueList = Arrays.asList(strBarcode, submitDate, supplier_name);
+			}
+				
+			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			NumberFormat formatter = new DecimalFormat("#.###");
+			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			{
+				rtnRst.add(Integer.toString(iRowNum));
+				rtnRst.add(strBarcode);
+				rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
+				rtnRst.add(hPTHandle.getDBRecordList("storeroom").get(0));
+				rtnRst.add(hPIHandle.getDBRecordList("description").get(0));
+				rtnRst.add(hStorageHandle.getDBRecordList("Batch_Lot").get(recordIdx));
+				int in_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(recordIdx));
+				int out_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("OUT_QTY").get(recordIdx));
+				rtnRst.add(Integer.toString(in_Qty));
+				rtnRst.add(Integer.toString(out_Qty));
+				rtnRst.add(Integer.toString(in_Qty-out_Qty));
+				float perUnitPrice = Float.parseFloat(hStorageHandle.getDBRecordList("Price_Per_Unit").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice));
+				rtnRst.add(hStorageHandle.getDBRecordList("Total_Price").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice*out_Qty));
+				rtnRst.add(formatter.format(perUnitPrice*(in_Qty-out_Qty)));
+				rtnRst.add(hStorageHandle.getDBRecordList("vendor_name").get(recordIdx));
+				rtnRst.add(hStorageHandle.getDBRecordList("in_store_date").get(recordIdx));
+				iRowNum++;
+			}
+			hStorageHandle = GenExStorageHandle(strBarcode);
+			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			{
+				rtnRst.add(Integer.toString(iRowNum));
+				rtnRst.add(strBarcode);
+				rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
+				rtnRst.add(hPTHandle.getDBRecordList("storeroom").get(0));
+				rtnRst.add(hPIHandle.getDBRecordList("description").get(0));
+				rtnRst.add(hStorageHandle.getDBRecordList("Batch_Lot").get(recordIdx));
+				int in_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(recordIdx));
+				int out_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("OUT_QTY").get(recordIdx));
+				rtnRst.add(Integer.toString(in_Qty));
+				rtnRst.add(Integer.toString(out_Qty));
+				rtnRst.add(Integer.toString(in_Qty-out_Qty));
+				float perUnitPrice = Float.parseFloat(hStorageHandle.getDBRecordList("Price_Per_Unit").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice));
+				rtnRst.add(hStorageHandle.getDBRecordList("Total_Price").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice*out_Qty));
+				rtnRst.add(formatter.format(perUnitPrice*(in_Qty-out_Qty)));
+				rtnRst.add(hStorageHandle.getDBRecordList("vendor_name").get(recordIdx));
+				rtnRst.add(hStorageHandle.getDBRecordList("in_store_date").get(recordIdx));
+				iRowNum++;
+			}
+		}
+		return rtnRst;
+	}
+	
+	public List<String> GetResultByStartEndDate(List<String> barcodeList, String supplier_name, String beginDate, String endDate)
+	{
+		List<String> rtnRst = new ArrayList<String>();
+		//{"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		int iRowNum = 1;
+		for (int idx = 0; idx < barcodeList.size(); idx++)
+		{
+			hPIHandle.GetRecordByBarcode(barcodeList.get(idx));
+			hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
+			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
+			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
+			List<String> keyList = null, valueList = null;
+			if(supplier_name.indexOf("请选择") >= 0)
+			{
+				keyList = Arrays.asList("Bar_Code");
+				valueList = Arrays.asList(strBarcode);
+			}
+			else
+			{
+				keyList = Arrays.asList("Bar_Code", "vendor_name");
+				valueList = Arrays.asList(strBarcode, supplier_name);
+			}
+			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
+			NumberFormat formatter = new DecimalFormat("#.###");
+			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			{
+				rtnRst.add(Integer.toString(iRowNum));
+				rtnRst.add(strBarcode);
+				rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
+				rtnRst.add(hPTHandle.getDBRecordList("storeroom").get(0));
+				rtnRst.add(hPIHandle.getDBRecordList("description").get(0));
+				rtnRst.add(hStorageHandle.getDBRecordList("Batch_Lot").get(recordIdx));
+				int in_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(recordIdx));
+				int out_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("OUT_QTY").get(recordIdx));
+				rtnRst.add(Integer.toString(in_Qty));
+				rtnRst.add(Integer.toString(out_Qty));
+				rtnRst.add(Integer.toString(in_Qty-out_Qty));
+				float perUnitPrice = Float.parseFloat(hStorageHandle.getDBRecordList("Price_Per_Unit").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice));
+				rtnRst.add(hStorageHandle.getDBRecordList("Total_Price").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice*out_Qty));
+				rtnRst.add(formatter.format(perUnitPrice*(in_Qty-out_Qty)));
+				rtnRst.add(hStorageHandle.getDBRecordList("vendor_name").get(recordIdx));
+				rtnRst.add(hStorageHandle.getDBRecordList("in_store_date").get(recordIdx));
+				iRowNum++;
+			}
+			hStorageHandle = GenExStorageHandle(strBarcode);
+			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
+			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			{
+				rtnRst.add(Integer.toString(iRowNum));
+				rtnRst.add(strBarcode);
+				rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
+				rtnRst.add(hPTHandle.getDBRecordList("storeroom").get(0));
+				rtnRst.add(hPIHandle.getDBRecordList("description").get(0));
+				rtnRst.add(hStorageHandle.getDBRecordList("Batch_Lot").get(recordIdx));
+				int in_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(recordIdx));
+				int out_Qty = Integer.parseInt(hStorageHandle.getDBRecordList("OUT_QTY").get(recordIdx));
+				rtnRst.add(Integer.toString(in_Qty));
+				rtnRst.add(Integer.toString(out_Qty));
+				rtnRst.add(Integer.toString(in_Qty-out_Qty));
+				float perUnitPrice = Float.parseFloat(hStorageHandle.getDBRecordList("Price_Per_Unit").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice));
+				rtnRst.add(hStorageHandle.getDBRecordList("Total_Price").get(recordIdx));
+				rtnRst.add(formatter.format(perUnitPrice*out_Qty));
+				rtnRst.add(formatter.format(perUnitPrice*(in_Qty-out_Qty)));
+				rtnRst.add(hStorageHandle.getDBRecordList("vendor_name").get(recordIdx));
+				rtnRst.add(hStorageHandle.getDBRecordList("in_store_date").get(recordIdx));
+				iRowNum++;
+			}
 		}
 		return rtnRst;
 	}
@@ -60,23 +190,7 @@ public class QueryStorageReportAjax extends PageParentClass
 		rtnRst = hPIHandle.getDBRecordList("Bar_Code").get(0);
 		return rtnRst;
 	}
-	
-	public String GenOrderName(String OrderHeader)
-	{
-		String orderName = "";
-		int iCount = 1;
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-		do
-		{
-			orderName = String.format("%s_%04d", OrderHeader, iCount);
-			hPOHandle.GetRecordByOrderName("MB_"+orderName);
-			if (hPOHandle.getDBRecordList("id").size() <= 0)
-				break;
-			iCount += 1;
-		}while(true);
-		return orderName;
-	}
-	
+		
 	public List<String> QueryAllBarcode()
 	{
 		List<String> rtnRst = null;
