@@ -76,6 +76,7 @@ function DisplayAddList()
 		if (CheckAjaxResult(textStatus, data))
 		{
 			$("#display_add").empty();
+			$("#hidden_table").empty();
 			var data_list = data.split("$");
 			var iColCount = data_list[1], iRowCount = data_list[2];
 			if (iColCount > 0&&iRowCount > 0)
@@ -94,10 +95,23 @@ function DisplayAddList()
 					for (var iCol = 1; iCol <= iColCount; iCol++)
 					{
 						var td = $("<td></td>");
-						td.append("<label name="+ iRow*iColCount+iCol +">"+ data_list[iRow*iColCount + iCol + 2] +"</label>");
+						var iColNum = iRow*iColCount+iCol;//
+						td.append("<input style='width:80px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
 						tr.append(td);
 					}
 					$("#display_add").append(tr);
+				}
+				for(var iRow = 1; iRow <= iRowCount; iRow++)
+				{
+					var tr = $("<tr></tr>");
+					for (var iCol = 1; iCol <= iColCount; iCol++)
+					{
+						var td = $("<td></td>");
+						var iColNum = iRow*iColCount+iCol;
+						td.append("<input type='hidden' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+						tr.append(td);
+					}
+					$("#hidden_table").append(tr);
 				}
 			}
 		}

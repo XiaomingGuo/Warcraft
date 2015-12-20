@@ -3,11 +3,7 @@
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.StorageReport" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -38,22 +34,6 @@
 			
 			StorageReport hPageHandle = new StorageReport();
 			List<String> store_nameList = hPageHandle.GetAllStorageroom();
-
-			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-			//product_type Database query
-			List<List<String>> record_list = null;
-			String[] keyWords = {"id", "Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "in_store_date"};
-			String sql = "select * from (select * from other_storage where create_date > '" + beginDate + "' and create_date < '" + endDate
-					+ "' UNION ALL select * from exhausted_other where create_date > '" + beginDate + "' and create_date < '" + endDate + "')T order by vendor_name, Bar_Code, id";
-			if (hDBHandle.QueryDataBase(sql))
-			{
-				record_list = hDBHandle.GetAllDBColumnsByList(keyWords);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -157,119 +137,7 @@
 	  	<br>
   		<table id="display_add" border='1' align="center"></table>
 	  	<br>
-	    <table border="1" align="center">
-	    	<tr>
-<%
-				for(int iCol = 0; iCol < displayKeyList.length; iCol++)
-				{
-%>
-				<th><%= displayKeyList[iCol]%></th>
-<%
-				}
-%>
-			</tr>
-<%
-				if (record_list.size() > 0)
-				{
-					for(int iRow = 0; iRow < record_list.get(0).size(); iRow++)
-					{
-%>
-    		<tr>
-<%
-						String barcode = record_list.get(1).get(iRow);
-						for(int iCol = 0; iCol < displayKeyList.length; iCol++)
-						{
-							if ("ID" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= iRow + 1 %> style='width:30px' readonly></td>
-<%
-							}
-							else if ("八码" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(1).get(iRow) %> style='width:65px' readonly></td>
-<%
-							}
-							else if ("名称" == displayKeyList[iCol])
-							{
-								hPIHandle.GetRecordByBarcode(barcode);
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= hPIHandle.getDBRecordList("name").get(0) %> style='width:150px' readonly></td>
-<%
-							}
-							else if ("库名" == displayKeyList[iCol])
-							{
-								hPIHandle.GetRecordByBarcode(barcode);
-								hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= hPTHandle.getDBRecordList("storeroom").get(0) %> style='width:100px' readonly></td>
-<%
-							}
-							else if ("规格" == displayKeyList[iCol])
-							{
-								hPIHandle.GetRecordByBarcode(barcode);
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= hPIHandle.getDBRecordList("description").get(0) %> style='width:120px' readonly></td>
-<%
-							}
-							else if ("批号" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(2).get(iRow) %> style='width:80px' readonly></td>
-<%
-							}
-							else if ("进货数量" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(3).get(iRow) %> style='width:70px' readonly></td>
-<%
-							}
-							else if ("消耗数量" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(4).get(iRow) %> style='width:70px' readonly></td>
-<%
-							}
-							else if ("单价" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(5).get(iRow) %> style='width:50px' readonly></td>
-<%
-							}
-							else if ("进货总价" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(6).get(iRow) %> style='width:80px' readonly></td>
-<%
-							}
-							else if ("供应商" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(7).get(iRow) %> style='width:80px' readonly></td>
-<%
-							}
-							else if ("进货单时间" == displayKeyList[iCol])
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value=<%= record_list.get(8).get(iRow) %> style='width:100px' readonly></td>
-<%
-							}
-							else
-							{
-%>
-				<td><input name="<%=iRow*12+iCol %>" value="无此列" style='width:100px' readonly></td>
-<%
-							}
-						}
-%>
-			</tr>
-<%
-					}
-				}
-%>
-   		</table>
-   		<br>
+  		<table id="hidden_table" style="visibility:hidden"></table>
 	  	<table align="center">
 		<tr>
 		  	<td align="center">

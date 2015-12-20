@@ -1,12 +1,10 @@
 package com.DB.core;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.Warcraft.Interface.IDBExecute;
 import com.Warcraft.Interface.IDataBaseCore;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 public class DBManagement
 {

@@ -1,10 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -24,9 +22,8 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "总价", "供应商", "进货单时间"};
+			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};
 			
-			String splitFlag=(String)request.getParameter("OrderItemSelect");
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			List<String> headList = new ArrayList<String>();
 			for (int iHead = 0; iHead < displayKeyList.length; iHead++)
@@ -34,23 +31,24 @@
 				headList.add(displayKeyList[iHead]);
 			}
 			recordList.add(headList);
-			for(int iRow = 0; ;iRow++)
+			for(int iRow = 1; ;iRow++)
 			{
 				List<String> tempList = new ArrayList<String>();
-				String breakFlag = request.getParameter(Integer.toString(iRow*12));
+				int iColNum = iRow*displayKeyList.length+1;
+				String breakFlag = request.getParameter(Integer.toString(iColNum));
 				if (breakFlag == null)
 				{
 					break;
 				}
-				for(int iCol = 0; iCol < displayKeyList.length;iCol++)
+				for(int iCol = 1; iCol <= displayKeyList.length;iCol++)
 				{
-					String tempValue = request.getParameter(Integer.toString(iRow*12+iCol)).replace(" ", "");
+					String tempValue = request.getParameter(Integer.toString(iRow*displayKeyList.length+iCol)).replace(" ", "");
 					tempList.add(tempValue);
 				}
 				recordList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
-			excelUtil.execWriteExcelBlock(recordList, Integer.parseInt(splitFlag));
+			excelUtil.execWriteExcelBlock(recordList, Integer.parseInt("3"));
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	

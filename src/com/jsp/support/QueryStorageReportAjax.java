@@ -14,9 +14,9 @@ public class QueryStorageReportAjax extends PageParentClass
 	public List<String> QueryProTypeStorage(String storageName)
 	{
 		List<String> rtnRst = null;
-		Product_Type hDBHandle = new Product_Type(new EarthquakeManagement());
-		hDBHandle.GetRecordByStoreroom(storageName);
-		rtnRst = hDBHandle.getDBRecordList("name");
+		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		hPTHandle.GetRecordByStoreroom(storageName);
+		rtnRst = hPTHandle.getDBRecordList("name");
 		return rtnRst;
 	}
 	
