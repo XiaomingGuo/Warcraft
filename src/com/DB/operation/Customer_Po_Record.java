@@ -160,9 +160,13 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
+		for (String item : delList)
+		{
+			String hql = String.format("delete CustomerPoRecord cpr where cpr.%s='%s'", GetDatabaseKeyWord(keyWord), item);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
+		}
 	}
 
 	@Override

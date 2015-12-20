@@ -143,6 +143,18 @@ public class User_Info extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from UserInfo ui where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("ui.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("ui.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
+	}
 
 	@Override
 	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,

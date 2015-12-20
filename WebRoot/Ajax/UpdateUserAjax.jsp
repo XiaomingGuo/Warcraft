@@ -1,30 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.User_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "";
 	String id = (String)request.getParameter("Index").replace(" ", "");
-	String sql = "select * from user_info where id='" + id +"'";
-	if (hDBHandle.QueryDataBase(sql))
-	{	
-		if(hDBHandle.GetRecordCount() > 0)
-		{
-			hDBHandle.CloseDatabase();
-			sql = "UPDATE user_info SET permission='" + (String)request.getParameter("Permission") + "' WHERE id='" + id +"'";
-			hDBHandle.execUpate(sql);
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-		}
-	}
-	else
+	User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+	hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
+	if(hUIHandle.RecordDBCount() > 0)
 	{
-		hDBHandle.CloseDatabase();
-		rtnRst = "产品类型为空或查询数据库出错!";
+		hUIHandle.UpdateRecordByKeyWord("permission", (String)request.getParameter("Permission"), "id", id);
 	}
-	
 	out.write(rtnRst);
 %>
