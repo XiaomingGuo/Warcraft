@@ -23,8 +23,7 @@
   <property generated="never" lazy="false" name="department" type="java.lang.String">
    <column length="20" name="department" not-null="true"/>
   </property>
-  <property generated="never" insert="false" lazy="false"
-   name="permission" type="java.lang.Integer">
+  <property generated="never" lazy="false" name="permission" type="java.lang.Integer">
    <column name="permission" not-null="true"/>
   </property>
   <property generated="never" insert="false" lazy="false" name="picture" type="java.lang.String">

@@ -1,8 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.User_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "";
 	String name = (String)request.getParameter("name").replace(" ", "");
@@ -11,8 +9,8 @@
 	String permission = (String)request.getParameter("Permission").replace(" ", "");
 	if (name != null&&password != null&&department != null&&!name.isEmpty()&&!password.isEmpty()&&!department.isEmpty())
 	{
-		String sql = "INSERT INTO user_info (name, password, department, permission) VALUES ('" + name + "','" + password + "','" + department + "','" + permission + "')";
-		hDBHandle.execUpate(sql);
+		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+		hUIHandle.AddARecord(name, password, department, permission);
 	}
 	out.write(rtnRst);
 %>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.DB.support.CustomerPo;
 import com.DB.support.UserInfo;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
@@ -125,6 +126,16 @@ public class User_Info extends DBTableParent implements ITableInterface
 			rtnRst = "picture";
 		}
 		return rtnRst;
+	}
+	
+	public void AddARecord(String name, String password, String department, String permission)
+	{
+		aWriteRecord = new UserInfo();
+		aWriteRecord.setName(name);
+		aWriteRecord.setPassword(password);
+		aWriteRecord.setDepartment(department);
+		aWriteRecord.setPermission(Integer.parseInt(permission));
+		getEQMHandle().addANewRecord();
 	}
 
 	@Override
