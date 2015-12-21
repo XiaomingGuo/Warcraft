@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,6 +177,60 @@ public class ExcelManagment extends MSExcel
 					hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
 				}
 			}
+			hExcelHandle.saveToFile();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			rtnRst = false;
+		} 
+		finally
+		{
+			CleanExcelHandle();
+		}
+		return rtnRst;
+	}
+	
+	public boolean execWriteExcelSplitByList(List<List<String>> contentList, List<List<Integer>> splitList)
+	{
+		boolean rtnRst = true;
+		List<String> sheetNameList = Arrays.asList("进货报表", "消耗报表", "库存报表");
+	    try
+		{
+	    	for(int iSheetIdx = 0; iSheetIdx < splitList.size(); iSheetIdx++)
+	    	{
+				String sheetName = sheetNameList.get(iSheetIdx);
+				if(hExcelHandle.setWorkSheet(sheetName))
+				{
+					splitList.get(iSheetIdx);
+					hExcelHandle.setWorkRow(0);
+					int setCol = 0;
+					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
+					{
+						if(splitList.get(iSheetIdx).contains(iCol))
+						{
+							hExcelHandle.setWorkCell(setCol);
+							hExcelHandle.setCellValue(contentList.get(0).get(iCol));
+							setCol++;
+						}
+					}
+
+					for (int iRow = 1; iRow < contentList.size(); iRow++)
+					{
+						hExcelHandle.setWorkRow(iRow);
+						setCol = 0;
+						for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
+						{
+							if(splitList.get(iSheetIdx).contains(iCol))
+							{
+								hExcelHandle.setWorkCell(setCol);
+								hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
+								setCol++;
+							}
+						}
+					}
+				}
+	    	}
 			hExcelHandle.saveToFile();
 		}
 		catch (Exception e)

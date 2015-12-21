@@ -48,7 +48,8 @@
 				recordList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
-			excelUtil.execWriteExcelBlock(recordList, Integer.parseInt("3"));
+			List<List<Integer>> splitColNum = Arrays.asList(Arrays.asList(0,1,2,3,4,5,6,9,10,13,14), Arrays.asList(0,1,2,3,4,5,7,9,11,13,14), Arrays.asList(0,1,2,3,4,5,8,9,12,13,14));
+			excelUtil.execWriteExcelSplitByList(recordList, splitColNum);
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
@@ -63,8 +64,7 @@
 			out.clear();
 			out=pageContext.pushBody();
 		}
-		out.println("<script>alert('下载成功！');window.location.href = '../Storeroom_Summary.jsp';</script>");	
+		out.println("<script>alert('下载成功！');window.location.href = '../StorageReport.jsp';</script>");	
 
-		//response.sendRedirect("../Storeroom_Summary.jsp");
 	}
 %>
