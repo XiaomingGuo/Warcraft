@@ -191,43 +191,38 @@ public class ExcelManagment extends MSExcel
 		return rtnRst;
 	}
 	
-	public boolean execWriteExcelSplitByList(List<List<String>> contentList, List<List<Integer>> splitList)
+	private void setARowContent(int iRow, List<String> rowContentList, List<Integer> ignoreColList)
+	{
+		hExcelHandle.setWorkRow(iRow);
+		int setCol = 0;
+		for(int iCol=0; iCol < rowContentList.size(); iCol++)
+		{
+			if(!ignoreColList.contains(iCol))
+			{
+				hExcelHandle.setWorkCell(setCol);
+				hExcelHandle.setCellValue(rowContentList.get(iCol));
+				setCol++;
+			}
+		}
+	}
+	
+	public boolean execWriteExcelSplitByList(List<List<String>> contentList, List<List<Integer>> ignoreList)
 	{
 		boolean rtnRst = true;
 		List<String> sheetNameList = Arrays.asList("进货报表", "消耗报表", "库存报表");
 	    try
 		{
-	    	for(int iSheetIdx = 0; iSheetIdx < splitList.size(); iSheetIdx++)
+	    	for(int iSheetIdx = 0; iSheetIdx < ignoreList.size(); iSheetIdx++)
 	    	{
 				String sheetName = sheetNameList.get(iSheetIdx);
 				if(hExcelHandle.setWorkSheet(sheetName))
 				{
-					splitList.get(iSheetIdx);
-					hExcelHandle.setWorkRow(0);
-					int setCol = 0;
-					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
-					{
-						if(splitList.get(iSheetIdx).contains(iCol))
-						{
-							hExcelHandle.setWorkCell(setCol);
-							hExcelHandle.setCellValue(contentList.get(0).get(iCol));
-							setCol++;
-						}
-					}
-
+					ignoreList.get(iSheetIdx);
+					setARowContent(0, contentList.get(0), ignoreList.get(iSheetIdx));
+					
 					for (int iRow = 1; iRow < contentList.size(); iRow++)
 					{
-						hExcelHandle.setWorkRow(iRow);
-						setCol = 0;
-						for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
-						{
-							if(splitList.get(iSheetIdx).contains(iCol))
-							{
-								hExcelHandle.setWorkCell(setCol);
-								hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
-								setCol++;
-							}
-						}
+						setARowContent(iRow, contentList.get(iRow), ignoreList.get(iSheetIdx));
 					}
 				}
 	    	}
@@ -276,37 +271,6 @@ public class ExcelManagment extends MSExcel
 		return rtnRst;
 	}
 	
-	public boolean WriteDataToExcelRow(String sheetName, List<List<String>> contentList, int[] splitSheetCol)
-	{
-		boolean rtnRst = true;
-	    try
-		{
-			for (int iRow = 0; iRow < contentList.size(); iRow++)
-			{
-				if(hExcelHandle.setWorkSheet(sheetName))
-				{
-					hExcelHandle.setWorkRow(splitSheetCol[0]+iRow);
-					for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
-					{
-						hExcelHandle.setWorkCell(splitSheetCol[1]+iCol);
-						hExcelHandle.setCellValue(contentList.get(iRow).get(iCol));
-					}
-				}
-			}
-			hExcelHandle.saveToFile();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			rtnRst = false;
-		} 
-		finally
-		{
-			CleanExcelHandle();
-		}
-		return rtnRst;
-	}
-	
 	public boolean WriteDataToExcelBlock(String sheetName, List<List<String>> contentList, int[] splitSheetCol)
 	{
 		boolean rtnRst = true;
@@ -337,7 +301,7 @@ public class ExcelManagment extends MSExcel
 		}
 		return rtnRst;
 	}
-
+	
 	public boolean WriteDataToExcel(String fileFullPath, String fileName, List<List<String>> contentList)
 	{
 		boolean rtnRst = CheckAndCreatePath(fileFullPath);
