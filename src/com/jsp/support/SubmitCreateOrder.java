@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.IStorageTableInterface;
 
 public class SubmitCreateOrder extends PageParentClass
 {
@@ -55,7 +56,7 @@ public class SubmitCreateOrder extends PageParentClass
 	
 	public int GetRepertoryByBarCode(String strBarcode)
 	{
-		Product_Storage hHandle = new Product_Storage(new EarthquakeManagement());
+		IStorageTableInterface hHandle = GenStorageHandle(strBarcode);
 		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", strBarcode) - hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", strBarcode);
 	}
 	

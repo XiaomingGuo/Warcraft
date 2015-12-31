@@ -110,20 +110,6 @@ public class Material_Record extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		//return super.GetDblSumOfValue(storage_name, getValue, keyword, keyValue);
-		return 0;
-	}
-	
-	@Override
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		//return super.GetIntSumOfValue(storage_name, getValue, keyword, keyValue);
-		return 0;
-	}
-
-	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
 		if(keyword.toLowerCase().indexOf("id") >= 0){

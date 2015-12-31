@@ -1,6 +1,7 @@
 package com.DB.operation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,8 +86,7 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 
 	public void GetRecordByStoreroom(String storeroom)
 	{
-		String hql = String.format("from VendorInfo vi where vi.storeroom='%s'", storeroom);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	}
 	
 	public void GetRecordExceptStoreroom(String storeroom)
@@ -97,8 +97,7 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	
 	public void GetRecordByNameAndStoreroom(String supplier, String storeroom)
 	{
-		String hql = String.format("from VendorInfo vi where vi.vendorName='%s' and vi.storeroom = '%s'", supplier, storeroom);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(supplier, storeroom));
 	}
 	
 	public void AddARecord(String vendor_name, String storeroom, String vendor_fax, String vendor_tel, String vendor_e_mail, String vendor_address, String description)
@@ -112,20 +111,6 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		aWriteRecord.setVendorAddress(vendor_address);
 		aWriteRecord.setDescription(description);
 		getEQMHandle().addANewRecord();
-	}
-
-	@Override
-	public int GetIntSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double GetDblSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -171,5 +156,16 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from VendorInfo vi where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("vi.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("vi.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
+	}
 }

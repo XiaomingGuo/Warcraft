@@ -24,7 +24,7 @@
 				!appUserName.isEmpty() && !appProduct_QTY.isEmpty() && !appProduct_QTY.isEmpty())
 		{
 			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-			hORHandle.AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName);
+			hORHandle.AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName, "0");
 		}
 		else
 		{

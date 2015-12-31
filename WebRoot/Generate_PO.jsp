@@ -1,10 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.DB.operation.Mb_Material_Po" %>
+<%@ page import="com.DB.operation.Vendor_Info" %>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
-	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
-	List<List<String>> recordList = null, vendorInfo = null;
 %>
 <%
 	String message="";
@@ -28,28 +29,29 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from mb_material_po where po_name='" + POName + "' and vendor='" + vendor + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			
+			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(POName, vendor));
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			if (hMMPHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				for(int idx=0; idx < sqlKeyList.length; idx++)
+					recordList.add(hMMPHandle.getDBRecordList(sqlKeyList[idx]));
 			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
-			sql = "select * from vendor_info where vendor_name='" + vendor +  "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			
+			List<List<String>> vendorInfo = new ArrayList<List<String>>();
+			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name"), Arrays.asList(vendor));
+			if (hVIHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"vendor_fax", "vendor_tel", "vendor_e_mail", "vendor_address"};
-				vendorInfo = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				for(int idx=0; idx < sqlKeyList.length; idx++)
+					vendorInfo.add(hVIHandle.getDBRecordList(sqlKeyList[idx]));
 			}
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
+			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -136,7 +138,7 @@
 					for(int iCol = 0; iCol < displayKeyList.length; iCol++)
 					{
 						String strBarcode = recordList.get(0).get(iRow);
-						
+			    		hPIHandle.GetRecordByBarcode(strBarcode);
 				    	if (displayKeyList[iCol] == "模具号" || displayKeyList[iCol] == "备注" )
 				    	{
 %>
@@ -158,13 +160,13 @@
 				    	else if(displayKeyList[iCol] == "名称")
 				    	{
 %>
-    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hDBHandle.GetTypeByBarcode(strBarcode)%>" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hPIHandle.getDBRecordList("name").get(0)%>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol] == "型号")
 				    	{
 %>
-    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hDBHandle.GetNameByBarcode(strBarcode)%>" readonly></td>
+    				<td width="2%"><input name="<%=iRow*7+iCol %>" type="text" value="<%=hPIHandle.getDBRecordList("product_type").get(0)%>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol] == "数量")

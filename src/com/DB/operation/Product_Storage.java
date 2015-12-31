@@ -210,4 +210,20 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		hql+= String.format("ps.createDate>='%s' and ps.createDate<='%s'", beginDate, endDate);
 		getEQMHandle().EQQuery(hql);
 	}
+
+	@Override
+	public void AddAExRecord(String id, String appBarcode, String batch_lot,
+			String appProductQTY, String outQty, String appPriceUnit,
+			String appTotalPrice, String appOrderName, String appInStoreDate,
+			String isEnsure, String createDate) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -35,8 +35,7 @@
    name="isApprove" type="java.lang.Integer">
    <column default="0" name="isApprove" not-null="true"/>
   </property>
-  <property generated="never" insert="false" lazy="false"
-   name="mergeMark" type="java.lang.Integer">
+  <property generated="never" lazy="false" name="mergeMark" type="java.lang.Integer">
    <column default="0" name="Merge_Mark" not-null="true"/>
   </property>
  </class>

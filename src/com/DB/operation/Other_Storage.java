@@ -206,6 +206,19 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
+	
+	@Override
+	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList)
+	{
+		String hql = String.format("update OtherStorage os set os.%s='%s' where ", GetDatabaseKeyWord(setKeyWord), setValue);
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("os.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql += String.format("os.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	}
 
 	@Override
 	public void QueryRecordByFilterKeyList(List<String> keyList,
@@ -232,5 +245,14 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		}
 		hql+= String.format("os.createDate>='%s' and os.createDate<='%s'", beginDate, endDate);
 		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void AddAExRecord(String id, String appBarcode, String batch_lot,
+			String appProductQTY, String outQty, String appPriceUnit,
+			String appTotalPrice, String appOrderName, String appInStoreDate,
+			String isEnsure, String createDate) {
+		// TODO Auto-generated method stub
+		
 	}
 }

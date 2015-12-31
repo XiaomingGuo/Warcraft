@@ -224,4 +224,20 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		hql+= String.format("ms.createDate>='%s' and ms.createDate<='%s'", beginDate, endDate);
 		getEQMHandle().EQQuery(hql);
 	}
+
+	@Override
+	public void AddAExRecord(String id, String appBarcode, String batch_lot,
+			String appProductQTY, String outQty, String appPriceUnit,
+			String appTotalPrice, String appOrderName, String appInStoreDate,
+			String isEnsure, String createDate) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList) {
+		// TODO Auto-generated method stub
+		
+	}
 }

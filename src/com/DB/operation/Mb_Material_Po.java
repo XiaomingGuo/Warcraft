@@ -91,33 +91,23 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
 	{
-		String hql = String.format("from MbMaterialPo cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
+		String hql = "from MbMaterialPo mmp where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("mmp.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("mmp.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
 		getEQMHandle().EQQuery(hql);
 	}
-	*/
 	
 	public void AddARecord(String poName)
 	{
 		aWriteRecord = new MbMaterialPo();
 		aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
-	}
-
-	@Override
-	public int GetIntSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double GetDblSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

@@ -86,33 +86,20 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void AddARecord(String appBarcode, String proposerName, String appProduct_QTY, String appUserName)
+	public void AddARecord(String appBarcode, String proposerName, String appProduct_QTY, String appUserName, String mergeMark)
 	{
 		aWriteRecord = new OtherRecord();
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setProposer(proposerName);
 		aWriteRecord.setQty(Integer.parseInt(appProduct_QTY));
 		aWriteRecord.setUserName(appUserName);
+		aWriteRecord.setMergeMark(Integer.parseInt(mergeMark));
 		getEQMHandle().addANewRecord();
 	}
 	
 	public void AddMRecord(String[] appBarcode, String[] proposerName, String[] appProduct_QTY, String[] appUserName)
 	{
 		
-	}
-
-	@Override
-	public int GetIntSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double GetDblSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -147,6 +134,18 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		}
 		return rtnRst;
 	}
+	
+	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList)
+	{
+		String hql = String.format("update OtherRecord ord set ord.%s='%s' where ", GetDatabaseKeyWord(setKeyWord), setValue);
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("ord.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql += String.format("ord.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	}
 
 	@Override
 	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
@@ -159,5 +158,17 @@ public class Other_Record extends DBTableParent implements ITableInterface
 			String keyWord, String keyValue) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from OtherRecord ord where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("ord.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("ord.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
 	}
 }

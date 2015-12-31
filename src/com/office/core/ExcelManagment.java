@@ -206,7 +206,7 @@ public class ExcelManagment extends MSExcel
 		}
 	}
 	
-	public boolean execWriteExcelSplitByList(List<List<String>> contentList, List<List<Integer>> ignoreList)
+	public boolean execWriteExcelWithIgnoreList(List<List<String>> contentList, List<List<Integer>> ignoreList)
 	{
 		boolean rtnRst = true;
 		List<String> sheetNameList = Arrays.asList("进货报表", "消耗报表", "库存报表");
@@ -299,56 +299,6 @@ public class ExcelManagment extends MSExcel
 		{
 			CleanExcelHandle();
 		}
-		return rtnRst;
-	}
-	
-	public boolean WriteDataToExcel(String fileFullPath, String fileName, List<List<String>> contentList)
-	{
-		boolean rtnRst = CheckAndCreatePath(fileFullPath);
-	    try
-		{
-			HSSFWorkbook workbook = new HSSFWorkbook();//创建Excel工作簿对象	
-			HSSFSheet sheet = null;//在工作簿中创建工作表对象
-			String saveVendorName = "";
-			int iCount = 1;
-			int iSheetCount = 0;
-			for (int iRow = 1; iRow < contentList.size(); iRow++)
-			{
-				String vendorName = contentList.get(iRow).get(9);
-				if (!saveVendorName.contentEquals(vendorName))
-				{
-					iCount = 1;
-					sheet = workbook.createSheet();//在工作簿中创建工作表对象
-					workbook.setSheetName(iSheetCount, vendorName);//设置工作表的名称
-					saveVendorName = vendorName;
-					HSSFRow row = sheet.createRow(0);//在工作表中创建第1行对象
-					for(int iCol=0; iCol < contentList.get(0).size(); iCol++)
-					{
-						HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
-						label_num.setCellValue(contentList.get(0).get(iCol));//添加字符串
-					}
-					iSheetCount += 1;
-				}
-				
-				HSSFRow row = sheet.createRow(iCount);//在工作表中创建第1行对象
-				for(int iCol=0; iCol < contentList.get(iRow).size(); iCol++)
-				{
-					HSSFCell label_num = row.createCell(iCol);//第1行的第1个单元格
-					label_num.setCellValue(contentList.get(iRow).get(iCol));//添加字符串
-				}
-				iCount += 1;
-			}
-			File xlsFile = new File(fileFullPath, fileName);
-			FileOutputStream fos = new FileOutputStream(xlsFile);
-			workbook.write(fos);//将文档对象写入文件输出流
-			fos.close();
-			workbook.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			rtnRst = false;
-		} 
 		return rtnRst;
 	}
 	

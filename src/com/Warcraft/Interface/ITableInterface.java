@@ -6,8 +6,6 @@ import org.hibernate.Query;
 
 public interface ITableInterface
 {
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue);
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue);
 	public String GetDatabaseKeyWord(String keyword);
 	public List<String> getDBRecordList(String keyWord);
 	public void setResultList(Query query);

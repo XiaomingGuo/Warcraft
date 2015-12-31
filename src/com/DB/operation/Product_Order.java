@@ -106,20 +106,6 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	}
 
 	@Override
-	public int GetIntSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double GetDblSumOfValue(String getValue,
-			String keyword, String keyValue) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
 		if(keyword.toLowerCase().indexOf("id") >= 0){

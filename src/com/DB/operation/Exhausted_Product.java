@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -160,17 +161,21 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	}
 
 	@Override
-	public void AddARecord(String appBarcode, String batch_lot,
-			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String appInStoreDate)
+	public void AddAExRecord(String id, String appBarcode, String batch_lot,
+			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
+			String appOrderName, String appInStoreDate, String isEnsure, String createDate)
 	{
 		aWriteRecord = new ExhaustedProduct();
+		aWriteRecord.setId(Integer.parseInt(id));
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setBatchLot(batch_lot);
 		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
+		aWriteRecord.setOutQty(Integer.parseInt(outQty));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));
+		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
 		getEQMHandle().addANewRecord();
 	}
 
@@ -200,5 +205,19 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 		}
 		hql+= String.format("ep.createDate>='%s' and ep.createDate<='%s'", beginDate, endDate);
 		getEQMHandle().EQQuery(hql);
+	}
+
+	@Override
+	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList) {
+		
+	}
+
+	@Override
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate) {
+		// TODO Auto-generated method stub
+		
 	}
 }

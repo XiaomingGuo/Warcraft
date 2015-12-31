@@ -49,7 +49,7 @@
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
 			List<List<Integer>> ignoreColNum = Arrays.asList(Arrays.asList(7,8,11,12), Arrays.asList(6,8,10,12), Arrays.asList(6,7,10,11));
-			excelUtil.execWriteExcelSplitByList(recordList, ignoreColNum);
+			excelUtil.execWriteExcelWithIgnoreList(recordList, ignoreColNum);
 			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	

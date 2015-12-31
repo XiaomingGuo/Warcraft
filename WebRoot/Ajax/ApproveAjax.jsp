@@ -1,70 +1,55 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
-%>
+<%@ page import="com.DB.operation.Other_Storage" %>
+<%@ page import="com.DB.operation.Other_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.ApproveAjax" %>
 <%
 	String rtnRst = "";
 	String barcode = (String)request.getParameter("Barcode").replace(" ", "");
 	String recordID = (String)request.getParameter("material_id").replace(" ", "");
 	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY").replace(" ", ""));
-	int repertory_count = hDBHandle.GetRepertoryByBarCode(barcode, "other_storage");
+	ApproveAjax hPageHandle = new ApproveAjax();
+	Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+	int repertory_count = hPageHandle.GetStorageRepertory(barcode);
 	if (repertory_count >= used_count)
 	{
-		String sql = "select * from other_storage where Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"'";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
+		List<List<String>> material_info_List = hPageHandle.GetStorageRecordList(barcode, keyArray);
+		
+		for (int iCol = 0; iCol < material_info_List.get(0).size(); iCol++)
 		{
-			List<List<String>> material_info_List = hDBHandle.GetAllDBColumnsByList(keyArray);
-			for (int iCol = 0; iCol < material_info_List.get(0).size(); iCol++)
+			String batchLot =  material_info_List.get(0).get(iCol);
+			int sql_in_count = Integer.parseInt(material_info_List.get(1).get(iCol));
+			int sql_out_count = Integer.parseInt(material_info_List.get(2).get(iCol));
+			int recordCount = sql_in_count - sql_out_count;
+			if (recordCount >= used_count)
 			{
-				String batchLot =  material_info_List.get(0).get(iCol);
-				int sql_in_count = Integer.parseInt(material_info_List.get(1).get(iCol));
-				int sql_out_count = Integer.parseInt(material_info_List.get(2).get(iCol));
-				int recordCount = sql_in_count - sql_out_count;
-				if (recordCount >= used_count)
-				{
-					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_out_count+used_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"' and Batch_Lot='" + batchLot +"'";
-					hDBHandle.execUpate(sql);
-					if (recordCount == used_count)
-					{
-						hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other");
-					}
-					sql= "UPDATE other_record SET Batch_Lot='"+ batchLot +"', QTY='" + Integer.toString(used_count) + "', isApprove='1', Merge_Mark='" + recordID + "' WHERE id='" + recordID + "'";
-					hDBHandle.execUpate(sql);
-					break;
-				}
-				else
-				{
-					sql= "UPDATE other_storage SET OUT_QTY='" + Integer.toString(sql_in_count) + "' WHERE Bar_Code='" + hDBHandle.GetUsedBarcode(barcode, "other_storage") +"' and Batch_Lot='" + batchLot +"'";
-					hDBHandle.execUpate(sql);
-					if (!hDBHandle.MoveToExhaustedTable(barcode, batchLot, "other_storage", "exhausted_other"))
-						continue;
-					sql = "SELECT * FROM other_record WHERE id='" + recordID + "'";
-					if (hDBHandle.QueryDataBase(sql))
-					{
-						String[] keyWord = {"proposer", "user_name"};
-						List<List<String>> tempList = hDBHandle.GetAllDBColumnsByList(keyWord);
-						sql = "INSERT INTO other_record (Bar_Code, Batch_Lot, proposer, QTY, user_name, isApprove, Merge_Mark) VALUES ('" + hDBHandle.GetUsedBarcode(barcode, "other_storage") + "', '" + batchLot + "', '" + tempList.get(0).get(0) + "', '" + Integer.toString(recordCount) + "', '" + tempList.get(1).get(0) + "', '1', '" + recordID + "')";
-						hDBHandle.execUpate(sql);
-						used_count -= recordCount;
-					}
-					else
-					{
-						hDBHandle.CloseDatabase();
-					}
-				}
+				hPageHandle.UpdateStorageOutQty(Integer.toString(sql_out_count+used_count), barcode, batchLot);
+				hORHandle.UpdateRecordByFilterKeyList("Batch_Lot", batchLot, Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByFilterKeyList("QTY", Integer.toString(used_count), Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByFilterKeyList("isApprove", "1", Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByFilterKeyList("Merge_Mark", recordID, Arrays.asList("id"), Arrays.asList(recordID));
+				break;
 			}
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-			rtnRst = "数据库不存在物料("+ barcode + ")的信息";
+			else
+			{
+				hPageHandle.UpdateStorageOutQty(Integer.toString(sql_in_count), barcode, batchLot);
+				String[] keyWord = {"proposer", "user_name"};
+				List<List<String>> tempList = hPageHandle.GetOtherRecordList(recordID, keyWord);
+				List<String> keyList = Arrays.asList("Bar_Code", "proposer", "QTY", "user_name", "isApprove", "Merge_Mark");
+				List<String> valList = Arrays.asList(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), "0", recordID);
+				hORHandle.AddARecord(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), recordID);
+				hORHandle.UpdateRecordByFilterKeyList("Batch_Lot", batchLot, keyList, valList);
+				hORHandle.UpdateRecordByFilterKeyList("QTY", Integer.toString(recordCount), keyList, valList);
+				hORHandle.UpdateRecordByFilterKeyList("isApprove", "1", keyList, valList);
+				hORHandle.UpdateRecordByFilterKeyList("Merge_Mark", recordID, keyList, valList);
+				used_count -= recordCount;
+			}
 		}
 	}
 	else
 	{
-		rtnRst = "("+ hDBHandle.GetNameByBarcode(barcode) + "): 库存数量不足!";
+		rtnRst = "("+ barcode + "): 库存数量不足!";
 	}
 
 	out.write(rtnRst);
