@@ -188,4 +188,27 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		String hql = String.format("update ProductOrderRecord por set por.%s='%s' where por.orderName='%s' and por.barCode='%s'", keyWord, value, orderName, barcode);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
+	
+	public void QuertRecordOrderByidASC(String poName)
+	{
+		String hql = String.format("from ProductOrderRecord por where por.poName='%s' order by por.id asc", poName);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public int GetUncompleteOrderRecord(String barCode)
+	{
+		int rtnRst = 0;
+		String hql = String.format("from ProductOrderRecord por where por.barCode='%s' and por.status<5", barCode);
+		getEQMHandle().EQQuery(hql);
+		if (RecordDBCount() > 0)
+		{
+			List<String> po_Qty_List = getDBRecordList("QTY");
+			List<String> po_Oqc_List = getDBRecordList("OQC_QTY");
+			for (int i = 0; i < po_Qty_List.size(); i++)
+			{
+				rtnRst += Integer.parseInt(po_Qty_List.get(i))-Integer.parseInt(po_Oqc_List.get(i));
+			}
+		}
+		return rtnRst;
+	}
 }

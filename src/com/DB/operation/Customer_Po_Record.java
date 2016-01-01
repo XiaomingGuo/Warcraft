@@ -103,18 +103,21 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
+	public void QueryRecordOrderByIdASC(String po_name)
 	{
-		String hql = String.format("from CustomerPoRecord cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
+		String hql = String.format("from CustomerPoRecord cpr where cpr.poName='%s' order by cpr.id asc", po_name);
 		getEQMHandle().EQQuery(hql);
 	}
-	*/
 	
-	public void AddARecord(String poName)
+	public void AddARecord(String barCode, String poName, String deliveryDate, String qty, String vendor, String percent)
 	{
 		aWriteRecord = new CustomerPoRecord();
+		aWriteRecord.setBarCode(barCode);
 		aWriteRecord.setPoName(poName);
+		aWriteRecord.setDeliveryDate(deliveryDate);
+		aWriteRecord.setQty(Integer.parseInt(qty));
+		aWriteRecord.setVendor(vendor);
+		aWriteRecord.setPercent(Integer.parseInt(percent));
 		getEQMHandle().addANewRecord();
 	}
 

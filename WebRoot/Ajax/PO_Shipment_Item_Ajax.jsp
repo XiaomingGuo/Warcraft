@@ -1,22 +1,25 @@
+<%@page import="com.DB.operation.Product_Storage"%>
+<%@page import="com.DB.operation.Product_Order_Record"%>
+<%@page import="com.DB.operation.Product_Info"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Customer_Po_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "交付数量", "操作"};
-	String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
-	List<List<String>> recordList = null;
-%>
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
 	String po_status = null;
-	String sql = "select * from customer_po_record where po_name='" + po_name + "' order by id asc";
-	if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "交付数量", "操作"};
+	Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+	hCPRHandle.QueryRecordOrderByIdASC(po_name);
+	if (hCPRHandle.RecordDBCount() > 0)
 	{
-		recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+		String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
+		List<List<String>> recordList = new ArrayList<List<String>>();
+		for(int idx=0; idx < sqlKeyList.length; idx++)
+		{
+			recordList.add(hCPRHandle.getDBRecordList(sqlKeyList[idx]));
+		}
 		int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 		rtnRst += Integer.toString(iColCount) + "$";
 		rtnRst += Integer.toString(iRowCount) + "$";
@@ -24,10 +27,15 @@
 		{
 			rtnRst += displayList[i] + "$";
 		}
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
 			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0, inProcess = 0;
 			String strBarcode = recordList.get(0).get(iRow);
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 			for(int iCol = 0; iCol < iColCount; iCol++)
 			{
 				if("ID" == displayList[iCol])
@@ -36,11 +44,11 @@
 				}
 				else if("产品类型" == displayList[iCol])
 				{
-					rtnRst += hDBHandle.GetTypeByBarcode(strBarcode) + "$";
+					rtnRst += hPIHandle.getDBRecordList("product_type").get(0) + "$";
 				}
 				else if("产品名称" == displayList[iCol])
 				{
-					rtnRst += hDBHandle.GetNameByBarcode(strBarcode) + "$";
+					rtnRst += hPIHandle.getDBRecordList("name").get(0) + "$";
 				}
 				else if("八码" == displayList[iCol])
 				{
@@ -71,12 +79,12 @@
 				}
 				else if("已加工总量" == displayList[iCol])
 				{
-					inProcess = hDBHandle.GetInProcessQty(strBarcode, po_name);
+					inProcess = hPORHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"), po_name));
 					rtnRst += Integer.toString(inProcess) + "$";
 				}
 				else if("成品库存" == displayList[iCol])
 				{
-					iPro_storage = hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
+					iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPORHandle.GetUsedBarcode(strBarcode, "Product_Storage")));
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
 				else if ("交付数量" == displayList[iCol])
@@ -108,10 +116,6 @@
 				}
 			}
 		}
-	}
-	else
-	{
-		hDBHandle.CloseDatabase();
 	}
 	out.write(rtnRst);
 %>

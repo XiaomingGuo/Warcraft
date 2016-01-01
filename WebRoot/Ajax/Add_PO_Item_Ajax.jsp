@@ -1,10 +1,7 @@
+<%@page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Customer_Po" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String rtnRst = "remove$";
 	String bar_code = (String)request.getParameter("bar_code").replace(" ", "");
@@ -16,28 +13,26 @@
 	
 	if (poname != null&&!poname.isEmpty())
 	{
-		String sql = "select * from customer_po where po_name='" + poname + "' and status > 0";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		hCPHandle.QueryRecordByPoNameAndMoreThanStatus(poname, "0");
+		if (hCPHandle.RecordDBCount() <= 0)
 		{
-			hDBHandle.CloseDatabase();
 			if (bar_code != null&&deliv_date != null&&cpo_qty != null&&vendorname != null)
 			{
-				sql = "select * from customer_po_record where Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "customer_po_record") + "' and po_name='" + poname + "'";
-				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "customer_po_record"), poname));
+				if (hCPRHandle.RecordDBCount() <= 0)
 				{
-					sql = "INSERT INTO customer_po_record (Bar_Code, po_name, delivery_date, QTY, vendor, percent) VALUES ('" + hDBHandle.GetUsedBarcode(bar_code, "customer_po_record") + "','" + poname + "','" + deliv_date +"','" + cpo_qty + "','" + vendorname +"','" + percent + "')";
-					hDBHandle.execUpate(sql);
+					hCPRHandle.AddARecord(hCPRHandle.GetUsedBarcode(bar_code, "customer_po_record"), poname, deliv_date, cpo_qty, vendorname, percent);
 				}
 				else
 				{
-					hDBHandle.CloseDatabase();
 					rtnRst += "error:大哥这产品已经有了,要不删掉重新输入!";
 				}
 			}
 		}
 		else
 		{
-			hDBHandle.CloseDatabase();
 			rtnRst += "error:大哥这生产单已经有了,换个生产单名吧!";
 		}
 	}

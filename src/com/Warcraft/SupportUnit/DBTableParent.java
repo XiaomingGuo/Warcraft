@@ -1,6 +1,5 @@
 package com.Warcraft.SupportUnit;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.Warcraft.Interface.IEQManagement;

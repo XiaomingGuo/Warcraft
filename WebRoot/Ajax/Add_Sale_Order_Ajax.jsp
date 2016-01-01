@@ -1,10 +1,7 @@
+<%@page import="com.DB.operation.Shipping_No"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Shipping_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String rtnRst = "remove$";
 	String po_name = (String)request.getParameter("POName").replace(" ", "");
@@ -12,28 +9,20 @@
 	{
 		Calendar mData = Calendar.getInstance();
 		String currentDate = String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-		String sql = "select * from shipping_record where customer_po='" + po_name + "' and shipping_no='0'";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+		Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+		hSRHandle.QueryRecordByFilterKeyList(Arrays.asList("customer_po", "shipping_no"), Arrays.asList(po_name, "0"));
+		if (hSRHandle.RecordDBCount() > 0)
 		{
-			List<String> idList = hDBHandle.GetAllStringValue("id");
+			List<String> idList = hSRHandle.getDBRecordList("id");
 			String ship_no = null;
-			sql = "select * from shipping_no where shipping_no > " + currentDate + "0000";
-			if (hDBHandle.QueryDataBase(sql))
-			{
- 				ship_no = String.format("%s%04d", currentDate, hDBHandle.GetRecordCount() + 1);
-				sql = "INSERT INTO shipping_no (customer_po, shipping_no) VALUES ('" + po_name + "','" + ship_no + "')";
-				hDBHandle.execUpate(sql);
-			}
-
+			Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
+			hSNHandle.QueryRecordMoreThanShipNo(currentDate + "0000");
+			ship_no = String.format("%s%04d", currentDate, hSNHandle.RecordDBCount() + 1);
+			hSNHandle.AddARecord(po_name, ship_no);
 			for (int index = 0; index < idList.size(); index++)
 			{
-				sql = "update shipping_record set shipping_no='" + ship_no + "' where id='" + idList.get(index) + "'";
-				hDBHandle.execUpate(sql);
+				hSRHandle.UpdateRecordByKeyList("shipping_no", ship_no, Arrays.asList("id"), Arrays.asList(idList.get(index)));
 			}
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
 		}
 	}
 	out.write(rtnRst);

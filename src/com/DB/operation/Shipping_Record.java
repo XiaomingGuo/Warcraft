@@ -97,18 +97,14 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from ShippingRecord cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
-		getEQMHandle().EQQuery(hql);
-	}
-	*/
-	
-	public void AddARecord(String poName)
+	public void AddARecord(String customerPo, String barCode, String batchLot, String orderName, String shipQty)
 	{
 		aWriteRecord = new ShippingRecord();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setCustomerPo(customerPo);
+		aWriteRecord.setBarCode(barCode);
+		aWriteRecord.setBatchLot(batchLot);
+		aWriteRecord.setOrderName(orderName);
+		aWriteRecord.setShipQty(Integer.parseInt(shipQty));
 		getEQMHandle().addANewRecord();
 	}
 

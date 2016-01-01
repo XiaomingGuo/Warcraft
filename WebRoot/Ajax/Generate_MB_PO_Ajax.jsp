@@ -1,10 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Customer_Po_Record" %>
+<%@ page import="com.DB.operation.Mb_Material_Po"%>
+<%@ page import="com.DB.operation.Product_Storage"%>
+<%@ page import="com.DB.operation.Material_Storage"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String rtnRst = "remove$";
 	String appPOName = (String)request.getParameter("PO_Name").replace(" ", "");
@@ -12,32 +11,39 @@
 	String appDelivDate = (String)request.getParameter("Delivery_Date").replace(" ", "");
 	if (appPOName != null && appDelivDate.length() == 8)
 	{
-		String sql = "select * from customer_po_record where po_name='" + appPOName + "' and vendor='" + appVendor + "'";
-		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(appPOName, appVendor));
+		if (hCPRHandle.RecordDBCount() > 0)
 		{
 			String[] colNames = {"Bar_Code", "vendor", "QTY", "percent"};
-			List<List<String>> recordList = hDBHandle.GetAllDBColumnsByList(colNames);
-			if (recordList != null)
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			for(int idx=0; idx < colNames.length; idx++)
 			{
+				recordList.add(hCPRHandle.getDBRecordList(colNames[idx]));
+			}
+			if (recordList.size() <= 0)
+			{
+				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+				Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+				Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
 				for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 				{
 					String strBarcode = recordList.get(0).get(iRow);
-					String strMaterialBarcode = hDBHandle.GetUsedBarcode(strBarcode, "mb_material_po");
+					String strMaterialBarcode = hCPRHandle.GetUsedBarcode(strBarcode, "mb_material_po");
 					String strVendor = recordList.get(1).get(iRow);
 					int iPOCount = Integer.parseInt(recordList.get(2).get(iRow));
 					int ipercent = Integer.parseInt(recordList.get(3).get(iRow));
-					int iRepertory = hDBHandle.GetRepertoryByBarCode(strMaterialBarcode, "material_storage") + hDBHandle.GetRepertoryByBarCode(strBarcode, "product_storage");
+					int iRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strMaterialBarcode)) + 
+							hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 					int manufacture_QTY = iPOCount*(100+ipercent)/100;
 					if (iRepertory < manufacture_QTY)
 					{
-						sql = "select * from mb_material_po where Bar_Code='" + strMaterialBarcode + "' and vendor='" + strVendor + "' and po_name='" + appPOName + "'";
-						if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() <= 0)
+						hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "vendor", "po_name"), Arrays.asList(strMaterialBarcode, strVendor, appPOName));
+						if (hMMPHandle.RecordDBCount() <= 0)
 						{
-							hDBHandle.CloseDatabase();
 							if (appDelivDate != null&&!appDelivDate.isEmpty()&&appDelivDate.length() == 8)
 							{
-								sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + strMaterialBarcode + "','" + strVendor + "','" + appPOName + "','" + Integer.toString(manufacture_QTY-iRepertory) + "','" + appDelivDate + "')";
-								hDBHandle.execUpate(sql);
+								hMMPHandle.AddARecord(strMaterialBarcode, strVendor, appPOName, manufacture_QTY-iRepertory, appDelivDate);
 							}
 							else
 							{
@@ -45,17 +51,12 @@
 								break;
 							}
 						}
-						else
-						{
-							hDBHandle.CloseDatabase();
-						}
 					}
 				}
 			}
 		}
 		else
 		{
-			hDBHandle.CloseDatabase();
 			rtnRst += "error:po单不存在!";
 		}
 	}
