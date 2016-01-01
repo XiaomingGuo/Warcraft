@@ -108,12 +108,4 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

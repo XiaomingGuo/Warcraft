@@ -1,8 +1,9 @@
+<%@page import="com.DB.operation.Mb_Material_Po"%>
+<%@page import="com.DB.operation.Material_Storage"%>
+<%@page import="com.DB.operation.Product_Order_Record"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String vendor = (String)request.getParameter("vendor_name").replace(" ", "");
@@ -14,50 +15,47 @@
 	
 	if (order_name != null&&order_name != "")
 	{
-		String sql = "select * from product_order where Order_Name='" + order_name + "'";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
+		if (hPOHandle.RecordDBCount() <= 0)
 		{
-			hDBHandle.CloseDatabase();
 			if (vendor != null&&vendor != ""&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
 			{
 				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
-				sql = "select * from product_order_record where Order_Name='" + order_name + "' and Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "'";
-				if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+				Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+				String wBarcode = hPORHandle.GetUsedBarcode(bar_code, "product_order_record");
+				hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(wBarcode, order_name));
+				if (hPORHandle.RecordDBCount() <= 0)
 				{
-					hDBHandle.CloseDatabase();
-					sql = "INSERT INTO product_order_record (Bar_Code, delivery_date, QTY, po_name, Order_Name) VALUES ('" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "','" + deliv_date + "','" + Integer.toString(iOrderQTY) + "','Internal_po','" + order_name + "')";
-					hDBHandle.execUpate(sql);
+					hPORHandle.AddARecord(wBarcode, deliv_date, iOrderQTY, "Internal_po", order_name);
 				}
 				else
 				{
-					int tempQTY = hDBHandle.GetSingleInt("QTY");
-					sql = "UPDATE product_order_record SET QTY='" + Integer.toString(tempQTY + iOrderQTY) + "' WHERE Order_Name='" + order_name + "' and Bar_Code='" + hDBHandle.GetUsedBarcode(bar_code, "product_order_record") + "'";
-					hDBHandle.execUpate(sql);
+					int tempQTY = hPORHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(wBarcode, order_name));
+					hPORHandle.UpdateRecordByKeyList("QTY", Integer.toString(tempQTY + iOrderQTY), Arrays.asList("Order_Name", "Bar_Code"), Arrays.asList(order_name, wBarcode));
 				}
 				
-				String material_barcode = hDBHandle.GetUsedBarcode(bar_code, "mb_material_po");
-				int po_qty = iOrderQTY - hDBHandle.GetRepertoryByBarCode(material_barcode, "material_storage");
+				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+				String material_barcode = hMSHandle.GetUsedBarcode(bar_code, "mb_material_po");
+				int po_qty = iOrderQTY - hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(material_barcode));
 				if (po_qty > 0)
 				{
-					sql = "select * from mb_material_po where po_name='" + order_name + "' and Bar_Code='" + material_barcode + "'";
-					if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() <= 0)
+					Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+					hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
+					if (hMMPHandle.RecordDBCount() <= 0)
 					{
-						hDBHandle.CloseDatabase();
-						sql = "INSERT INTO mb_material_po (Bar_Code, vendor, po_name, PO_QTY, date_of_delivery) VALUES ('" + material_barcode + "','" + vendor + "','" + order_name + "','" + Integer.toString(po_qty) + "', 'null')";
-						hDBHandle.execUpate(sql);
+						hMMPHandle.AddARecord(material_barcode, vendor, order_name, po_qty, "null");
 					}
 					else
 					{
-						int tempQTY = hDBHandle.GetSingleInt("PO_QTY");
-						sql = "UPDATE mb_material_po SET PO_QTY='" + Integer.toString(tempQTY + po_qty) + "' WHERE po_name='" + order_name + "' and Bar_Code='" + material_barcode + "'";
-						hDBHandle.execUpate(sql);
+						int tempQTY = hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
+						hMMPHandle.UpdateRecordByKeyList("PO_QTY", Integer.toString(tempQTY + po_qty), Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
 					}
 				}
 			}
 		}
 		else
 		{
-			hDBHandle.CloseDatabase();
 			rtnRst += "error:大哥这生产单已经有了,换个生产单名吧!";
 		}
 		

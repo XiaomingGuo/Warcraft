@@ -75,6 +75,11 @@ public abstract class DBTableParent
 		return rtnRst;
 	}
 
+	public int GetRepertoryByKeyList(List<String> keyList, List<String> valList)
+	{
+		return GetIntSumOfValue("IN_QTY", keyList, valList) - GetIntSumOfValue("OUT_QTY", keyList, valList);
+	}
+	
 	public double GetDblPriceOfStorage(String storage_name, String getValIN, String getValOUT, String getValPerPrice, String keyword, String keyValue)
 	{
 		double rtnRst = 0.0;
@@ -94,6 +99,19 @@ public abstract class DBTableParent
 		return rtnRst;
 	}
 	
+	public void UpdateRecordByKeyList(String setKeyWord, String setValue,
+			List<String> keyList, List<String> valueList)
+	{
+		String hql = String.format("update %s tbn set tbn.%s='%s' where", ((ITableInterface)this).GetTableName(), setKeyWord, setValue) + GenerateWhereString(keyList, valueList);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	}
+	
+	public void QueryRecordByFilterKeyList(List<String> keyList, List<String> valueList)
+	{
+		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
+		getEQMHandle().EQQuery(hql);
+	}
+
 	public String GenerateWhereString(List<String> keyList, List<String> valueList)
 	{
 		String rtnRst = "";

@@ -133,14 +133,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
-	
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue, String keyWord, String keyValue)
-	{
-		String hql = String.format("update MaterialStorage por set por.%s='%s' where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue,
-				GetDatabaseKeyWord(keyWord), keyValue);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	}
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword)

@@ -24,7 +24,7 @@
 				String sql_PWD = hUIHandle.getDBRecordList("password").get(0);
 				if(sql_PWD.equals(cur_PWD))
 				{
-					hUIHandle.UpdateRecordByKeyWord("password", new_PWD, "name", user_name);
+					hUIHandle.UpdateRecordByKeyList("password", new_PWD, Arrays.asList("name"), Arrays.asList(user_name));
 					session.setAttribute("error", "恭喜你,密码修改成功,重新登录后生效!");
 				}
 				else

@@ -193,6 +193,6 @@ public class SubmitCustomerPO extends PageParentClass
 	private void UpdateProductOrderStatusToFinish(String OrderName)
 	{
 		Product_Order hHandle = new Product_Order(new EarthquakeManagement());
-		hHandle.UpdatetRecordByOrderName(OrderName, "status", "1");
+		hHandle.UpdateRecordByKeyList("status", "1", Arrays.asList("order_name"), Arrays.asList(OrderName));
 	}
 }

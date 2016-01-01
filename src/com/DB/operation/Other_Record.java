@@ -158,13 +158,6 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public void QueryRecordByFilterKeyList(List<String> keyList,
 			List<String> valueList)

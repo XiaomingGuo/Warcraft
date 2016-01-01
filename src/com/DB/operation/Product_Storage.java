@@ -165,13 +165,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String appInStoreDate)

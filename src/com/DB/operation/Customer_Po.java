@@ -132,13 +132,4 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		String hql = String.format("update CustomerPo cp set cp.%s='%s' WHERE cp.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue, GetDatabaseKeyWord(keyWord), keyValue);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-		
-	}
-
 }

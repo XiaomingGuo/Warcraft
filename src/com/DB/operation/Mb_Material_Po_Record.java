@@ -126,11 +126,4 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
 }

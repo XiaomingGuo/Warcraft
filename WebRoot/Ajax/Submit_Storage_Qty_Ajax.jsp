@@ -18,7 +18,7 @@
 			hDBHandle = new Other_Storage(new EarthquakeManagement());
 		else if(storage_name.toLowerCase().indexOf("product_storage") >= 0)
 			hDBHandle = new Product_Storage(new EarthquakeManagement());
-		hDBHandle.UpdateRecordByKeyWord("isEnsure", "1", "id", recordId);
+		hDBHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(recordId));
 	}
 	out.write(rtnRst);
 %>

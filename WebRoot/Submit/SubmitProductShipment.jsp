@@ -26,10 +26,10 @@
 				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
 				for (int iIndex = 0; iIndex < order_List.size(); iIndex++)
 				{
-					hPOHandle.UpdateRecordByKeyWord("status", "2", "Order_Name", order_List.get(iIndex));
+					hPOHandle.UpdateRecordByKeyList("status", "2", Arrays.asList("Order_Name"), Arrays.asList(order_List.get(iIndex)));
 				}
 				Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-				hCPHandle.UpdateRecordByKeyWord("status", "2", "po_name", appPONum);
+				hCPHandle.UpdateRecordByKeyList("status", "2", Arrays.asList("po_name"), Arrays.asList(appPONum));
 			}
 			else
 			{

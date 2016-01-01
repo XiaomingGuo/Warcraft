@@ -141,11 +141,16 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		String hql = String.format("update ProductOrder po set po.%s='%s' where po.%s='%s'", GetDatabaseKeyWord(setKeyWord), setValue, GetDatabaseKeyWord(keyWord), keyValue);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-		
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from ProductOrder por where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("por.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("por.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
 	}
+
 }

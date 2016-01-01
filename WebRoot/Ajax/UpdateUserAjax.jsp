@@ -8,7 +8,7 @@
 	hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
 	if(hUIHandle.RecordDBCount() > 0)
 	{
-		hUIHandle.UpdateRecordByKeyWord("permission", (String)request.getParameter("Permission"), "id", id);
+		hUIHandle.UpdateRecordByKeyList("permission", (String)request.getParameter("Permission"), Arrays.asList("id"), Arrays.asList(id));
 	}
 	out.write(rtnRst);
 %>

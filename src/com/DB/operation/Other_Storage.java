@@ -182,16 +182,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 
 	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue)
-	{
-		String hql = String.format("update OtherStorage por set por.%s=%d where por.%s='%s'", GetDatabaseKeyWord(setKeyWord), Integer.parseInt(setValue),
-				GetDatabaseKeyWord(keyWord), keyValue);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate)

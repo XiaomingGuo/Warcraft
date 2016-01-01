@@ -160,12 +160,4 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

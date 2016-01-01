@@ -109,10 +109,14 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	public void AddARecord(String poName)
+	public void AddARecord(String barCode, String vendor, String poName, int poQty, String dateOfDelivery)
 	{
 		aWriteRecord = new MbMaterialPo();
+		aWriteRecord.setBarCode(barCode);
+		aWriteRecord.setVendor(vendor);
 		aWriteRecord.setPoName(poName);
+		aWriteRecord.setPoQty(poQty);
+		aWriteRecord.setDateOfDelivery(dateOfDelivery);
 		getEQMHandle().addANewRecord();
 	}
 
@@ -157,12 +161,4 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByKeyWord(String setKeyWord, String setValue,
-			String keyWord, String keyValue) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
