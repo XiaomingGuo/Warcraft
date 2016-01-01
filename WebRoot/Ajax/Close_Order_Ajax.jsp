@@ -1,29 +1,24 @@
+<%@page import="com.DB.operation.Product_Order_Record"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String ordername = (String)request.getParameter("Order_Name").replace(" ", "");
 	
 	if (ordername != null)
 	{
-		String sql = "update product_order set status='3' where Order_Name='" + ordername + "'";
-		hDBHandle.execUpate(sql);
-		sql = "select * from product_order_record  where Order_Name='" + ordername + "'";
-		if (hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		hPOHandle.UpdateRecordByKeyList("status", "3", Arrays.asList("Order_Name"), Arrays.asList(ordername));
+		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(ordername));
+		if (hPORHandle.RecordDBCount() > 0)
 		{
-			List<String> idList = hDBHandle.GetAllStringValue("id");
+			List<String> idList = hPORHandle.getDBRecordList("id");
 			for (int index = 0; index < idList.size(); index++)
 			{
-				sql = "update product_order_record set status='3' where id='" + idList.get(index) + "'";
-				hDBHandle.execUpate(sql);
+				hPORHandle.UpdateRecordByKeyList("status", "3", Arrays.asList("id"), Arrays.asList(idList.get(index)));
 			}
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
 		}
 	}
 	out.write(rtnRst);
