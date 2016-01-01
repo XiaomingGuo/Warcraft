@@ -26,6 +26,12 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "ExhaustedOther";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;
@@ -108,12 +114,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 		return super.GetDblSumOfValue("ExhaustedOther", getValue, keyword, keyValue);
 	}
 	
-	@Override
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetIntSumOfValue("ExhaustedOther", getValue, keyword, keyValue);
-	}
-
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{

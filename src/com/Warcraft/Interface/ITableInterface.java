@@ -7,6 +7,7 @@ import org.hibernate.Query;
 public interface ITableInterface
 {
 	public String GetDatabaseKeyWord(String keyword);
+	public String GetTableName();
 	public List<String> getDBRecordList(String keyWord);
 	public void setResultList(Query query);
 	public Object getAWriteRecord();

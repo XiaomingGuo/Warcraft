@@ -25,6 +25,12 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "ExhaustedMaterial";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;
@@ -107,12 +113,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		return super.GetDblSumOfValue("ExhaustedMaterial", getValue, keyword, keyValue);
 	}
 	
-	@Override
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetIntSumOfValue("ExhaustedMaterial", getValue, keyword, keyValue);
-	}
-
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{

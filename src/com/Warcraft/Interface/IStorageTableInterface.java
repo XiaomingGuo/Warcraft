@@ -5,7 +5,7 @@ import java.util.List;
 public interface IStorageTableInterface
 {
 	public String GetUsedBarcode(String strBarcode, String storageName);
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue);
+	public int GetIntSumOfValue(String getValue, List<String> keyList, List<String> valueList);
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue);
 	public int RecordDBCount();
 	public List<String> getDBRecordList(String keyWord);

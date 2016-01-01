@@ -23,6 +23,12 @@ public class User_Info extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "UserInfo";
+	}
+
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;

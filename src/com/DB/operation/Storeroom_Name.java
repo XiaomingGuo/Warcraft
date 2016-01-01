@@ -22,6 +22,12 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "StoreroomName";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;

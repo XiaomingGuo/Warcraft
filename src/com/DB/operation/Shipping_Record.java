@@ -22,6 +22,12 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "ShippingRecord";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;

@@ -1,6 +1,7 @@
 package com.DB.operation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	public Product_Order_Record(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
+	}
+	
+	@Override
+	public String GetTableName()
+	{
+		return "ProductOrderRecord";
 	}
 	
 	@Override
@@ -91,20 +98,17 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	
 	public void GetRecordByOrderName(String pro_order)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.orderName='%s'", pro_order);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(pro_order));
 	}
 	
 	public void GetRecordByPOName(String poName)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.poName='%s'", poName);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
 	}
 	
-	public void GetRecordByKeyWord(String keyWord, String poName)
+	public void GetRecordByKeyWord(String keyWord, String keyVal)
 	{
-		String hql = String.format("from ProductOrderRecord por where por.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList(keyWord), Arrays.asList(keyVal));
 	}
 	
 	public void AddARecord(String barCode, String deliveryDate, int qty, String poName, String orderName)
@@ -157,8 +161,8 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	public int GetQtyByBarcodeAndPOName(String strBarcode, String appPOName, String getKeyValue)
 	{
 		int rtnRst = 0;
-		String hql = String.format("from ProductOrderRecord por where por.barCode='%s' and por.poName='%s'", GetUsedBarcode(strBarcode, "Product_Order_Record"), appPOName);
-		getEQMHandle().EQQuery(hql);
+		QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Order_Record"), appPOName));
+
 		if (RecordDBCount() > 0)
 		{
 			List<String> po_Qty_List = getDBRecordList(getKeyValue);
@@ -190,5 +194,17 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 			String keyWord, String keyValue) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void QueryRecordByFilterKeyList(List<String> keyList,
+			List<String> valueList)
+	{
+		String hql = "from ProductOrderRecord por where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("por.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		hql+= String.format("por.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		getEQMHandle().EQQuery(hql);
 	}
 }

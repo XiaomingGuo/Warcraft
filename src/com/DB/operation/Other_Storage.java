@@ -25,6 +25,12 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "OtherStorage";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;
@@ -123,12 +129,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
 		return super.GetDblSumOfValue("OtherStorage", getValue, keyword, keyValue);
-	}
-	
-	@Override
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetIntSumOfValue("OtherStorage", getValue, keyword, keyValue);
 	}
 	
 	@Override

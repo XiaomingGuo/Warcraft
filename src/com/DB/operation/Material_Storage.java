@@ -23,6 +23,12 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "MaterialStorage";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;
@@ -116,12 +122,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
 		return super.GetDblSumOfValue("MaterialStorage", getValue, keyword, keyValue);
-	}
-	
-	@Override
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetIntSumOfValue("MaterialStorage", getValue, keyword, keyValue);
 	}
 	
 	@Override

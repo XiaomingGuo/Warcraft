@@ -22,6 +22,12 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "MbMaterialPo";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;

@@ -17,13 +17,13 @@ public class ApproveAjax extends PageParentClass
 	public int GetIN_QTYByBarCode(String barcode)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", barcode);
+		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 	}
 	
 	public int GetOUT_QTYByBarCode(String barcode)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", barcode);
+		return hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 	}
 	
 	public List<List<String>> GetStorageRecordList(String barcode, String[] keyArray)

@@ -20,6 +20,12 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	{
 		super(hEQMHandle);
 	}
+	
+	@Override
+	public String GetTableName()
+	{
+		return "CustomerPo";
+	}
 
 	@Override
 	public int RecordDBCount()

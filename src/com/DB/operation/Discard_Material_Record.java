@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Query;
 
 import com.DB.support.DiscardMaterialRecord;
+import com.DB.support.ProductOrderRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
@@ -19,6 +20,12 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 	public Discard_Material_Record(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
+	}
+	
+	@Override
+	public String GetTableName()
+	{
+		return "DiscardMaterialRecord";
 	}
 	
 	@Override
@@ -99,6 +106,17 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 			rtnRst = "reason";
 		}
 		return rtnRst;
+	}
+	
+	public void AddARecord(String orderName, String barCode, String batchLot, String qty, String reason)
+	{
+		aWriteRecord = new DiscardMaterialRecord();
+		aWriteRecord.setOrderName(orderName);
+		aWriteRecord.setBarCode(barCode);
+		aWriteRecord.setBatchLot(batchLot);
+		aWriteRecord.setQty(Integer.parseInt(qty));
+		aWriteRecord.setReason(reason);
+		getEQMHandle().addANewRecord();
 	}
 
 	@Override

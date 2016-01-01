@@ -1,6 +1,7 @@
 package com.jsp.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class SubmitCreateOrder extends PageParentClass
 	public int GetRepertoryByBarCode(String strBarcode)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(strBarcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", strBarcode) - hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", strBarcode);
+		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode)) - 
+				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 	}
 	
 	public void UpdateCustomerPoStatus(String status, String poName)

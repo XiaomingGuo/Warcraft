@@ -23,6 +23,12 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "VendorInfo";
+	}
+
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;

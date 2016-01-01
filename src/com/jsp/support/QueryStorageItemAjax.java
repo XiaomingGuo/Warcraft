@@ -3,6 +3,7 @@ package com.jsp.support;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -40,8 +41,8 @@ public class QueryStorageItemAjax extends PageParentClass
 			rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
 			rtnRst.add(hPIHandle.getDBRecordList("product_type").get(0));
 			Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
-			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", barcodeList.get(idx));
-			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", barcodeList.get(idx));
+			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
+			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
 			double totalPrice = hOSHandle.GetDblPriceOfStorage("Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));

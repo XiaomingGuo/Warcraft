@@ -24,6 +24,12 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 	}
 	
 	@Override
+	public String GetTableName()
+	{
+		return "ProductStorage";
+	}
+	
+	@Override
 	public int RecordDBCount()
 	{
 		int rtnRst = 0;
@@ -115,11 +121,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		return super.GetDblSumOfValue("ProductStorage", getValue, keyword, keyValue);
 	}
 	
-	public int GetIntSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetIntSumOfValue("ProductStorage", getValue, keyword, keyValue);
-	}
-
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{

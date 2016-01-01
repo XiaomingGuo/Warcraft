@@ -1,5 +1,6 @@
 package com.Warcraft.SupportUnit;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.Warcraft.Interface.IEQManagement;
@@ -58,10 +59,10 @@ public abstract class DBTableParent
 		return rtnRst;
 	}
 	
-	public int GetIntSumOfValue(String storage_name, String getValue, String keyword, String keyValue)
+	public int GetIntSumOfValue(String getValue, List<String> keyList, List<String> valList)
 	{
 		int rtnRst = 0;
-		String hql = String.format("from %s st where st.%s='%s'", storage_name, ((ITableInterface)this).GetDatabaseKeyWord(keyword), keyValue);
+		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valList);
 		getEQMHandle().EQQuery(hql);
 		if (((ITableInterface)this).RecordDBCount() > 0)
 		{
@@ -90,6 +91,17 @@ public abstract class DBTableParent
 				rtnRst += repertory*Double.parseDouble(perPrice.get(i));
 			}
 		}
+		return rtnRst;
+	}
+	
+	public String GenerateWhereString(List<String> keyList, List<String> valueList)
+	{
+		String rtnRst = "";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			rtnRst += String.format(" tbn.%s='%s' and ", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+		}
+		rtnRst+= String.format(" tbn.%s='%s'", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
 		return rtnRst;
 	}
 }

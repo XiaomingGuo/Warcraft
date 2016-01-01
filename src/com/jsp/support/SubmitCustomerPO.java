@@ -1,6 +1,7 @@
 package com.jsp.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -58,7 +59,8 @@ public class SubmitCustomerPO extends PageParentClass
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(strBarcode);;
 		String tempBarcode = hHandle.GetUsedBarcode(strBarcode, storageName);
-		return hHandle.GetIntSumOfValue("IN_QTY", "Bar_Code", tempBarcode) - hHandle.GetIntSumOfValue("OUT_QTY", "Bar_Code", tempBarcode);
+		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(tempBarcode)) - 
+				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(tempBarcode));
 	}
 	
 	public void UpdateCustomerPoStatus(String status, String poName)
