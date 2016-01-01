@@ -106,6 +106,12 @@ public abstract class DBTableParent
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 	
+	public void DeleteRecordByKeyList(List<String> keyList, List<String> valueList)
+	{
+		String hql = String.format("delete %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
+		getEQMHandle().DeleteAndUpdateRecord(hql);
+	}
+	
 	public void QueryRecordByFilterKeyList(List<String> keyList, List<String> valueList)
 	{
 		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);

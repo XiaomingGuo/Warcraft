@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>

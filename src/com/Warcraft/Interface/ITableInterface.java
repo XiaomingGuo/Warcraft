@@ -15,4 +15,5 @@ public interface ITableInterface
 	public void DeleteRecordByKeyWord(String keyWord, List<String> delList);
 	public void UpdateRecordByKeyList(String setKeyWord, String setValue, List<String> keyList, List<String> valueList);
 	public void QueryRecordByFilterKeyList(List<String> keyList, List<String> valueList);
+	public void DeleteRecordByKeyList(List<String> keyList, List<String> valueList);
 }

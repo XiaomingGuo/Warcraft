@@ -1,27 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
+<%@ page import="com.DB.operation.Customer_Po_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	List<String> recordList = null;
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	if(po_name.length() > 6)
 	{
-		String sql = "select * from customer_po_record where po_name='" + po_name + "'";
-		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
+		if (hCPRHandle.RecordDBCount() > 0)
 		{
-			recordList = hDBHandle.GetAllStringValue("Bar_Code");
+			recordList = hCPRHandle.getDBRecordList("Bar_Code");
 			for(int iRow = 0; iRow < recordList.size(); iRow++)
 			{
 				String strBarcode = recordList.get(iRow);
 				rtnRst += strBarcode + "$";
 			}
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
 		}
 	}
 	else

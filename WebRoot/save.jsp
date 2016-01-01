@@ -2,6 +2,8 @@
 <%@ page import="com.jspsmart.upload.*" %>
 <%@ page import="com.office.core.ExcelManagment" %>
 <%@ page import="com.office.operation.ExcelRead" %>
+<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();%>
