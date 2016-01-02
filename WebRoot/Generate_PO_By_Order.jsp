@@ -1,18 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Mb_Material_Po" %>
+<%@page import="com.DB.operation.Product_Info"%>
+<%@page import="com.DB.operation.Vendor_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
-	List<List<String>> recordList = null, vendorInfo = null;
-%>
 <%
 	String message="";
 	String POName = request.getParameter("OrderName").replace(" ", "");
 	String vendor = request.getParameter("vendor").replace(" ", "");
 	String delivery_Date = request.getParameter("Delivery_Date").replace(" ", "");
+	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
 	
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -30,25 +27,27 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from mb_material_po where po_name='" + POName + "' and vendor='" + vendor + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(POName, vendor));
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			if (hMMPHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				for(int idx=0; idx < sqlKeyList.length; idx++)
+				{
+					recordList.add(hMMPHandle.getDBRecordList(sqlKeyList[idx]));
+				}
 			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
-			sql = "select * from vendor_info where vendor_name='" + vendor +  "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name"), Arrays.asList(vendor));
+			List<List<String>> vendorInfo = new ArrayList<List<String>>();
+			if (hVIHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"vendor_fax", "vendor_tel", "vendor_e_mail", "vendor_address"};
-				vendorInfo = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				for(int idx=0; idx<sqlKeyList.length; idx++)
+				{
+					vendorInfo.add(hVIHandle.getDBRecordList(sqlKeyList[idx]));
+				}
 			}
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
@@ -128,7 +127,8 @@
  
 <%
 			if (!recordList.isEmpty())
-			{ 
+			{
+				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>
@@ -158,14 +158,16 @@
 				    	}
 				    	else if(displayKeyList[iCol-1] == "名称")
 				    	{
+				    		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 %>
-    			<td width="2%"><input type="text" value="<%=hDBHandle.GetTypeByBarcode(strBarcode)%>" readonly></td>
+    			<td width="2%"><input type="text" value="<%=hPIHandle.getDBRecordList("product_type").get(0)%>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "型号")
 				    	{
+				    		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 %>
-    			<td width="2%"><input type="text" value="<%=hDBHandle.GetNameByBarcode(strBarcode)%>" readonly></td>
+    			<td width="2%"><input type="text" value="<%=hPIHandle.getDBRecordList("name").get(0)%>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "数量")

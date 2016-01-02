@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Other_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
@@ -29,6 +29,8 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+			hORHandle.QueryRecordByFilterKeyList(Arrays.asList("isApprove"), Arrays.asList("0"));
 			String sql = "select * from other_record where isApprove=0";
 			hDBHandle.QueryDataBase(sql);
 			int recordCount = hDBHandle.GetRecordCount();

@@ -1,17 +1,15 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.Material_Storage"%>
+<%@ page import="com.DB.operation.Discard_Material_Record"%>
+<%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.Product_Order_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "状态",  "操作"};
-	String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
-	List<List<String>> recordList = null;
-%>
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name").replace(" ", "");
 	String status = request.getParameter("status");
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "状态",  "操作"};
 	
 	String order_status = null;
 	if (order_name.length() > 12)
@@ -19,26 +17,30 @@
 		String sql = null;
 		if (status != null)
 		{
-			sql = "select * from product_order where Order_Name='" + order_name + "'";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
+			if (hPOHandle.RecordDBCount() > 0)
 			{
-				order_status = hDBHandle.GetSingleString("status");
+				order_status = hPOHandle.getDBRecordList("status").get(0);
 				if (Integer.parseInt(order_status) > Integer.parseInt(status))
 				{
 					rtnRst += "error:该PO单已经存在!";
 					out.write(rtnRst);
 				}
 			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
 		}
 		rtnRst += order_status + "$";
-		sql = "select * from product_order_record where Order_Name='" + order_name + "'";
-		if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
+
+		if (hPORHandle.RecordDBCount() > 0)
 		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+			String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			for(int idx=0; idx < sqlKeyList.length; idx++)
+			{
+				recordList.add(hPORHandle.getDBRecordList(sqlKeyList[idx]));
+			}
 			int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 			rtnRst += Integer.toString(iColCount) + "$";
 			rtnRst += Integer.toString(iRowCount) + "$";
@@ -46,10 +48,14 @@
 			{
 				rtnRst += displayList[i] + "$";
 			}
+			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			Discard_Material_Record hDMRHandle = new Discard_Material_Record(new EarthquakeManagement());
+			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 			for(int iRow = 0; iRow < iRowCount; iRow++)
 			{
 				int iPro_storage = 0, iMat_storage = 0, iOrderQTY = 0, iCompleteQTY = 0;
 				String strBarcode = recordList.get(1).get(iRow);
+				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				for(int iCol = 0; iCol < iColCount; iCol++)
 				{
 					if("ID" == displayList[iCol])
@@ -58,11 +64,11 @@
 					}
 					else if("产品类型" == displayList[iCol])
 					{
-						rtnRst += hDBHandle.GetTypeByBarcode(strBarcode) + "$";
+						rtnRst += hPIHandle.getDBRecordList("product_type").get(0) + "$";
 					}
 					else if("产品名称" == displayList[iCol])
 					{
-						rtnRst += hDBHandle.GetNameByBarcode(strBarcode) + "$";
+						rtnRst += hPIHandle.getDBRecordList("name").get(0) + "$";
 					}
 					else if("八码" == displayList[iCol])
 					{
@@ -84,7 +90,7 @@
 					}
 					else if("报废数量" == displayList[iCol])
 					{
-						rtnRst += hDBHandle.GetDiscardMaterialQTY(strBarcode, order_name) + "$";
+						rtnRst += hDMRHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(strBarcode, order_name)) + "$";
 					}
 					else if("未完成数" == displayList[iCol])
 					{
@@ -96,7 +102,8 @@
 					}
 					else if("材料库存" == displayList[iCol])
 					{
-						int iMaterialQTY = hDBHandle.GetRepertoryByBarCode(strBarcode, "material_storage") - hDBHandle.GetUncompleteOrderRecord(strBarcode);
+						int iMaterialQTY = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"))) - 
+								hPORHandle.GetUncompleteOrderRecord(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"));
 						if (iMaterialQTY < 0)
 						{
 							rtnRst += "0$";
@@ -128,10 +135,6 @@
 					}
 				}
 			}
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
 		}
 	}
 	out.write(rtnRst);
