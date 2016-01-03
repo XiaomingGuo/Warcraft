@@ -57,7 +57,7 @@ public class Out_Quality_Control_Ajax extends PageParentClass
 	public void UpdateStorageOutQty(String outQty, String barcode, String batchLot)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		hHandle.UpdateRecordByFilterKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		((ITableInterface)hHandle).UpdateRecordByKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
 	
@@ -71,7 +71,7 @@ public class Out_Quality_Control_Ajax extends PageParentClass
 		{
 			int storageQTY = hPSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "Batch_Lot", "Order_Name"), 
 					Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "product_storage"), batchLot, OrderName));
-			hPSHandle.UpdateRecordByFilterKeyList("IN_QTY", Integer.toString(storageQTY+used_count), Arrays.asList("Bar_Code", "Batch_Lot", "Order_Name"), 
+			hPSHandle.UpdateRecordByKeyList("IN_QTY", Integer.toString(storageQTY+used_count), Arrays.asList("Bar_Code", "Batch_Lot", "Order_Name"), 
 					Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "product_storage"), batchLot, OrderName));
 		}
 		else

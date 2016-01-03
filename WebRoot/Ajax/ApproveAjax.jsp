@@ -25,10 +25,10 @@
 			if (recordCount >= used_count)
 			{
 				hPageHandle.UpdateStorageOutQty(Integer.toString(sql_out_count+used_count), barcode, batchLot);
-				hORHandle.UpdateRecordByFilterKeyList("Batch_Lot", batchLot, Arrays.asList("id"), Arrays.asList(recordID));
-				hORHandle.UpdateRecordByFilterKeyList("QTY", Integer.toString(used_count), Arrays.asList("id"), Arrays.asList(recordID));
-				hORHandle.UpdateRecordByFilterKeyList("isApprove", "1", Arrays.asList("id"), Arrays.asList(recordID));
-				hORHandle.UpdateRecordByFilterKeyList("Merge_Mark", recordID, Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByKeyList("Batch_Lot", batchLot, Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByKeyList("QTY", Integer.toString(used_count), Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByKeyList("isApprove", "1", Arrays.asList("id"), Arrays.asList(recordID));
+				hORHandle.UpdateRecordByKeyList("Merge_Mark", recordID, Arrays.asList("id"), Arrays.asList(recordID));
 				break;
 			}
 			else
@@ -39,10 +39,10 @@
 				List<String> keyList = Arrays.asList("Bar_Code", "proposer", "QTY", "user_name", "isApprove", "Merge_Mark");
 				List<String> valList = Arrays.asList(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), "0", recordID);
 				hORHandle.AddARecord(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), recordID);
-				hORHandle.UpdateRecordByFilterKeyList("Batch_Lot", batchLot, keyList, valList);
-				hORHandle.UpdateRecordByFilterKeyList("QTY", Integer.toString(recordCount), keyList, valList);
-				hORHandle.UpdateRecordByFilterKeyList("isApprove", "1", keyList, valList);
-				hORHandle.UpdateRecordByFilterKeyList("Merge_Mark", recordID, keyList, valList);
+				hORHandle.UpdateRecordByKeyList("Batch_Lot", batchLot, keyList, valList);
+				hORHandle.UpdateRecordByKeyList("QTY", Integer.toString(recordCount), keyList, valList);
+				hORHandle.UpdateRecordByKeyList("isApprove", "1", keyList, valList);
+				hORHandle.UpdateRecordByKeyList("Merge_Mark", recordID, keyList, valList);
 				used_count -= recordCount;
 			}
 		}

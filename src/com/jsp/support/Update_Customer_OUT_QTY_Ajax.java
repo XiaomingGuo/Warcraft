@@ -57,7 +57,7 @@ public class Update_Customer_OUT_QTY_Ajax extends PageParentClass
 	public void UpdateStorageOutQty(String outQty, String barcode, String batchLot)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		hHandle.UpdateRecordByFilterKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		((ITableInterface)hHandle).UpdateRecordByKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
 }
