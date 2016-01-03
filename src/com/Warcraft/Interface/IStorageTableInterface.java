@@ -17,5 +17,4 @@ public interface IStorageTableInterface
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String appInStoreDate, String isEnsure, String createDate);
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue, List<String> keyList, List<String> valueList);
 }

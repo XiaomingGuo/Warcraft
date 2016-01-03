@@ -225,11 +225,4 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
-			List<String> keyList, List<String> valueList) {
-		// TODO Auto-generated method stub
-		
-	}
 }

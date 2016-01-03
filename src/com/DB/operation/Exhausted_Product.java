@@ -201,12 +201,6 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	}
 
 	@Override
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
-			List<String> keyList, List<String> valueList) {
-		
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate) {

@@ -208,13 +208,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
-			List<String> keyList, List<String> valueList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appSupplier_name, String appInStoreDate) {

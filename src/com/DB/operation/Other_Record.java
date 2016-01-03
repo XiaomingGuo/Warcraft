@@ -103,11 +103,6 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		getEQMHandle().addANewRecord();
 	}
 	
-	public void AddMRecord(String[] appBarcode, String[] proposerName, String[] appProduct_QTY, String[] appUserName)
-	{
-		
-	}
-
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
@@ -141,33 +136,9 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		return rtnRst;
 	}
 	
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
-			List<String> keyList, List<String> valueList)
-	{
-		String hql = String.format("update OtherRecord ord set ord.%s='%s' where ", GetDatabaseKeyWord(setKeyWord), setValue);
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("ord.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql += String.format("ord.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	}
-
 	@Override
 	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from OtherRecord ord where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("ord.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("ord.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
 	}
 }

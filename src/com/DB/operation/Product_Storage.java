@@ -213,11 +213,4 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void UpdateRecordByFilterKeyList(String setKeyWord, String setValue,
-			List<String> keyList, List<String> valueList) {
-		// TODO Auto-generated method stub
-		
-	}
 }
