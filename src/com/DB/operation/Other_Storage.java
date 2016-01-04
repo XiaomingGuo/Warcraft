@@ -211,9 +211,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 
 	@Override
-	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
-			List<String> keyList, List<String> valueList, String beginDate,
-			String endDate)
+	public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String beginDate, String endDate)
 	{
 		String hql = "from OtherStorage os where ";
 		for(int idx=0; idx<keyList.size(); idx++)

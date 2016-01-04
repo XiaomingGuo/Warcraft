@@ -1,6 +1,8 @@
 package com.jsp.support;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.DB.operation.EarthquakeManagement;
 import com.DB.operation.Exhausted_Material;
@@ -97,5 +99,17 @@ public class PageParentClass
 					hStorageHandle.getDBRecordList("create_date").get(0));
 			((ITableInterface)hStorageHandle).DeleteRecordByKeyWord("Id", Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
 		}
+	}
+	
+	public double GetPrice_Pre_Unit(String bar_code, String Batch_Lot)
+	{
+		IStorageTableInterface hHandle = GenStorageHandle(bar_code);
+		IStorageTableInterface hExHandle = GenExStorageHandle(bar_code);
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(bar_code, Batch_Lot));
+		hExHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(bar_code, Batch_Lot));
+		List<String> tempList = new ArrayList<String>();
+		tempList.addAll(hHandle.getDBRecordList("Price_Per_Unit"));
+		tempList.addAll(hExHandle.getDBRecordList("Price_Per_Unit"));
+		return Double.parseDouble(tempList.get(0));
 	}
 }

@@ -137,8 +137,15 @@ public class Other_Record extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
 		
+	}
+	
+	public void QueryRecordByKeyListBetweenCreateDate(List<String> keyList, List<String> valueList, String beginDate, String endDate)
+	{
+		String hql = String.format("from %s tbn where", GetTableName()) + GenerateWhereString(keyList, valueList);
+		hql += String.format(" and tbn.createDate>'%s' and tbn.createDate<'%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
 	}
 }

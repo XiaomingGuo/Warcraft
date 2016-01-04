@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Product_Info"%>
+<%@ page import="com.DB.operation.Other_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.jsp.support.CreateMonthReport" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -28,18 +28,17 @@
 		else
 		{
 			//product_info Database query
-			List<List<String>> recordList = null;
 			String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "价值", "申请日期"};
 			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-			String sql = "select * from other_record where create_date>'" + beginDate + "' and create_date<'" + endDate + "' and isApprove=1";
-			if (hDBHandle.QueryDataBase(sql))
+			
+			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+			hORHandle.QueryRecordByKeyListBetweenCreateDate(Arrays.asList("isApprove"), Arrays.asList("1"), beginDate, endDate);
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			for(int idx=0; idx<sqlKeyList.length;idx++)
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
+				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
 			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			
 			List<List<String>> writeList = new ArrayList<List<String>>();
 			List<String> headList = new ArrayList<String>();
 			for (int iHead=0; iHead < displayKeyList.length; iHead++)
@@ -49,9 +48,11 @@
 			writeList.add(headList);
 			if (null != recordList)
 			{
+				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 				for(int iRow = 0; iRow < recordList.get(0).size();iRow++)
 				{
 					List<String> tempList = new ArrayList<String>();
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(recordList.get(0).get(iRow)));
 					for(int iCol = 0; iCol < displayKeyList.length; iCol++)
 					{
 						//{"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
@@ -62,7 +63,7 @@
 						}
 						else if("名称" == displayKeyList[iCol])
 						{
-							tempList.add(hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow)));
+							tempList.add(hPIHandle.getDBRecordList("name").get(0));
 						}
 						else if("八码" == displayKeyList[iCol])
 						{
@@ -90,7 +91,8 @@
 						}
 						else if("价值" == displayKeyList[iCol])
 						{
-							double perPrice = hDBHandle.GetPrice_Pre_Unit("other", recordList.get(0).get(iRow), recordList.get(1).get(iRow));
+							CreateMonthReport hPageHandle = new CreateMonthReport();
+							double perPrice = hPageHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow), recordList.get(1).get(iRow));
 							double totalPrice = perPrice * Integer.parseInt(recordList.get(3).get(iRow));
 							tempList.add(Double.toString(totalPrice));
 						}

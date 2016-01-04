@@ -1,20 +1,16 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Other_Record" %>
+<%@	page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.jsp.support.MonthReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "申请日期", "领取确认"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-	List<List<String>> recordList = null;
-%>
 <%
 	String message="";
 	Calendar mData = Calendar.getInstance();
 	String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
 	String beginDate = String.format("%s%s", currentDate, "01");
 	String endDate = String.format("%s%s", currentDate, "31");
+	String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "申请日期", "领取确认"};
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -39,14 +35,14 @@
 				beginDate = tempBeginDate;
 				endDate = tempEndDate;
 			}
-			String sql = "select * from other_record where create_date>'" + beginDate + "' and create_date<'" + endDate + "' and isApprove=1";
-			if (hDBHandle.QueryDataBase(sql))
+			MonthReport hPageHandle = new MonthReport();
+			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+			hORHandle.QueryRecordByKeyListBetweenCreateDate(Arrays.asList("isApprove"), Arrays.asList("1"), beginDate, endDate);
+			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			for(int idx=0; idx < sqlKeyList.length; idx++)
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
 			}
 %>
 
@@ -106,9 +102,11 @@
 			double totalPrice = 0;
 			if (!recordList.isEmpty())
 			{
+				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
-					totalPrice += hDBHandle.GetPrice_Pre_Unit("other", recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(recordList.get(0).get(iRow-1)));
+					totalPrice += hPageHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
 %>
 		<tr>
 <%
@@ -123,7 +121,7 @@
 				    	else if (displayKeyList[iCol-1] == "名称")
 				    	{
 %>
-   			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
+   			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 				    	}
 				    	else if (displayKeyList[iCol-1] == "ID")
