@@ -1,4 +1,3 @@
-<%@page import="org.apache.struts2.components.Else"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Other_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
@@ -159,9 +158,9 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='SubmitQty(this)'>
     				&nbsp;
-    				<input type='button' value='删除' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='RejectQty(this)'>
+    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='RejectQty(this)'>
     			</td>
 <%
 			    		}

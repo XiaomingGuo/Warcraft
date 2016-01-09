@@ -75,7 +75,7 @@ public class Product_OrderTest
 		new NonStrictExpectations()
 		{
 		};
-		hTestHandle.GetOrderNameByStatus(1);
+		//hTestHandle.GetOrderNameByStatus(1);
 		new Verifications()
 		{
 		};

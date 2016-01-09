@@ -101,7 +101,7 @@ public abstract class DBTableParent
 	public void UpdateRecordByKeyList(String setKeyWord, String setValue,
 			List<String> keyList, List<String> valueList)
 	{
-		String hql = String.format("update %s tbn set tbn.%s='%s' where", ((ITableInterface)this).GetTableName(), setKeyWord, setValue) + GenerateWhereString(keyList, valueList);
+		String hql = String.format("update %s tbn set tbn.%s='%s' where", ((ITableInterface)this).GetTableName(), ((ITableInterface)this).GetDatabaseKeyWord(setKeyWord), setValue) + GenerateWhereString(keyList, valueList);
 		getEQMHandle().DeleteAndUpdateRecord(hql);
 	}
 	

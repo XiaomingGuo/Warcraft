@@ -1,16 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@	page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.MonthReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
-	Calendar mData = Calendar.getInstance();
-	String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
-	String beginDate = String.format("%s%s", currentDate, "01");
-	String endDate = String.format("%s%s", currentDate, "31");
-	String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "申请日期", "领取确认"};
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -21,29 +14,25 @@
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("../tishi.jsp");
 		}
 		else
 		{
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String tempBeginDate = request.getParameter("BeginDate");
-			String tempEndDate = request.getParameter("EndDate");
-			if (tempBeginDate != null&&tempEndDate != null)
-			{
-				beginDate = tempBeginDate;
-				endDate = tempEndDate;
-			}
+			request.setCharacterEncoding("UTF-8");
+		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+			String[] selectKeyList = {"库名", "类别", "名称", "使用人"};
+			Calendar mData = Calendar.getInstance();
+			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
+			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
+			String beginDate = String.format("%s%s", currentDate, "01");
+			String endDate = String.format("%s%s", currentDate, "31");
+			
 			MonthReport hPageHandle = new MonthReport();
-			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-			hORHandle.QueryRecordByKeyListBetweenCreateDate(Arrays.asList("isApprove"), Arrays.asList("1"), beginDate, endDate);
-			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-			List<List<String>> recordList = new ArrayList<List<String>>();
-			for(int idx=0; idx < sqlKeyList.length; idx++)
-			{
-				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
-			}
+			List<String> store_nameList = hPageHandle.GetAllStorageroom();
+			List<String> userNameList = hPageHandle.GetUserName(Arrays.asList("user_name"));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -58,136 +47,110 @@
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
+  	<link href="css/style.css" rel="stylesheet" type="text/css">
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-	<script language="javascript" src="dojojs/dojo.js"></script>
   </head>
-  	<script type="text/javascript">
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+  	<script language="javascript" src="Page_JS/MonthReportJS.js"></script>
+	<script language="javascript" src="dojojs/dojo.js"></script>
+  <body>
+   	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-  <body>
     <jsp:include page="Menu/QueryMenu.jsp"/>
-	<form action="ReportPage/Create_Month_Report.jsp" method="post">
-	<div align="center"><label>查询起止时间:</label></div>
-  	<table border="1" align="center">
-	  	<tr>
-	  		<td>
-    			<label>开始日期:</label>
-    			<div dojoType="dropdowndatepicker" id="DateOfBegin" name="DateOfBegin" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
-   			</td>
-   			<td>
-    			<label>截止日期:</label>
-    			<div dojoType="dropdowndatepicker" id="DateOfEnd" name="DateOfEnd" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
-	  		</td>
-	  	</tr>
-  	</table>
-	<table align="center">
-		<tr><td><input type="button" value="查询" onclick="Query(this)" style='width:80px'></td></tr>
-	</table>
-   	<table align="center" border="1">
-   		<tr>
+    <br>
+    <form action="ReportPage/SaveStorageReport.jsp" method="post">
+    <table align="center" border="1">
+   		<caption><b>库房报表</b></caption>
+			<tr>
 <%
-			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-			{
-%>
-   			<th><%= displayKeyList[iCol-1]%></th>
-<%
-			}
-%>
-   		</tr>
- 
-<%
-			double totalPrice = 0;
-			if (!recordList.isEmpty())
-			{
-				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
+				for(int iCol = 1; iCol <= selectKeyList.length; iCol++)
 				{
-					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(recordList.get(0).get(iRow-1)));
-					totalPrice += hPageHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow-1), recordList.get(1).get(iRow-1))*Integer.parseInt(recordList.get(3).get(iRow-1));
 %>
-		<tr>
-<%
-					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
-					{
-						if(displayKeyList[iCol-1] == "领取确认")
-						{
-%>
-   			<td><%= (recordList.get(iCol-3).get(iRow-1).equalsIgnoreCase("1")) ? "已领取" :"未领取" %></td>
-<%
-			    		}
-				    	else if (displayKeyList[iCol-1] == "名称")
-				    	{
-%>
-   			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
-<%
-				    	}
-				    	else if (displayKeyList[iCol-1] == "ID")
-				    	{
-%>
-   			<td><%=iRow %></td>
-<%
-				    	}
-				    	else
-				    	{
-%>
-   			<td><%= recordList.get(iCol-3).get(iRow-1)%></td>
-<%
-						}
-				    }
-%>
-		</tr>
+				<th><%= selectKeyList[iCol-1]%></th>
 <%
 				}
-			}
-			String strTotalPrice = String.format("%.3f", totalPrice);
 %>
+			</tr>
+			<tr>
+		  		<td align="right">
+				  	<select name="store_name" id="store_name" style="width:120px">
+					  	<option value = "--请选择--">--请选择--</option>
+<%
+				for(int i = 0; i < store_nameList.size(); i++)
+				{
+%>
+				  		<option value = <%=store_nameList.get(i) %>><%=store_nameList.get(i)%></option>
+<%
+				}
+%>
+				  	</select>
+			  	</td>
+		  		<td align="right">
+				  	<select name="product_type" id="product_type" style="width:100px">
+					  	<option value = "--请选择--">--请选择--</option>
+				  	</select>
+			  	</td>
+				<td align="right">
+					<select name="product_name" id="product_name" style="width:150px">
+					  	<option value = "--请选择--">--请选择--</option>
+					</select>
+				</td>
+				<td align="right">
+				  	<select name="user_name" id="user_name" style="width:120px">
+					  	<option value = "--请选择--">--请选择--</option>
+<%
+				for(int i = 0; i < userNameList.size(); i++)
+				{
+%>
+				  		<option value = <%=userNameList.get(i) %>><%=userNameList.get(i)%></option>
+<%
+				}
+%>
+				  	</select>
+			  	</td>
+		  	</tr>
+	  	</table>
+  	  	<table align="center">
+		  	<tr>
+		  		<td align="center">
+			  		<b><font  size="3">查询起止时间:</font></b>
+				</td>
+		  	</tr>
+		  	<tr>
+			  	<td>
+				  	<table border="1" align="center">
+					  	<tr>
+					  		<td>
+				    			<label>开始日期:</label>
+				    			<div dojoType="dropdowndatepicker" id="BeginDate" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+			    			</td>
+			    			<td>
+				    			<label>截止日期:</label>
+				    			<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+					  		</td>
+					  	</tr>
+				  	</table>
+			  	</td>
+		  	</tr>
+		</table>
+	  	<br>
+  		<table id="display_add" border='1' align="center"></table>
+	  	<br>
+  		<table id="hidden_table" style="visibility:hidden"></table>
+	  	<table align="center">
+		<!--
 		<tr>
-<%
-			for(int iCol = 1; iCol <= displayKeyList.length-2; iCol++)
-			{
-%>
-			<td><table></table></td>
-<%
-			}
-%>
-			<td><table>总价值：</table></td>
-			<td><%=strTotalPrice %></td>
-		</tr>
-   	</table>
-   	<br><br>
-  	<table align="center">
-		<tr>
-	  		<td align="right">
-		  		<label>分页列:</label>
-			  	<select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
-				  	<option value = "--请选择--">--请选择--</option>
-<%
-					for(int i = 0; i < displayKeyList.length; i++)
-					{
-%>
-				  	<option value=<%=i%>><%=displayKeyList[i]%></option>
-<%
-					}
-%>
-			  	</select>
-		  	</td>
 		  	<td align="center">
 		  		<input type="submit" value="下载报表" style='width:80px'/>
 		  	</td>
 	  	</tr>
-  	</table>
-  	</form>
-	<script type="text/javascript">
-		function Query(obj)
-		{
-			var beginData = dojo.widget.byId("DateOfBegin");
-			var endData = dojo.widget.byId("DateOfEnd");
-			window.location.href="MonthReport.jsp?BeginDate="+beginData.getValue().split("T")[0]+"&EndDate="+endData.getValue().split("T")[0];
-		}
-	</script>
+	  	-->
+ 		</table>
+   	</form>
   </body>
 </html>
 <%

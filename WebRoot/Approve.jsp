@@ -139,8 +139,8 @@
 		<script type="text/javascript">
 			function change(obj)
 			{
-    			//String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 				var tempList = obj.name.split("$");
+				$("#"+tempList[0]).attr("disabled","disabled");
 				$.post("Ajax/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 				{
 					if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
