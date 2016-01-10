@@ -62,7 +62,7 @@
 	</script>
     <jsp:include page="Menu/QueryMenu.jsp"/>
     <br>
-    <form action="ReportPage/SaveStorageReport.jsp" method="post">
+    <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
    		<caption><b>库房报表</b></caption>
 			<tr>
@@ -142,13 +142,25 @@
 	  	<br>
   		<table id="hidden_table" style="visibility:hidden"></table>
 	  	<table align="center">
-		<!--
 		<tr>
+			<td align="right">
+			     <label>分页列:</label>
+			     <select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
+			         <option value = "--请选择--">--请选择--</option>
+<%
+                    for(int i = 0; i < displayKeyList.length; i++)
+                    {
+%>
+                      <option value=<%=i%>><%=displayKeyList[i]%></option>
+<%
+                    }
+%>
+				</select>
+			</td>
 		  	<td align="center">
 		  		<input type="submit" value="下载报表" style='width:80px'/>
 		  	</td>
 	  	</tr>
-	  	-->
  		</table>
    	</form>
   </body>

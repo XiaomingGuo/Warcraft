@@ -16,8 +16,8 @@
 	else
 	{
 		String splitFlag=(String)request.getParameter("OrderItemSelect").replace(" ", "");
-		String beginDate=(String)request.getParameter("DateOfBegin").replace(" ", "");
-		String endDate=(String)request.getParameter("DateOfEnd").replace(" ", "");
+		String beginDate=(String)request.getParameter("BeginDate").replace(" ", "");
+		String endDate=(String)request.getParameter("EndDate").replace(" ", "");
 
 		int temp = mylogon.getUserRight()&64;
 		if(temp == 0)
