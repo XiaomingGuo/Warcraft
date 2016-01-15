@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.EarthquakeManagement;
-import com.DB.operation.Exhausted_Material;
-import com.DB.operation.Exhausted_Other;
-import com.DB.operation.Exhausted_Product;
-import com.DB.operation.Material_Storage;
-import com.DB.operation.Other_Storage;
-import com.DB.operation.Product_Storage;
+import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 
@@ -47,7 +41,7 @@ public class PageParentClass
 			rtnRst = isExhausted?"ExhaustedProduct":"ProductStorage";
 		}
 		else if(barcode >= 70000000 && barcode < 80000000) {
-			rtnRst = isExhausted?"":"";
+			rtnRst = isExhausted?"ExhaustedSemiProduct":"SemiProductStorage";
 		}
 		else {
 			rtnRst = isExhausted?"ExhaustedOther":"OtherStorage";
@@ -64,6 +58,8 @@ public class PageParentClass
 			return new Material_Storage(new EarthquakeManagement());
 		else if(iBarcode >= 60000000&&iBarcode < 70000000)
 			return new Product_Storage(new EarthquakeManagement());
+		else if(iBarcode >= 70000000&&iBarcode < 80000000)
+			return new Semi_Product_Storage(new EarthquakeManagement());
 		return null;	
 	}
 	
@@ -76,6 +72,8 @@ public class PageParentClass
 			return new Exhausted_Material(new EarthquakeManagement());
 		else if(iBarcode >= 60000000&&iBarcode < 70000000)
 			return new Exhausted_Product(new EarthquakeManagement());
+		else if(iBarcode >= 70000000&&iBarcode < 80000000)
+			return new Exhausted_Semi_Product(new EarthquakeManagement());
 		return null;	
 	}
 	

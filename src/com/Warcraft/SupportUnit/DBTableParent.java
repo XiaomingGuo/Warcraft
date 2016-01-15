@@ -28,16 +28,26 @@ public abstract class DBTableParent
 	public String GetUsedBarcode(String barcode, String storage_name)
 	{
 		String rtnRst = barcode;
-		if (Integer.parseInt(barcode) > 50000000 && Integer.parseInt(barcode) < 70000000)
+		if (Integer.parseInt(barcode) >= 50000000 && Integer.parseInt(barcode) < 60000000)
 		{
-			if (storage_name.toLowerCase().indexOf("material") >= 0)
-			{
-				rtnRst = (Integer.parseInt(barcode) >= 60000000)?Integer.toString(Integer.parseInt(barcode)-10000000):barcode;
-			}
+			if (storage_name.toLowerCase().indexOf("semi") >= 0)
+				rtnRst = Integer.toString(Integer.parseInt(barcode)+20000000);
 			else if(storage_name.toLowerCase().indexOf("product") >= 0)
-			{
-				rtnRst = (Integer.parseInt(barcode) >= 60000000)?barcode:Integer.toString(Integer.parseInt(barcode)+10000000);
-			}
+				rtnRst = Integer.toString(Integer.parseInt(barcode)+10000000);
+		}
+		else if(Integer.parseInt(barcode) >= 60000000 && Integer.parseInt(barcode) < 70000000)
+		{
+			if (storage_name.toLowerCase().indexOf("semi") >= 0)
+				rtnRst = Integer.toString(Integer.parseInt(barcode)+10000000);
+			else if(storage_name.toLowerCase().indexOf("material") >= 0)
+				rtnRst = Integer.toString(Integer.parseInt(barcode)-10000000);
+		}
+		else if(Integer.parseInt(barcode) >= 70000000 && Integer.parseInt(barcode) < 80000000)
+		{
+			if (storage_name.toLowerCase().indexOf("product") >= 0)
+				rtnRst = Integer.toString(Integer.parseInt(barcode)-10000000);
+			else if(storage_name.toLowerCase().indexOf("material") >= 0)
+				rtnRst = Integer.toString(Integer.parseInt(barcode)-20000000);
 		}
 		return rtnRst;
 	}

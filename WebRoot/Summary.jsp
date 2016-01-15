@@ -87,17 +87,21 @@
 				{
 					String storageName = "other_storage";
 					String bar_code = recordList.get(1).get(iRow-1);
+					if (Integer.parseInt(bar_code) >= 70000000 && Integer.parseInt(bar_code) < 80000000)
+					{
+						storageName = "semi_product_storage";
+					}
 					if (Integer.parseInt(bar_code) >= 60000000 && Integer.parseInt(bar_code) < 70000000)
 					{
 						storageName = "product_storage";
 					}
-%>
-  			<tr>
-<%
 					if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
 					{
 						storageName = "material_storage";
 					}
+%>
+  			<tr>
+<%
 					int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, storageName);
 					int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, storageName);
 					double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code, storageName);
