@@ -7,19 +7,18 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.ExhaustedProduct;
-import com.DB.support.MaterialStorage;
+import com.DB.support.ExhaustedSemiProduct;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Exhausted_Product extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Exhausted_Semi_Product extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
-	private List<ExhaustedProduct> resultList = null;
-	private ExhaustedProduct aWriteRecord = null;
+	private List<ExhaustedSemiProduct> resultList = null;
+	private ExhaustedSemiProduct aWriteRecord = null;
 	
-	public Exhausted_Product(IEQManagement hEQMHandle)
+	public Exhausted_Semi_Product(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
 	}
@@ -27,7 +26,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	@Override
 	public String GetTableName()
 	{
-		return "ExhaustedProduct";
+		return "ExhaustedSemiProduct";
 	}
 	
 	@Override
@@ -43,10 +42,10 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ExhaustedProduct> it = resultList.iterator();
+		Iterator<ExhaustedSemiProduct> it = resultList.iterator();
 		while(it.hasNext())
 		{
-			ExhaustedProduct tempRecord = (ExhaustedProduct)it.next();
+			ExhaustedSemiProduct tempRecord = (ExhaustedSemiProduct)it.next();
 			switch (keyWord)
 			{
 			case "id":
@@ -106,14 +105,14 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	
 	public void GetAllRecord()
 	{
-		String hql = String.format("from ExhaustedProduct");
+		String hql = String.format("from ExhaustedSemiProduct");
 		getEQMHandle().EQQuery(hql);
 	}
 
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetDblSumOfValue("ExhaustedProduct", getValue, keyword, keyValue);
+		return super.GetDblSumOfValue("ExhaustedSemiProduct", getValue, keyword, keyValue);
 	}
 	
 	@Override
@@ -170,7 +169,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String appInStoreDate, String isEnsure, String createDate)
 	{
-		aWriteRecord = new ExhaustedProduct();
+		aWriteRecord = new ExhaustedSemiProduct();
 		aWriteRecord.setId(Integer.parseInt(id));
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setBatchLot(batch_lot);
@@ -188,7 +187,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	public void QueryRecordByFilterKeyList(List<String> keyList,
 			List<String> valueList)
 	{
-		String hql = "from ExhaustedProduct ep where ";
+		String hql = "from ExhaustedSemiProduct ep where ";
 		for(int idx=0; idx<keyList.size()-1; idx++)
 		{
 			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
@@ -203,7 +202,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 			List<String> keyList, List<String> valueList, String beginDate,
 			String endDate)
 	{
-		String hql = "from ExhaustedProduct ep where ";
+		String hql = "from ExhaustedSemiProduct ep where ";
 		for(int idx=0; idx<keyList.size(); idx++)
 		{
 			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));

@@ -1,25 +1,23 @@
 package com.DB.operation;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.ExhaustedProduct;
-import com.DB.support.MaterialStorage;
+import com.DB.support.SemiProductStorage;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Exhausted_Product extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Semi_Product_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
 {
-	private List<ExhaustedProduct> resultList = null;
-	private ExhaustedProduct aWriteRecord = null;
+	private List<SemiProductStorage> resultList = null;
+	private SemiProductStorage aWriteRecord = null;
 	
-	public Exhausted_Product(IEQManagement hEQMHandle)
+	public Semi_Product_Storage(IEQManagement hEQMHandle)
 	{
 		super(hEQMHandle);
 	}
@@ -27,7 +25,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	@Override
 	public String GetTableName()
 	{
-		return "ExhaustedProduct";
+		return "SemiProductStorage";
 	}
 	
 	@Override
@@ -38,15 +36,15 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 			rtnRst = resultList.size();
 		return rtnRst;
 	}
-	
+
 	@Override
 	public List<String> getDBRecordList(String keyWord)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Iterator<ExhaustedProduct> it = resultList.iterator();
+		Iterator<SemiProductStorage> it = resultList.iterator();
 		while(it.hasNext())
 		{
-			ExhaustedProduct tempRecord = (ExhaustedProduct)it.next();
+			SemiProductStorage tempRecord = (SemiProductStorage)it.next();
 			switch (keyWord)
 			{
 			case "id":
@@ -77,7 +75,7 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 				rtnRst.add(tempRecord.getVendorName());
 				break;
 			case "in_store_date":
-				rtnRst.add(tempRecord.getVendorName());
+				rtnRst.add(tempRecord.getInStoreDate());
 				break;
 			case "isEnsure":
 				rtnRst.add(tempRecord.getIsEnsure().toString());
@@ -97,25 +95,48 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	{
 		this.resultList = query.list();
 	}
-
+	
 	@Override
 	public Object getAWriteRecord()
 	{
 		return aWriteRecord;
 	}
-	
-	public void GetAllRecord()
+
+	public void GetRecordByPoName(String poName)
 	{
-		String hql = String.format("from ExhaustedProduct");
+		execQueryAsc("poName", poName, "id");
+	}
+	
+	private void execQueryAsc(String keyWord, String value, String orderKey)
+	{
+		String hql = String.format("from SemiProductStorage cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
 		getEQMHandle().EQQuery(hql);
 	}
-
+	
+	/*
+	private void execQueryDesc(String keyWord, String value, String orderKey)
+	{
+		String hql = String.format("from SemiProductStorage cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
+		getEQMHandle().EQQuery(hql);
+	}
+	*/
+	
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
-		return super.GetDblSumOfValue("ExhaustedProduct", getValue, keyword, keyValue);
+		return super.GetDblSumOfValue("SemiProductStorage", getValue, keyword, keyValue);
 	}
 	
+	@Override
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
+		for (String item : delList)
+		{
+			String hql = String.format("delete SemiProductStorage por where por.%s='%s'", GetDatabaseKeyWord(keyWord), item);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
+		}
+	}
+
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
@@ -160,27 +181,18 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	}
 
 	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String appInStoreDate, String isEnsure, String createDate)
+	public void AddARecord(String appBarcode, String batch_lot,
+			String appProductQTY, String appPriceUnit, String appTotalPrice,
+			String appSupplier_name, String appInStoreDate)
 	{
-		aWriteRecord = new ExhaustedProduct();
-		aWriteRecord.setId(Integer.parseInt(id));
+		aWriteRecord = new SemiProductStorage();
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setBatchLot(batch_lot);
-		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
-		aWriteRecord.setOutQty(Integer.parseInt(outQty));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
-		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));
-		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
 
@@ -188,14 +200,13 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	public void QueryRecordByFilterKeyList(List<String> keyList,
 			List<String> valueList)
 	{
-		String hql = "from ExhaustedProduct ep where ";
+		String hql = "from SemiProductStorage ms where ";
 		for(int idx=0; idx<keyList.size()-1; idx++)
 		{
-			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+			hql += String.format("ms.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
 		}
-		hql+= String.format("ep.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		hql+= String.format("ms.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
 		getEQMHandle().EQQuery(hql);
-		
 	}
 
 	@Override
@@ -203,19 +214,20 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 			List<String> keyList, List<String> valueList, String beginDate,
 			String endDate)
 	{
-		String hql = "from ExhaustedProduct ep where ";
+		String hql = "from SemiProductStorage ms where ";
 		for(int idx=0; idx<keyList.size(); idx++)
 		{
-			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+			hql += String.format("ms.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
 		}
-		hql+= String.format("ep.createDate>='%s' and ep.createDate<='%s'", beginDate, endDate);
+		hql+= String.format("ms.createDate>='%s' and ms.createDate<='%s'", beginDate, endDate);
 		getEQMHandle().EQQuery(hql);
 	}
 
 	@Override
-	public void AddARecord(String appBarcode, String batch_lot,
-			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate) {
+	public void AddAExRecord(String id, String appBarcode, String batch_lot,
+			String appProductQTY, String outQty, String appPriceUnit,
+			String appTotalPrice, String appOrderName, String appInStoreDate,
+			String isEnsure, String createDate) {
 		// TODO Auto-generated method stub
 		
 	}

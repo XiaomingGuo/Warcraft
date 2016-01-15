@@ -1,5 +1,6 @@
 package com.DB.operation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -57,9 +58,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 			case "Batch_Lot":
 				rtnRst.add(tempRecord.getBatchLot());
 				break;
-			case "Order_Name":
-				rtnRst.add(tempRecord.getOrderName());
-				break;
 			case "IN_QTY":
 				rtnRst.add(tempRecord.getInQty().toString());
 				break;
@@ -71,6 +69,15 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 				break;
 			case "Total_Price":
 				rtnRst.add(tempRecord.getTotalPrice().toString());
+				break;
+			case "Order_Name":
+				rtnRst.add(tempRecord.getOrderName());
+				break;
+			case "vendor_name":
+				rtnRst.add(tempRecord.getVendorName());
+				break;
+			case "in_store_date":
+				rtnRst.add(tempRecord.getOrderName());
 				break;
 			case "isEnsure":
 				rtnRst.add(tempRecord.getIsEnsure().toString());
@@ -134,9 +141,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
 			rtnRst = "batchLot";
 		}
-		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
-			rtnRst = "orderName";
-		}
 		else if(keyword.toLowerCase().indexOf("in_qty") >= 0) {
 			rtnRst = "inQty";
 		}
@@ -148,6 +152,15 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		}
 		else if(keyword.toLowerCase().indexOf("total_price") >= 0) {
 			rtnRst = "totalPrice";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
+			rtnRst = "vendorName";
+		}
+		else if(keyword.toLowerCase().indexOf("in_store_date") >= 0) {
+			rtnRst = "inStoreDate";
 		}
 		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
 			rtnRst = "isEnsure";

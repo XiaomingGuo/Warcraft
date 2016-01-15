@@ -68,8 +68,11 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 			case "Total_Price":
 				rtnRst.add(tempRecord.getTotalPrice().toString());
 				break;
+			case "Order_Name":
+				rtnRst.add(tempRecord.getOrderName());
+				break;
 			case "vendor_name":
-				rtnRst.add(tempRecord.getVendorName().toString());
+				rtnRst.add(tempRecord.getVendorName());
 				break;
 			case "in_store_date":
 				rtnRst.add(tempRecord.getInStoreDate());
@@ -158,6 +161,9 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		}
 		else if(keyword.toLowerCase().indexOf("total_price") >= 0) {
 			rtnRst = "totalPrice";
+		}
+		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
+			rtnRst = "orderName";
 		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
