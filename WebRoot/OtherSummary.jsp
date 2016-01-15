@@ -35,7 +35,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>其他库存</title>
+    <title>五金库库存</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -51,14 +51,14 @@
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/OtherSummaryJS.js"></script>
   <body>
-    <jsp:include page="Menu/QueryMenu.jsp"/>
+    <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
     <form action="ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>其他库存筛选</caption>
 	  	<tr>
 	  		<td align="right">
 		  		<label>库名:</label>
-			  	<select name="store_name" id="store_name" style="width:180px">
+			  	<select name="store_name" id="store_name" style="width:120px">
 				  	<option value = "--请选择--">--请选择--</option>
 <%
 					for(int i = 0; i < store_name.size(); i++)
@@ -72,19 +72,22 @@
 		  	</td>
 	  		<td align="right">
 		  		<label>类别:</label>
-			  	<select name="product_type" id="product_type" style="width:180px">
+			  	<select name="product_type" id="product_type" style="width:120px">
 				  	<option value = "--请选择--">--请选择--</option>
 			  	</select>
 		  	</td>
 			<td align="right">
 				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:180px">
+				<select name="product_name" id="product_name" style="width:150px">
 				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
 			<td align="right">
 	   			<label id=lable_barcode>Bar Code:</label>
-				<input type="text" name="bar_code" id="bar_code" style='width:180px' onblur="InputBarcode()">
+				<input type="text" name="bar_code" id="bar_code" style='width:100px' onblur="InputBarcode()">
+			</td>
+			<td align="center">
+				<input align="middle" type="button" value="查询" onclick="DisplayStorageList()">
 			</td>
 	  	</tr>
    	</table>

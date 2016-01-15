@@ -65,7 +65,7 @@
   </head>
   
   <body>
-    <jsp:include page="Menu/QueryMenu.jsp"/>
+    <jsp:include page="Menu/MFGReportMenu.jsp"/>
     <center>
     	<table border="1">
     		<tr>

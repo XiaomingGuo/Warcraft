@@ -76,12 +76,10 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="Application.jsp">申请</a></li>
-			    		<li><a href="Query.jsp">查询</a></li>
-			    		<li><a href="Approve.jsp">批准</a></li>
-			    		<li><a href="Query_Order.jsp">生产管理</a></li>
-			    		<li><a href="AddMaterial.jsp">录入</a></li>
-			    		<li><a href="PersonReport.jsp">报表及汇总</a></li>
+			    		<li><a href="Application.jsp">五金库管理</a></li>
+			    		<li><a href="Query_Order.jsp">生产过程控制</a></li>
+			    		<li><a href="AddMaterial.jsp">生产物料录入</a></li>
+			    		<li><a href="Summary.jsp">生产报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

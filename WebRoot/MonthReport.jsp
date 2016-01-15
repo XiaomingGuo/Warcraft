@@ -23,7 +23,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
 		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
-			String[] selectKeyList = {"库名", "类别", "名称", "使用人"};
+			String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
 			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
@@ -60,7 +60,7 @@
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/QueryMenu.jsp"/>
+    <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
     <br>
     <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
@@ -112,6 +112,9 @@
 %>
 				  	</select>
 			  	</td>
+				<td align="center">
+					<input align="middle" type="button" value="查询" onclick="SubmitDateChange()">
+				</td>
 		  	</tr>
 	  	</table>
   	  	<table align="center">

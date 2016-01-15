@@ -137,7 +137,7 @@ function changeProductName(obj)
 	$("#barcode").val("");
 }
 
-function InputBarcode(obj)
+/*function InputBarcode(obj)
 {
 	var checkedBarcode = $("#barcode").val();
 	if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
@@ -186,7 +186,7 @@ function InputBarcode(obj)
 			$("#product_name").change();
 		}
 	});
-}
+}*/
 
 function CheckSubmitInfo()
 {
@@ -195,7 +195,7 @@ function CheckSubmitInfo()
 	{
 		return false;
 	}
-	if(parseInt($("#QTY").val()) <= 0||parseInt($("#PriceUnit").val()) <= 0)
+	if(parseInt($("#QTY").val()) <= 0||parseFloat($("#PriceUnit").val()) <= 0)
 	{
 		return false;
 	}

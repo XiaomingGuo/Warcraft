@@ -53,7 +53,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/DataEnterMenu.jsp"/>
+    <jsp:include page="Menu/InputInfoOfTableMenu.jsp"/>
     <br><br>
     <table width="55%" align="center">
     	<tr>

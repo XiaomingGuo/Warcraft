@@ -27,16 +27,9 @@
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 			hSNHandle.GetAllRecord();
 			List<String> store_name = hSNHandle.getDBRecordList("name");
-
-			for (int index = 0; index < store_name.size();)
-			{
-				if (store_name.get(index).indexOf("成品库") == 0||store_name.get(index).indexOf("半成品库") == 0||store_name.get(index).indexOf("原材料库") == 0)
-				{
-					index++;
-					continue;
-				}
-				store_name.remove(index);
-			}
+			store_name.remove(store_name.indexOf("成品库"));
+			store_name.remove(store_name.indexOf("半成品库"));
+			store_name.remove(store_name.indexOf("原材料库"));
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
 %>
@@ -61,13 +54,13 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMFGMaterialJS.js"></script>
+  	<script language="javascript" src="Page_JS/AddMFGToolsMaterialJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
   	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/DataEnterMenu.jsp"/>
+    <jsp:include page="Menu/MFGToolsMenu.jsp"/>
     <br>
     <table width="65%" align="center">
     	<tr>
@@ -151,7 +144,7 @@
 							  	<option value = "--请选择--">--请选择--</option>
 						  	</select>
 					  	</td>
-						<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="additem(this)"></td>
+						<td align="center"><input align="middle" type="button" value="确认" onclick="additem(this)"></td>
 				  	</tr>
 			  	</table>
 			  	<br><br>

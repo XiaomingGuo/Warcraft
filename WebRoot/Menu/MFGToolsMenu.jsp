@@ -41,6 +41,7 @@
 					<tr>
 						<td width="60%" align="left"><img src="IMAGE/Logo.png" align="middle"><font size="5"><b>常州市茂邦机械有限公司内部网络</b></font></td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
+						
 <%
 						int temp = mylogon.getUserRight()&2;
 						if(temp == 0)
@@ -71,12 +72,16 @@
 						</td>
 					</tr>
 				</table>
+				
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="AddStoreroom.jsp">信息录入</a></li>
-			    		<li><a href="AddMaterial.jsp">添加物料</a></li>
-			    		<li><a href="QueryMaterial.jsp">原材料状态</a></li>
+			    		<li><a href="Application.jsp">申请</a></li>
+			    		<li><a href="Query.jsp">查询</a></li>
+			    		<li><a href="Approve.jsp">批准</a></li>
+			    		<li><a href="AddMFGToolsMaterial.jsp">五金录入</a></li>
+			    		<li><a href="QueryOther.jsp">五金录入状态</a></li>
+			    		<li><a href="MonthReport.jsp">五金库报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

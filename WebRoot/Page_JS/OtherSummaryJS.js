@@ -19,7 +19,7 @@ $(function()
 					AddNewSelectItem("product_type", pro_list[i]);
 				}
 			}
-			DisplayStorageList();
+			//DisplayStorageList();
 		});
 	});
 	
@@ -37,7 +37,7 @@ $(function()
 					AddNewSelectItem("product_name", pro_list[i]);
 				}
 			}
-			DisplayStorageList();
+			//DisplayStorageList();
 		});
 	});
 	
@@ -52,7 +52,7 @@ $(function()
 				$('#bar_code').val(code_list[1]);
 				$('#Total_QTY').attr("value", code_list[4]);
 			}
-			DisplayStorageList();
+			//DisplayStorageList();
 		});
 	});				
 });
@@ -118,7 +118,7 @@ function InputBarcode()
 			AddNewSelectItem("product_name", proInfoList[3]);
 			$("#product_name").change();
 		}
-		DisplayStorageList();
+		//DisplayStorageList();
 	});
 }
 

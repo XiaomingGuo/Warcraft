@@ -25,7 +25,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
 			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
-			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期"};
+			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期", "操作"};
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
 			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
@@ -61,7 +61,7 @@
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/QueryMenu.jsp"/>
+    <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
     <br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
     <table align="center" border="1">
@@ -108,6 +108,9 @@
 	   			<td align="center">
 		   			<label>入库时间:</label>
 	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>">
+				</td>
+				<td align="center">
+					<input align="middle" id="confirm_button" type="button" value="查询" onclick="SubmitDateChange()">
 				</td>
 		  	</tr>
 	  	</table>

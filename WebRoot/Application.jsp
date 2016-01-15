@@ -44,7 +44,7 @@
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/ApplicationJS.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="Menu/MFGToolsMenu.jsp"/>
   	<br><br>
   	<table id="inputTab" align="center" border="1">
   	<caption><b>申领物品</b></caption>
