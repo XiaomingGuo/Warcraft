@@ -17,6 +17,7 @@ public class ExhaustedMaterial implements java.io.Serializable {
 	private Integer outQty;
 	private Float pricePerUnit;
 	private Double totalPrice;
+	private String orderName;
 	private String vendorName;
 	private String inStoreDate;
 	private Integer isEnsure;
@@ -31,14 +32,15 @@ public class ExhaustedMaterial implements java.io.Serializable {
 	/** full constructor */
 	public ExhaustedMaterial(String barCode, String batchLot, Integer inQty,
 			Integer outQty, Float pricePerUnit, Double totalPrice,
-			String vendorName, String inStoreDate, Integer isEnsure,
-			Timestamp createDate) {
+			String orderName, String vendorName, String inStoreDate,
+			Integer isEnsure, Timestamp createDate) {
 		this.barCode = barCode;
 		this.batchLot = batchLot;
 		this.inQty = inQty;
 		this.outQty = outQty;
 		this.pricePerUnit = pricePerUnit;
 		this.totalPrice = totalPrice;
+		this.orderName = orderName;
 		this.vendorName = vendorName;
 		this.inStoreDate = inStoreDate;
 		this.isEnsure = isEnsure;
@@ -101,6 +103,14 @@ public class ExhaustedMaterial implements java.io.Serializable {
 
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public String getOrderName() {
+		return this.orderName;
+	}
+
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
 	}
 
 	public String getVendorName() {

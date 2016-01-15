@@ -3,10 +3,10 @@ package com.DB.support;
 import java.sql.Timestamp;
 
 /**
- * MaterialStorage entity. @author MyEclipse Persistence Tools
+ * ExhaustedSemiProduct entity. @author MyEclipse Persistence Tools
  */
 
-public class MaterialStorage implements java.io.Serializable {
+public class ExhaustedSemiProduct implements java.io.Serializable {
 
 	// Fields
 
@@ -26,11 +26,11 @@ public class MaterialStorage implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public MaterialStorage() {
+	public ExhaustedSemiProduct() {
 	}
 
 	/** full constructor */
-	public MaterialStorage(String barCode, String batchLot, Integer inQty,
+	public ExhaustedSemiProduct(String barCode, String batchLot, Integer inQty,
 			Integer outQty, Float pricePerUnit, Double totalPrice,
 			String orderName, String vendorName, String inStoreDate,
 			Integer isEnsure, Timestamp createDate) {

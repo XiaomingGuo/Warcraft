@@ -13,11 +13,13 @@ public class ExhaustedProduct implements java.io.Serializable {
 	private Integer id;
 	private String barCode;
 	private String batchLot;
-	private String orderName;
 	private Integer inQty;
 	private Integer outQty;
 	private Float pricePerUnit;
 	private Double totalPrice;
+	private String orderName;
+	private String vendorName;
+	private String inStoreDate;
 	private Integer isEnsure;
 	private Timestamp createDate;
 
@@ -28,16 +30,19 @@ public class ExhaustedProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public ExhaustedProduct(String barCode, String batchLot, String orderName,
-			Integer inQty, Integer outQty, Float pricePerUnit,
-			Double totalPrice, Integer isEnsure, Timestamp createDate) {
+	public ExhaustedProduct(String barCode, String batchLot, Integer inQty,
+			Integer outQty, Float pricePerUnit, Double totalPrice,
+			String orderName, String vendorName, String inStoreDate,
+			Integer isEnsure, Timestamp createDate) {
 		this.barCode = barCode;
 		this.batchLot = batchLot;
-		this.orderName = orderName;
 		this.inQty = inQty;
 		this.outQty = outQty;
 		this.pricePerUnit = pricePerUnit;
 		this.totalPrice = totalPrice;
+		this.orderName = orderName;
+		this.vendorName = vendorName;
+		this.inStoreDate = inStoreDate;
 		this.isEnsure = isEnsure;
 		this.createDate = createDate;
 	}
@@ -66,14 +71,6 @@ public class ExhaustedProduct implements java.io.Serializable {
 
 	public void setBatchLot(String batchLot) {
 		this.batchLot = batchLot;
-	}
-
-	public String getOrderName() {
-		return this.orderName;
-	}
-
-	public void setOrderName(String orderName) {
-		this.orderName = orderName;
 	}
 
 	public Integer getInQty() {
@@ -106,6 +103,30 @@ public class ExhaustedProduct implements java.io.Serializable {
 
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public String getOrderName() {
+		return this.orderName;
+	}
+
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+
+	public String getVendorName() {
+		return this.vendorName;
+	}
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
+	}
+
+	public String getInStoreDate() {
+		return this.inStoreDate;
+	}
+
+	public void setInStoreDate(String inStoreDate) {
+		this.inStoreDate = inStoreDate;
 	}
 
 	public Integer getIsEnsure() {
