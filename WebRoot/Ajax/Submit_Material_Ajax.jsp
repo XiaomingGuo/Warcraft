@@ -31,7 +31,7 @@
 		{
 			if(appStore_name.indexOf("原材料库") >= 0)
 			{
-				String Product_Weight = request.getParameter("Product_Weight").replace(" ", "");
+				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
 				if(Integer.parseInt(appBarcode) < 50000000||Integer.parseInt(appBarcode) >= 60000000)
 				{
 					rtnRst += "error:弄啥呢?原材料八码必须介于[50000000 ~ 60000000)之间, 你不知道吗?";
@@ -45,15 +45,16 @@
 				{
 					//product_type Database query
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
-							appWeightUnit, appDescription);
+							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
 							appWeightUnit, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
-							appWeightUnit, appDescription);
+							"0", appDescription);
 				}
 			}
 			else if(appStore_name.indexOf("半成品库") >= 0)
 			{
+				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
 				if(Integer.parseInt(appBarcode) < 70000000||Integer.parseInt(appBarcode) >= 80000000)
 				{
 					rtnRst += "error:弄啥呢?半成品八码必须介于[70000000 ~ 80000000)之间, 你不知道吗?";
@@ -67,15 +68,16 @@
 				{
 					//product_type Database query
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("半成品", ""),
-							appWeightUnit, appDescription);
+							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type.replace("半成品", "原锭"),
 							appWeightUnit, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type,
-							appWeightUnit, appDescription);
+							"0", appDescription);
 				}
 			}
 			else if(appStore_name.indexOf("成品库") >= 0)
 			{
+				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
 				if(Integer.parseInt(appBarcode) < 60000000||Integer.parseInt(appBarcode) >= 70000000)
 				{
 					rtnRst += "error:弄啥呢?半成品八码必须介于[60000000 ~ 70000000)之间, 你不知道吗?";
@@ -88,11 +90,11 @@
 				{
 					//product_type Database query
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type,
-							appWeightUnit, appDescription);
+							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type + "原锭",
 							appWeightUnit, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type + "半成品",
-							appWeightUnit, appDescription);
+							"0", appDescription);
 				}
 			}
 			else

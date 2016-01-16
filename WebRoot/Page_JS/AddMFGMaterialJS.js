@@ -1,6 +1,8 @@
 /**
  * 
  */
+var inputHead = ["库名", "类别", "产品名称", "八码", "入库数量", "原材料单重", "成品单重", "单价", "备注", "供应商"];
+
 function InputBarcode(obj)
 {
 	var checkedBarcode = $("#barcode").val();

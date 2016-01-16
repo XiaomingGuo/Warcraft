@@ -141,7 +141,7 @@
 							<input type="text" name="WeightUnit" id="WeightUnit" style='width:90px'>
 						</td>
 			   			<td align="right">
-							<input type="text" name="Product_Weight" id="Product_Weight" style='width:70px'>
+							<input type="text" name="ProductWeight" id="ProductWeight" style='width:70px'>
 						</td>
 			   			<td align="right">
 							<input type="text" name="PriceUnit" id="PriceUnit" style='width:70px'>

@@ -215,7 +215,7 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate) {
+			String appOrderName, String appSupplier_name, String appInStoreDate) {
 		// TODO Auto-generated method stub
 		
 	}

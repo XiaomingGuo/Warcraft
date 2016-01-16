@@ -180,15 +180,17 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String appInStoreDate)
+			String appOrderName, String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new ProductStorage();
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setBatchLot(batch_lot);
-		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setOrderName(appOrderName);
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
 

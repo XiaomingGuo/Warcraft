@@ -78,7 +78,7 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="AddMaterial.jsp">上一页</a></li>
+			    		<li><a href="AddMFGMaterial.jsp">上一页</a></li>
 			    		<li><a href="AddStoreroom.jsp">添加库房</a></li>
 			    		<li><a href="AddProductType.jsp">添加类型</a></li>
 			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>

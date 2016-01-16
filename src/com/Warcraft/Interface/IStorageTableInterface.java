@@ -13,7 +13,7 @@ public interface IStorageTableInterface
 	public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String beginDate, String endDate);
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate);
+			String appOrderName, String appSupplier_name, String appInStoreDate);
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String appInStoreDate, String isEnsure, String createDate);

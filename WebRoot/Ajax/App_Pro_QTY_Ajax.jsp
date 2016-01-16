@@ -21,7 +21,10 @@
 		{
 			String bar_Code = barcodeList.get(i);
 			iRepertory += hSupport.GetIN_QTYByBarCode(bar_Code) - hSupport.GetOUT_QTYByBarCode(bar_Code);
-			rtnRst += bar_Code + "$" + weightList.get(i) + "$" + descList.get(i) + "$" ;
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPIHandle.GetUsedBarcode(bar_Code, "Material_Storage")));
+			rtnRst += bar_Code + "$" + hPIHandle.getDBRecordList("weight").get(0) + "$" ;
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPIHandle.GetUsedBarcode(bar_Code, "Product_Storage")));
+			rtnRst += descList.get(i) + "$" + hPIHandle.getDBRecordList("weight").get(0) + "$";
 		}
 	}
 	rtnRst += Integer.toString(iRepertory);

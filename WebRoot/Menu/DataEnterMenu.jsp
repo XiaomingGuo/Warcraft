@@ -79,7 +79,7 @@
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="AddStoreroom.jsp">信息录入</a></li>
-			    		<li><a href="AddMaterial.jsp">添加物料</a></li>
+			    		<li><a href="AddMFGMaterial.jsp">添加物料</a></li>
 			    		<li><a href="QueryMaterial.jsp">原材料状态</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>

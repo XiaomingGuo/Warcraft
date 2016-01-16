@@ -210,7 +210,7 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate) {
+			String appOrderName, String appSupplier_name, String appInStoreDate) {
 		// TODO Auto-generated method stub
 		
 	}

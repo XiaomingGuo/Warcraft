@@ -23,11 +23,11 @@
 		//product_type Database query
 		if (!appStorename.isEmpty() && !appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())
 		{
-			Vendor_Info hSNHandle = new Vendor_Info(new EarthquakeManagement());
-			hSNHandle.GetRecordByNameAndStoreroom(appSupplier, appStorename);
-			if (hSNHandle.RecordDBCount() <= 0)
+			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			hVIHandle.GetRecordByNameAndStoreroom(appSupplier, appStorename);
+			if (hVIHandle.RecordDBCount() <= 0)
 			{
-				hSNHandle.AddARecord(appSupplier, appStorename, appFaxinfo, appTelinfo, appMailaddress, appAddress, description);
+				hVIHandle.AddARecord(appSupplier, appStorename, appFaxinfo, appTelinfo, appMailaddress, appAddress, description);
 				response.sendRedirect("../AddSupplier.jsp");
 			}
 			else

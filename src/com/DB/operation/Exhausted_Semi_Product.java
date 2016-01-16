@@ -214,7 +214,7 @@ public class Exhausted_Semi_Product extends DBTableParent implements ITableInter
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate) {
+			String appOrderName, String appSupplier_name, String appInStoreDate) {
 		// TODO Auto-generated method stub
 		
 	}

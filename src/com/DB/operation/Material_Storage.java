@@ -183,7 +183,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String appInStoreDate)
+			String appOrderName, String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new MaterialStorage();
 		aWriteRecord.setBarCode(appBarcode);
@@ -191,6 +191,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();

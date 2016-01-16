@@ -18,6 +18,7 @@ $(function()
 		$("#barcode").val("");
 		$("#QTY").val("");
 		$("#WeightUnit").val("");
+		$("#ProductWeight").val("");
 		$("#PriceUnit").val("");
 		$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":GetSelectedContent("store_name_addproduct")}, function(data, textStatus)
 		{
@@ -47,6 +48,8 @@ $(function()
 		$("#QTY").val("");
 		$("#WeightUnit").val("");
 		$("#WeightUnit").removeAttr("readonly");
+		$("#ProductWeight").val("");
+		$("#ProductWeight").removeAttr("readonly");
 		$("#PriceUnit").val("");
 		$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":GetSelectedContent("product_type")}, function(data, textStatus)
 		{
@@ -69,6 +72,8 @@ $(function()
 		$("#QTY").val("");
 		$("#WeightUnit").val("");
 		$("#WeightUnit").removeAttr("readonly");
+		$("#ProductWeight").val("");
+		$("#ProductWeight").removeAttr("readonly");
 		$("#Description").removeAttr("readonly");
 		$("#PriceUnit").val("");
 		$.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"),"product_type":GetSelectedContent("product_type")}, function(data, textStatus)
@@ -76,7 +81,7 @@ $(function()
 			if (textStatus == "success")
 			{
 				var code_list = data.split("$");
-				if (code_list.length == 5)
+				if (code_list.length == 6)
 				{
 					AddNewSelectItem("bar_code", code_list[1]);
 					$("#productname").val(GetSelectedContent("product_name"));
@@ -85,6 +90,8 @@ $(function()
 					$("#WeightUnit").attr("readonly", "readonly");
 					$("#Description").val(code_list[3]);
 					$("#Description").attr("readonly", "readonly");
+					$("#ProductWeight").val(code_list[4]);
+					$("#ProductWeight").attr("readonly", "readonly");
 				}
 				else
 				{
@@ -159,7 +166,6 @@ function additem(obj)
 		return;
 	}
 	var tab = document.getElementById('display_add');
-	var inputHead = ["库名", "类别", "产品名称", "八码", "入库数量", "单重", "单价", "备注", "供应商"];
 	var sampleCount = inputHead.length;
     if(1 > tab.rows.length)
 	{
@@ -199,6 +205,14 @@ function additem(obj)
     	else if("入库数量" == tab.rows[0].cells[iCol].innerText)
 		{
     		val = $("#QTY").val();
+		}
+    	else if("原材料单重" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#WeightUnit").val();
+		}
+    	else if("成品单重" == tab.rows[0].cells[iCol].innerText)
+		{
+    		val = $("#ProductWeight").val();
 		}
     	else if("单重" == tab.rows[0].cells[iCol].innerText)
 		{

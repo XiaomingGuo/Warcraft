@@ -82,7 +82,7 @@
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="Application.jsp">五金库管理</a></li>
 			    		<li><a href="Query_Order.jsp">生产过程控制</a></li>
-			    		<li><a href="AddMaterial.jsp">生产物料录入</a></li>
+			    		<li><a href="AddMFGMaterial.jsp">生产物料录入</a></li>
 			    		<li><a href="Summary.jsp">生产报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
