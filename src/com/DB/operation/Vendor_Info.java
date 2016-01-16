@@ -95,9 +95,14 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	}
 	
-	public void GetRecordExceptStoreroom(String storeroom)
+	public void GetRecordExceptStoreroom(List<String> keyList)
 	{
-		String hql = String.format("from VendorInfo vi where vi.storeroom!='%s'", storeroom);
+		String hql = "from VendorInfo vi where ";
+		for(int idx=0; idx<keyList.size()-1; idx++)
+		{
+			hql += String.format("vi.storeroom!='%s' and ", keyList.get(idx));
+		}
+		hql+= String.format("vi.storeroom!='%s'", keyList.get(keyList.size()-1));
 		getEQMHandle().EQQuery(hql);
 	}
 	

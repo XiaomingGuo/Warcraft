@@ -6,9 +6,9 @@
 	String storeroom=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
 	Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
-	if (storeroom.indexOf("原材料库") < 0)
+	if (storeroom.contains("五金"))
 	{
-		hVIHandle.GetRecordExceptStoreroom("原材料库");
+		hVIHandle.GetRecordExceptStoreroom(Arrays.asList("原材料库", "成品库", "半成品库"));
 	}
 	else
 	{

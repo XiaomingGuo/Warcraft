@@ -262,34 +262,4 @@ function initRows(tab)
 	}
 }
 
-function AddMaterialFun()
-{
-	var tab = document.getElementById('display_add');
-	if(tab.rows.length < 2)
-	{
-		alert("申领数量超出库存数量或申领信息填写不完整!");
-		return;
-	}
-	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-	for(var iRow=1; iRow < tab.rows.length; iRow++)
-	{
-		$.post("Ajax/Submit_Material_Ajax.jsp", {"store_name_addproduct":tab.rows[iRow].cells[1].innerText,
-			"product_type":tab.rows[iRow].cells[2].innerText, "productname":tab.rows[iRow].cells[3].innerText,
-			"barcode":tab.rows[iRow].cells[4].innerText, "QTY":tab.rows[iRow].cells[5].innerText,
-			"WeightUnit":tab.rows[iRow].cells[6].innerText, "PriceUnit":tab.rows[iRow].cells[7].innerText,
-			"Description":tab.rows[iRow].cells[8].innerText, "supplier_name":tab.rows[iRow].cells[9].innerText,
-			"SubmitDate":addDate},
-			function(data, textStatus)
-		{
-			if (!CheckAjaxResult(textStatus, data))
-			{
-				alert(data);
-				return;
-			}
-		});
-	}
-	while(tab.rows.length > 0)
-	{
-		tab.deleteRow(0);
-	}
-}
+

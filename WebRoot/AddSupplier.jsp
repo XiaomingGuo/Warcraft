@@ -25,13 +25,6 @@
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 			hSNHandle.GetAllRecord();
 			List<String> store_name = hSNHandle.getDBRecordList("name");
-			for (int index = 0; index < store_name.size(); index++)
-			{
-				if (store_name.get(index).indexOf("成品库") == 0)
-				{
-					store_name.remove(index);
-				}
-			}
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
