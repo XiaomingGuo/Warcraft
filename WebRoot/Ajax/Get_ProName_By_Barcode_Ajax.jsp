@@ -8,7 +8,7 @@
 	if(barcode.length() == 8)
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(barcode, "product_storage"));
+		hPIHandle.GetRecordByBarcode(barcode);
 		if(hPIHandle.RecordDBCount() > 0)
 		{
 			String proType = hPIHandle.getDBRecordList("product_type").get(0);

@@ -22,7 +22,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String[] selectKeyList = {"库名", "类别", "名称", "八码"};
-			String[] inputKeyList = {"八码", "产品名称:", "入库数量", "单重", "单价", "备注", "供应商", "操作"};
+			String[] inputKeyList = {"八码", "产品名称:", "入库数量", "原材料单重", "成品单重", "单价", "备注", "供应商", "操作"};
 			//product_type Database query
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 			hSNHandle.GetAllRecord();
@@ -132,13 +132,16 @@
 							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()">
 						</td>
 			   			<td align="right">
-							<input type="text" name="productname" id="productname" style='width:120px' onblur="changeProductName(this)">
+							<input type="text" name="productname" id="productname" style='width:120px'>
 						</td>
 			   			<td align="right">
 							<input type="text" name="QTY" id="QTY" style='width:70px'>
 						</td>
 			   			<td align="right">
-							<input type="text" name="WeightUnit" id="WeightUnit" style='width:70px'>
+							<input type="text" name="WeightUnit" id="WeightUnit" style='width:90px'>
+						</td>
+			   			<td align="right">
+							<input type="text" name="Product_Weight" id="Product_Weight" style='width:70px'>
 						</td>
 			   			<td align="right">
 							<input type="text" name="PriceUnit" id="PriceUnit" style='width:70px'>
