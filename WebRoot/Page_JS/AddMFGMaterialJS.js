@@ -48,9 +48,9 @@ function AddMaterialFun()
 		$.post("Ajax/Submit_Material_Ajax.jsp", {"store_name_addproduct":tab.rows[iRow].cells[1].innerText,
 			"product_type":tab.rows[iRow].cells[2].innerText, "productname":tab.rows[iRow].cells[3].innerText,
 			"barcode":tab.rows[iRow].cells[4].innerText, "QTY":tab.rows[iRow].cells[5].innerText,
-			"WeightUnit":tab.rows[iRow].cells[6].innerText, "ProductWeight":tab.rows[iRow].cells[6].innerText, 
-			"PriceUnit":tab.rows[iRow].cells[7].innerText, "Description":tab.rows[iRow].cells[8].innerText,
-			"supplier_name":tab.rows[iRow].cells[9].innerText,"SubmitDate":addDate},
+			"WeightUnit":tab.rows[iRow].cells[6].innerText, "ProductWeight":tab.rows[iRow].cells[7].innerText, 
+			"PriceUnit":tab.rows[iRow].cells[8].innerText, "Description":tab.rows[iRow].cells[9].innerText,
+			"supplier_name":tab.rows[iRow].cells[10].innerText,"SubmitDate":addDate},
 			function(data, textStatus)
 		{
 			if (!CheckAjaxResult(textStatus, data))
