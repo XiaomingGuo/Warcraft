@@ -2,15 +2,7 @@
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.QueryMaterial" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
-	//String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -23,25 +15,9 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		QueryMaterial hPageHandle = new QueryMaterial();
-		recordList = hPageHandle.GetManufactureStorageRecord();
+		List<List<String>> recordList = hPageHandle.GetManufactureStorageRecord();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		/*
-		String sql = "select * from material_storage";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		hDBHandle.CloseDatabase();
-		String tempBP = request.getParameter("BeginPage");
-		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
-		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
-		}
-		*/
+		String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -86,11 +62,10 @@
 %>
   			<tr>
 <%
-				//{"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总价", "供应商", "备注"};
-				//"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"
 				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
 					String Bar_Code = recordList.get(0).get(iRow-1);
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Bar_Code));
 					if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
@@ -100,7 +75,7 @@
 			    	else if (displayKeyList[iCol-1] == "产品名称")
 			    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(Bar_Code) %></td>
+    			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "八码")
@@ -154,7 +129,7 @@
 			    	else if (displayKeyList[iCol-1] == "备注")
 			    	{
 %>
-    			<td><%= hDBHandle.GetDescByBarcode(Bar_Code) %></td>
+    			<td><%= hPIHandle.getDBRecordList("description").get(0) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "操作")
