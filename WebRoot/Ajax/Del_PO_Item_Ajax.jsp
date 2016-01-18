@@ -8,7 +8,7 @@
 	if (pro_id != null)
 	{
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.DeleteRecordByKeyWord("id", Arrays.asList(pro_id));
+		hCPRHandle.DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
 	}
 	out.write(rtnRst);
 %>

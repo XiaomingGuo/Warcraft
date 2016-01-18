@@ -86,6 +86,7 @@
 				//"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"
 				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
+					String Bar_Code = recordList.get(0).get(iRow-1);
 					if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
@@ -95,13 +96,13 @@
 			    	else if (displayKeyList[iCol-1] == "产品名称")
 			    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
+    			<td><%= hDBHandle.GetNameByBarcode(Bar_Code) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "八码")
 			    	{
 %>
-    			<td><%= recordList.get(0).get(iRow-1) %></td>
+    			<td><%= Bar_Code %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "批号")
@@ -149,7 +150,7 @@
 			    	else if (displayKeyList[iCol-1] == "备注")
 			    	{
 %>
-    			<td><%= hDBHandle.GetDescByBarcode(recordList.get(0).get(iRow-1)) %></td>
+    			<td><%= hDBHandle.GetDescByBarcode(Bar_Code) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "操作")
@@ -158,9 +159,9 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='SubmitQty(this)'>
     				&nbsp;
-    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$Other_Storage' onclick='RejectQty(this)'>
+    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='RejectQty(this)'>
     			</td>
 <%
 			    		}

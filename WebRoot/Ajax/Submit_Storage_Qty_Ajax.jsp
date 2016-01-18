@@ -1,24 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Material_Storage" %>
-<%@ page import="com.DB.operation.Other_Storage" %>
-<%@ page import="com.DB.operation.Product_Storage" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.Warcraft.Interface.ITableInterface"%>
+<%@ page import="com.jsp.support.Submit_Reject_Storage_Qty_Ajax" %>
 <%
 	String rtnRst = "remove$";
-	String storage_name = request.getParameter("storage_name");
+	String barcode = request.getParameter("Bar_Code");
 	String recordId = request.getParameter("recordId");
 	
-	if (storage_name != null||storage_name == "")
+	if (barcode != null||barcode == "")
 	{
-		ITableInterface hDBHandle = null;
-		if(storage_name.toLowerCase().indexOf("material_storage") >= 0)
-			hDBHandle = new Material_Storage(new EarthquakeManagement());
-		else if(storage_name.toLowerCase().indexOf("other_storage") >= 0)
-			hDBHandle = new Other_Storage(new EarthquakeManagement());
-		else if(storage_name.toLowerCase().indexOf("product_storage") >= 0)
-			hDBHandle = new Product_Storage(new EarthquakeManagement());
-		hDBHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(recordId));
+		Submit_Reject_Storage_Qty_Ajax hPageHandle = new Submit_Reject_Storage_Qty_Ajax();
+		hPageHandle.EnsureStorageStatusByIdAndBarcode(recordId, barcode);
 	}
 	out.write(rtnRst);
 %>

@@ -1,12 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.QueryMaterial" %>
 <%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	DatabaseConn hDBHandle = new DatabaseConn();
 	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
+	//String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
 	List<List<String>> recordList = null;
 	int PageRecordCount = 20;
 %>
@@ -21,6 +22,10 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		QueryMaterial hPageHandle = new QueryMaterial();
+		recordList = hPageHandle.GetManufactureStorageRecord();
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		/*
 		String sql = "select * from material_storage";
 		hDBHandle.QueryDataBase(sql);
 		int recordCount = hDBHandle.GetRecordCount();
@@ -36,6 +41,7 @@
 		{
 			hDBHandle.CloseDatabase();
 		}
+		*/
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -60,8 +66,7 @@
   	<script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
   <body>
     <jsp:include page="Menu/DataEnterMenu.jsp"/>
-    <center>
-    	<table border="1">
+   	<table align="center" border="1">
     		<tr>
 <%
 		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
@@ -85,22 +90,23 @@
 				//"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"
 				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
+					String Bar_Code = recordList.get(0).get(iRow-1);
 					if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
-    			<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+    			<td><%=iRow %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "产品名称")
 			    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
+    			<td><%= hDBHandle.GetNameByBarcode(Bar_Code) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "八码")
 			    	{
 %>
-    			<td><%= recordList.get(0).get(iRow-1) %></td>
+    			<td><%= Bar_Code %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "批号")
@@ -148,7 +154,7 @@
 			    	else if (displayKeyList[iCol-1] == "备注")
 			    	{
 %>
-    			<td><%= hDBHandle.GetDescByBarcode(recordList.get(0).get(iRow-1)) %></td>
+    			<td><%= hDBHandle.GetDescByBarcode(Bar_Code) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "操作")
@@ -157,9 +163,9 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$Material_Storage' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='SubmitQty(this)'>
     				&nbsp;
-    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$Material_Storage' onclick='RejectQty(this)'>
+    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='RejectQty(this)'>
     			</td>
 <%
 			    		}
@@ -177,15 +183,7 @@
 			}
 		}
 %>
-    	</table>
-    	<br><br>
-   	    <jsp:include page="PageNum.jsp">
-   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
-   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
-   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="QueryMaterial.jsp" name="PageName"/>
-   	    </jsp:include>
-    </center>
+   	</table>
   </body>
 </html>
 <%
