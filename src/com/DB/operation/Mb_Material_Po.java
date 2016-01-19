@@ -161,4 +161,5 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

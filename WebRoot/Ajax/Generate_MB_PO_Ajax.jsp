@@ -21,35 +21,32 @@
 			{
 				recordList.add(hCPRHandle.getDBRecordList(colNames[idx]));
 			}
-			if (recordList.size() <= 0)
+			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+			Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
-				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-				Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-				Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-				for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+				String strBarcode = recordList.get(0).get(iRow);
+				String strMaterialBarcode = hCPRHandle.GetUsedBarcode(strBarcode, "mb_material_po");
+				String strVendor = recordList.get(1).get(iRow);
+				int iPOCount = Integer.parseInt(recordList.get(2).get(iRow));
+				int ipercent = Integer.parseInt(recordList.get(3).get(iRow));
+				int iRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strMaterialBarcode)) + 
+						hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+				int manufacture_QTY = iPOCount*(100+ipercent)/100;
+				if (iRepertory < manufacture_QTY)
 				{
-					String strBarcode = recordList.get(0).get(iRow);
-					String strMaterialBarcode = hCPRHandle.GetUsedBarcode(strBarcode, "mb_material_po");
-					String strVendor = recordList.get(1).get(iRow);
-					int iPOCount = Integer.parseInt(recordList.get(2).get(iRow));
-					int ipercent = Integer.parseInt(recordList.get(3).get(iRow));
-					int iRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strMaterialBarcode)) + 
-							hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
-					int manufacture_QTY = iPOCount*(100+ipercent)/100;
-					if (iRepertory < manufacture_QTY)
+					hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "vendor", "po_name"), Arrays.asList(strMaterialBarcode, strVendor, appPOName));
+					if (hMMPHandle.RecordDBCount() <= 0)
 					{
-						hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "vendor", "po_name"), Arrays.asList(strMaterialBarcode, strVendor, appPOName));
-						if (hMMPHandle.RecordDBCount() <= 0)
+						if (appDelivDate != null&&!appDelivDate.isEmpty()&&appDelivDate.length() == 8)
 						{
-							if (appDelivDate != null&&!appDelivDate.isEmpty()&&appDelivDate.length() == 8)
-							{
-								hMMPHandle.AddARecord(strMaterialBarcode, strVendor, appPOName, manufacture_QTY-iRepertory, appDelivDate);
-							}
-							else
-							{
-								rtnRst += "error:交货日期填写有误!$";
-								break;
-							}
+							hMMPHandle.AddARecord(strMaterialBarcode, strVendor, appPOName, manufacture_QTY-iRepertory, appDelivDate);
+						}
+						else
+						{
+							rtnRst += "error:交货日期填写有误!$";
+							break;
 						}
 					}
 				}

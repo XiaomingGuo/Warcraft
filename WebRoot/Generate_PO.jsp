@@ -4,9 +4,6 @@
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
-%>
 <%
 	String message="";
 	String POName = request.getParameter("PO_Name").replace(" ", "");
@@ -19,6 +16,7 @@
 	}
 	else
 	{
+		String[] displayKeyList = {"名称", "模具号", "型号", "数量", "单位", "交货日期", "备注"};
 		int temp = mylogon.getUserRight()&1024;
 		if(temp == 0)
 		{

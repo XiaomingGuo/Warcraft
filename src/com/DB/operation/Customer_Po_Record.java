@@ -94,7 +94,7 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 
 	public void GetRecordByPoName(String poName)
 	{
-		execQueryAsc("poName", poName, "id");
+		execQueryAsc("po_name", poName, "id");
 	}
 	
 	private void execQueryAsc(String keyWord, String value, String orderKey)
@@ -163,4 +163,16 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 			getEQMHandle().DeleteAndUpdateRecord(hql);
 		}
 	}
+	
+	public void QueryRecordByFilterKeyListGroupByList(List<String> keyList, List<String> valueList, List<String> groupList)
+	{
+		String hql = String.format("from %s tbn where", GetTableName()) + GenerateWhereString(keyList, valueList) + " group by ";
+		for(int idx=0; idx < groupList.size() - 1; idx++)
+		{
+			hql += String.format("tbn.%s, ", GetDatabaseKeyWord(groupList.get(idx)));
+		}
+		hql += String.format("tbn.%s", GetDatabaseKeyWord(groupList.get(groupList.size()-1)));
+		getEQMHandle().EQQuery(hql);
+	}
+
 }

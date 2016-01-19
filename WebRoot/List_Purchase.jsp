@@ -1,11 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Customer_Po_Record" %>
+<%@ page import="com.DB.operation.Material_Storage" %>
+<%@ page import="com.DB.operation.Product_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String message="";
 	List<String> vendorList = null;
@@ -26,27 +24,26 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from customer_po_record where po_name='" + POName + "' group by vendor";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
-			{
-				vendorList = hDBHandle.GetAllStringValue("vendor");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
-			}
+			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+			Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+			hCPRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name"), Arrays.asList(POName), Arrays.asList("vendor"));
+			vendorList = hCPRHandle.getDBRecordList("vendor");
 			for (int index = 0; index < vendorList.size(); index++)
 			{
-				List<List<String>> recordList = null;
-				sql = "select * from customer_po_record where vendor='" + vendorList.get(index) + "' and po_name='" + POName + "'";
-				if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+				List<List<String>> recordList = new ArrayList<List<String>>();
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor", "po_name"), Arrays.asList(vendorList.get(index), POName));
+				//sql = "select * from customer_po_record where vendor='" + vendorList.get(index) + "' and po_name='" + POName + "'";
+				if (hCPRHandle.RecordDBCount() > 0)
 				{
-					String[] kewordList = {"Bar_Code", "QTY", "percent"};
-					recordList = hDBHandle.GetAllDBColumnsByList(kewordList);
+					String[] keywordList = {"Bar_Code", "QTY", "percent"};
+					for(int idx = 0; idx < keywordList.length; idx++)
+					{
+						recordList.add(hCPRHandle.getDBRecordList(keywordList[idx]));
+					}
 				}
 				else
 				{
-					hDBHandle.CloseDatabase();
 					continue;
 				}
 				boolean isRemoveVendor = true;
@@ -54,7 +51,9 @@
 				{
 					String barcode = recordList.get(0).get(recordIndex);
 					int po_qty = Integer.parseInt(recordList.get(1).get(recordIndex))*(100 + Integer.parseInt(recordList.get(2).get(recordIndex)))/100;
-					int repertory = hDBHandle.GetRepertoryByBarCode(barcode, "product_storage") + hDBHandle.GetRepertoryByBarCode(Integer.toString(Integer.parseInt(barcode) - 10000000), "material_storage");
+					
+					int repertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "product_storage")))
+							+ hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "material_storage")));
 					if (repertory < po_qty)
 					{
 						isRemoveVendor = false;

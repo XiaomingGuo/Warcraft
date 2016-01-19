@@ -76,7 +76,7 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 
 	public void GetRecordByPoName(String poName)
 	{
-		execQuery("poName", poName);
+		execQuery("po_name", poName);
 	}
 	
 	public void GetRecordByStatus(int istatus)
