@@ -2,11 +2,10 @@
 <%@ page import="com.jspsmart.upload.*" %>
 <%@ page import="com.office.core.ExcelManagment" %>
 <%@ page import="com.office.operation.ExcelRead" %>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.operation.Product_Type" %>
+<%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String filePath = request.getParameter("filePath").replace(" ", "");
@@ -26,6 +25,9 @@
 	List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
 	if(res.size() > 0)
 	{
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 		for(int iRow = 0; iRow < res.size(); iRow++)
 		{
 			String storename = res.get(iRow).get(0);
@@ -34,47 +36,27 @@
 			String Barcode = res.get(iRow).get(3);
 			String weight = res.get(iRow).get(4);
 			String description = res.get(iRow).get(5);
-			String sql = "select * from product_info where Bar_Code='" + Barcode +"'";
-
-			if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() > 0)
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+			if(hPIHandle.RecordDBCount() > 0)
 			{
-				hDBHandle.CloseDatabase();
-				sql = "UPDATE product_info SET name='" + product_name + "', product_type='" + product_type + "', weight='" + weight + "', description='" + description + "' where Bar_Code='" + Barcode +"'";
-				hDBHandle.execUpate(sql);
+				hPIHandle.UpdateRecordByKeyList("name", product_name, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+				hPIHandle.UpdateRecordByKeyList("product_type", product_type, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+				hPIHandle.UpdateRecordByKeyList("weight", weight, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+				hPIHandle.UpdateRecordByKeyList("description", description, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
 			}
 			else
 			{
-				sql = "select * from storeroom_name where name='" + storename +"'";
-				if(hDBHandle.QueryDataBase(sql))
-				{
-					int recordCount = hDBHandle.GetRecordCount();
-					hDBHandle.CloseDatabase();
-					if (recordCount == 0)
-					{
-						sql = "INSERT INTO storeroom_name (name) VALUES ('" + storename + "')";
-						hDBHandle.execUpate(sql);
-					}
-				}
+				hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
+				if (hSNHandle.RecordDBCount() == 0)
+					hSNHandle.AddARecord(storename);
 				
-				sql = "select * from product_type where name='" + product_type +"' and storeroom='" + storename + "'";
-				if(hDBHandle.QueryDataBase(sql))
-				{
-					int recordCount = hDBHandle.GetRecordCount();
-					hDBHandle.CloseDatabase();
-					if (recordCount == 0)
-					{
-						sql = "INSERT INTO product_type (name, storeroom) VALUES ('" + product_type + "', '"+ storename + "')";
-						hDBHandle.execUpate(sql);
-					}
-				}
+				hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
+				if (hPTHandle.RecordDBCount() == 0)
+					hPTHandle.AddARecord(product_type, storename);
 				
-				sql = "select * from product_info where Bar_Code='" + Barcode +"' and name='" + product_name + "' and product_type='" + product_type + "'";
-				if(hDBHandle.QueryDataBase(sql) && hDBHandle.GetRecordCount() == 0)
-				{
-					hDBHandle.CloseDatabase();
-					sql = "INSERT INTO product_info (Bar_Code, name, product_type, weight, description) VALUES ('" + Barcode + "', '"+ product_name + "', '"+ product_type + "', '"+ weight + "', '"+ description + "')";
-					hDBHandle.execUpate(sql);
-				}
+				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
+				if(hPIHandle.RecordDBCount() == 0)
+					hPIHandle.AddARecord(Barcode, product_name, product_type, weight, description);
 			}
 		}
 	}

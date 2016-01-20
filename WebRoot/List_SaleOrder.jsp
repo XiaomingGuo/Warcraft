@@ -1,11 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Shipping_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String message="";
 	List<String> shipping_no = null;
@@ -26,14 +22,11 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from shipping_record where customer_po='" + POName + "' group by shipping_no";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+			hSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("customer_po"), Arrays.asList(POName), Arrays.asList("shipping_no"));
+			if (hSRHandle.RecordDBCount() > 0)
 			{
-				shipping_no = hDBHandle.GetAllStringValue("shipping_no");
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				shipping_no = hSRHandle.getDBRecordList("shipping_no");
 			}
 %>
 

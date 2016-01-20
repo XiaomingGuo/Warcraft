@@ -126,7 +126,29 @@ public abstract class DBTableParent
 		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
 		getEQMHandle().EQQuery(hql);
 	}
+	
+	public void QueryRecordByFilterKeyListGroupByList(List<String> keyList, List<String> valueList, List<String> groupList)
+	{
+		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList) + " group by "+ GenerateGroupAndOrderString(groupList);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void QueryRecordByFilterKeyListWithOrderAndLimit(List<String> keyList, List<String> valueList, List<String> orderList, int iStart, int iCount)
+	{
+		String hql = "";
+		if(null != keyList||null != valueList)
+			hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList) + " order by " + GenerateGroupAndOrderString(orderList) + " desc";
+		else
+			hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName()) + " order by " + GenerateGroupAndOrderString(orderList) + " desc";
+		getEQMHandle().EQQueryWithLimit(hql, iStart, iCount);
+	}
 
+	public void QueryAllRecord()
+	{
+		String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName());
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public String GenerateWhereString(List<String> keyList, List<String> valueList)
 	{
 		String rtnRst = "";
@@ -135,6 +157,17 @@ public abstract class DBTableParent
 			rtnRst += String.format(" tbn.%s='%s' and ", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
 		}
 		rtnRst+= String.format(" tbn.%s='%s'", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+		return rtnRst;
+	}
+	
+	public String GenerateGroupAndOrderString(List<String> orderList)
+	{
+		String rtnRst = "";
+		for(int idx=0; idx < orderList.size() - 1; idx++)
+		{
+			rtnRst += String.format("tbn.%s, ", ((ITableInterface)this).GetDatabaseKeyWord(orderList.get(idx)));
+		}
+		rtnRst += String.format("tbn.%s", ((ITableInterface)this).GetDatabaseKeyWord(orderList.get(orderList.size()-1)));
 		return rtnRst;
 	}
 }

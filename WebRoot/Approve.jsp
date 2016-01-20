@@ -1,15 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Other_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "领取"};
-	String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -29,22 +22,24 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			int PageRecordCount = 20;
+			String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "领取"};
+			String tempBP = request.getParameter("BeginPage");
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			
 			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
 			hORHandle.QueryRecordByFilterKeyList(Arrays.asList("isApprove"), Arrays.asList("0"));
-			String sql = "select * from other_record where isApprove=0";
-			hDBHandle.QueryDataBase(sql);
-			int recordCount = hDBHandle.GetRecordCount();
-			hDBHandle.CloseDatabase();
-			String tempBP = request.getParameter("BeginPage");
+			int recordCount = hORHandle.RecordDBCount();
+			
 			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hDBHandle.QueryDataBase(limitSql))
+			hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(Arrays.asList("isApprove"), Arrays.asList("0"), Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hORHandle.RecordDBCount() > 0)
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+				for(int idx=0; idx < sqlKeyList.length; idx++)
+				{
+					recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
+				}
 			}
 %>
 
@@ -84,11 +79,14 @@
 <%
 			if (!recordList.isEmpty())
 			{
+				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>
   			<tr>
 <%
+					String Barcode = recordList.get(1).get(iRow-1);
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
 						if(displayKeyList[iCol-1] == "领取")
@@ -97,7 +95,7 @@
 				    		{
 %>
     			<td>
-	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+recordList.get(1).get(iRow-1)+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
+	    				<center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
     			</td>
 <%
 							}
@@ -105,7 +103,7 @@
 				    	else if(displayKeyList[iCol-1] == "物料名称")
 				    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(1).get(iRow-1)) %></td>
+    			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 				    	}
 				    	else if (displayKeyList[iCol-1] == "ID")

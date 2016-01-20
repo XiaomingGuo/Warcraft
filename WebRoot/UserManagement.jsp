@@ -1,15 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.User_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] keyList = {"ID", "name", "create_date", "department", "password", "permission", "submit"};
-	String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -29,19 +21,23 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from user_info";
-			hDBHandle.QueryDataBase(sql);
-			int recordCount = hDBHandle.GetRecordCount();
-			hDBHandle.CloseDatabase();
+			int PageRecordCount = 20;
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
-			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hDBHandle.QueryDataBase(limitSql))
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			String[] keyList = {"ID", "name", "create_date", "department", "password", "permission", "submit"};
+			
+			User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+			hUIHandle.QueryAllRecord();
+			int recordCount = hUIHandle.RecordDBCount();
+			
+			hUIHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hUIHandle.RecordDBCount() > 0)
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlkeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
+				for(int idx=0; idx < sqlkeyList.length; idx++)
+				{
+					recordList.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
+				}
 			}
 %>
 
@@ -219,7 +215,6 @@
 			
 			function Add(obj)
 			{
-				//	String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
 				var iPermission = 0;
 				$("input:checkbox[name=AddPermission]:checked").each(function(i){
 					iPermission += Number($(this).val());
@@ -230,7 +225,6 @@
 					}
 				});
 			}
-
 		</script>
   </body>
 </html>

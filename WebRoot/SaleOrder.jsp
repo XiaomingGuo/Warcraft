@@ -1,11 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Shipping_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-%>
 <%
 	String message="";
 	String POName = request.getParameter("PO_Name").replace(" ", "");
@@ -29,15 +26,16 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from shipping_record where customer_po='" + POName + "' and shipping_no='" + ship_no + "' group by Bar_Code";
-			if (hDBHandle.QueryDataBase(sql)&&hDBHandle.GetRecordCount() > 0)
+			Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			hSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("customer_po", "shipping_no"), Arrays.asList(POName, ship_no), Arrays.asList("Bar_Code"));
+			if (hSRHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "ship_QTY"};
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				for(int idx = 0; idx < sqlKeyList.length; idx++)
+				{
+					recordList.add(hSRHandle.getDBRecordList(sqlKeyList[idx]));
+				}
 			}
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-%02d-%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
@@ -98,14 +96,16 @@
  
 <%
 			if (!recordList.isEmpty())
-			{ 
+			{
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>
   			<tr>
 <%
 					String strBarcode = recordList.get(0).get(iRow-1);
-					double dblPerPrice = hDBHandle.GetPerWeigthByBarcode(strBarcode);
+					hSRHandle.QueryRecordByFilterKeyList(Arrays.asList("customer_po", "Bar_Code", "shipping_no"), Arrays.asList(POName, strBarcode, ship_no));
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+					double dblPerPrice = Double.parseDouble(hPIHandle.getDBRecordList("weight").get(0));
 					double dblTotalPrice = dblPerPrice * Double.parseDouble(recordList.get(1).get(iRow-1));
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
@@ -119,7 +119,7 @@
 				    	else if(displayKeyList[iCol-1] == "品名规格")
 				    	{
 %>
-    			<td><%=hDBHandle.GetNameByBarcode(strBarcode) %></td>
+    			<td><%=hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单位")
@@ -131,7 +131,7 @@
 				    	else if(displayKeyList[iCol-1] == "数量")
 				    	{
 %>
-    			<td align="right" width="10%"><%=hDBHandle.GetShipQTYByBarcode(POName, strBarcode, ship_no) %></td>
+    			<td align="right" width="10%"><%=hSRHandle.getDBRecordList("ship_QTY").get(0) %></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单重")

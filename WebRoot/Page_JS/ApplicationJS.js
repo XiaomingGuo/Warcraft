@@ -50,7 +50,7 @@ $(function()
 			{
 				var code_list = data.split("$");
 				$bar_code.val(code_list[1]);
-				$('#Total_QTY').attr("value", code_list[code_list.size()-1]);
+				$('#Total_QTY').attr("value", code_list[code_list.length-1]);
 			}
 		});
 	});				

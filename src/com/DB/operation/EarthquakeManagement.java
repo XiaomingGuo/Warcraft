@@ -113,4 +113,32 @@ public class EarthquakeManagement implements IEQManagement
 			HibernateSessionFactory.closeSession();
 		}
 	}
+
+	@Override
+	public boolean EQQueryWithLimit(String hql, int iStart, int iCount)
+	{
+		boolean rtnRst = true;
+		try
+		{
+			session = HibernateSessionFactory.getSession();
+			tx=session.beginTransaction();
+			Query tempQuery = session.createQuery(hql);
+			tempQuery.setFirstResult(iStart);
+			tempQuery.setMaxResults(iCount);
+			hTableHandle.setResultList(tempQuery);
+			tx.commit();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();						//打印异常信息
+			tx.rollback();
+			rtnRst = false;
+		}
+		finally
+		{
+			HibernateSessionFactory.closeSession();
+		}
+		
+		return rtnRst;
+	}
 }
