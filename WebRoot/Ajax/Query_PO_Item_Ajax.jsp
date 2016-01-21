@@ -1,9 +1,9 @@
-<%@page import="com.DB.operation.Material_Storage"%>
-<%@page import="com.DB.operation.Product_Storage"%>
-<%@page import="com.DB.operation.Product_Info"%>
-<%@page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Customer_Po" %>
+<%@ page import="com.DB.operation.Material_Storage"%>
+<%@ page import="com.DB.operation.Product_Storage"%>
+<%@ page import="com.DB.operation.Product_Info"%>
+<%@ page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
@@ -72,12 +72,12 @@
 					}
 					else if("成品库存" == displayList[iCol])
 					{
-						iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+						iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage")));
 						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
 					else if ("物料库存" == displayList[iCol])
 					{
-						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "material_storage")));
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
 					else if ("采购量" == displayList[iCol])

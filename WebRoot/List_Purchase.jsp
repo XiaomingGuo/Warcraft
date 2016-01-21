@@ -56,8 +56,8 @@
 					vendorList.remove(index);
 					continue;
 				}
-				String tempDelivDate = recordList.get(3).get(0);
-				if (tempDelivDate == null)
+				String tempDelivDate = hPageHandle.GetMBMaterialPoDeliveryDate(vendorList.get(index), POName);
+				if(tempDelivDate == null)
 					tempDelivDate = DeliveryDate;
 				deliveryDateList.add(tempDelivDate);
 				index++;

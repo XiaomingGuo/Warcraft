@@ -24,7 +24,7 @@ public class List_Purchase extends PageParentClass
 		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor", "po_name"), Arrays.asList(vendor, POName));
 		if (hCPRHandle.RecordDBCount() > 0)
 		{
-			String[] keywordList = {"Bar_Code", "QTY", "percent", "delivery_date"};
+			String[] keywordList = {"Bar_Code", "QTY", "percent"};
 			for(int idx = 0; idx < keywordList.length; idx++)
 			{
 				rtnRst.add(hCPRHandle.getDBRecordList(keywordList[idx]));
@@ -33,14 +33,14 @@ public class List_Purchase extends PageParentClass
 		return rtnRst;
 	}
 	
-	public String GetCustomerPoDeliveryDate(String vendor, String POName)
+	public String GetMBMaterialPoDeliveryDate(String vendor, String POName)
 	{
 		String rtnRst = null;
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor", "po_name"), Arrays.asList(vendor, POName));
-		if (hCPRHandle.RecordDBCount() > 0)
+		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor", "po_name"), Arrays.asList(vendor, POName));
+		if (hMMPHandle.RecordDBCount() > 0)
 		{
-			rtnRst = hCPRHandle.getDBRecordList("delivery_date").get(0);
+			rtnRst = hMMPHandle.getDBRecordList("date_of_delivery").get(0);
 		}
 		return rtnRst;
 	}
@@ -49,7 +49,7 @@ public class List_Purchase extends PageParentClass
 	{
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-		return hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "product_storage")))
-				+ hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "material_storage")));
+		return hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "material_storage")))
+				+ hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "product_storage")));
 	}
 }
