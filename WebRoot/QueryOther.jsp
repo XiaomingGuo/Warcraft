@@ -1,15 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Other_Storage" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -21,21 +14,25 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		//Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
-		String sql = "select * from other_storage";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		hDBHandle.CloseDatabase();
+		int PageRecordCount = 20;
 		String tempBP = request.getParameter("BeginPage");
+		List<List<String>> recordList = new ArrayList<List<String>>();
+		String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
+		Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		
+		hOSHandle.QueryAllRecord();
+		int recordCount = hOSHandle.RecordDBCount();
 		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
+		
+		hOSHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
+		if (hOSHandle.RecordDBCount() > 0)
 		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
+			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
+			for(int idx=0; idx < sqlKeyList.length; idx++)
+			{
+				recordList.add(hOSHandle.getDBRecordList(sqlKeyList[idx]));
+			}
 		}
 %>
 
@@ -82,11 +79,10 @@
 %>
   			<tr>
 <%
-				//{"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总价", "供应商", "备注"};
-				//"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name"
+				String Barcode = recordList.get(0).get(iRow-1);
+				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
 				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 				{
-					String Bar_Code = recordList.get(0).get(iRow-1);
 					if (displayKeyList[iCol-1] == "ID")
 			    	{
 %>
@@ -96,13 +92,13 @@
 			    	else if (displayKeyList[iCol-1] == "产品名称")
 			    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(Bar_Code) %></td>
+    			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "八码")
 			    	{
 %>
-    			<td><%= Bar_Code %></td>
+    			<td><%= Barcode %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "批号")
@@ -150,7 +146,7 @@
 			    	else if (displayKeyList[iCol-1] == "备注")
 			    	{
 %>
-    			<td><%= hDBHandle.GetDescByBarcode(Bar_Code) %></td>
+    			<td><%= hPIHandle.getDBRecordList("description").get(0) %></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "操作")
@@ -159,9 +155,9 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Barcode %>' onclick='SubmitQty(this)'>
     				&nbsp;
-    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='RejectQty(this)'>
+    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Barcode %>' onclick='RejectQty(this)'>
     			</td>
 <%
 			    		}

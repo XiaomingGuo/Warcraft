@@ -1,15 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Other_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "是否领取"};
-	String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -21,20 +14,24 @@
 		message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		String sql = "select * from other_record";
-		hDBHandle.QueryDataBase(sql);
-		int recordCount = hDBHandle.GetRecordCount();
-		hDBHandle.CloseDatabase();
+		int PageRecordCount = 20;
 		String tempBP = request.getParameter("BeginPage");
+		List<List<String>> recordList = new ArrayList<List<String>>();
+		Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "是否领取"};
+		
+		hORHandle.QueryAllRecord();
+		int recordCount = hORHandle.RecordDBCount();
 		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-		String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hDBHandle.QueryDataBase(limitSql))
+		hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
+		if (hORHandle.RecordDBCount() > 0)
 		{
-			recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-		}
-		else
-		{
-			hDBHandle.CloseDatabase();
+			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+			for(int idx=0; idx < sqlKeyList.length; idx++)
+			{
+				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
+			}
 		}
 %>
 
@@ -76,6 +73,8 @@
 			{ 
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
+					String Barcode = recordList.get(0).get(iRow-1);
+					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
 %>
   			<tr>
 <%
@@ -90,7 +89,7 @@
 				    	else if (displayKeyList[iCol-1] == "物料名称")
 				    	{
 %>
-    			<td><%= hDBHandle.GetNameByBarcode(recordList.get(0).get(iRow-1)) %></td>
+    			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
 				    	}
 				    	else if (displayKeyList[iCol-1] == "ID")

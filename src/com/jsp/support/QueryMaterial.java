@@ -7,7 +7,7 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
 
-public class QueryMaterial
+public class QueryMaterial extends PageParentClass
 {
 	public QueryMaterial() { }
 	

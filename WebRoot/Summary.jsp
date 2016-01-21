@@ -1,15 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.DB.core.DatabaseConn" %>
+<%@ page import="com.jsp.support.Summary" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	DatabaseConn hDBHandle = new DatabaseConn();
-	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] keyList = {"ID", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory", "Total_Price"};
-	List<List<String>> recordList = null;
-	int PageRecordCount = 20;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -29,20 +22,25 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String sql = "select * from product_info";
-			hDBHandle.QueryDataBase(sql);
-			int recordCount = hDBHandle.GetRecordCount();
-			hDBHandle.CloseDatabase();
 			String tempBP = request.getParameter("BeginPage");
+			int PageRecordCount = 20;
+			List<List<String>> recordList = new ArrayList<List<String>>();
+			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			Summary hPageHandle = new Summary();
+			
+			String[] keyList = {"ID", "name", "Bar_Code", "product_type", "IN_QTY", "OUT_QTY", "repertory", "Total_Price"};
+			hPIHandle.QueryAllRecord();
+			int recordCount = hPIHandle.RecordDBCount();
 			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-			String limitSql = String.format("%s order by id desc limit %d,%d", sql, PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hDBHandle.QueryDataBase(limitSql))
+			
+			hPIHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
+			if (hPIHandle.RecordDBCount() > 0)
 			{
-				recordList = hDBHandle.GetAllDBColumnsByList(sqlKeyList);
-			}
-			else
-			{
-				hDBHandle.CloseDatabase();
+				String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
+				for(int idx=0; idx < sqlKeyList.length; idx++)
+				{
+					recordList.add(hPIHandle.getDBRecordList(sqlKeyList[idx]));
+				}
 			}
 %>
 
@@ -85,26 +83,13 @@
 			{
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
-					String storageName = "other_storage";
 					String bar_code = recordList.get(1).get(iRow-1);
-					if (Integer.parseInt(bar_code) >= 70000000 && Integer.parseInt(bar_code) < 80000000)
-					{
-						storageName = "semi_product_storage";
-					}
-					if (Integer.parseInt(bar_code) >= 60000000 && Integer.parseInt(bar_code) < 70000000)
-					{
-						storageName = "product_storage";
-					}
-					if (Integer.parseInt(bar_code) >= 50000000 && Integer.parseInt(bar_code) < 60000000)
-					{
-						storageName = "material_storage";
-					}
 %>
   			<tr>
 <%
-					int sql_in_qty = hDBHandle.GetIN_QTYByBarCode(bar_code, storageName);
-					int sql_out_qty = hDBHandle.GetOUT_QTYByBarCode(bar_code, storageName);
-					double dblPro_Price = hDBHandle.GetProductRepertoryPrice(bar_code, storageName);
+					int sql_in_qty = hPageHandle.GetIN_QTYByBarCode(bar_code);
+					int sql_out_qty = hPageHandle.GetOUT_QTYByBarCode(bar_code);
+					double dblPro_Price = hPageHandle.GetRepertoryPrice(bar_code);
 					totalPrice += dblPro_Price;
 					String pro_Price = String.format("%.3f", dblPro_Price);
 					for(int iCol = 1; iCol <= keyList.length; iCol++)
