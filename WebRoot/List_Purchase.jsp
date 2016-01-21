@@ -1,13 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po_Record" %>
 <%@ page import="com.DB.operation.Material_Storage" %>
 <%@ page import="com.DB.operation.Product_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.List_Purchase" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
-	String message="";
-	List<String> vendorList = null;
-	String POName = request.getParameter("PO_Name").replace(" ", "");
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -24,37 +21,31 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+			String POName = request.getParameter("PO_Name").replace(" ", "");
+			List_Purchase hPageHandle = new List_Purchase();
 			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 			Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-			hCPRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name"), Arrays.asList(POName), Arrays.asList("vendor"));
-			vendorList = hCPRHandle.getDBRecordList("vendor");
-			for (int index = 0; index < vendorList.size(); index++)
+			List<String> vendorList = hPageHandle.GetCustomerPoVendorGroup(POName);
+			
+			List<String> deliveryDateList = new ArrayList<String>();
+			Calendar mData = Calendar.getInstance();
+			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
+
+			for (int index = 0; index < vendorList.size(); )
 			{
-				List<List<String>> recordList = new ArrayList<List<String>>();
-				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor", "po_name"), Arrays.asList(vendorList.get(index), POName));
-				//sql = "select * from customer_po_record where vendor='" + vendorList.get(index) + "' and po_name='" + POName + "'";
-				if (hCPRHandle.RecordDBCount() > 0)
-				{
-					String[] keywordList = {"Bar_Code", "QTY", "percent"};
-					for(int idx = 0; idx < keywordList.length; idx++)
-					{
-						recordList.add(hCPRHandle.getDBRecordList(keywordList[idx]));
-					}
-				}
-				else
-				{
-					continue;
-				}
 				boolean isRemoveVendor = true;
+				List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(vendorList.get(index), POName);
+				if (recordList.size() <= 0)
+					continue;
 				for (int recordIndex = 0; recordIndex < recordList.get(0).size(); recordIndex++)
 				{
 					String barcode = recordList.get(0).get(recordIndex);
-					int po_qty = Integer.parseInt(recordList.get(1).get(recordIndex))*(100 + Integer.parseInt(recordList.get(2).get(recordIndex)))/100;
+					String cusPoQty = recordList.get(1).get(recordIndex);
+					String percent = recordList.get(2).get(recordIndex);
+					int poQty = hPageHandle.CalcOrderQty(cusPoQty, percent);
 					
-					int repertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "product_storage")))
-							+ hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "material_storage")));
-					if (repertory < po_qty)
+					int repertory = hPageHandle.GetAllProductAndMaterialRepertory(barcode);
+					if (repertory < poQty)
 					{
 						isRemoveVendor = false;
 						break;
@@ -65,9 +56,12 @@
 					vendorList.remove(index);
 					continue;
 				}
+				String tempDelivDate = recordList.get(3).get(0);
+				if (tempDelivDate == null)
+					tempDelivDate = DeliveryDate;
+				deliveryDateList.add(tempDelivDate);
+				index++;
 			}
-			Calendar mData = Calendar.getInstance();
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -99,7 +93,7 @@
 			<tr>
 				<td align="center" width="25%"><h1><a onclick="func(this)" name="<%=POName %>$<%=vendorList.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=vendorList.get(iRow) %></a></h1></td>
 				<td align="right"><b>交货日期: </b></td>
-				<td><input type="text" id="date_of_delivery_<%=iRow %>" name="date_of_delivery_<%=iRow %>" value="<%=DeliveryDate %>"></td>
+				<td><input type="text" id="date_of_delivery_<%=iRow %>" name="date_of_delivery_<%=iRow %>" value="<%=deliveryDateList.get(iRow) %>"></td>
 			</tr>
 <%
 			}

@@ -104,7 +104,7 @@
 							  	</select>
 						  	</td>
 						  	<td align="right">
-								<select name="product_name" id="product_name" style="width:100px">
+								<select name="product_name" id="product_name" style="width:130px">
 								  	<option value = "--请选择--">--请选择--</option>
 								</select>
 							</td>
@@ -126,12 +126,12 @@
 								</select>
 							</td>
 							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onblur="InputBarcode()"></td>
-							<td align="center"><input type="text" name="delivery_date" id="delivery_date" value=<%=DeliveryDate %>></td>
+							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
-							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:60px" readonly></td>
-							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:60px" readonly></td>
-							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:60px" readonly></td>
-							<td align="center"><input type="text" name="percent" id="percent" style="width:100%" value='8'></td>
+							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
+							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
+							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:65px" readonly></td>
+							<td align="center"><input type="text" name="percent" id="percent" style="width:95" value='8'></td>
 	    					<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addpoitem(this)" disabled></td>
 					  	</tr>
 			    	</table>

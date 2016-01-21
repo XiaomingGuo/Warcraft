@@ -14,8 +14,8 @@
 	Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 	Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 	
-	int iProRepertory = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
-	int iMatRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+	int iProRepertory = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage")));
+	int iMatRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage")));
 	rtnRst += strBarcode + "$";
 	rtnRst += Integer.toString(iProRepertory) + "$";
 	rtnRst += Integer.toString(iMatRepertory) + "$";
