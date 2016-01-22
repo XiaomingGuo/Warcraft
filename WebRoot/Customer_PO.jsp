@@ -1,10 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.Vendor_Info" %>
+<%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
-	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
+	String[] selectKeyList = {"库名", "产品类型", "产品名称", "八码"};
+	String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
 	List<String> product_type = null, vendorList = null;
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -33,6 +35,19 @@
 			hVIHandle.GetRecordByStoreroom("原材料库");
 			vendorList = hVIHandle.getDBRecordList("vendor_name");
 			
+			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+			hSNHandle.GetAllRecord();
+			List<String> store_name = hSNHandle.getDBRecordList("name");
+
+			for (int index = 0; index < store_name.size();)
+			{
+				if (store_name.get(index).indexOf("成品库") == 0||store_name.get(index).indexOf("半成品库") == 0||store_name.get(index).indexOf("原材料库") == 0)
+				{
+					index++;
+					continue;
+				}
+				store_name.remove(index);
+			}
 			Calendar mData = Calendar.getInstance();
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 %>
@@ -78,6 +93,49 @@
 			    	<table align="center" border="1">
 	    				<tr>
 <%
+						for(int iCol = 1; iCol <= selectKeyList.length; iCol++)
+						{
+%>
+		   					<th><%= selectKeyList[iCol-1]%></th>
+<%
+						}
+%>
+	    				</tr>
+	 					<tr>
+					  		<td align="right">
+							  	<select name="store_name" id="store_name" style="width:120px">
+								  	<option value = "--请选择--">--请选择--</option>
+<%
+						for(int i = 0; i < store_name.size(); i++)
+						{
+%>
+								  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
+<%
+						}
+%>
+							  	</select>
+						  	</td>
+					  		<td align="right">
+							  	<select name="product_type" id="product_type" style="width:100px">
+							  		<option value = "--请选择--">--请选择--</option>
+							  	</select>
+						  	</td>
+						  	<td align="right">
+								<select name="product_name" id="product_name" style="width:130px">
+								  	<option value = "--请选择--">--请选择--</option>
+								</select>
+							</td>
+						  	<td align="right">
+								<select name="bar_code" id="bar_code" style="width:100px">
+								  	<option value = "--请选择--">--请选择--</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<br>
+					<table align="center" border="1">
+    					<tr>
+<%
 						for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 						{
 %>
@@ -86,46 +144,13 @@
 						}
 %>
 	    				</tr>
-	 					<tr>
-					  		<td align="right">
-							  	<select name="product_type" id="product_type" style="width:100px">
-								  	<option value = "--请选择--">--请选择--</option>
-<%
-						if (product_type != null)
-						{
-							for(int i = 0; i < product_type.size(); i++)
-							{
-%>
-								  	<option value = <%= product_type.get(i) %>><%=product_type.get(i)%></option>
-<%
-							}
-						}
-%>
-							  	</select>
-						  	</td>
-						  	<td align="right">
-								<select name="product_name" id="product_name" style="width:130px">
-								  	<option value = "--请选择--">--请选择--</option>
-								</select>
-							</td>
+						<tr>
+							<td align="center"><input type="text" name="barcode" id="barcode" style="width:100px" onblur="InputBarcode()"></td>
 							<td align="center">
 								<select name="vendor_name" id="vendor_name" style="width:100px">
 									<option value = "--请选择--">--请选择--</option>
-								
-<%
-						if (vendorList != null)
-						{
-							for(int i = 0; i < vendorList.size(); i++)
-							{
-%>
-								  	<option value = <%= vendorList.get(i) %>><%=vendorList.get(i)%></option>
-<%
-							}
-						}
-%>
 								</select>
 							</td>
-							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onblur="InputBarcode()"></td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>

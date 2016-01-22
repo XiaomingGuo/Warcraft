@@ -3,15 +3,48 @@
  */
 $(function()
 {
+	var $store_name = $('#store_name');
 	var $product_type = $('#product_type');
 	var $product_name = $('#product_name');
 	var $bar_code = $('#bar_code');
 	
+	$store_name.change(function()
+	{
+		ClearSelectContent("product_type");
+		ClearSelectContent("product_name");
+		ClearSelectContent("bar_code");
+		ClearSelectContent("vendor_name");
+		$("#barcode").val("");
+		$("#product_QTY").val("0");
+		$("#material_QTY").val("0");
+		$("#Need_QTY").val("");
+		$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":GetSelectedContent("store_name")}, function(data, textStatus)
+		{
+			if (CheckAjaxResult(textStatus, data))
+			{
+				var data_list = data.split("#");
+				var vendor_list = data_list[0].split("$");
+				for (var i = 1; i < vendor_list.length - 1; i++)
+				{
+					AddNewSelectItem("vendor_name", vendor_list[i]);
+				}
+				var pro_list = data_list[1].split("$");
+				for (var i = 1; i < pro_list.length - 1; i++)
+				{
+					AddNewSelectItem("product_type", pro_list[i]);
+				}
+			}
+		});
+	});
+
 	$product_type.change(function()
 	{
-		$product_name.empty();
-		$bar_code.empty();
-		$product_name.append('<option value="请选择">--请选择--</option>');
+		ClearSelectContent("product_name");
+		ClearSelectContent("bar_code");
+		$("#barcode").val("");
+		$("#product_QTY").val("0");
+		$("#material_QTY").val("0");
+		$("#Need_QTY").val("");
 		$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":GetSelectedContent("product_type")}, function(data, textStatus)
 		{
 			if (CheckAjaxResult(textStatus, data))
@@ -27,18 +60,34 @@ $(function()
 	
 	$product_name.change(function()
 	{
+		$("#bar_code").empty();
 		$.post("Ajax/App_Order_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"), "product_type":GetSelectedContent("product_type")}, function(data, textStatus)
 		{
 			if (CheckAjaxResult(textStatus, data))
 			{
 				var code_list = data.split("$");
-				$bar_code.attr("value", code_list[1]);
-				$("#product_QTY").attr("value", code_list[2]);
-				$("#material_QTY").attr("value", code_list[3]);
+				AddNewSelectItem("bar_code", code_list[1]);
+				$("#barcode").val(code_list[1]);
+				$("#product_QTY").val(code_list[2]);
+				$("#material_QTY").val(code_list[3]);
 				Qty_Calc();
 			}
 		});
-	});	
+	});
+	
+	$bar_code.change(function()
+	{
+		$("#barcode").val("");
+		var selectedBarcode = GetSelectedContent("bar_code");
+		if (selectedBarcode.indexOf("请选择") >= 0)
+		{
+			$("#barcode").val("");
+		}
+		else
+		{
+			$("#barcode").val(selectedBarcode);
+		}
+	});
 });
 
 function changePOName(obj)
@@ -125,12 +174,12 @@ function changePOName(obj)
 function addpoitem(obj)
 {
 	var po_name = $("#POName").val();
-	if(po_name==""||$("#bar_code").val() == null||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
+	if(po_name==""||$("#barcode").val() == null||$("#barcode").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#order_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
 	{
 		alert("能输入点儿正常值不?");
 		return;
 	}
-	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#cpo_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
+	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#cpo_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
@@ -182,31 +231,29 @@ function CreatePO(obj)
 
 function InputBarcode(obj)
 {
-	var barcode = $("#bar_code").val();
+	var barcode = $("#barcode").val();
 	if(barcode == null||barcode.length != 8)
 	{
 		alert("输入八码不对吧!");
 		$("#bar_code").val("");
 		return;
 	}
-	if(!IsProductionMaterial(barcode))
+	if (parseInt(barcode) < 50000000 || parseInt(barcode) >= 80000000)
 	{
-		alert("这里只能输入产品八码?");
+		alert("只能输入八码(大于等于50000000或小于80000000)!");
+		$("#barcode").val("");
 		return;
 	}
-	var tempBarcode = ReplaceInputWithProductBarcode(barcode);
-	if(barcode != tempBarcode)
-	{
-		$("#bar_code").val(tempBarcode);
-		barcode = tempBarcode;
-	}
-	$("#product_name").empty();
 	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":barcode}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
 			var proInfoList = data.split("$");
-			$("#product_type").val(proInfoList[2]);
+			$("#store_name").val(proInfoList[1]);
+			$("#store_name").change();
+			$("#product_type").empty();
+			AddNewSelectItem("product_type", proInfoList[2]);
+			$("#product_name").empty();
 			AddNewSelectItem("product_name", proInfoList[3]);
 			$("#product_name").change();
 		}

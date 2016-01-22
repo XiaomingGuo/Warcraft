@@ -6,7 +6,7 @@ var inputHead = ["库名", "类别", "产品名称", "八码", "入库数量", "
 function InputBarcode(obj)
 {
 	var checkedBarcode = $("#barcode").val();
-	if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
+	if(checkedBarcode == null || checkedBarcode.length != 8)
 	{
 		$("#barcode").val("");
 		return;
