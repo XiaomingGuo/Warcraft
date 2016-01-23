@@ -34,7 +34,8 @@ $(function()
 				var code_list = data.split("$");
 				$bar_code.attr("value", code_list[1]);
 				$("#product_QTY").attr("value", code_list[2]);
-				$("#material_QTY").attr("value", code_list[3]);
+				$("#semi_pro_QTY").attr("value", code_list[3]);
+				$("#material_QTY").attr("value", code_list[4]);
 				Qty_Calc();
 			}
 		});

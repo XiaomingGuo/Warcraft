@@ -6,7 +6,7 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String[] selectKeyList = {"库名", "产品类型", "产品名称", "八码"};
-	String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
+	String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "半成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
 	List<String> product_type = null, vendorList = null;
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -154,6 +154,7 @@
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
+							<td align="center"><input type="text" name="semi_pro_QTY" id="semi_pro_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:65px" readonly></td>
 							<td align="center"><input type="text" name="percent" id="percent" style="width:95" value='8'></td>

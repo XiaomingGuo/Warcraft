@@ -1,11 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.Vendor_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Generate_Order" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
-	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
+	String[] displayKeyList = {"产品类型", "产品名称", "供应商", "八码", "交货日期", "数量", "成品库存", "半成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
 	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 	List<List<String>> recordList = null;
 %>
@@ -129,8 +129,9 @@
 							<td align="center"><input type="text" name="bar_code" id="bar_code" style="width:100px" onblur="InputBarcode()"></td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" value=<%=DeliveryDate %>></td>
 							<td align="center"><input type="text" name="corder_QTY" id="corder_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
-							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:60px" readonly></td>
-							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:60px" readonly></td>
+							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
+							<td align="center"><input type="text" name="semi_pro_QTY" id="semi_pro_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
+							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:60px" readonly></td>
 							<td align="center"><input type="text" name="percent" id="percent" style="width:100%" value='8' readonly></td>
 	    					<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addorderitem(this)"></td>

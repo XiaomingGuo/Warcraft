@@ -69,7 +69,8 @@ $(function()
 				AddNewSelectItem("bar_code", code_list[1]);
 				$("#barcode").val(code_list[1]);
 				$("#product_QTY").val(code_list[2]);
-				$("#material_QTY").val(code_list[3]);
+				$("#semi_pro_QTY").val(code_list[3]);
+				$("#material_QTY").val(code_list[4]);
 				Qty_Calc();
 			}
 		});
@@ -159,7 +160,7 @@ function changePOName(obj)
 				var cmdtr = $("<tr></tr>");
 				if (status == "null")
 				{
-					cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
+					//cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
 				}
 				if (Count > 0)
 				{
@@ -204,9 +205,10 @@ function Qty_Calc(obj)
 {
 	var poCount = parseInt($("#cpo_QTY").val());
 	var proCount = parseInt($("#product_QTY").val());
+	var semiProCount = parseInt($("#semi_pro_QTY").val());
 	var matCount = parseInt($("#material_QTY").val());
-	var tempQTY = (proCount + matCount) - poCount;
-	if (poCount > 0&&proCount >= 0&&matCount >= 0)
+	var tempQTY = (proCount + semiProCount + matCount) - poCount;
+	if (poCount > 0&&proCount >= 0&&matCount >= 0&&semiProCount >= 0)
 	{
 		if (tempQTY >= 0)
 		{
