@@ -71,6 +71,9 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 			case "Order_Name":
 				rtnRst.add(tempRecord.getOrderName());
 				break;
+			case "po_name":
+				rtnRst.add(tempRecord.getPoName());
+				break;
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName());
 				break;
@@ -165,6 +168,9 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
 			rtnRst = "orderName";
 		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
 		}
@@ -183,7 +189,7 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String appSupplier_name, String appInStoreDate)
+			String appOrderName, String poName, String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new SemiProductStorage();
 		aWriteRecord.setBarCode(appBarcode);
@@ -192,6 +198,7 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
 		aWriteRecord.setOrderName(appOrderName);
+		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
@@ -227,8 +234,8 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String appInStoreDate,
-			String isEnsure, String createDate) {
+			String appTotalPrice, String appOrderName, String poName, 
+			String appInStoreDate, String isEnsure, String createDate) {
 		// TODO Auto-generated method stub
 		
 	}

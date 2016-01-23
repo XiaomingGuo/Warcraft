@@ -183,7 +183,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String appSupplier_name, String appInStoreDate)
+			String appOrderName, String poName, String appSupplier_name, String appInStoreDate)
 	{
 		aWriteRecord = new MaterialStorage();
 		aWriteRecord.setBarCode(appBarcode);
@@ -192,6 +192,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
 		aWriteRecord.setOrderName(appOrderName);
+		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
@@ -227,8 +228,8 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String appInStoreDate,
-			String isEnsure, String createDate) {
+			String appTotalPrice, String appOrderName, String poName,
+			String appInStoreDate, String isEnsure, String createDate) {
 		// TODO Auto-generated method stub
 		
 	}
