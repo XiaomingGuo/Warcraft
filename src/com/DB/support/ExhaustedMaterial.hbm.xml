@@ -31,6 +31,9 @@
         <property name="orderName" type="java.lang.String">
             <column name="Order_Name" length="50" not-null="true" />
         </property>
+        <property name="poName" type="java.lang.String">
+            <column name="po_name" length="50" not-null="true" />
+        </property>
         <property name="vendorName" type="java.lang.String">
             <column name="vendor_name" length="50" not-null="true" />
         </property>

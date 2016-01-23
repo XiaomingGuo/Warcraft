@@ -18,6 +18,7 @@ public class MaterialStorage implements java.io.Serializable {
 	private Float pricePerUnit;
 	private Double totalPrice;
 	private String orderName;
+	private String poName;
 	private String vendorName;
 	private String inStoreDate;
 	private Integer isEnsure;
@@ -32,8 +33,8 @@ public class MaterialStorage implements java.io.Serializable {
 	/** full constructor */
 	public MaterialStorage(String barCode, String batchLot, Integer inQty,
 			Integer outQty, Float pricePerUnit, Double totalPrice,
-			String orderName, String vendorName, String inStoreDate,
-			Integer isEnsure, Timestamp createDate) {
+			String orderName, String poName, String vendorName,
+			String inStoreDate, Integer isEnsure, Timestamp createDate) {
 		this.barCode = barCode;
 		this.batchLot = batchLot;
 		this.inQty = inQty;
@@ -41,6 +42,7 @@ public class MaterialStorage implements java.io.Serializable {
 		this.pricePerUnit = pricePerUnit;
 		this.totalPrice = totalPrice;
 		this.orderName = orderName;
+		this.poName = poName;
 		this.vendorName = vendorName;
 		this.inStoreDate = inStoreDate;
 		this.isEnsure = isEnsure;
@@ -111,6 +113,14 @@ public class MaterialStorage implements java.io.Serializable {
 
 	public void setOrderName(String orderName) {
 		this.orderName = orderName;
+	}
+
+	public String getPoName() {
+		return this.poName;
+	}
+
+	public void setPoName(String poName) {
+		this.poName = poName;
 	}
 
 	public String getVendorName() {
