@@ -13,7 +13,7 @@ public class MbMaterialPoRecord implements java.io.Serializable {
 	private Integer id;
 	private Integer mbMaterialPoId;
 	private Integer inQty;
-	private Timestamp inDate;
+	private String inDate;
 
 	// Constructors
 
@@ -23,7 +23,7 @@ public class MbMaterialPoRecord implements java.io.Serializable {
 
 	/** full constructor */
 	public MbMaterialPoRecord(Integer mbMaterialPoId, Integer inQty,
-			Timestamp inDate) {
+			String inDate) {
 		this.mbMaterialPoId = mbMaterialPoId;
 		this.inQty = inQty;
 		this.inDate = inDate;
@@ -55,11 +55,11 @@ public class MbMaterialPoRecord implements java.io.Serializable {
 		this.inQty = inQty;
 	}
 
-	public Timestamp getInDate() {
+	public String getInDate() {
 		return this.inDate;
 	}
 
-	public void setInDate(Timestamp inDate) {
+	public void setInDate(String inDate) {
 		this.inDate = inDate;
 	}
 

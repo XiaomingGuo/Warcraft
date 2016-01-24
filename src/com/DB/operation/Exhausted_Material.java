@@ -73,6 +73,9 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 			case "Order_Name":
 				rtnRst.add(tempRecord.getOrderName());
 				break;
+			case "po_name":
+				rtnRst.add(tempRecord.getPoName());
+				break;
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName());
 				break;
@@ -144,6 +147,9 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
 			rtnRst = "orderName";
 		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
 		}
@@ -178,6 +184,7 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		aWriteRecord.setOutQty(Integer.parseInt(outQty));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));

@@ -73,11 +73,14 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 			case "Order_Name":
 				rtnRst.add(tempRecord.getOrderName());
 				break;
+			case "po_name":
+				rtnRst.add(tempRecord.getPoName());
+				break;
 			case "vendor_name":
 				rtnRst.add(tempRecord.getVendorName());
 				break;
 			case "in_store_date":
-				rtnRst.add(tempRecord.getOrderName());
+				rtnRst.add(tempRecord.getInStoreDate());
 				break;
 			case "isEnsure":
 				rtnRst.add(tempRecord.getIsEnsure().toString());
@@ -156,6 +159,9 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		else if(keyword.toLowerCase().indexOf("order_name") >= 0) {
 			rtnRst = "orderName";
 		}
+		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
+			rtnRst = "poName";
+		}
 		else if(keyword.toLowerCase().indexOf("vendor_name") >= 0) {
 			rtnRst = "vendorName";
 		}
@@ -188,7 +194,6 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
-		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);

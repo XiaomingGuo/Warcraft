@@ -76,7 +76,7 @@ public class Out_Quality_Control_Ajax extends PageParentClass
 		}
 		else
 		{
-			hPSHandle.AddARecord(hPSHandle.GetUsedBarcode(barcode, "product_storage"), batchLot, Integer.toString(used_count), "0", "0", OrderName, "MBond", "00000000");
+			hPSHandle.AddARecord(hPSHandle.GetUsedBarcode(barcode, "product_storage"), batchLot, Integer.toString(used_count), "0", "0", OrderName, " ", "MBond", "00000000");
 		}
 		return rtnRst;
 	}

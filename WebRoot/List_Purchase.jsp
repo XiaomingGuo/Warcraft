@@ -1,7 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Material_Storage" %>
-<%@ page import="com.DB.operation.Product_Storage" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.List_Purchase" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -23,8 +20,6 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String POName = request.getParameter("PO_Name").replace(" ", "");
 			List_Purchase hPageHandle = new List_Purchase();
-			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-			Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 			List<String> vendorList = hPageHandle.GetCustomerPoVendorGroup(POName);
 			
 			List<String> deliveryDateList = new ArrayList<String>();
@@ -44,7 +39,7 @@
 					String percent = recordList.get(2).get(recordIndex);
 					int poQty = hPageHandle.CalcOrderQty(cusPoQty, percent);
 					
-					int repertory = hPageHandle.GetAllProductAndMaterialRepertory(barcode);
+					int repertory = hPageHandle.GetAllRepertory(barcode, "Material_Supply");
 					if (repertory < poQty)
 					{
 						isRemoveVendor = false;

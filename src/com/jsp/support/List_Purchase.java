@@ -44,12 +44,4 @@ public class List_Purchase extends PageParentClass
 		}
 		return rtnRst;
 	}
-
-	public int GetAllProductAndMaterialRepertory(String barcode)
-	{
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-		return hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "material_storage")))
-				+ hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "product_storage")));
-	}
 }

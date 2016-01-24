@@ -112,7 +112,7 @@
 				}
 			}
 			String appTotalPrice = String.format("%.4f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
-			String batch_lot = hPageHandle.GenBatchLot(storageName, appBarcode);
+			String batch_lot = hPageHandle.GenBatchLot(appBarcode);
 			hPageHandle.AddARecordToStorage(storageName, appBarcode, batch_lot, appProductQTY, appPriceUnit, appTotalPrice, appSupplier_name, appInStoreDate);
 		}
 		else

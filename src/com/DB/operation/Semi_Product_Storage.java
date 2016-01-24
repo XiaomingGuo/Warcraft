@@ -197,7 +197,6 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
-		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);

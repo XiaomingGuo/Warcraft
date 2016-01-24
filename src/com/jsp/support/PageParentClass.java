@@ -2,6 +2,7 @@ package com.jsp.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -93,8 +94,8 @@ public class PageParentClass
 					hStorageHandle.getDBRecordList("Batch_Lot").get(0), hStorageHandle.getDBRecordList("IN_QTY").get(0),
 					hStorageHandle.getDBRecordList("OUT_QTY").get(0), hStorageHandle.getDBRecordList("Price_Per_Unit").get(0),
 					hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(diffKeyWord).get(0),
-					hStorageHandle.getDBRecordList("in_store_date").get(0), hStorageHandle.getDBRecordList("isEnsure").get(0),
-					hStorageHandle.getDBRecordList("create_date").get(0));
+					hStorageHandle.getDBRecordList("po_name").get(0), hStorageHandle.getDBRecordList("in_store_date").get(0),
+					hStorageHandle.getDBRecordList("isEnsure").get(0), hStorageHandle.getDBRecordList("create_date").get(0));
 			((ITableInterface)hStorageHandle).DeleteRecordByKeyWord("Id", Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
 		}
 	}
@@ -110,4 +111,41 @@ public class PageParentClass
 		tempList.addAll(hExHandle.getDBRecordList("Price_Per_Unit"));
 		return Double.parseDouble(tempList.get(0));
 	}
+	
+	public int GetAllRepertory(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		rtnRst += hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage"), po_name));
+		rtnRst += hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hSPSHandle.GetUsedBarcode(barcode, "Semi_Product_Storage"), po_name));
+		rtnRst += hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "Material_Storage"), po_name));
+		return rtnRst;
+	}
+	
+	public String GenBatchLot(String strBarcode)
+	{
+		String rtnRst = "";
+		Calendar mData = Calendar.getInstance();
+		String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
+		IStorageTableInterface hExStorageHandle = GenExStorageHandle(strBarcode);
+		int loopNum = 1;
+		do
+		{
+			rtnRst = batch_lot_Head + "-" + String.format("%02d", loopNum);
+			List<String> keyList = Arrays.asList("Bar_code", "Batch_Lot"), valueList = Arrays.asList(strBarcode, rtnRst);
+			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hExStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			if ((hStorageHandle.RecordDBCount()+hExStorageHandle.RecordDBCount()) <= 0)
+			{
+				break;
+			}
+			loopNum ++;
+		}
+		while(true);
+		return rtnRst;
+	}
+
 }

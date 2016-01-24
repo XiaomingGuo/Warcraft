@@ -49,7 +49,7 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 			case "id":
 				rtnRst.add(tempRecord.getId().toString());
 				break;
-			case "mb_material_po":
+			case "mb_material_po_id":
 				rtnRst.add(tempRecord.getMbMaterialPoId().toString());
 				break;
 			case "IN_QTY":
@@ -96,20 +96,19 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 	}
 	*/
 	
-	public void AddARecord(String poName)
+	public void AddARecord(String mbMaterialPoId, String inQty, String inDate)
 	{
 		aWriteRecord = new MbMaterialPoRecord();
-		//aWriteRecord.setPoName(poName);
+		aWriteRecord.setMbMaterialPoId(Integer.parseInt(mbMaterialPoId));
+		aWriteRecord.setInQty(Integer.parseInt(inQty));
+		aWriteRecord.setInDate(inDate);
 		getEQMHandle().addANewRecord();
 	}
 
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
-		if(keyword.toLowerCase().indexOf("id") >= 0){
-			rtnRst = "id";
-		}
-		else if(keyword.toLowerCase().indexOf("mb_material_po") >= 0) {
+		if(keyword.toLowerCase().indexOf("mb_material_po_id") >= 0) {
 			rtnRst = "mbMaterialPoId";
 		}
 		else if(keyword.toLowerCase().indexOf("in_qty") >= 0) {
@@ -117,6 +116,9 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 		}
 		else if(keyword.toLowerCase().indexOf("in_date") >= 0) {
 			rtnRst = "inDate";
+		}
+		else if(keyword.toLowerCase().indexOf("id") >= 0){
+			rtnRst = "id";
 		}
 		return rtnRst;
 	}
