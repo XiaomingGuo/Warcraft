@@ -157,7 +157,7 @@
 			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
 						</td>
 			   			<td align="center">
-							<input type="button" value="提交" style='width:100px' onclick="AddMaterialFun()">
+							<input type="button" value="提交" style='width:100px' onclick="AddMFGToolsMaterialFun()">
 						</td>
 					</tr>
 		    	</table>

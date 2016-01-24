@@ -78,12 +78,12 @@
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="PersonReport.jsp">个人报表</a></li>
-			    		<li><a href="MonthReport.jsp">月报表</a></li>
+			    		<li><a href="MFGToolsMonthReport.jsp">月报表</a></li>
 			    		<li><a href="Summary.jsp">成品库存</a></li>
 			    		<li><a href="Summary.jsp">原材料库存</a></li>
 			    		<li><a href="Summary.jsp">半成品库存</a></li>
 			    		<li><a href="OtherSummary.jsp">其他库存</a></li>
-			    		<li><a href="StorageReport.jsp">库房报表</a></li>
+			    		<li><a href="OtherStorageReport.jsp">库房报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

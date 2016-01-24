@@ -51,7 +51,7 @@ function InputBarcode(obj)
 	});
 }
 
-function AddMaterialFun()
+function AddMFGToolsMaterialFun()
 {
 	var tab = document.getElementById('display_add');
 	if(tab.rows.length < 2)
@@ -59,6 +59,7 @@ function AddMaterialFun()
 		alert("申领数量超出库存数量或申领信息填写不完整!");
 		return;
 	}
+	
 	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
 	for(var iRow=1; iRow < tab.rows.length; iRow++)
 	{

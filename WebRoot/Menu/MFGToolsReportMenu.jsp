@@ -79,9 +79,9 @@
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<!-- <li><a href="PersonReport.jsp">个人报表</a></li> -->
 			    		<li><a href="Application.jsp">上一页</a></li>
-			    		<li><a href="MonthReport.jsp">五金消耗报表</a></li>
+			    		<li><a href="MFGToolsMonthReport.jsp">五金消耗报表</a></li>
 			    		<li><a href="OtherSummary.jsp">五金库库存</a></li>
-			    		<li><a href="StorageReport.jsp">库房报表</a></li>
+			    		<li><a href="OtherStorageReport.jsp">库房报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

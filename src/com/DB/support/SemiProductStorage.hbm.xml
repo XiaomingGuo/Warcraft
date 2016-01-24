@@ -41,8 +41,8 @@
   <property generated="never" lazy="false" name="inStoreDate" type="java.lang.String">
    <column length="8" name="in_store_date" not-null="true"/>
   </property>
-  <property generated="never" lazy="false" name="isEnsure"
-   type="java.lang.Integer" update="false">
+  <property generated="never" insert="false" lazy="false"
+   name="isEnsure" type="java.lang.Integer">
    <column name="isEnsure" not-null="true"/>
   </property>
   <property generated="never" insert="false" lazy="false"

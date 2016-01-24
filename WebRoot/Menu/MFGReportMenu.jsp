@@ -80,7 +80,7 @@
 			    		<li><a href="Summary.jsp">成品库存</a></li>
 			    		<li><a href="Summary.jsp">原材料库存</a></li>
 			    		<li><a href="Summary.jsp">半成品库存</a></li>
-			    		<!-- <li><a href="StorageReport.jsp">库房报表</a></li> -->
+			    		<!-- <li><a href="OtherStorageReport.jsp">库房报表</a></li> -->
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

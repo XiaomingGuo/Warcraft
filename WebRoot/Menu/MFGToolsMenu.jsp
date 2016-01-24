@@ -84,7 +84,7 @@
 			    		<li><a href="Approve.jsp">批准</a></li>
 			    		<li><a href="AddMFGToolsMaterial.jsp">五金录入</a></li>
 			    		<li><a href="QueryOther.jsp">五金录入状态</a></li>
-			    		<li><a href="MonthReport.jsp">五金库报表</a></li>
+			    		<li><a href="MFGToolsMonthReport.jsp">五金库报表</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>

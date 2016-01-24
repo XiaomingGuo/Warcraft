@@ -129,22 +129,30 @@ public class PageParentClass
 		String rtnRst = "";
 		Calendar mData = Calendar.getInstance();
 		String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
-		IStorageTableInterface hExStorageHandle = GenExStorageHandle(strBarcode);
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		Exhausted_Product hEPHandle = new Exhausted_Product(new EarthquakeManagement());
+		Exhausted_Semi_Product hESPHandle = new Exhausted_Semi_Product(new EarthquakeManagement());
+		Exhausted_Material hEMHandle = new Exhausted_Material(new EarthquakeManagement());
 		int loopNum = 1;
 		do
 		{
 			rtnRst = batch_lot_Head + "-" + String.format("%02d", loopNum);
 			List<String> keyList = Arrays.asList("Bar_code", "Batch_Lot"), valueList = Arrays.asList(strBarcode, rtnRst);
-			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hExStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			if ((hStorageHandle.RecordDBCount()+hExStorageHandle.RecordDBCount()) <= 0)
+			hPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hSPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hMSHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hEPHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hESPHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hEMHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			if ((hPSHandle.RecordDBCount()+hSPSHandle.RecordDBCount()+hMSHandle.RecordDBCount()
+					+hEPHandle.RecordDBCount()+hESPHandle.RecordDBCount()+hEMHandle.RecordDBCount()) <= 0)
 			{
 				break;
 			}
 			loopNum ++;
-		}
-		while(true);
+		}while(true);
 		return rtnRst;
 	}
 

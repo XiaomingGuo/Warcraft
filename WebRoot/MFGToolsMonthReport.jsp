@@ -1,8 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.jsp.support.StorageReport" %>
+<%@ page import="com.jsp.support.MonthReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -12,7 +10,7 @@
 	}
 	else
 	{
-		int temp = mylogon.getUserRight()&64;
+		int temp = mylogon.getUserRight()&8;
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
@@ -24,16 +22,20 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
-			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期", "操作"};
+		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+			String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
 			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			StorageReport hPageHandle = new StorageReport();
+			MonthReport hPageHandle = new MonthReport();
 			List<String> store_nameList = hPageHandle.GetAllStorageroom();
+			store_nameList.remove("成品库");
+			store_nameList.remove("原材料库");
+			store_nameList.remove("半成品库");
+			List<String> userNameList = hPageHandle.GetUserName(Arrays.asList("user_name"));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -41,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>库房报表</title>
+    <title>月报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -55,7 +57,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/StorageReportJS.js"></script>
+  	<script language="javascript" src="Page_JS/MonthReportJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
    	<script type="text/javascript">
@@ -63,7 +65,7 @@
 	</script>
     <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
     <br>
-    <form action="ReportPage/SaveStorageReport.jsp" method="post">
+    <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
    		<caption><b>库房报表</b></caption>
 			<tr>
@@ -101,16 +103,20 @@
 					</select>
 				</td>
 				<td align="right">
-				  	<select name="supplier_name" id="supplier_name" style="width:120px">
+				  	<select name="user_name" id="user_name" style="width:120px">
 					  	<option value = "--请选择--">--请选择--</option>
+<%
+				for(int i = 0; i < userNameList.size(); i++)
+				{
+%>
+				  		<option value = <%=userNameList.get(i) %>><%=userNameList.get(i)%></option>
+<%
+				}
+%>
 				  	</select>
 			  	</td>
-	   			<td align="center">
-		   			<label>入库时间:</label>
-	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>">
-				</td>
 				<td align="center">
-					<input align="middle" id="confirm_button" type="button" value="查询" onclick="SubmitDateChange()">
+					<input align="middle" type="button" value="查询" onclick="SubmitDateChange()">
 				</td>
 		  	</tr>
 	  	</table>
@@ -143,6 +149,20 @@
   		<table id="hidden_table" style="visibility:hidden"></table>
 	  	<table align="center">
 		<tr>
+			<td align="right">
+			     <label>分页列:</label>
+			     <select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
+			         <option value = "--请选择--">--请选择--</option>
+<%
+                    for(int i = 0; i < displayKeyList.length; i++)
+                    {
+%>
+                      <option value=<%=i%>><%=displayKeyList[i]%></option>
+<%
+                    }
+%>
+				</select>
+			</td>
 		  	<td align="center">
 		  		<input type="submit" value="下载报表" style='width:80px'/>
 		  	</td>

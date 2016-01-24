@@ -63,7 +63,7 @@
 				}
 				storageName = "semi_product_storage";
 				appProduct_type = appProduct_type.contains("半成品")?appProduct_type:appProduct_type+"半成品";
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"));
+				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"));
 				if (hPIHandle.RecordDBCount() <= 0)
 				{
 					//product_type Database query

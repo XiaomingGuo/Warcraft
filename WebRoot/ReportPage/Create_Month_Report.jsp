@@ -116,6 +116,6 @@
 			out.clear();
 			out=pageContext.pushBody();
 		}
-		out.println("<script>alert('下载成功！');window.location.href = \"../MonthReport.jsp?BeginDate="+beginDate+"&EndDate="+endDate+"\";</script>");	
+		out.println("<script>alert('下载成功！');window.location.href = \"../MFGToolsMonthReport.jsp?BeginDate="+beginDate+"&EndDate="+endDate+"\";</script>");	
 	}
 %>
