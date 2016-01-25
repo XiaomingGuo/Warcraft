@@ -41,8 +41,8 @@ public class QueryStorageItemAjax extends PageParentClass
 			rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
 			rtnRst.add(hPIHandle.getDBRecordList("product_type").get(0));
 			Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
-			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
-			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
+			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
+			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
 			double totalPrice = hOSHandle.GetDblPriceOfStorage("Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));

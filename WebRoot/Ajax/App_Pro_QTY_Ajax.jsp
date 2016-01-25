@@ -16,11 +16,11 @@
 	
 	if (barcodeList != null && weightList != null && descList != null)
 	{
-		App_Pro_QTY_Ajax hSupport = new App_Pro_QTY_Ajax();
+		App_Pro_QTY_Ajax hPageHandle = new App_Pro_QTY_Ajax();
 		for (int i = 0; i < barcodeList.size(); i++)
 		{
 			String bar_Code = barcodeList.get(i);
-			iRepertory += hSupport.GetIN_QTYByBarCode(bar_Code) - hSupport.GetOUT_QTYByBarCode(bar_Code);
+			iRepertory += hPageHandle.GetIN_QTYByBarCode(bar_Code) - hPageHandle.GetOUT_QTYByBarCode(bar_Code);
 			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPIHandle.GetUsedBarcode(bar_Code, "Material_Storage")));
 			rtnRst += bar_Code + "$" + hPIHandle.getDBRecordList("weight").get(0) + "$" ;
 			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPIHandle.GetUsedBarcode(bar_Code, "Product_Storage")));

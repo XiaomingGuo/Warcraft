@@ -221,3 +221,11 @@ function submitOtherApp()
 	}
 }
 
+function CheckQTY(obj)
+{
+	if (parseInt(obj.value)-parseInt($("#Total_QTY").val()) > 0)
+	{
+		alert("申请数量不能大于库存数量!");
+		obj.value = 0;
+	}
+}

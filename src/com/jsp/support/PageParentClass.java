@@ -84,17 +84,18 @@ public class PageParentClass
 		hStorageHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
 		if (hStorageHandle.getDBRecordList("IN_QTY").equals(hStorageHandle.getDBRecordList("OUT_QTY")))
 		{
-			String diffKeyWord = "";
-			if (GetStorageNameByBarCode(barcode, true).contains("Product"))
-				diffKeyWord = "Order_Name";
-			else
-				diffKeyWord = "vendor_name";
+			String orderKeyWord = "Order_Name", PoKeyWord = "po_name";
+			if (GetStorageNameByBarCode(barcode, true).contains("Other"))
+			{
+				orderKeyWord = "vendor_name";
+				PoKeyWord = "vendor_name";
+			}
 			IStorageTableInterface hExStorageHandle = GenExStorageHandle(barcode);
 			hExStorageHandle.AddAExRecord(hStorageHandle.getDBRecordList("id").get(0), hStorageHandle.getDBRecordList("Bar_Code").get(0), 
 					hStorageHandle.getDBRecordList("Batch_Lot").get(0), hStorageHandle.getDBRecordList("IN_QTY").get(0),
 					hStorageHandle.getDBRecordList("OUT_QTY").get(0), hStorageHandle.getDBRecordList("Price_Per_Unit").get(0),
-					hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(diffKeyWord).get(0),
-					hStorageHandle.getDBRecordList("po_name").get(0), hStorageHandle.getDBRecordList("in_store_date").get(0),
+					hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(orderKeyWord).get(0),
+					hStorageHandle.getDBRecordList(PoKeyWord).get(0), hStorageHandle.getDBRecordList("in_store_date").get(0),
 					hStorageHandle.getDBRecordList("isEnsure").get(0), hStorageHandle.getDBRecordList("create_date").get(0));
 			((ITableInterface)hStorageHandle).DeleteRecordByKeyWord("Id", Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
 		}
@@ -132,9 +133,11 @@ public class PageParentClass
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
 		Exhausted_Product hEPHandle = new Exhausted_Product(new EarthquakeManagement());
 		Exhausted_Semi_Product hESPHandle = new Exhausted_Semi_Product(new EarthquakeManagement());
 		Exhausted_Material hEMHandle = new Exhausted_Material(new EarthquakeManagement());
+		Exhausted_Other hEOHandle = new Exhausted_Other(new EarthquakeManagement());
 		int loopNum = 1;
 		do
 		{
@@ -143,11 +146,13 @@ public class PageParentClass
 			hPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			hSPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			hMSHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hOSHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			hEPHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			hESPHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			hEMHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			if ((hPSHandle.RecordDBCount()+hSPSHandle.RecordDBCount()+hMSHandle.RecordDBCount()
-					+hEPHandle.RecordDBCount()+hESPHandle.RecordDBCount()+hEMHandle.RecordDBCount()) <= 0)
+			hEOHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			if ((hPSHandle.RecordDBCount()+hSPSHandle.RecordDBCount()+hMSHandle.RecordDBCount()+hOSHandle.RecordDBCount()+
+					hEPHandle.RecordDBCount()+hESPHandle.RecordDBCount()+hEMHandle.RecordDBCount()+hEOHandle.RecordDBCount()) <= 0)
 			{
 				break;
 			}

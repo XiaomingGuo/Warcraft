@@ -89,7 +89,7 @@
 				<input name="user_name" id="user_name" style="width:100px">
 			</td>
 			<td align="right">
-				<input name="QTY" id="QTY" style="width:80px">
+				<input name="QTY" id="QTY" style="width:80px" onblur="CheckQTY(this)">
 			</td>
 			<td align="right">
 				<input name="Total_QTY" id="Total_QTY" style="width:80px" readonly>
