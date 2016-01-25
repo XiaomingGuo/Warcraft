@@ -22,7 +22,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 			String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);

@@ -4,7 +4,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%!
 	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+	String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 %>
 <%
 	String rtnRst = "remove$";
@@ -55,8 +55,8 @@
 		rtnRst += recordList.get(idx) + "$";
 		if(idx%displayKeyList.length == 5)
 			inSum += Integer.parseInt(recordList.get(idx));
-		else if(idx%displayKeyList.length == 6)
-			totalRepertoryPrice += Double.parseDouble(recordList.get(idx)) * Integer.parseInt(recordList.get(idx-1));
+		else if(idx%displayKeyList.length == 8)
+			totalRepertoryPrice += Double.parseDouble(recordList.get(idx));
 	}
 	
 	for(int idx = 0; idx < displayKeyList.length-6; idx++)
@@ -64,7 +64,7 @@
 		rtnRst += "$";
 	}
 	
-	//{"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+	//{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 	NumberFormat formatter = new DecimalFormat("#.###");
 	rtnRst += "汇总$"+Integer.toString(inSum)+"$";
 	rtnRst += "总价值$";

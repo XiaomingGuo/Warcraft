@@ -91,9 +91,9 @@ function DisplayAddList()
 						var iColNum = iRow*iColCount+iCol;//
 						if(1 == iCol||6 == iCol)
 							td.append("<input style='width:35px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
-						else if(7 == iCol||8 == iCol)
+						else if(7 == iCol||8 == iCol||9 == iCol)
 							td.append("<input style='width:60px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
-						else if(2 == iCol||9 == iCol)
+						else if(2 == iCol||10 == iCol)
 							td.append("<input style='width:140px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
 						else if(5 == iCol)
 							td.append("<input style='width:70px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");

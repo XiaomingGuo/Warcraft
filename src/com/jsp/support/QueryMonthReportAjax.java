@@ -48,7 +48,7 @@ public class QueryMonthReportAjax extends PageParentClass
 				valueList = Arrays.asList(strBarcode, user_name);
 			}
 			hORHandle.QueryRecordByKeyListBetweenCreateDate(keyList, valueList, beginDate, endDate);
-			//{"ID", "名称", "八码", "批号", "申请人", "数量", "单价", "使用者", "申请日期", "领取确认"};
+			//{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 			for(int recordIdx=0; recordIdx < hORHandle.RecordDBCount(); recordIdx++)
 			{
 				String strCurBatchLot = hORHandle.getDBRecordList("Batch_Lot").get(recordIdx);
@@ -61,8 +61,9 @@ public class QueryMonthReportAjax extends PageParentClass
 				rtnRst.add(hORHandle.getDBRecordList("proposer").get(recordIdx));
 				int in_Qty = Integer.parseInt(hORHandle.getDBRecordList("QTY").get(recordIdx));
 				rtnRst.add(Integer.toString(in_Qty));
-				rtnRst.add(Double.toString(GetPrice_Pre_Unit(strBarcode, strCurBatchLot)));
 				rtnRst.add(hORHandle.getDBRecordList("user_name").get(recordIdx));
+				rtnRst.add(Double.toString(GetPrice_Pre_Unit(strBarcode, strCurBatchLot)));
+				rtnRst.add(Double.toString(GetPrice_Pre_Unit(strBarcode, strCurBatchLot)*in_Qty));
 				rtnRst.add(hORHandle.getDBRecordList("create_date").get(recordIdx));
 				if(hORHandle.getDBRecordList("isApprove").get(recordIdx).contains("1"))
 					rtnRst.add("已领取");
