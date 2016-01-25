@@ -52,6 +52,8 @@ public class QueryMonthReportAjax extends PageParentClass
 			for(int recordIdx=0; recordIdx < hORHandle.RecordDBCount(); recordIdx++)
 			{
 				String strCurBatchLot = hORHandle.getDBRecordList("Batch_Lot").get(recordIdx);
+				if(null == strCurBatchLot)
+					continue;
 				rtnRst.add(Integer.toString(iRowNum));
 				rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 				rtnRst.add(strBarcode);
