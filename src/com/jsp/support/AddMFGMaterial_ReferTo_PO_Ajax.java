@@ -21,7 +21,7 @@ public class AddMFGMaterial_ReferTo_PO_Ajax extends PageParentClass
 			IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
 			String batch_lot = GenBatchLot(barcode);
 			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "Material_Supply", poName, vendor, addDate);
-			hMMPRHandle.AddARecord(MbMaterialPoId, storeQty, addDate);
+			hMMPRHandle.AddARecord(MbMaterialPoId, barcode, batch_lot, storeQty, addDate);
 		}
 		return hMMPHandle.getDBRecordList("po_name").get(0);
 	}

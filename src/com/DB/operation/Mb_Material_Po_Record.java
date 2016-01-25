@@ -96,10 +96,12 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 	}
 	*/
 	
-	public void AddARecord(String mbMaterialPoId, String inQty, String inDate)
+	public void AddARecord(String mbMaterialPoId, String barCode, String batchLot, String inQty, String inDate)
 	{
 		aWriteRecord = new MbMaterialPoRecord();
 		aWriteRecord.setMbMaterialPoId(Integer.parseInt(mbMaterialPoId));
+		aWriteRecord.setBarCode(barCode);
+		aWriteRecord.setBatchLot(batchLot);
 		aWriteRecord.setInQty(Integer.parseInt(inQty));
 		aWriteRecord.setInDate(inDate);
 		getEQMHandle().addANewRecord();
