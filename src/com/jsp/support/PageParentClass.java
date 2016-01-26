@@ -11,6 +11,13 @@ import com.Warcraft.Interface.ITableInterface;
 
 public class PageParentClass
 {
+	public boolean IsOtherStorage(String barcode)
+	{
+		if (Integer.parseInt(barcode) < 50000000 || Integer.parseInt(barcode) >= 80000000)
+			return true;
+		return false;
+	}
+	
 	public int CalcOrderQty(String po_Num, String percent)
 	{
 		return Integer.parseInt(po_Num) * (100 + Integer.parseInt(percent))/100;

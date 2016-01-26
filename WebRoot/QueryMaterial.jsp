@@ -40,6 +40,7 @@
    	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
+  	<script language="javascript" src="Page_JS/QueryMaterialJS.js"></script>
   <body>
     <jsp:include page="Menu/DataEnterMenu.jsp"/>
    	<table align="center" border="1">
@@ -138,7 +139,7 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='SubmitMaterialQty(this)'>
     				&nbsp;
     				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Bar_Code %>' onclick='RejectQty(this)'>
     			</td>

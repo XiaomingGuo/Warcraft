@@ -1,13 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Type" %>
-<%@ page import="com.DB.operation.Vendor_Info" %>
 <%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String[] selectKeyList = {"库名", "产品类型", "产品名称", "八码"};
 	String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "半成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
-	List<String> product_type = null, vendorList = null;
 	String message="";
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -26,14 +23,6 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			//product_type Database query
-			Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-			hPTHandle.GetRecordByStoreroom("成品库");
-			product_type = hPTHandle.getDBRecordList("name");
-			
-			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
-			hVIHandle.GetRecordByStoreroom("原材料库");
-			vendorList = hVIHandle.getDBRecordList("vendor_name");
 			
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
 			hSNHandle.GetAllRecord();

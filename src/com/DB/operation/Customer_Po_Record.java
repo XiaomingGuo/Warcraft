@@ -70,6 +70,9 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 			case "percent":
 				rtnRst.add(tempRecord.getPercent().toString());
 				break;
+			case "isEnsure":
+				rtnRst.add(tempRecord.getIsEnsure().toString());
+				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;
@@ -147,6 +150,9 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 		}
 		else if(keyword.toLowerCase().indexOf("percent") >= 0) {
 			rtnRst = "percent";
+		}
+		else if(keyword.toLowerCase().indexOf("isensure") >= 0) {
+			rtnRst = "isEnsure";
 		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";

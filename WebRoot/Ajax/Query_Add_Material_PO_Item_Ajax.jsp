@@ -1,11 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Mb_Material_Po" %>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.Semi_Product_Storage"%>
-<%@ page import="com.DB.operation.Product_Storage"%>
 <%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Query_Add_Material_PO_Item_Ajax" %>
 <%
@@ -18,9 +12,6 @@
 	{
 		Query_Add_Material_PO_Item_Ajax hPageHandle = new Query_Add_Material_PO_Item_Ajax();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 		
 		List<List<String>> recordList = hPageHandle.GetAllMbMaterialPo(po_name);
 		if (recordList.size() > 0)
@@ -59,7 +50,7 @@
 					}
 					else if("八码" == displayList[iCol])
 					{
-						rtnRst += recordList.get(1).get(iRow) + "$";
+						rtnRst += strBarcode + "$";
 					}
 					else if("PO单名" == displayList[iCol])
 					{
@@ -78,7 +69,7 @@
 					}
 					else if ("已交数量" == displayList[iCol])
 					{
-						iFinishCount = hPageHandle.GetHasFinishPurchaseNum(recordList.get(0).get(iRow));
+						iFinishCount = hPageHandle.GetHasFinishPurchaseNum(strBarcode, recordList.get(2).get(iRow));
 						rtnRst += Integer.toString(iFinishCount) + "$";
 					}
 					else if ("未交数量" == displayList[iCol])

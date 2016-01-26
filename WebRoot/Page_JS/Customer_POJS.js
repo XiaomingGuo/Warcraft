@@ -135,9 +135,10 @@ function changePOName(obj)
 						var td = $("<td></td>");
 						if (0 == iColCount - iCol)
 						{
-							if(status == "null")
+							tempList = data_list[iRow*iColCount + iCol + 3].split("#");
+							if(parseInt(tempList[1]) <= 0)
 							{
-								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + iCol + 3] + " onclick=deleteRecord(this)>");
+								td.append("<input type='button' value='删除' name=" + tempList[0] + " onclick=deleteRecord(this)>");
 							}
 							else
 							{

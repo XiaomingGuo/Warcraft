@@ -10,7 +10,6 @@ public class AddMFGMaterial_ReferTo_PO_Ajax extends PageParentClass
 	public String AddMaterialToSuitedStorage(String MbMaterialPoId, String storeQty, String addDate)
 	{
 		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-		Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
 		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(MbMaterialPoId));
 		
 		if(hMMPHandle.RecordDBCount() > 0)
@@ -21,7 +20,8 @@ public class AddMFGMaterial_ReferTo_PO_Ajax extends PageParentClass
 			IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
 			String batch_lot = GenBatchLot(barcode);
 			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "Material_Supply", poName, vendor, addDate);
-			hMMPRHandle.AddARecord(MbMaterialPoId, barcode, batch_lot, storeQty, addDate);
+			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+			hCPRHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "po_name", "vendor"), Arrays.asList(barcode, poName, vendor));
 		}
 		return hMMPHandle.getDBRecordList("po_name").get(0);
 	}

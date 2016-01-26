@@ -18,6 +18,7 @@ public class CustomerPoRecord implements java.io.Serializable {
 	private Integer outQty;
 	private String vendor;
 	private Integer percent;
+	private Integer isEnsure;
 	private Timestamp createDate;
 
 	// Constructors
@@ -29,7 +30,7 @@ public class CustomerPoRecord implements java.io.Serializable {
 	/** full constructor */
 	public CustomerPoRecord(String barCode, String poName, String deliveryDate,
 			Integer qty, Integer outQty, String vendor, Integer percent,
-			Timestamp createDate) {
+			Integer isEnsure, Timestamp createDate) {
 		this.barCode = barCode;
 		this.poName = poName;
 		this.deliveryDate = deliveryDate;
@@ -37,6 +38,7 @@ public class CustomerPoRecord implements java.io.Serializable {
 		this.outQty = outQty;
 		this.vendor = vendor;
 		this.percent = percent;
+		this.isEnsure = isEnsure;
 		this.createDate = createDate;
 	}
 
@@ -104,6 +106,14 @@ public class CustomerPoRecord implements java.io.Serializable {
 
 	public void setPercent(Integer percent) {
 		this.percent = percent;
+	}
+
+	public Integer getIsEnsure() {
+		return this.isEnsure;
+	}
+
+	public void setIsEnsure(Integer isEnsure) {
+		this.isEnsure = isEnsure;
 	}
 
 	public Timestamp getCreateDate() {
