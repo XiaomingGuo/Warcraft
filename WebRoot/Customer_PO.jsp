@@ -60,6 +60,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+  	<script language="javascript" src="Page_JS/Customer_POAndGenerate_OrderJS.js"></script>
   	<script language="javascript" src="Page_JS/Customer_POJS.js"></script>
   <body>
     <jsp:include page="Menu/ManufactureMenu.jsp"/>
@@ -141,12 +142,12 @@
 								</select>
 							</td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
-							<td align="center"><input type="text" name="cpo_QTY" id="cpo_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
+							<td align="center"><input type="text" name="Input_QTY" id="Input_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="semi_pro_QTY" id="semi_pro_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="Need_QTY" id="Need_QTY" style="width:65px" readonly></td>
-							<td align="center"><input type="text" name="percent" id="percent" style="width:95" value='8'></td>
+							<td align="center"><input type="text" name="percent" id="percent" style="width:95px" value='8'></td>
 	    					<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addpoitem(this)" disabled></td>
 					  	</tr>
 			    	</table>
