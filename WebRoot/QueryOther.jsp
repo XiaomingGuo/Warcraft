@@ -41,7 +41,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>其他库状态</title>
+    <title>五金录入状态</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

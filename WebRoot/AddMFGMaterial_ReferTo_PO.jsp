@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.operation.Mb_Material_Po" %>
+<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -19,9 +21,12 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
+			hMMPHandle.QueryRecordByKeyListGroupByList(Arrays.asList("po_name"));
+			List<String> POList = hMMPHandle.getDBRecordList("po_name");
 			Calendar mData = Calendar.getInstance();
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
@@ -59,12 +64,38 @@
     		<td>
 		  		<table align="center">
 		  			<tr>
-		  				<td>
+				  		<td align="right">
+				  			<h1>
+						  		<label>PO号:</label>
+							  	<select name="POName" id="POName" style="width:200px">
+								  	<option value = "--请选择--">--请选择--</option>
+<%
+									for(int i = 0; i < POList.size(); i++)
+									{
+										if(curPOName.contains(POList.get(i)))
+										{
+%>
+								  	<option value = <%=POList.get(i) %> selected><%=POList.get(i)%></option>
+<%
+										}
+										else
+										{
+%>
+								  	<option value = <%=POList.get(i) %>><%=POList.get(i)%></option>
+<%											
+										}
+									}
+%>
+							  	</select>
+					  		</h1>
+					  	</td>
+		  			
+		  				<!-- <td>
 			  				<h1>
 						  		<label>PO号:</label>
 						  		<input type="text" value="<%=curPOName %>" name="POName" id="POName" onchange="changePOName()" style="width:200px">
 					  		</h1>
-				  		</td>
+				  		</td> -->
 			  		</tr>
 			  		<tr>
 			   			<td align="center">

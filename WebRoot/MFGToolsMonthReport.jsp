@@ -43,7 +43,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>月报表</title>
+    <title>五金消耗报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

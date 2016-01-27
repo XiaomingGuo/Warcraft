@@ -146,7 +146,7 @@
 								</select>
 							</td>
 							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
-							<td align="center"><input type="text" name="corder_QTY" id="corder_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
+							<td align="center"><input type="text" name="Input_QTY" id="Input_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="semi_pro_QTY" id="semi_pro_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="material_QTY" id="material_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>

@@ -39,7 +39,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>添加物料</title>
+    <title>五金录入</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

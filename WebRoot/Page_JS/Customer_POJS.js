@@ -86,12 +86,12 @@ function changePOName(obj)
 function addpoitem(obj)
 {
 	var po_name = $("#POName").val();
-	if(po_name==""||$("#barcode").val() == null||$("#barcode").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#Input_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
+	if(po_name==""||$("#barcode").val() == null||$("#barcode").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#Input_QTY").val()) <= 0||GetSelectedContent("vendor_name").indexOf("请选择") >= 0)
 	{
 		alert("能输入点儿正常值不?");
 		return;
 	}
-	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":po_name}, function(data, textStatus)
+	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":GetSelectedContent("vendor_name"), "po_name":po_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{

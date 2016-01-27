@@ -149,14 +149,4 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	public void QueryRecordByKeyListGroupByList(List<String>groupList)
-	{
-		String hql = String.format("from %s tbn", GetTableName()) + " group by ";
-		for(int idx=0; idx < groupList.size() - 1; idx++)
-		{
-			hql += String.format("tbn.%s, ", GetDatabaseKeyWord(groupList.get(idx)));
-		}
-		hql += String.format("tbn.%s", GetDatabaseKeyWord(groupList.get(groupList.size()-1)));
-		getEQMHandle().EQQuery(hql);
-	}
 }

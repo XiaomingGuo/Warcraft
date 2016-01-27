@@ -46,9 +46,10 @@ function changeOrderName(obj)
 						var td = $("<td></td>");
 						if (0 == iColCount - iCol)
 						{
-							if(status == "null")
+							tempList = data_list[iRow*iColCount + iCol + 3].split("#");
+							if(parseInt(tempList[1]) <= 0)
 							{
-								td.append("<input type='button' value='删除' name=" + data_list[iRow*iColCount + iCol + 3] + " onclick=deleteRecord(this)>");
+								td.append("<input type='button' value='删除' name=" + tempList[0] + "#" + data_list[iRow*iColCount + 8] + " onclick=deleteRecord(this)>");
 							}
 							else
 							{
@@ -71,7 +72,7 @@ function changeOrderName(obj)
 				var cmdtr = $("<tr></tr>");
 				if (status == "null")
 				{
-					cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
+					//cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
 				}
 				if (Count > 0)
 				{
@@ -86,12 +87,12 @@ function changeOrderName(obj)
 function addorderitem(obj)
 {
 	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
-	if(order_name==""||$("#bar_code").val() == null||$("#bar_code").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#Input_QTY").val()) <= 0||$("#vendor_name").find("option:selected").text().indexOf("请选择") >= 0)
+	if(order_name==""||$("#barcode").val() == null||$("#barcode").val() == ""||$("#delivery_date").val().length != 8||parseInt($("#Input_QTY").val()) <= 0||GetSelectedContent("vendor_name").indexOf("请选择") >= 0)
 	{
 		alert("我说大姐,你这输入信息糊弄谁呢?");
 		return;
 	}
-	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#bar_code").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":$("#vendor_name").find("option:selected").text(), "po_name":order_name}, function(data, textStatus)
+	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":GetSelectedContent("vendor_name"), "po_name":order_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
@@ -102,8 +103,9 @@ function addorderitem(obj)
 
 function deleteRecord(obj)
 {
-	var delID = obj.name.split("#")[0];
-	var barcode = obj.name.split("#")[1];
+	var tempList = obj.name.split("#");
+	var delID = tempList[0];
+	var barcode = tempList[1];
 	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
 
 	$.post("Ajax/Del_Order_Item_Ajax.jsp", {"product_id":delID, "Order_Name":order_name, "Bar_Code":barcode}, function(data, textStatus)

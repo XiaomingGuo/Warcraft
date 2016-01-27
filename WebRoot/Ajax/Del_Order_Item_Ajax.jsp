@@ -1,6 +1,6 @@
-<%@page import="com.DB.operation.Mb_Material_Po"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
+<%@ page import="com.DB.operation.Customer_Po_Record" %>
+<%@ page import="com.DB.operation.Mb_Material_Po"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
@@ -10,10 +10,14 @@
 	
 	if (pro_id != null)
 	{
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-		hPORHandle.DeleteRecordByKeyWord("id", Arrays.asList(pro_id));
+		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
+		hCPRHandle.DeleteRecordByKeyWord("id", Arrays.asList(pro_id));
 		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-		hMMPHandle.DeleteRecordByKeyList(Arrays.asList("po_name", "Bar_Code"), Arrays.asList(Order_Name, hMMPHandle.GetUsedBarcode(Bar_Code, "mb_material_po")));
+		hMMPHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "po_name", "vendor"), 
+				Arrays.asList(hCPRHandle.getDBRecordList("Bar_Code").get(0), 
+						hCPRHandle.getDBRecordList("po_name").get(0), 
+						hCPRHandle.getDBRecordList("vendor").get(0)));
 	}
 	out.write(rtnRst);
 %>

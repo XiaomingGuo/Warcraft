@@ -133,6 +133,12 @@ public abstract class DBTableParent
 		getEQMHandle().EQQuery(hql);
 	}
 	
+	public void QueryRecordByKeyListGroupByList(List<String>groupList)
+	{
+		String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName()) + " group by "+ GenerateGroupAndOrderString(groupList);
+		getEQMHandle().EQQuery(hql);
+	}
+
 	public void QueryRecordByFilterKeyListWithOrderAndLimit(List<String> keyList, List<String> valueList, List<String> orderList, int iStart, int iCount)
 	{
 		String hql = "";

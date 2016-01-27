@@ -1,6 +1,13 @@
 /**
  * 
  */
+$(function()
+{
+	$('#POName').change(function()
+	{
+		changePOName();
+	});
+});
 
 function changePOName()
 {
