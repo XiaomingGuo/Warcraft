@@ -115,7 +115,7 @@ function deleteRecord(obj)
 function CreatePO(obj)
 {
 	var po_name = $("#POName").val();
-	$.post("Ajax/Transfer_Storage_Ajax.jsp", {"POName":po_name}, function(data, textStatus)
+	$.post("Ajax/Transfer_Storage_Ajax.jsp", {"PO_Name":po_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{

@@ -4,18 +4,20 @@
 <%@ page import="com.jsp.support.Transfer_Storage_Ajax" %>
 <%
 	String rtnRst = "remove$";
-	String appPOName = (String)request.getParameter("POName").replace(" ", "");
-	if (appPOName != null)
+	String POName = (String)request.getParameter("PO_Name").replace(" ", "");
+	if (POName != null)
 	{
 		Transfer_Storage_Ajax hPageHandle = new Transfer_Storage_Ajax();
-		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(appPOName);
+		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(POName);
+		//{"Bar_Code", "QTY", "percent"};
 		if (recordList.size() > 0)
 		{
 			for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
 				String strBarcode = recordList.get(0).get(iRow);
 				int manufacture_QTY = hPageHandle.CalcOrderQty(recordList.get(1).get(iRow), recordList.get(2).get(iRow));
-				hPageHandle.UpdateStoragePoName(strBarcode, appPOName, manufacture_QTY);
+				hPageHandle.UpdateStoragePoName(strBarcode, POName, manufacture_QTY);
+				hPageHandle.EnsureCustomerPoRecordInput(POName);
 			}
 		}
 		else

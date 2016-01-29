@@ -4,7 +4,7 @@
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
-	String bar_code = (String)request.getParameter("bar_code").replace(" ", "");
+	String barcode = (String)request.getParameter("bar_code").replace(" ", "");
 	String deliv_date = (String)request.getParameter("delivery_date").replace(" ", "");
 	String cpo_qty = (String)request.getParameter("cpo_QTY").replace(" ", "");
 	String vendorname = (String)request.getParameter("vendor_name").replace(" ", "");
@@ -17,13 +17,13 @@
 		hCPHandle.QueryRecordByPoNameAndMoreThanStatus(poname, "0");
 		if (hCPHandle.RecordDBCount() <= 0)
 		{
-			if (bar_code != null&&deliv_date != null&&cpo_qty != null&&vendorname != null)
+			if (barcode != null&&deliv_date != null&&cpo_qty != null&&vendorname != null)
 			{
 				Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "customer_po_record"), poname));
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, poname));
 				if (hCPRHandle.RecordDBCount() <= 0)
 				{
-					hCPRHandle.AddARecord(hCPRHandle.GetUsedBarcode(bar_code, "customer_po_record"), poname, deliv_date, cpo_qty, vendorname, percent);
+					hCPRHandle.AddARecord(barcode, poname, deliv_date, cpo_qty, vendorname, percent);
 				}
 				else
 				{

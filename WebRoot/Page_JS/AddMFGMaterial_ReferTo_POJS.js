@@ -87,7 +87,7 @@ function AddToMaterialStorage(obj)
 
 	if(parseInt(storeQTY) <= 0)
 	{
-		alert("物料数量这么能小于等于零呢？");
+		alert("物料数量怎么能小于等于零呢？");
 		return;
 	}
 	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;

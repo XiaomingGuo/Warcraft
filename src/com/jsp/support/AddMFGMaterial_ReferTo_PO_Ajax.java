@@ -20,8 +20,6 @@ public class AddMFGMaterial_ReferTo_PO_Ajax extends PageParentClass
 			IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
 			String batch_lot = GenBatchLot(barcode);
 			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "empty", poName, vendor, addDate);
-			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-			hCPRHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "po_name", "vendor"), Arrays.asList(barcode, poName, vendor));
 		}
 		return hMMPHandle.getDBRecordList("po_name").get(0);
 	}

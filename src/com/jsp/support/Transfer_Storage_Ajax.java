@@ -9,11 +9,11 @@ import com.Warcraft.Interface.*;
 
 public class Transfer_Storage_Ajax extends PageParentClass
 {
-	public List<List<String>> GetCustomerPoRecordList(String appPOName)
+	public List<List<String>> GetCustomerPoRecordList(String POName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(appPOName));
+		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
 		if (hCPRHandle.RecordDBCount() > 0)
 		{
 			String[] colNames = {"Bar_Code", "QTY", "percent"};
@@ -91,6 +91,35 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		for(int idx=0; idx < KeywordList.length; idx++)
 		{
 			rtnRst.add(hHandle.getDBRecordList(KeywordList[idx]));
+		}
+		return rtnRst;
+	}
+	
+	public void EnsureCustomerPoRecordInput(String POName)
+	{
+		List<List<String>> recordList = GetAllCustomerPoRecord(POName);
+		if(recordList.size() > 0)
+		{
+			//{"Bar_Code", "vendor"};
+			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+			for (int idx = 0; idx < recordList.get(0).size(); idx++)
+			{
+				String barcode = recordList.get(0).get(idx);
+				String vendor = recordList.get(1).get(idx);
+				hCPRHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "po_name", "vendor"), Arrays.asList(barcode, POName, vendor));
+			}
+		}
+	}
+
+	private List<List<String>> GetAllCustomerPoRecord(String POName)
+	{
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
+		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
+		String[] getKeyword = {"Bar_Code", "vendor"};
+		for (int idx=0; idx < getKeyword.length; idx++)
+		{
+			rtnRst.add(hCPRHandle.getDBRecordList(getKeyword[idx]));
 		}
 		return rtnRst;
 	}
