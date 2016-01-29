@@ -18,7 +18,7 @@
 			{
 				String strBarcode = recordList.get(0).get(iRow);
 				String strVendor = recordList.get(1).get(iRow);
-				int iRepertory = hPageHandle.GetAllRepertory(strBarcode, "Material_Supply");
+				int iRepertory = hPageHandle.GetAllRepertory(strBarcode, appPOName);
 				int manufacture_QTY = hPageHandle.CalcOrderQty(recordList.get(2).get(iRow), recordList.get(3).get(iRow));
 				if (iRepertory < manufacture_QTY)
 				{

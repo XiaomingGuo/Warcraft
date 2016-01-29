@@ -16,9 +16,9 @@
 	Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 	Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 	
-	int iProRepertory = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply"));
-	int iSemiProductRepertory = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "semi_product_storage"), "Material_Supply"));
-	int iMatRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply"));
+	int iProRepertory = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply"));
+	int iSemiProductRepertory = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_pro_storage"), "Material_Supply"));
+	int iMatRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply"));
 	rtnRst += strBarcode + "$";
 	rtnRst += Integer.toString(iProRepertory) + "$";
 	rtnRst += Integer.toString(iSemiProductRepertory) + "$";

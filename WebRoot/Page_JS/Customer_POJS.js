@@ -115,7 +115,13 @@ function deleteRecord(obj)
 function CreatePO(obj)
 {
 	var po_name = $("#POName").val();
-	location.href ="List_Purchase.jsp?PO_Name="+po_name;
+	$.post("Ajax/Transfer_Storage_Ajax.jsp", {"POName":po_name}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			location.href ="List_Purchase.jsp?PO_Name="+po_name;
+		}
+	});
 }
 
 

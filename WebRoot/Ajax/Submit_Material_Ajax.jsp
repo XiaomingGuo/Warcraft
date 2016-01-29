@@ -48,7 +48,7 @@
 							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
 							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
 							"0", appDescription);
 				}
 			}
@@ -61,9 +61,9 @@
 					out.write(rtnRst);
 					return;
 				}
-				storageName = "semi_product_storage";
+				storageName = "semi_pro_storage";
 				appProduct_type = appProduct_type.contains("半成品")?appProduct_type:appProduct_type+"半成品";
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"));
+				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"));
 				if (hPIHandle.RecordDBCount() <= 0)
 				{
 					//product_type Database query
@@ -71,7 +71,7 @@
 							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type.replace("半成品", "原锭"),
 							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type,
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type,
 							"0", appDescription);
 				}
 			}
@@ -93,7 +93,7 @@
 							productWeight, appDescription);
 					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type + "原锭",
 							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_product_storage"), appProductname, appProduct_type + "半成品",
+					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type + "半成品",
 							"0", appDescription);
 				}
 			}

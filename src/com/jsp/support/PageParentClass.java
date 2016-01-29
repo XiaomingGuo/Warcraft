@@ -126,17 +126,22 @@ public class PageParentClass
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		rtnRst += hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage"), po_name));
-		rtnRst += hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hSPSHandle.GetUsedBarcode(barcode, "Semi_Product_Storage"), po_name));
-		rtnRst += hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "Material_Storage"), po_name));
+		rtnRst += hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage"), po_name));
+		rtnRst += hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hSPSHandle.GetUsedBarcode(barcode, "Semi_Pro_Storage"), po_name));
+		rtnRst += hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "Material_Storage"), po_name));
 		return rtnRst;
 	}
 	
 	public String GenBatchLot(String strBarcode)
 	{
-		String rtnRst = "";
 		Calendar mData = Calendar.getInstance();
 		String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		return CheckBatchLot(batch_lot_Head, strBarcode);
+	}
+	
+	public String CheckBatchLot(String batch_lot_Head, String strBarcode)
+	{
+		String rtnRst = "";
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
@@ -167,5 +172,4 @@ public class PageParentClass
 		}while(true);
 		return rtnRst;
 	}
-
 }

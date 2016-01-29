@@ -80,7 +80,7 @@
 					}
 					else if("报废数量" == displayList[iCol])
 					{
-						rtnRst += hDMRHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hDMRHandle.GetUsedBarcode(strBarcode, "discard_material_record"))) + "$";
+						rtnRst += hDMRHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(hDMRHandle.GetUsedBarcode(strBarcode, "discard_material_record"), order_name)) + "$";
 					}
 					else if("未完成数" == displayList[iCol])
 					{

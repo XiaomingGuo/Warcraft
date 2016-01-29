@@ -25,10 +25,10 @@ public class Query_Add_Material_PO_Item_Ajax extends PageParentClass
 		return rtnRst;
 	}
 	
-	public int GetHasFinishPurchaseNum(String barcode, String poName)
+	public int GetHasFinishPurchaseNum(String barcode, String id)
 	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, poName));
+		Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
+		return hMMPRHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("mb_material_po_id"), Arrays.asList(id));
 	}
 	
 	public int GetOUT_QTYByBarCode(String barcode)
