@@ -74,26 +74,26 @@
 					}
 					else if("成品库存" == displayList[iCol])
 					{
-						iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply")) + 
-								hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), po_name));
+						iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply", "1")) + 
+								hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), po_name, "1"));
 						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
 					else if("半成品库存" == displayList[iCol])
 					{
-						iSemiPro_storage = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), "Material_Supply")) + 
-								hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), po_name));
+						iSemiPro_storage = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), "Material_Supply", "1")) + 
+								hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), po_name, "1"));
 						rtnRst += Integer.toString(iSemiPro_storage)  + "$";
 					}
 					else if ("物料库存" == displayList[iCol])
 					{
-						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply")) + 
-								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"),
-								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), po_name));
+						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply", "1")) + 
+								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
+								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), po_name, "1"));
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
 					else if ("采购量" == displayList[iCol])

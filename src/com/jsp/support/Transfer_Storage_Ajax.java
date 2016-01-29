@@ -71,14 +71,15 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	{
 		String rtnRst = null;
 		IStorageTableInterface hHandle = GenStorageHandle(curBarcode);
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, curBatchLot));
-		int oriInQty = Integer.parseInt(hHandle.getDBRecordList("IN_QTY").get(0));
-		((ITableInterface)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(oriInQty-usedQty), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, curBatchLot));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot", "isEnsure"), Arrays.asList(curBarcode, curBatchLot, "1"));
 		rtnRst = CheckBatchLot(curBatchLot.split("-")[0], curBarcode);
 		double pricePerUnit = Double.parseDouble(hHandle.getDBRecordList("Price_Per_Unit").get(0));
 		String vendor = hHandle.getDBRecordList("vendor_name").get(0);
 		String inStoreDate = hHandle.getDBRecordList("in_store_date").get(0);
 		hHandle.AddARecord(curBarcode, rtnRst, Integer.toString(usedQty), Double.toString(pricePerUnit), Double.toString(pricePerUnit*usedQty), "empty", "Material_Supply", vendor, inStoreDate);
+		((ITableInterface)hHandle).UpdateRecordByKeyList("isEnsure", hHandle.getDBRecordList("isEnsure").get(0), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, rtnRst));
+		int oriInQty = Integer.parseInt(hHandle.getDBRecordList("IN_QTY").get(0));
+		((ITableInterface)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(oriInQty-usedQty), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, curBatchLot));
 		return rtnRst;
 	}
 
@@ -86,7 +87,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hHandle.GetUsedBarcode(barcode, storageName), "Material_Supply"));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hHandle.GetUsedBarcode(barcode, storageName), "Material_Supply", "1"));
 		String[] KeywordList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY"};
 		for(int idx=0; idx < KeywordList.length; idx++)
 		{

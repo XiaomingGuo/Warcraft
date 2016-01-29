@@ -120,7 +120,13 @@ function deleteRecord(obj)
 function CreateOrder(obj)
 {
 	var order_name = $.trim($("#OrderHeader").val()) + $.trim($("#OrderName").val());
-	location.href ="List_Purchase.jsp?PO_Name="+order_name;
+	$.post("Ajax/Transfer_Storage_Ajax.jsp", {"PO_Name":order_name}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			location.href ="List_Purchase.jsp?PO_Name="+order_name;
+		}
+	});
 }
 
 
