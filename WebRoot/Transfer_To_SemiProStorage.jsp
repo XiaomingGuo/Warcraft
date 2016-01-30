@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Mb_Material_Po" %>
+<%@ page import="com.DB.operation.Material_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -21,15 +21,12 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
-			hMMPHandle.QueryRecordByKeyListGroupByList(Arrays.asList("po_name"));
-			List<String> POList = hMMPHandle.getDBRecordList("po_name");
-			Calendar mData = Calendar.getInstance();
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
-			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+			hMSHandle.QueryRecordByKeyListGroupByList(Arrays.asList("po_name"));
+			List<String> POList = hMSHandle.getDBRecordList("po_name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -37,7 +34,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>PO物料入库</title>
+    <title>原材料转半成品</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -51,13 +48,14 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMFGMaterial_ReferTo_POJS.js"></script>
+  	<script language="javascript" src="Page_JS/TempPoSelectPublicFunJS.js"></script>
+  	<script language="javascript" src="Page_JS/Transfer_To_SemiProStorageJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/DataEnterMenu.jsp"/>
+    <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br>
     <table align="center">
     	<tr>
@@ -89,12 +87,6 @@
 							  	</select>
 					  		</h1>
 					  	</td>
-			  		</tr>
-			  		<tr>
-			   			<td align="center">
-				   			<label>入库时间:</label>
-			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
-						</td>
 			  		</tr>
 		  		</table>
 	 		   	<table id="display_po" border='1' align="center"></table>

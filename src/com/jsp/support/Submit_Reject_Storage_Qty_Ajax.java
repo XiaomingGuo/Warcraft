@@ -23,7 +23,7 @@ public class Submit_Reject_Storage_Qty_Ajax extends PageParentClass
 	public void EnsureProductStorageStatusByIdAndBarcode(String recordId, String barcode)
 	{
 		IStorageTableInterface hDBHandle = GenStorageHandle(barcode);
-		((DBTableParent) hDBHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(recordId));
+		((DBTableParent)hDBHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(recordId));
 		hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(recordId));
 		if(!hDBHandle.getDBRecordList("po_name").get(0).contains("Material_Supply"))
 		{
