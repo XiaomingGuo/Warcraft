@@ -18,6 +18,7 @@
 				int manufacture_QTY = hPageHandle.CalcOrderQty(recordList.get(1).get(iRow), recordList.get(2).get(iRow));
 				hPageHandle.UpdateStoragePoName(strBarcode, POName, manufacture_QTY);
 				hPageHandle.EnsureCustomerPoRecordInput(POName);
+				hPageHandle.AddCustomerPo(POName);
 			}
 		}
 		else

@@ -124,4 +124,10 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		}
 		return rtnRst;
 	}
+	
+	public void AddCustomerPo(String POName)
+	{
+		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		hCPHandle.AddARecord(POName);
+	}
 }
