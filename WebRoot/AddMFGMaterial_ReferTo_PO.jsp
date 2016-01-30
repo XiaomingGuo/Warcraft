@@ -25,7 +25,7 @@
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
-			hMMPHandle.QueryRecordByKeyListGroupByList(Arrays.asList("po_name"));
+			hMMPHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
 			List<String> POList = hMMPHandle.getDBRecordList("po_name");
 			Calendar mData = Calendar.getInstance();
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));

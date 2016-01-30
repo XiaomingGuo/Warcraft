@@ -25,7 +25,7 @@
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
-			hMSHandle.QueryRecordByKeyListGroupByList(Arrays.asList("po_name"));
+			hMSHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
 			List<String> POList = hMSHandle.getDBRecordList("po_name");
 %>
 

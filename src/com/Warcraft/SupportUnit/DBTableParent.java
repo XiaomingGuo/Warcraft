@@ -133,7 +133,7 @@ public abstract class DBTableParent
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	public void QueryRecordByKeyListGroupByList(List<String>groupList)
+	public void QueryRecordGroupByList(List<String>groupList)
 	{
 		String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName()) + " group by "+ GenerateGroupAndOrderString(groupList);
 		getEQMHandle().EQQuery(hql);

@@ -1,10 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.Semi_Product_Storage" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	List<String> product_order = null, product_info = null;
-%>
 <%
 	String message="";
 	if(session.getAttribute("logonuser")==null)
@@ -26,9 +23,9 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
 			//storeroom name Database query
-			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.GetRecordByStatus(1);
-			product_order = hPOHandle.getDBRecordList("Order_Name");
+			Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+			hSPSHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
+			List<String> product_order = hSPSHandle.getDBRecordList("po_name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

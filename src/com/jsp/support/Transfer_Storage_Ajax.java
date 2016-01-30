@@ -128,6 +128,8 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	public void AddCustomerPo(String POName)
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.AddARecord(POName);
+		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
+		if(hCPHandle.RecordDBCount() <= 0)
+			hCPHandle.AddARecord(POName);
 	}
 }

@@ -26,7 +26,7 @@ public class MonthReport extends PageParentClass
 	public List<String> GetUserName(List<String> groupList)
 	{
 		Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-		hORHandle.QueryRecordByKeyListGroupByList(groupList);
+		hORHandle.QueryRecordGroupByList(groupList);
 		return hORHandle.getDBRecordList("user_name");
 	}
 }
