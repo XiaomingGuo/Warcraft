@@ -5,21 +5,21 @@ import java.util.Arrays;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 
-public class Transfer_To_SemiProduct_Ajax extends PageParentClass
+public class Transfer_To_Product_Ajax extends PageParentClass
 {
-	public String ExecuteTransferMaterialToSemiProduct(String barcode, String poName, String putQty)
+	public String ExecuteTransferSemiProductToProduct(String barcode, String poName, String putQty)
 	{
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		hMSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, poName, "1"));
+		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		hSPSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, poName, "1"));
 		
-		for(int iRecordIdx = 0; iRecordIdx < hMSHandle.RecordDBCount(); iRecordIdx++)
+		for(int iRecordIdx = 0; iRecordIdx < hSPSHandle.RecordDBCount(); iRecordIdx++)
 		{
-			String batchLot = hMSHandle.getDBRecordList("Batch_Lot").get(iRecordIdx);
-			String vendor = hMSHandle.getDBRecordList("vendor_name").get(iRecordIdx);
-			String addDate = hMSHandle.getDBRecordList("in_store_date").get(iRecordIdx);
-			int iMatInQty = Integer.parseInt(hMSHandle.getDBRecordList("IN_QTY").get(iRecordIdx));
+			String batchLot = hSPSHandle.getDBRecordList("Batch_Lot").get(iRecordIdx);
+			String vendor = hSPSHandle.getDBRecordList("vendor_name").get(iRecordIdx);
+			String addDate = hSPSHandle.getDBRecordList("in_store_date").get(iRecordIdx);
+			int iMatInQty = Integer.parseInt(hSPSHandle.getDBRecordList("IN_QTY").get(iRecordIdx));
 			int moveQTY = Integer.parseInt(putQty);
-			String nextBarcode = new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, "Semi_Pro_Storage");
+			String nextBarcode = new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, "Product_Storage");
 			if(iMatInQty >= moveQTY)
 			{
 				IStorageTableInterface hStorageHandle = GenStorageHandle(nextBarcode);
@@ -35,9 +35,9 @@ public class Transfer_To_SemiProduct_Ajax extends PageParentClass
 					hStorageHandle.AddARecord(nextBarcode, batchLot, Integer.toString(moveQTY), "0", "0", "empty", poName, vendor, addDate);
 					((ITableInterface) hStorageHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(nextBarcode, batchLot));
 				}
-				hMSHandle.UpdateRecordByKeyList("IN_QTY", Integer.toString(iMatInQty-moveQTY), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+				hSPSHandle.UpdateRecordByKeyList("IN_QTY", Integer.toString(iMatInQty-moveQTY), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 				if (iMatInQty == moveQTY)
-					hMSHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+					hSPSHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 				break;
 			}
 			else
@@ -55,10 +55,10 @@ public class Transfer_To_SemiProduct_Ajax extends PageParentClass
 					hStorageHandle.AddARecord(nextBarcode, batchLot, Integer.toString(iMatInQty), "0", "0", "empty", poName, vendor, addDate);
 					((ITableInterface) hStorageHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(nextBarcode, batchLot));
 				}
-				hMSHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+				hSPSHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 				moveQTY -= iMatInQty;
 			}
 		}
-		return hMSHandle.getDBRecordList("po_name").get(0);
+		return hSPSHandle.getDBRecordList("po_name").get(0);
 	}
 }
