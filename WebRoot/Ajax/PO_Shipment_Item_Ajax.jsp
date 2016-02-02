@@ -1,25 +1,22 @@
-<%@page import="com.DB.operation.Product_Storage"%>
-<%@page import="com.DB.operation.Product_Order_Record"%>
-<%@page import="com.DB.operation.Product_Info"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Customer_Po_Record" %>
+<%@ page import="com.DB.operation.Product_Storage"%>
+<%@ page import="com.DB.operation.Product_Order_Record"%>
+<%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.PO_Shipment_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
 	String po_status = null;
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "交付数量", "操作"};
-	Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-	hCPRHandle.QueryRecordOrderByIdASC(po_name);
-	if (hCPRHandle.RecordDBCount() > 0)
+	
+	PO_Shipment_Item_Ajax hPageHandle = new PO_Shipment_Item_Ajax();
+	
+	List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(po_name);
+	if (recordList.size() > 0)
 	{
-		String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
-		List<List<String>> recordList = new ArrayList<List<String>>();
-		for(int idx=0; idx < sqlKeyList.length; idx++)
-		{
-			recordList.add(hCPRHandle.getDBRecordList(sqlKeyList[idx]));
-		}
 		int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 		rtnRst += Integer.toString(iColCount) + "$";
 		rtnRst += Integer.toString(iRowCount) + "$";
@@ -27,7 +24,6 @@
 		{
 			rtnRst += displayList[i] + "$";
 		}
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		
@@ -35,7 +31,7 @@
 		{
 			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0, inProcess = 0;
 			String strBarcode = recordList.get(0).get(iRow);
-			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
+			List<String> proInfoList = hPageHandle.GetProductInfoList(strBarcode);
 			for(int iCol = 0; iCol < iColCount; iCol++)
 			{
 				if("ID" == displayList[iCol])
@@ -44,11 +40,11 @@
 				}
 				else if("产品类型" == displayList[iCol])
 				{
-					rtnRst += hPIHandle.getDBRecordList("product_type").get(0) + "$";
+					rtnRst += proInfoList.get(0) + "$";
 				}
 				else if("产品名称" == displayList[iCol])
 				{
-					rtnRst += hPIHandle.getDBRecordList("name").get(0) + "$";
+					rtnRst += proInfoList.get(1) + "$";
 				}
 				else if("八码" == displayList[iCol])
 				{
@@ -74,7 +70,7 @@
 				}
 				else if("加工总量" == displayList[iCol])
 				{
-					iOrderQTY = iCPOQTY*(100+Integer.parseInt(recordList.get(5).get(iRow)))/100;
+					iOrderQTY = hPageHandle.CalcOrderQty(iCPOQTY, recordList.get(5).get(iRow));
 					rtnRst += Integer.toString(iOrderQTY) + "$";
 				}
 				else if("已加工总量" == displayList[iCol])
@@ -84,7 +80,7 @@
 				}
 				else if("成品库存" == displayList[iCol])
 				{
-					iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPORHandle.GetUsedBarcode(strBarcode, "Product_Storage")));
+					iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "Product_Storage")));
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
 				else if ("交付数量" == displayList[iCol])
