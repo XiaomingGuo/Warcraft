@@ -56,6 +56,27 @@ public class PageParentClass
 		}
 		return rtnRst;
 	}
+	
+	public IStorageTableInterface GenStorageHandleByStorageName(String storageName)
+	{
+		if(storageName.toLowerCase().contains("other"))
+			return new Other_Storage(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("material"))
+			return new Material_Storage(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("product"))
+			return new Product_Storage(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("semi"))
+			return new Semi_Product_Storage(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("exother"))
+			return new Exhausted_Other(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("exmaterial"))
+			return new Exhausted_Material(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("exproduct"))
+			return new Exhausted_Product(new EarthquakeManagement());
+		else if(storageName.toLowerCase().contains("exsemi"))
+			return new Exhausted_Semi_Product(new EarthquakeManagement());
+		return null;	
+	}
 
 	public IStorageTableInterface GenStorageHandle(String barcode)
 	{
