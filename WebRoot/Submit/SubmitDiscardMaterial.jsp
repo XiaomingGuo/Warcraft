@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.Warcraft.SupportUnit.SubmitDiscardMaterial" %>
+<%@ page import="com.jsp.support.SubmitDiscardMaterial" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <%
@@ -9,7 +9,7 @@
 	}
 	else
 	{
-		SubmitDiscardMaterial hProcessor = new SubmitDiscardMaterial();
+		SubmitDiscardMaterial hPageHandle = new SubmitDiscardMaterial();
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
 		String appOrderName = request.getParameter("product_order").replace(" ", "");
@@ -20,13 +20,13 @@
 		//product_type Database query
 		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&appreason != ""&&appreason != null)
 		{
-			if (hProcessor.CheckPOStatus(appBarcode, appOrderName) < used_count)
+			if (hPageHandle.CheckPOStatus(appBarcode, appOrderName) < used_count)
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 你这报废的也太狠了吧, 加上报废数量都比客户生产单数量大了!");
 				response.sendRedirect("../tishi.jsp");
 				return;
 			}
-			if (!hProcessor.ExcuteDiscardMaterial(appBarcode, appOrderName, appProduct_QTY, appreason, used_count))
+			if (!hPageHandle.ExcuteDiscardMaterial(appBarcode, appOrderName, appProduct_QTY, appreason, used_count))
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 库存数量不足,都不够你报废的!");
 				response.sendRedirect("../tishi.jsp");

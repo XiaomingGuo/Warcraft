@@ -15,7 +15,6 @@ $(function()
 		{
 			if (CheckAjaxResult(textStatus, data))
 			{
-				alert(data);
 				var splitList = data.split("$");
 				for (var i = 1; i < (splitList.length - 1)/2; i+=2)
 				{
