@@ -1,8 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po_Record" %>
-<%@ page import="com.DB.operation.Product_Storage"%>
 <%@ page import="com.DB.operation.Product_Order_Record"%>
-<%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.PO_Shipment_Item_Ajax" %>
 <%
@@ -25,7 +22,6 @@
 			rtnRst += displayList[i] + "$";
 		}
 		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
@@ -80,7 +76,7 @@
 				}
 				else if("成品库存" == displayList[iCol])
 				{
-					iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "Product_Storage")));
+					iPro_storage = hPageHandle.GetProductRepertory(strBarcode);
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
 				else if ("交付数量" == displayList[iCol])

@@ -34,4 +34,10 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 		rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 		return rtnRst;
 	}
+	
+	public int GetProductRepertory(String barcode)
+	{
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage")));
+	}
 }
