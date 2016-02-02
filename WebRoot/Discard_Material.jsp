@@ -105,6 +105,12 @@
 		</tr>
 		<tr>
 			<td align="right">
+				<label>报废人:</label>
+				<input type="text" name="Operator" id="Operator" style='width:260px'>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
 				<label>报废数量:</label>
 				<input type="text" name="QTY" id="QTY" style='width:260px'>
 			</td>

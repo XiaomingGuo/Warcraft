@@ -13,12 +13,13 @@
 		String userName=mylogon.getUsername();
 		request.setCharacterEncoding("UTF-8");
 		String appOrderName = request.getParameter("product_order").replace(" ", "");
-		String appBarcode = request.getParameter("bar_code").replace(" ", "");
+		String appBarcode = request.getParameter("inputBarcode").replace(" ", "");
+		String appOperator = request.getParameter("Operator").replace(" ", "");
 		String appProduct_QTY = request.getParameter("QTY").replace(" ", "");
 		String appreason = request.getParameter("discard_reason").replace(" ", "");
 		int used_count = Integer.parseInt(appProduct_QTY);
 		//product_type Database query
-		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&appreason != ""&&appreason != null)
+		if (used_count > 0&&appBarcode.length() == 8&&appOrderName.indexOf("请选择") < 0&&!appreason.isEmpty()&&!appOperator.isEmpty())
 		{
 			if (hPageHandle.CheckPOStatus(appBarcode, appOrderName) < used_count)
 			{
@@ -26,7 +27,7 @@
 				response.sendRedirect("../tishi.jsp");
 				return;
 			}
-			if (!hPageHandle.ExcuteDiscardMaterial(appBarcode, appOrderName, appProduct_QTY, appreason, used_count))
+			if (!hPageHandle.ExcuteDiscardMaterial(appBarcode, appOrderName, appOperator, appProduct_QTY, appreason, used_count))
 			{
 				session.setAttribute("error", "("+ appBarcode + "): 库存数量不足,都不够你报废的!");
 				response.sendRedirect("../tishi.jsp");

@@ -59,6 +59,9 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 			case "Batch_Lot":
 				rtnRst.add(tempRecord.getBatchLot());
 				break;
+			case "operator":
+				rtnRst.add(tempRecord.getOperator());
+				break;
 			case "QTY":
 				rtnRst.add(tempRecord.getQty().toString());
 				break;
@@ -99,6 +102,9 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 		else if(keyword.toLowerCase().indexOf("batch_lot") >= 0) {
 			rtnRst = "batchLot";
 		}
+		else if(keyword.toLowerCase().indexOf("operator") >= 0) {
+			rtnRst = "operator";
+		}
 		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
 			rtnRst = "qty";
 		}
@@ -108,12 +114,13 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 		return rtnRst;
 	}
 	
-	public void AddARecord(String orderName, String barCode, String batchLot, String qty, String reason)
+	public void AddARecord(String orderName, String barCode, String batchLot, String operator, String qty, String reason)
 	{
 		aWriteRecord = new DiscardMaterialRecord();
 		aWriteRecord.setOrderName(orderName);
 		aWriteRecord.setBarCode(barCode);
 		aWriteRecord.setBatchLot(batchLot);
+		aWriteRecord.setOperator(operator);
 		aWriteRecord.setQty(Integer.parseInt(qty));
 		aWriteRecord.setReason(reason);
 		getEQMHandle().addANewRecord();

@@ -19,6 +19,9 @@
         <property name="batchLot" type="java.lang.String">
             <column name="Batch_Lot" length="11" />
         </property>
+        <property name="operator" type="java.lang.String">
+            <column name="operator" length="10" not-null="true" />
+        </property>
         <property name="qty" type="java.lang.Integer">
             <column name="QTY" not-null="true" />
         </property>

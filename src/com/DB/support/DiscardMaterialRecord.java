@@ -12,6 +12,7 @@ public class DiscardMaterialRecord implements java.io.Serializable {
 	private String orderName;
 	private String barCode;
 	private String batchLot;
+	private String operator;
 	private Integer qty;
 	private String reason;
 
@@ -22,20 +23,22 @@ public class DiscardMaterialRecord implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public DiscardMaterialRecord(String orderName, String barCode, Integer qty,
-			String reason) {
+	public DiscardMaterialRecord(String orderName, String barCode,
+			String operator, Integer qty, String reason) {
 		this.orderName = orderName;
 		this.barCode = barCode;
+		this.operator = operator;
 		this.qty = qty;
 		this.reason = reason;
 	}
 
 	/** full constructor */
 	public DiscardMaterialRecord(String orderName, String barCode,
-			String batchLot, Integer qty, String reason) {
+			String batchLot, String operator, Integer qty, String reason) {
 		this.orderName = orderName;
 		this.barCode = barCode;
 		this.batchLot = batchLot;
+		this.operator = operator;
 		this.qty = qty;
 		this.reason = reason;
 	}
@@ -72,6 +75,14 @@ public class DiscardMaterialRecord implements java.io.Serializable {
 
 	public void setBatchLot(String batchLot) {
 		this.batchLot = batchLot;
+	}
+
+	public String getOperator() {
+		return this.operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
 	public Integer getQty() {
