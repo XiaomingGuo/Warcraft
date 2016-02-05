@@ -7,7 +7,7 @@
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
 	String po_status = null;
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "交付数量", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "成品库存", "交付数量", "操作"};
 	
 	PO_Shipment_Item_Ajax hPageHandle = new PO_Shipment_Item_Ajax();
 	
@@ -36,16 +36,17 @@
 				}
 				else if("产品类型" == displayList[iCol])
 				{
-					rtnRst += proInfoList.get(0) + "$";
+					rtnRst += proInfoList.get(1) + "$";
 				}
 				else if("产品名称" == displayList[iCol])
 				{
-					rtnRst += proInfoList.get(1) + "$";
+					rtnRst += proInfoList.get(2) + "$";
 				}
 				else if("八码" == displayList[iCol])
 				{
-					rtnRst += strBarcode + "$";
+					rtnRst += proInfoList.get(0) + "$";
 				}
+				//{"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
 				else if("客户PO单名" == displayList[iCol])
 				{
 					rtnRst += recordList.get(1).get(iRow) + "$";
@@ -64,19 +65,9 @@
 					iDelivQTY = Integer.parseInt(recordList.get(4).get(iRow));
 					rtnRst += recordList.get(4).get(iRow) + "$";
 				}
-				else if("加工总量" == displayList[iCol])
-				{
-					iOrderQTY = hPageHandle.CalcOrderQty(iCPOQTY, recordList.get(5).get(iRow));
-					rtnRst += Integer.toString(iOrderQTY) + "$";
-				}
-				else if("已加工总量" == displayList[iCol])
-				{
-					inProcess = hPORHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"), po_name));
-					rtnRst += Integer.toString(inProcess) + "$";
-				}
 				else if("成品库存" == displayList[iCol])
 				{
-					iPro_storage = hPageHandle.GetProductRepertory(strBarcode);
+					iPro_storage = hPageHandle.GetProductRepertory(proInfoList.get(0), recordList.get(1).get(iRow));
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
 				else if ("交付数量" == displayList[iCol])

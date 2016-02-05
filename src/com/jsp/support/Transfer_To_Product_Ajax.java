@@ -19,7 +19,7 @@ public class Transfer_To_Product_Ajax extends PageParentClass
 			String addDate = hSPSHandle.getDBRecordList("in_store_date").get(iRecordIdx);
 			int iMatInQty = Integer.parseInt(hSPSHandle.getDBRecordList("IN_QTY").get(iRecordIdx));
 			int moveQTY = Integer.parseInt(putQty);
-			String nextBarcode = new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, "Product_Storage");
+			String nextBarcode = GetUsedBarcode(barcode, "Product_Storage");
 			if(iMatInQty >= moveQTY)
 			{
 				IStorageTableInterface hStorageHandle = GenStorageHandle(nextBarcode);

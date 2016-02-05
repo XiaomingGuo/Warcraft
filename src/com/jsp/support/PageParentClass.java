@@ -8,16 +8,10 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class PageParentClass
 {
-	public boolean IsOtherStorage(String barcode)
-	{
-		if (Integer.parseInt(barcode) < 50000000 || Integer.parseInt(barcode) >= 80000000)
-			return true;
-		return false;
-	}
-	
 	public int CalcOrderQty(String po_Num, String percent)
 	{
 		return Integer.parseInt(po_Num) * (100 + Integer.parseInt(percent))/100;
@@ -36,6 +30,39 @@ public class PageParentClass
 	public int CalcOrderQty(int po_Num, int percent)
 	{
 		return po_Num * (100 + percent)/100;
+	}
+	
+	public boolean IsOtherBarcode(String barcode)
+	{
+		if (Integer.parseInt(barcode) < 50000000 || Integer.parseInt(barcode) >= 80000000)
+			return true;
+		return false;
+	}
+	
+	public boolean IsMaterialBarcode(String barcode)
+	{
+		if (Integer.parseInt(barcode) >= 50000000 && Integer.parseInt(barcode) < 60000000)
+			return true;
+		return false;
+	}
+	
+	public boolean IsProductBarcode(String barcode)
+	{
+		if (Integer.parseInt(barcode) >= 60000000 && Integer.parseInt(barcode) < 70000000)
+			return true;
+		return false;
+	}
+	
+	public boolean IsSemiProBarcode(String barcode)
+	{
+		if (Integer.parseInt(barcode) >= 70000000 && Integer.parseInt(barcode) < 80000000)
+			return true;
+		return false;
+	}
+	
+	public String GetUsedBarcode(String barcode, String storage_name)
+	{
+		return new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, storage_name);
 	}
 	
 	public String GetStorageNameByBarCode(String Bar_Code, boolean isExhausted)
@@ -141,7 +168,7 @@ public class PageParentClass
 		return Double.parseDouble(tempList.get(0));
 	}
 	
-	public int GetAllRepertory(String barcode, String po_name)
+	public int GetAllRepertoryByPOName(String barcode, String po_name)
 	{
 		int rtnRst = 0;
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
@@ -153,6 +180,14 @@ public class PageParentClass
 		return rtnRst;
 	}
 	
+	public int GetAStorageRepertoryByPOName(String barcode, String po_name)
+	{
+		int rtnRst = 0;
+		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		rtnRst += ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
+		return rtnRst;
+	}
+
 	public String GenBatchLot(String strBarcode)
 	{
 		Calendar mData = Calendar.getInstance();

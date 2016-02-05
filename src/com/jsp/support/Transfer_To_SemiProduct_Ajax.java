@@ -19,7 +19,7 @@ public class Transfer_To_SemiProduct_Ajax extends PageParentClass
 			String addDate = hMSHandle.getDBRecordList("in_store_date").get(iRecordIdx);
 			int iMatInQty = Integer.parseInt(hMSHandle.getDBRecordList("IN_QTY").get(iRecordIdx));
 			int moveQTY = Integer.parseInt(putQty);
-			String nextBarcode = new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, "Semi_Pro_Storage");
+			String nextBarcode = GetUsedBarcode(barcode, "Semi_Pro_Storage");
 			if(iMatInQty >= moveQTY)
 			{
 				IStorageTableInterface hStorageHandle = GenStorageHandle(nextBarcode);

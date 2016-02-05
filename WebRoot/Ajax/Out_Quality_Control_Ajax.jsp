@@ -60,13 +60,13 @@
 					
 						if (recordCount >= used_count)
 						{
-							hPageHandle.UpdateStorageOutQty(Integer.toString(sql_out_count+used_count), hMSHandle.GetUsedBarcode(barcode, "material_storage"), batchLot);
+							hPageHandle.UpdateStorageOutQty(Integer.toString(sql_out_count+used_count), hPageHandle.GetUsedBarcode(barcode, "material_storage"), batchLot);
 							hPageHandle.TransferMaterialToProduct(barcode, batchLot, ordername, used_count);
 							break;
 						}
 						else
 						{
-							hPageHandle.UpdateStorageOutQty(Integer.toString(sql_in_count), hMSHandle.GetUsedBarcode(barcode, "material_storage"), batchLot);
+							hPageHandle.UpdateStorageOutQty(Integer.toString(sql_in_count), hPageHandle.GetUsedBarcode(barcode, "material_storage"), batchLot);
 							hPageHandle.TransferMaterialToProduct(barcode, batchLot, ordername, recordCount);
 							used_count -= recordCount;
 						}

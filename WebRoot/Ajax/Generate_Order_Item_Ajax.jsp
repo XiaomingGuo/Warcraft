@@ -88,7 +88,7 @@
 				}
 				else if ("物料库存" == displayList[iCol])
 				{
-					int tempQTY = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "material_storage")))-
+					int tempQTY = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage")))-
 							hPORHandle.GetUncompleteOrderRecord(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"));
 					iMat_storage = (tempQTY > 0)?tempQTY:0;
 					rtnRst += Integer.toString(iMat_storage) + "$";

@@ -4,54 +4,56 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.dialect.function.VarArgsSQLFunction;
+
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 
 public class Update_Customer_OUT_QTY_Ajax extends PageParentClass
 {
-	public int GetStorageRepertory(String barcode)
+	public List<List<String>> GetStorageRecordList(String barcode, String POName)
 	{
-		return GetIN_QTYByBarCode(barcode) - GetOUT_QTYByBarCode(barcode);
-	}
-	
-	public int GetIN_QTYByBarCode(String barcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-	}
-	
-	public int GetOUT_QTYByBarCode(String barcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-	}
-	
-	public List<List<String>> GetStorageRecordList(String barcode, String[] keyArray)
-	{
-		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code"), Arrays.asList(barcode));
-		//List<List<String>> material_info_List = new ArrayList<List<String>>();
-		for(int idx=0; idx < keyArray.length; idx++)
+		List<List<String>> rtnRst = _GetStorageRecordList(barcode, POName);
+		List<List<String>> tempList = _GetStorageRecordList(barcode, "Material_Supply");
+		if(rtnRst.size() == tempList.size())
 		{
-			rtnRst.add(hHandle.getDBRecordList(keyArray[idx]));
+			for(int idx=0; idx < rtnRst.size(); idx++)
+				rtnRst.get(idx).addAll(tempList.get(idx));
 		}
 		return rtnRst;
 	}
 	
-	public List<List<String>> GetOtherRecordList(String keyVal, String[] keyArray)
+	private List<List<String>> _GetStorageRecordList(String barcode, String POName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Other_Record hHandle = new Other_Record(new EarthquakeManagement());
-
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(keyVal));
-		//List<List<String>> material_info_List = new ArrayList<List<String>>();
-		for(int idx=0; idx < keyArray.length; idx++)
+		IStorageTableInterface hPSHandle = GenStorageHandle(barcode);
+		hPSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, POName, "1"));
+		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY", "Order_Name"};
+		if (hPSHandle.RecordDBCount() > 0)
 		{
-			rtnRst.add(hHandle.getDBRecordList(keyArray[idx]));
+			for(int idx=0; idx < keyArray.length; idx++)
+			{
+				rtnRst.add(hPSHandle.getDBRecordList(keyArray[idx]));
+			}
 		}
 		return rtnRst;
+	}
+	
+	public void UpdateCustomerPoRecord(String barcode, String POName, int used_count)
+	{
+		String[] storageList = new String[] {"Material_Storage", "Product_Storage", "Semi_Pro_Storage"};
+		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		for(int idx = 0; idx < storageList.length; idx++)
+		{
+			String curBarcode = GetUsedBarcode(barcode, storageList[idx]);
+			hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(curBarcode, POName));
+			if(hCPRHandle.RecordDBCount() > 0)
+			{
+				String writeQTY = Integer.toString(Integer.parseInt(hCPRHandle.getDBRecordList("OUT_QTY").get(0)) + used_count);
+				hCPRHandle.UpdateRecordByKeyList("OUT_QTY", writeQTY, Arrays.asList("Bar_Code", "po_name"), Arrays.asList(curBarcode, POName));
+				break;
+			}
+		}
 	}
 	
 	public void UpdateStorageOutQty(String outQty, String barcode, String batchLot)

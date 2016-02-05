@@ -39,7 +39,7 @@
 					String percent = recordList.get(2).get(recordIndex);
 					int poQty = hPageHandle.CalcOrderQty(cusPoQty, percent);
 					
-					int repertory = hPageHandle.GetAllRepertory(barcode, POName);
+					int repertory = hPageHandle.GetAllRepertoryByPOName(barcode, POName);
 					if (repertory < poQty)
 					{
 						isRemoveVendor = false;

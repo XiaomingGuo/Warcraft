@@ -29,15 +29,15 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 	{
 		List<String> rtnRst = new ArrayList<String>();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPIHandle.GetUsedBarcode(barcode, "Product_Storage")));
+		rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
 		rtnRst.add(hPIHandle.getDBRecordList("product_type").get(0));
 		rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 		return rtnRst;
 	}
 	
-	public int GetProductRepertory(String barcode)
+	public int GetProductRepertory(String barcode, String POName)
 	{
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage")));
+		return GetAStorageRepertoryByPOName(barcode, POName) + GetAStorageRepertoryByPOName(barcode, "Material_Supply");
 	}
 }
