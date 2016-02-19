@@ -63,6 +63,8 @@ public class Query_Material_PO_Item_Ajax extends PageParentClass
 		for (String barcode : barcodeList)
 		{
 			hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, po_name));;
+			if(hCPRHandle.RecordDBCount() <= 0)
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(barcode, "Semi_Pro_Storage"), po_name));
 			rtnRst.add(hCPRHandle.getDBRecordList("delivery_date").get(0));
 		}
 		return rtnRst;
