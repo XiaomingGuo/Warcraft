@@ -41,7 +41,7 @@ $(function()
 							{
 								if(parseInt(data_list[iRow*iColCount + 9]) > parseInt(data_list[iRow*iColCount + 10]))
 								{
-									td.append("<input type='text' style='width:68px' name='" + data_list[iRow*iColCount + 9] + "$" + data_list[iRow*iColCount + 10] + "' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + " onblur='CheckQTY(this)'>");
+									td.append("<input type='text' style='width:68px' name='" + data_list[iRow*iColCount + 9] + "$" + data_list[iRow*iColCount + 10] + "$" + data_list[iRow*iColCount + 11] + "' id='" + iRow + "_QTY' value=" + data_list[iRow*iColCount + iCol + 2] + " onblur='CheckQTY(this)'>");
 								}
 								else
 								{
@@ -97,10 +97,21 @@ function PutOutQtyInCPO(obj)
 function CheckQTY(obj)
 {
 	var splitList = obj.name.split("$");
-	if (parseInt(splitList[0]) < parseInt(splitList[1]) + parseInt(obj.value))
+	if(parseInt(splitList[2]) <= 0)
 	{
-		alert("出货量不能大于客户PO数量!!!!!");
-		obj.value = parseInt(splitList[0]) - parseInt(splitList[1]);
+		alert("成品库无库存,请加紧生产!!!!!");
+		obj.value = 0;
+	}
+	else
+	{
+		if (parseInt(splitList[0]) < parseInt(splitList[1]) + parseInt(obj.value))
+		{
+			alert("出货量不能大于客户PO数量!!!!!");
+			if(parseInt(splitList[0]) - parseInt(splitList[1]) >= parseInt(splitList[2]))
+				obj.value = parseInt(splitList[2]);
+			else if(parseInt(splitList[0]) - parseInt(splitList[1]) < parseInt(splitList[2]))
+				obj.value = parseInt(splitList[0]) - parseInt(splitList[1]);
+		}
 	}
 }
 

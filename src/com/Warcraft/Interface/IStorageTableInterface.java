@@ -16,5 +16,5 @@ public interface IStorageTableInterface
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate);
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String poName, String appInStoreDate, String isEnsure, String createDate);
+			String appOrderName, String poName, String vendorName, String appInStoreDate, String isEnsure, String createDate);
 }

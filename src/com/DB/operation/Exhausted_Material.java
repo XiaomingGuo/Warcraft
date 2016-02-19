@@ -173,8 +173,8 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
-			String appSupplier_name, String poName, String appInStoreDate, String isEnsure, String createDate)
+			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String orderName,
+			String poName, String appSupplier_name, String appInStoreDate, String isEnsure, String createDate)
 	{
 		aWriteRecord = new ExhaustedMaterial();
 		aWriteRecord.setId(Integer.parseInt(id));
@@ -184,6 +184,7 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		aWriteRecord.setOutQty(Integer.parseInt(outQty));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setOrderName(orderName);
 		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);

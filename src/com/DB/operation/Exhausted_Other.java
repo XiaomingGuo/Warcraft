@@ -162,7 +162,7 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
+			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String orderName,
 			String appSupplier_name, String poName, String appInStoreDate, String isEnsure, String createDate)
 	{
 		aWriteRecord = new ExhaustedOther();

@@ -146,12 +146,21 @@ public class PageParentClass
 				PoKeyWord = "vendor_name";
 			}
 			IStorageTableInterface hExStorageHandle = GenExStorageHandle(barcode);
-			hExStorageHandle.AddAExRecord(hStorageHandle.getDBRecordList("id").get(0), hStorageHandle.getDBRecordList("Bar_Code").get(0), 
-					hStorageHandle.getDBRecordList("Batch_Lot").get(0), hStorageHandle.getDBRecordList("IN_QTY").get(0),
-					hStorageHandle.getDBRecordList("OUT_QTY").get(0), hStorageHandle.getDBRecordList("Price_Per_Unit").get(0),
-					hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(orderKeyWord).get(0),
-					hStorageHandle.getDBRecordList(PoKeyWord).get(0), hStorageHandle.getDBRecordList("in_store_date").get(0),
-					hStorageHandle.getDBRecordList("isEnsure").get(0), hStorageHandle.getDBRecordList("create_date").get(0));
+			hExStorageHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
+			if(hExStorageHandle.RecordDBCount() > 0)
+			{
+				int setValue = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(0)) + Integer.parseInt(hExStorageHandle.getDBRecordList("IN_QTY").get(0));
+				((ITableInterface)hExStorageHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
+				((ITableInterface)hExStorageHandle).UpdateRecordByKeyList("OUT_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
+			}
+			else
+				hExStorageHandle.AddAExRecord(hStorageHandle.getDBRecordList("id").get(0), hStorageHandle.getDBRecordList("Bar_Code").get(0), 
+						hStorageHandle.getDBRecordList("Batch_Lot").get(0), hStorageHandle.getDBRecordList("IN_QTY").get(0),
+						hStorageHandle.getDBRecordList("OUT_QTY").get(0), hStorageHandle.getDBRecordList("Price_Per_Unit").get(0),
+						hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(orderKeyWord).get(0),
+						hStorageHandle.getDBRecordList(PoKeyWord).get(0), hStorageHandle.getDBRecordList("vendor_name").get(0),
+						hStorageHandle.getDBRecordList("in_store_date").get(0), hStorageHandle.getDBRecordList("isEnsure").get(0),
+						hStorageHandle.getDBRecordList("create_date").get(0));
 			((ITableInterface)hStorageHandle).DeleteRecordByKeyWord("Id", Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
 		}
 	}

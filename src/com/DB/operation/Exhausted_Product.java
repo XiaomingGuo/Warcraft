@@ -173,18 +173,21 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String poName, String appInStoreDate, String isEnsure, String createDate)
+			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String appOrderName, 
+			String poName, String appSupplier_name, String appInStoreDate, String isEnsure, String createDate)
 	{
 		aWriteRecord = new ExhaustedProduct();
 		aWriteRecord.setId(Integer.parseInt(id));
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setBatchLot(batch_lot);
-		aWriteRecord.setOrderName(appOrderName);
 		aWriteRecord.setInQty(Integer.parseInt(appProductQTY));
 		aWriteRecord.setOutQty(Integer.parseInt(outQty));
 		aWriteRecord.setPricePerUnit(Float.parseFloat(appPriceUnit));
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
+		aWriteRecord.setOrderName(appOrderName);
+		aWriteRecord.setPoName(poName);
+		aWriteRecord.setVendorName(appSupplier_name);
+		aWriteRecord.setInStoreDate(appInStoreDate);
 		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));
 		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
 		getEQMHandle().addANewRecord();

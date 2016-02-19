@@ -67,7 +67,7 @@
 					}
 					else if ("已交数量" == displayList[iCol])
 					{
-						iFinishCount = hPageHandle.GetHasFinishPurchaseNum(strBarcode, recordList.get(0).get(iRow));
+						iFinishCount = hPageHandle.GetHasFinishPurchaseNum(strBarcode, recordList.get(2).get(iRow));
 						rtnRst += Integer.toString(iFinishCount) + "$";
 					}
 					else if ("未交数量" == displayList[iCol])

@@ -233,7 +233,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String poName,
+			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
 			String appInStoreDate, String isEnsure, String createDate) {
 		// TODO Auto-generated method stub
 		
