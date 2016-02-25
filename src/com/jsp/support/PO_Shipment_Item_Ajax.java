@@ -35,9 +35,4 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 		rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 		return rtnRst;
 	}
-	
-	public int GetProductRepertory(String barcode, String POName)
-	{
-		return GetAStorageRepertoryByPOName(barcode, POName) + GetAStorageRepertoryByPOName(barcode, "Material_Supply");
-	}
 }

@@ -235,7 +235,15 @@ public class PageParentClass
 		return rtnRst;
 	}
 	
-	public int GetProductOtherPoNotDepleteRepertory(String strBarcode)
+	public int GetProductRepertory(String strBarcode, String po_name)
+	{
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply", "1")) + 
+				hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), po_name, "1")) + 
+				GetProductOtherPoNotDepleteRepertory(strBarcode);
+	}
+
+	private int GetProductOtherPoNotDepleteRepertory(String strBarcode)
 	{
 		int rtnRst = 0;
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());

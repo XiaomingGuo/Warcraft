@@ -1,6 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.PO_Shipment_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -21,7 +19,6 @@
 		{
 			rtnRst += displayList[i] + "$";
 		}
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
 		
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
