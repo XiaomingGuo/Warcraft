@@ -6,6 +6,7 @@
 <%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Query_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
@@ -14,14 +15,12 @@
 	String[] displayList = {"ID", "产品类型", "产品名称", "供应商", "八码", "PO单名", "交货时间", "数量", "成品库存", "半成品库存", "物料库存", "采购量", "进货余量", "创建时间", "操作"};
 	if(po_name.length() > 6)
 	{
-		String sql = null;
+		Query_PO_Item_Ajax hPageHandle = new Query_PO_Item_Ajax();
 		if (status != null)
 		{
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
-			if (hCPHandle.RecordDBCount() > 0)
+			po_status = hPageHandle.GetCustomerPoStatus(po_name);
+			if (po_status != null)
 			{
-				po_status = hCPHandle.getDBRecordList("status").get(0);
 				if (Integer.parseInt(po_status) > Integer.parseInt(status))
 				{
 					rtnRst += "error:该PO单已经存在!";
@@ -31,19 +30,12 @@
 		}
 		rtnRst += po_status + "$";
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
-		if (hCPRHandle.RecordDBCount() > 0)
+		
+		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(po_name);
+		if (recordList.size() > 0)
 		{
-			String[] sqlKeyList = {"id", "vendor", "Bar_Code", "po_name", "delivery_date", "QTY", "percent", "isEnsure", "create_date"};
-			List<List<String>> recordList = new ArrayList<List<String>>();
-			for(int idx=0; idx < sqlKeyList.length; idx++)
-			{
-				recordList.add(hCPRHandle.getDBRecordList(sqlKeyList[idx]));
-			}
 			int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 			rtnRst += Integer.toString(iColCount) + "$";
 			rtnRst += Integer.toString(iRowCount) + "$";
@@ -74,10 +66,7 @@
 					}
 					else if("成品库存" == displayList[iCol])
 					{
-						iPro_storage = hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), "Material_Supply", "1")) + 
-								hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "product_storage"), po_name, "1"));
+						iPro_storage = hPageHandle.GetProductRepertory(strBarcode, po_name);
 						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
 					else if("半成品库存" == displayList[iCol])
@@ -108,7 +97,6 @@
 						{
 							rtnRst += Integer.toString(poCount - iRepertory) + "$";
 						}
-						
 					}
 					else if ("进货余量" == displayList[iCol])
 					{

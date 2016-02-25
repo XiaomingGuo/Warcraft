@@ -12,6 +12,8 @@
 	if (appBarcode != null && appPONum != null && used_count > 0 && appBarcode.length() == 8 && appPONum.length() > 0)
 	{
 		Update_Customer_OUT_QTY_Ajax hPageHandle = new Update_Customer_OUT_QTY_Ajax();
+		
+		//hPageHandle.
 		Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
 		String proBarcode = hPageHandle.GetUsedBarcode(appBarcode, "product_storage");
 		int repertory_count = hPageHandle.GetAStorageRepertoryByPOName(proBarcode, appPONum) + hPageHandle.GetAStorageRepertoryByPOName(proBarcode, "Material_Supply");

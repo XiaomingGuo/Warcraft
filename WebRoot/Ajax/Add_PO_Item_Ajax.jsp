@@ -20,8 +20,13 @@
 			if (barcode != null&&deliv_date != null&&cpo_qty != null&&vendorname != null)
 			{
 				Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, poname));
-				if (hCPRHandle.RecordDBCount() <= 0)
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(barcode, "Product_Storage"), poname));
+				int recordCount = hCPRHandle.RecordDBCount();
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(barcode, "Semi_Pro_Storage"), poname));
+				recordCount += hCPRHandle.RecordDBCount();
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(barcode, "Material_Storage"), poname));
+				recordCount += hCPRHandle.RecordDBCount();
+				if (recordCount <= 0)
 				{
 					hCPRHandle.AddARecord(barcode, poname, deliv_date, cpo_qty, vendorname, percent);
 				}

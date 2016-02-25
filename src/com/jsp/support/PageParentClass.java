@@ -219,22 +219,51 @@ public class PageParentClass
 		do
 		{
 			rtnRst = batch_lot_Head + "-" + String.format("%02d", loopNum);
-			List<String> keyList = Arrays.asList("Bar_code", "Batch_Lot"), valueList = Arrays.asList(strBarcode, rtnRst);
-			hPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hSPSHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hMSHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hOSHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hEPHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hESPHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hEMHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			hEOHandle.QueryRecordByFilterKeyList(keyList, valueList);
+			hPSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hPSHandle.GetUsedBarcode(strBarcode, "Product_Storage"), rtnRst));
+			hSPSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), rtnRst));
+			hMSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "Material_Storage"), rtnRst));
+			hOSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hOSHandle.GetUsedBarcode(strBarcode, "Other_Storage"), rtnRst));
+			hEPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hEPHandle.GetUsedBarcode(strBarcode, "Product_Storage"), rtnRst));
+			hESPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hESPHandle.GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), rtnRst));
+			hEMHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hEMHandle.GetUsedBarcode(strBarcode, "Material_Storage"), rtnRst));
+			hEOHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(hEOHandle.GetUsedBarcode(strBarcode, "Other_Storage"), rtnRst));
 			if ((hPSHandle.RecordDBCount()+hSPSHandle.RecordDBCount()+hMSHandle.RecordDBCount()+hOSHandle.RecordDBCount()+
 					hEPHandle.RecordDBCount()+hESPHandle.RecordDBCount()+hEMHandle.RecordDBCount()+hEOHandle.RecordDBCount()) <= 0)
-			{
 				break;
-			}
 			loopNum ++;
 		}while(true);
+		return rtnRst;
+	}
+	
+	public int GetProductOtherPoNotDepleteRepertory(String strBarcode)
+	{
+		int rtnRst = 0;
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		hPSHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(strBarcode, "1"), Arrays.asList("po_name"));
+		List<String> loopList = hPSHandle.getDBRecordList("po_name");
+		for (String poName : loopList)
+		{
+			int mbPoQty = hPSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(strBarcode, poName, "1"));
+			int cpoOutQty = hPSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(strBarcode, poName, "1"));
+			int cpoQty = GetCPOQty(strBarcode, poName);
+			if(cpoOutQty >= cpoQty)
+			{
+				rtnRst += mbPoQty - cpoOutQty;
+			}
+		}
+		return rtnRst;
+	}
+
+	private int GetCPOQty(String strBarcode, String po_name)
+	{
+		int rtnRst = 0;
+		Customer_Po_Record hCPOHandle = new Customer_Po_Record(new EarthquakeManagement());
+		String[] storageNameList = {"Product_Storage", "Semi_Pro_Storage", "Material_Storage"};
+		for(String StorageName : storageNameList)
+		{
+			String curBarcode = hCPOHandle.GetUsedBarcode(strBarcode, StorageName);
+			rtnRst += hCPOHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
+		}
 		return rtnRst;
 	}
 }
