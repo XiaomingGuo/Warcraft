@@ -1,10 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
 <%@ page import="com.DB.operation.Material_Storage"%>
 <%@ page import="com.DB.operation.Product_Storage"%>
 <%@ page import="com.DB.operation.Semi_Product_Storage"%>
 <%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Query_PO_Item_Ajax" %>
 <%
@@ -71,18 +69,16 @@
 					}
 					else if("半成品库存" == displayList[iCol])
 					{
-						iSemiPro_storage = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), "Material_Supply", "1")) + 
-								hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage"), po_name, "1"));
+						String curBarcode = hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage");
+						iSemiPro_storage = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
+								hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
 						rtnRst += Integer.toString(iSemiPro_storage)  + "$";
 					}
 					else if ("物料库存" == displayList[iCol])
 					{
-						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply", "1")) + 
-								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"),
-								Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), po_name, "1"));
+						String curBarcode = hMSHandle.GetUsedBarcode(strBarcode, "material_storage");
+						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
+								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
 					else if ("采购量" == displayList[iCol])

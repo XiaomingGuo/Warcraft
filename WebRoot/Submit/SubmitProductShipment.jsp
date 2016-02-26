@@ -18,22 +18,15 @@
 		//product_type Database query
 		if (appPONum!=null && appPONum!="")
 		{
-			Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-			hPORHandle.GetRecordByPOName(appPONum);
-			if(hPORHandle.RecordDBCount() > 0)
+			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(appPONum));
+			if(hCPHandle.RecordDBCount() > 0)
 			{
-				List<String> order_List = hPORHandle.getDBRecordList("Order_Name");
-				Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-				for (int iIndex = 0; iIndex < order_List.size(); iIndex++)
-				{
-					hPOHandle.UpdateRecordByKeyList("status", "2", Arrays.asList("Order_Name"), Arrays.asList(order_List.get(iIndex)));
-				}
-				Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-				hCPHandle.UpdateRecordByKeyList("status", "2", Arrays.asList("po_name"), Arrays.asList(appPONum));
+				hCPHandle.UpdateRecordByKeyList("status", "5", Arrays.asList("po_name"), Arrays.asList(appPONum));
 			}
 			else
 			{
-				session.setAttribute("error", "该po单无生产单生成!");
+				session.setAttribute("error", "该po单没有出货记录!");
 				response.sendRedirect("../tishi.jsp");
 			}
 		}

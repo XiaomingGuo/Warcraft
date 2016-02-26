@@ -139,11 +139,11 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("delivery_date") >= 0) {
 			rtnRst = "deliveryDate";
 		}
-		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
-			rtnRst = "qty";
-		}
 		else if(keyword.toLowerCase().indexOf("out_qty") >= 0) {
 			rtnRst = "outQty";
+		}
+		else if(keyword.toLowerCase().indexOf("qty") >= 0) {
+			rtnRst = "qty";
 		}
 		else if(keyword.toLowerCase().indexOf("vendor") >= 0) {
 			rtnRst = "vendor";

@@ -13,39 +13,28 @@
 	{
 		Update_Customer_OUT_QTY_Ajax hPageHandle = new Update_Customer_OUT_QTY_Ajax();
 		
-		//hPageHandle.
-		Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
 		String proBarcode = hPageHandle.GetUsedBarcode(appBarcode, "product_storage");
-		int repertory_count = hPageHandle.GetAStorageRepertoryByPOName(proBarcode, appPONum) + hPageHandle.GetAStorageRepertoryByPOName(proBarcode, "Material_Supply");
+		int repertory_count = hPageHandle.GetProductRepertory(proBarcode, appPONum);
 		if (repertory_count >= used_count)
 		{
+			int saveCount = used_count;
 			List<List<String>> recordList = hPageHandle.GetStorageRecordList(proBarcode, appPONum);
-			if (recordList.size() > 0)
+			if (recordList.size() > 0&&saveCount > 0)
 			{
-				//{"Batch_Lot", "IN_QTY", "OUT_QTY", "Order_Name"};
-				for (int iCol = 0; iCol < recordList.get(0).size(); iCol++)
-				{
-					String batchLot =  recordList.get(0).get(iCol);
-					int sql_in_count = Integer.parseInt(recordList.get(1).get(iCol));
-					int sql_out_count = Integer.parseInt(recordList.get(2).get(iCol));
-					String ordername = recordList.get(3).get(iCol);
-					int recordCount = sql_in_count - sql_out_count;
-					if (recordCount >= used_count)
-					{
-						hPageHandle.UpdateStorageOutQty(Integer.toString(sql_out_count+used_count), proBarcode, batchLot);
-						hSRHandle.AddARecord(appPONum, proBarcode, batchLot, ordername, Integer.toString(used_count));
-						break;
-					}
-					else
-					{
-						hPageHandle.UpdateStorageOutQty(Integer.toString(sql_in_count), proBarcode, batchLot);
-						hSRHandle.AddARecord(appPONum, proBarcode, batchLot, ordername, Integer.toString(recordCount));
-						used_count -= recordCount;
-					}
-				}
-				hPageHandle.UpdateCustomerPoRecord(proBarcode, appPONum, used_count);
-				response.sendRedirect("../Product_Shipment.jsp");
+				saveCount = hPageHandle.UpdateShippingRecord(recordList, proBarcode, appPONum, saveCount);
 			}
+			recordList = hPageHandle.GetProductOtherPoNotDepleteRecord(proBarcode);
+			if (recordList.size() > 0&&saveCount > 0)
+			{
+				saveCount = hPageHandle.UpdateShippingRecord(recordList, proBarcode, appPONum, saveCount);
+			}
+			recordList = hPageHandle.GetStorageRecordList(proBarcode, "Material_Supply");
+			if (recordList.size() > 0&&saveCount > 0)
+			{
+				saveCount = hPageHandle.UpdateShippingRecord(recordList, proBarcode, appPONum, saveCount);
+			}
+			hPageHandle.UpdateCustomerPoRecord(proBarcode, appPONum, used_count-saveCount);
+			response.sendRedirect("../Product_Shipment.jsp");
 		}
 		else
 		{

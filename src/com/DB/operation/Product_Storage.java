@@ -176,9 +176,13 @@ public class Product_Storage extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
+	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
+	{
+		for (String item : delList)
+		{
+			String hql = String.format("delete ProductStorage por where por.%s='%s'", GetDatabaseKeyWord(keyWord), item);
+			getEQMHandle().DeleteAndUpdateRecord(hql);
+		}
 	}
 
 	@Override
