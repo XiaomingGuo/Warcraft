@@ -8,7 +8,7 @@
 	String POName = request.getParameter("PO_Name").replace(" ", "");
 	String ship_no = request.getParameter("shipping_no").replace(" ", "");
 	String[] displayKeyList = {"行号", "品名规格", "单位", "数量", "单重", "总重", "备注"};
-	List<List<String>> recordList = null, vendorInfo = null;
+	List<List<String>> vendorInfo = null;
 	
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -29,6 +29,7 @@
 			Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
 			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 			hSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("customer_po", "shipping_no"), Arrays.asList(POName, ship_no), Arrays.asList("Bar_Code"));
+			List<List<String>> recordList = new ArrayList<List<String>>();
 			if (hSRHandle.RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "ship_QTY"};

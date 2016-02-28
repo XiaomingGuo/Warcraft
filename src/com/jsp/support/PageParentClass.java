@@ -239,22 +239,22 @@ public class PageParentClass
 	{
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		String curBarcode = GetUsedBarcode(strBarcode, "product_storage");
-		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1")) + 
-				hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
-				GetProductOtherPoNotDepleteRepertory(curBarcode);
+		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
+				GetProductOtherPoNotDepleteRepertory(curBarcode, po_name);
 	}
 
-	private int GetProductOtherPoNotDepleteRepertory(String strBarcode)
+	private int GetProductOtherPoNotDepleteRepertory(String strBarcode, String po_name)
 	{
 		int rtnRst = 0;
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		hPSHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(strBarcode, "1"), Arrays.asList("po_name"));
 		List<String> loopList = hPSHandle.getDBRecordList("po_name");
+		loopList.remove("Material_Supply");
 		for (String poName : loopList)
 		{
 			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
-			if(Integer.parseInt(hCPHandle.getDBRecordList("status").get(0)) >= 5)
+			if(Integer.parseInt(hCPHandle.getDBRecordList("status").get(0)) <= 5)
 			{
 				rtnRst += hPSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(strBarcode, poName, "1")) - 
 						hPSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(strBarcode, poName, "1"));
