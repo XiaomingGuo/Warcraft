@@ -15,14 +15,14 @@ public class SubmitDiscardMaterial extends PageParentClass
 		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(appBarcode, appOrderName));
 	}
 	
-	public boolean ExcuteDiscardMaterial(String appBarcode, String appOrderName, String appOperator, String appProduct_QTY, String appreason, int used_count)
+	public boolean ExcuteDiscardMaterial(String appBarcode, String appPOName, String appOperator, String appreason, int used_count)
 	{
 		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
 		IStorageTableInterface hHandle = GenStorageHandle(appBarcode);
-		int repertory_count = ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(appBarcode));
+		int repertory_count = ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(appBarcode, appPOName));
 		if (repertory_count >= used_count)
 		{
-			hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hHandle.GetUsedBarcode(appBarcode, "Semi")));
+			hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hHandle.GetUsedBarcode(appBarcode, "Semi"), appPOName));
 			List<List<String>> material_info_List = new ArrayList<List<String>>();
 			for(int idx=0; idx < keyArray.length; idx++)
 			{
@@ -37,16 +37,24 @@ public class SubmitDiscardMaterial extends PageParentClass
 				int recordCount = sql_in_count - sql_out_count;
 				Discard_Material_Record hDMRHandle = new Discard_Material_Record(new EarthquakeManagement());
 				String strWriteBarCode = hDMRHandle.GetUsedBarcode(appBarcode, "Semi");
-				if (recordCount > used_count)
+				if (recordCount >= used_count)
 				{
-					hDMRHandle.AddARecord(appOrderName, strWriteBarCode, batchLot, appOperator, appProduct_QTY, appreason);
-					((DBTableParent)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(recordCount-used_count), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(strWriteBarCode, batchLot));
+					hDMRHandle.AddARecord(appPOName, strWriteBarCode, batchLot, appOperator, Integer.toString(used_count), appreason);
+					((DBTableParent)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(sql_in_count-used_count), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(strWriteBarCode, batchLot));
+					CheckMoveToExhaustedTable(appBarcode, batchLot);
 					break;
 				}
 				else
 				{
-					hDMRHandle.AddARecord(appOrderName, strWriteBarCode, batchLot, appOperator, Integer.toString(recordCount), appreason);
-					((DBTableParent)hHandle).DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(strWriteBarCode, batchLot));
+					hDMRHandle.AddARecord(appPOName, strWriteBarCode, batchLot, appOperator, Integer.toString(recordCount), appreason);
+					if(sql_out_count == 0)
+						((DBTableParent)hHandle).DeleteRecordByKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(strWriteBarCode, batchLot));
+					else
+					{
+						((DBTableParent)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(sql_out_count), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(strWriteBarCode, batchLot));
+						CheckMoveToExhaustedTable(appBarcode, batchLot);
+					}
+					used_count -= recordCount;
 				}
 			}
 		}

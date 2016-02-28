@@ -27,10 +27,7 @@ public class Query_Add_Material_PO_Item_Ajax extends PageParentClass
 	
 	public int GetHasFinishPurchaseNum(String barcode, String POName)
 	{
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
-		String mmpID = hMMPHandle.getDBRecordList("id").get(0);
-		Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
-		return hMMPRHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("mb_material_po_id"), Arrays.asList(mmpID));
+		IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
+		return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
 	}
 }

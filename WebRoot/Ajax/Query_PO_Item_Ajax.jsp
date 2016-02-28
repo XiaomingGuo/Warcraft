@@ -10,7 +10,7 @@
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
 	String po_status = null;
-	String[] displayList = {"ID", "产品类型", "产品名称", "供应商", "八码", "PO单名", "交货时间", "数量", "成品库存", "半成品库存", "物料库存", "采购量", "进货余量", "创建时间", "操作"};
+	String[] displayList = {"ID", "产品类型", "产品名称", "供应商", "八码", "PO单名", "交货时间", "数量", "成品库存", "半成品库存", "物料库存", "采购余量", "进货余量", "创建时间", "操作"};
 	if(po_name.length() > 6)
 	{
 		Query_PO_Item_Ajax hPageHandle = new Query_PO_Item_Ajax();
@@ -81,7 +81,7 @@
 								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
 						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
-					else if ("采购量" == displayList[iCol])
+					else if ("采购余量" == displayList[iCol])
 					{
 						int poCount = Integer.parseInt(recordList.get(5).get(iRow)) * (100 + Integer.parseInt(recordList.get(6).get(iRow)))/100;
 						int iRepertory = iPro_storage + iMat_storage + iSemiPro_storage;
