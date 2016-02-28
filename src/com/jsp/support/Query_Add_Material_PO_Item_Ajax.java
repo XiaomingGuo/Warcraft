@@ -24,10 +24,4 @@ public class Query_Add_Material_PO_Item_Ajax extends PageParentClass
 		}
 		return rtnRst;
 	}
-	
-	public int GetHasFinishPurchaseNum(String barcode, String POName)
-	{
-		IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
-		return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
-	}
 }

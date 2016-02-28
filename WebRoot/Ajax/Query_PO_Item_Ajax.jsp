@@ -84,7 +84,7 @@
 					else if ("采购余量" == displayList[iCol])
 					{
 						int poCount = Integer.parseInt(recordList.get(5).get(iRow)) * (100 + Integer.parseInt(recordList.get(6).get(iRow)))/100;
-						int iRepertory = iPro_storage + iMat_storage + iSemiPro_storage;
+						int iRepertory = hPageHandle.GetHasFinishPurchaseNum(strBarcode, po_name);
 						if (iRepertory >= poCount)
 						{
 							rtnRst += "0$";

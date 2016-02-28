@@ -70,12 +70,6 @@ public class Query_Material_PO_Item_Ajax extends PageParentClass
 		return rtnRst;
 	}
 
-	public int GetHasFinishPurchaseNum(String barcode, String id)
-	{
-		Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
-		return hMMPRHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("mb_material_po_id"), Arrays.asList(id));
-	}
-	
 	public int GetOUT_QTYByBarCode(String barcode)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
