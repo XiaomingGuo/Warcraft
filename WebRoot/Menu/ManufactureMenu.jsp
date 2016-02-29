@@ -82,6 +82,7 @@
 			    		<li><a href="Transfer_To_SemiProStorage.jsp">原材料转半成品</a></li>
 			    		<li><a href="Transfer_To_ProductStorage.jsp">半成品转成品</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
+			    		<li><a href="Close_MB_Order.jsp">关闭生产单</a></li>
 			    		<li><a href="Product_Shipment.jsp">成品出货</a></li>
 			    		<!-- <li><a href="Query_Order.jsp">生产单查询</a></li>
 			    		<li><a href="Approve_Order.jsp">生产单审核</a></li>

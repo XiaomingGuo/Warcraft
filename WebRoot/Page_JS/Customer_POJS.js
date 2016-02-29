@@ -73,10 +73,7 @@ function changePOName(obj)
 				{
 					//cmdtr.append("<td><input align='middle' type='submit' value='录入订单'></td>");
 				}
-				if (Count > 0)
-				{
-					cmdtr.append("<td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td>");
-				}
+				cmdtr.append("<td><input align='middle' type='button' onclick=CreatePO(this) value='生成采购单'></td>");
 				$confirmOrder.append(cmdtr);
 			}
 		}

@@ -1,8 +1,8 @@
-<%@page import="com.DB.operation.Mb_Material_Po"%>
-<%@page import="com.DB.operation.Material_Storage"%>
-<%@page import="com.DB.operation.Product_Order_Record"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.Mb_Material_Po"%>
+<%@ page import="com.DB.operation.Material_Storage"%>
+<%@ page import="com.DB.operation.Product_Order_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";

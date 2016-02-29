@@ -61,7 +61,8 @@ $(function()
 	$product_name.change(function()
 	{
 		$("#bar_code").empty();
-		$.post("Ajax/App_Order_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"), "product_type":GetSelectedContent("product_type")}, function(data, textStatus)
+		var poName = $.trim($("#POName").val());
+		$.post("Ajax/App_Order_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"), "product_type":GetSelectedContent("product_type"), "po_name":poName}, function(data, textStatus)
 		{
 			if (CheckAjaxResult(textStatus, data))
 			{

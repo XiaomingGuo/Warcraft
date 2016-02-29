@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Mb_Material_Po" %>
+<%@ page import="com.DB.operation.Customer_Po" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -27,6 +28,13 @@
 				curPOName = "";
 			hMMPHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
 			List<String> POList = hMMPHandle.getDBRecordList("po_name");
+			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+			for (int index = 0; index < POList.size(); index++)
+			{
+				hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "status"), Arrays.asList(POList.get(index), "5"));
+				if(hCPHandle.RecordDBCount() > 0)
+					POList.remove(POList.get(index));
+			}
 			Calendar mData = Calendar.getInstance();
 			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1)+String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));

@@ -180,10 +180,9 @@ public class PageParentClass
 	public int GetAllRepertoryByPOName(String barcode, String po_name)
 	{
 		int rtnRst = 0;
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		rtnRst += hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hPSHandle.GetUsedBarcode(barcode, "Product_Storage"), po_name, "1"));
+		rtnRst += GetProductRepertory(barcode, po_name);
 		rtnRst += hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hSPSHandle.GetUsedBarcode(barcode, "Semi_Pro_Storage"), po_name, "1"));
 		rtnRst += hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hMSHandle.GetUsedBarcode(barcode, "Material_Storage"), po_name, "1"));
 		return rtnRst;

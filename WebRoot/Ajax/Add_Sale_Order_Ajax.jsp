@@ -1,6 +1,6 @@
-<%@page import="com.DB.operation.Shipping_No"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Shipping_Record" %>
+<%@	page import="com.DB.operation.Shipping_No"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
