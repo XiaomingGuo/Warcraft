@@ -132,7 +132,7 @@
 				    	else if(displayKeyList[iCol-1] == "数量")
 				    	{
 %>
-    			<td align="right" width="10%"><%=hSRHandle.getDBRecordList("ship_QTY").get(0) %></td>
+    			<td align="right" width="10%"><%=hSRHandle.GetIntSumOfValue("ship_QTY", Arrays.asList("customer_po", "Bar_Code", "shipping_no"), Arrays.asList(POName, strBarcode, ship_no)) %></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "单重")

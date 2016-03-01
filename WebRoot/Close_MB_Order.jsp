@@ -59,7 +59,7 @@
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="Create_Order" action = "Submit/SubmitProductShipment.jsp" method = "post">
+		  		<form name="Create_Order" action = "Submit/SubmitCloseMBOrder.jsp" method = "post">
 			  		<table align="center">
 			  			<tr>
 			  				<td>
