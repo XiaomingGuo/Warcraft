@@ -14,10 +14,9 @@
 		if (hSRHandle.RecordDBCount() > 0)
 		{
 			List<String> idList = hSRHandle.getDBRecordList("id");
-			String ship_no = null;
 			Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
 			hSNHandle.QueryRecordMoreThanShipNo(currentDate + "0000");
-			ship_no = String.format("%s%04d", currentDate, hSNHandle.RecordDBCount() + 1);
+			String ship_no = String.format("%s%04d", currentDate, hSNHandle.RecordDBCount() + 1);
 			hSNHandle.AddARecord(po_name, ship_no);
 			for (int index = 0; index < idList.size(); index++)
 			{

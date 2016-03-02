@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.CustomerPoRecord;
 import com.DB.support.ShippingNo;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
@@ -80,13 +79,13 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 
 	public void GetRecordByName(String name)
 	{
-		String hql = String.format("from ShippingNo pi where pi.name='%s'", name);
+		String hql = String.format("from ShippingNo pi where pi.%s='%s'", GetDatabaseKeyWord("name"), name);
 		getEQMHandle().EQQuery(hql);
 	}
 	
 	public void QueryRecordMoreThanShipNo(String shipNo)
 	{
-		String hql = String.format("from ShippingNo pi where pi.shipping_no>%s", shipNo);
+		String hql = String.format("from ShippingNo pi where pi.%s>%s", GetDatabaseKeyWord("shipping_no"), shipNo);
 		getEQMHandle().EQQuery(hql);
 	}
 	

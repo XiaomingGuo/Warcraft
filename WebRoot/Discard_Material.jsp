@@ -99,7 +99,7 @@
 		</tr>
 		<tr>
    			<td align="right">
-	   			<label id=lable_barcode>Bar Code:</label>
+	   			<label id=label_barcode>Bar Code:</label>
 				<input type="text" name="inputBarcode" id="inputBarcode" style='width:260px' onblur="InputBarcode()">
 			</td>
 		</tr>

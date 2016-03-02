@@ -37,13 +37,17 @@ $(function()
 						for (var iCol = 1; iCol <= iColCount; iCol++)
 						{
 							var td = $("<td></td>");
-							if (1 == iColCount - iCol)
+							if (2 == iColCount - iCol)
+							{
+								td.append(data_list[iRow*iColCount + iCol + 1]);
+							}
+							else if (1 == iColCount - iCol)
 							{
 								td.append(data_list[iRow*iColCount + iCol + 1]);
 							}
 							else if (0 == iColCount - iCol)
 							{
-								td.append("<label>已完成</label>");
+								td.append("<label>无需操作</label>");
 							}
 							else
 							{

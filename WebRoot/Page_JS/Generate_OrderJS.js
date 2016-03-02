@@ -76,7 +76,7 @@ function changeOrderName(obj)
 				}
 				if (Count > 0)
 				{
-					cmdtr.append("<td><input align='middle' type='button' onclick=CreateOrder(this) value='生成采购单'></td>");
+					cmdtr.append("<td><input align='middle' type='button' onclick=CreateOrder(this) value='提交或生成采购单'></td>");
 				}
 				$confirmOrder.append(cmdtr);
 			}

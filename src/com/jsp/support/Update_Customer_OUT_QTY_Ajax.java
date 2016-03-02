@@ -43,6 +43,7 @@ public class Update_Customer_OUT_QTY_Ajax extends PageParentClass
 			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
 			if(Integer.parseInt(hCPHandle.getDBRecordList("status").get(0)) >= 5)
 			{
+				hPSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(strBarcode, poName));
 				for(int idx=0; idx < keyArray.length; idx++)
 				{
 					if(rtnRst.size() != keyArray.length)

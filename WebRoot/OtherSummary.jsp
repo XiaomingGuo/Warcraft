@@ -83,7 +83,7 @@
 				</select>
 			</td>
 			<td align="right">
-	   			<label id=lable_barcode>Bar Code:</label>
+	   			<label id=label_barcode>Bar Code:</label>
 				<input type="text" name="bar_code" id="bar_code" style='width:100px' onblur="InputBarcode()">
 			</td>
 			<td align="center">
