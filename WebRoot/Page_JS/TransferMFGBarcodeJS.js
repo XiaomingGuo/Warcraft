@@ -78,12 +78,16 @@ $(function()
 					$("#from_Description").attr("readonly", "readonly");
 					$("#from_ProductWeight").val(code_list[4]);
 					$("#from_ProductWeight").attr("readonly", "readonly");
+					$("#from_QTY").val(code_list[code_list.length-1]);
+					$("#from_QTY").attr("readonly", "readonly");
 				}
 				else
 				{
 					$bar_code.append('<option value="请选择">--请选择--</option>');
 					$("#from_barcode").val("");
 					$("#from_WeightUnit").val(code_list[2]);
+					$("#from_QTY").val(0);
+					$("#from_QTY").attr("readonly", "readonly");
 				}
 			}
 		});
