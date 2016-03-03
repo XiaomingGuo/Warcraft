@@ -153,7 +153,7 @@
 			  	<table align="center">
 					<tr>
 			   			<td align="center">
-				   			<label>入库时间:</label>
+				   			<label>交货时间:</label>
 			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
 						</td>
 			   			<td align="center">

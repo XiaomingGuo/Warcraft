@@ -67,7 +67,7 @@
     <br>
     <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
-   		<caption><b>库房报表</b></caption>
+   		<caption><b>五金消耗报表</b></caption>
 			<tr>
 <%
 				for(int iCol = 1; iCol <= selectKeyList.length; iCol++)

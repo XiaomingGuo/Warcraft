@@ -109,7 +109,7 @@
 				  	</select>
 			  	</td>
 	   			<td align="center">
-		   			<label>入库时间:</label>
+		   			<label>交货时间:</label>
 	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>">
 				</td>
 				<td align="center">
