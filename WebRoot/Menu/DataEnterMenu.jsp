@@ -79,6 +79,7 @@
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="AddStoreroom.jsp">信息录入</a></li>
+			    		<li><a href="TransferMFGBarcode.jsp">生产物料八码转换</a></li>
 			    		<li><a href="AddMFGMaterial.jsp">生产物料入库</a></li>
 			    		<li><a href="AddMFGMaterial_ReferTo_PO.jsp">PO物料入库</a></li>
 			    		<li><a href="QueryMaterial.jsp">原材料状态</a></li>
