@@ -22,7 +22,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String[] selectKeyList = {"库名", "类别", "名称", "八码"};
-			String[] from_inputKeyList = {"八码", "产品名称", "库存数量", "原材料单重", "成品单重", "备注"};
+			String[] from_inputKeyList = {"八码", "产品名称", "转出数量", "库存数量", "原材料单重", "成品单重", "备注"};
 			String[] to_inputKeyList = {"八码", "产品名称", "转换数量", "原材料单重", "成品单重", "备注"};
 			//product_type Database query
 			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
@@ -141,6 +141,9 @@
 							<input type="text" name="from_QTY" id="from_QTY" style='width:70px'>
 						</td>
 			   			<td align="right">
+							<input type="text" name="store_QTY" id="store_QTY" style='width:70px'>
+						</td>
+			   			<td align="right">
 							<input type="text" name="from_WeightUnit" id="from_WeightUnit" style='width:90px'>
 						</td>
 			   			<td align="right">
@@ -232,7 +235,7 @@
 			  	<table align="center">
 					<tr>
 			   			<td align="center">
-							<input type="button" value="提交" style='width:100px' onclick="AddMaterialFun()">
+							<input type="button" value="提交" style='width:100px' onclick="DoTranferBarcode()">
 						</td>
 					</tr>
 		    	</table>
