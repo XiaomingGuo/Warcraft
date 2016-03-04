@@ -24,26 +24,12 @@
 			List<List<String>> recordList = hPageHandle.GetAllNotDepleteRecordList(from_barcode);
 			if (recordList.size() > 0&&from_QTY > 0)
 			{
-				hPageHandle.UpdateStorageRecord(recordList, from_barcode, from_QTY);
+				hPageHandle.UpdateStorageRecord(recordList, from_barcode, from_QTY, to_barcode, to_QTY);
 			}
 		}
 		else
 		{
 			session.setAttribute("error", "("+ from_barcode + "): 库存数量不足,不够出货数量,加油催料吧兄弟!");
-			response.sendRedirect("../tishi.jsp");
-		}
-		repertory_count = hPageHandle.GetAllNotDepleteRepertory(to_barcode);
-		if (repertory_count >= to_QTY)
-		{
-			List<List<String>> recordList = hPageHandle.GetAllNotDepleteRecordList(from_barcode);
-			if (recordList.size() > 0&&to_QTY > 0)
-			{
-				hPageHandle.UpdateStorageRecord(recordList, from_barcode, from_QTY);
-			}
-		}
-		else
-		{
-			session.setAttribute("error", "("+ from_barcode + "): 库存数量不足,不够出货数量,加油生产吧兄弟!");
 			response.sendRedirect("../tishi.jsp");
 		}
 	}

@@ -37,5 +37,6 @@
 	<mapping resource="com/DB/support/StoreroomName.hbm.xml" />
 	<mapping resource="com/DB/support/VendorInfo.hbm.xml" />
 	<mapping resource="com/DB/support/DiscardMaterialRecord.hbm.xml" />
+	<mapping resource="com/DB/support/TransBarcodeRecord.hbm.xml" />
 </session-factory>
 </hibernate-configuration>

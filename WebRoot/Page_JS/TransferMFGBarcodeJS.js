@@ -275,19 +275,30 @@ function DoTranferBarcode()
 {
 	var from_store_name = GetSelectedContent("from_store_name");
 	var to_store_name = GetSelectedContent("to_store_name");
+	var from_barcode = GetSelectedContent("from_bar_code");
+	var to_barcode = GetSelectedContent("to_bar_code");
+	if(from_store_name.indexOf("请选择") > 0||to_store_name.indexOf("请选择") > 0||
+			$("#from_QTY").val() == ""||$("#to_QTY").val() == ""||
+			from_barcode.indexOf("请选择") > 0||to_barcode.indexOf("请选择") > 0)
+	{
+		alert("信息输入不完整!");
+		return;
+	}
+	if(parseInt($("#from_QTY").val()) > parseInt($("#store_QTY").val()))
+	{
+		alert("物料库存不足!");
+		return;
+	}
 	if(from_store_name != to_store_name)
 	{
 		alert("必须在同一库中进行物料转换!");
 		return;
 	}
-	var from_barcode = GetSelectedContent("from_bar_code");
-	var to_barcode = GetSelectedContent("to_bar_code");
 	if(from_barcode == to_barcode)
 	{
 		alert("同一种物料无需转换!");
 		return;
 	}
-	
 	$.post("Ajax/TransferMFGMaterialBarcode_Ajax.jsp", {"store_name":from_store_name,
 		"from_bar_code":from_barcode, "to_bar_code":to_barcode,
 		"from_QTY":$("#from_QTY").val(), "to_QTY":$("#to_QTY").val()}, function(data, textStatus)

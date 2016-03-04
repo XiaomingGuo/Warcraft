@@ -68,16 +68,16 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 			int recordCount = sql_in_count - sql_out_count;
 			if (recordCount >= used_count)
 			{
-				String updateQty = Integer.toString(sql_out_count+used_count);
-				UpdateStorageOutQty(updateQty, from_barcode, batchLot);
-				hTBRHandle.AddARecord(from_barcode, batchLot, updateQty, to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
+				String updateQty = Integer.toString(sql_in_count-used_count);
+				UpdateStorageInQty(updateQty, from_barcode, batchLot);
+				hTBRHandle.AddARecord(from_barcode, batchLot, Integer.toString(used_count), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
 				break;
 			}
 			else
 			{
-				String updateQty = Integer.toString(sql_in_count);
-				UpdateStorageOutQty(updateQty, from_barcode, batchLot);
-				hTBRHandle.AddARecord(from_barcode, batchLot, updateQty, to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
+				String updateQty = Integer.toString(sql_out_count);
+				UpdateStorageInQty(updateQty, from_barcode, batchLot);
+				hTBRHandle.AddARecord(from_barcode, batchLot, Integer.toString(recordCount), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
 				used_count -= recordCount;
 			}
 		}
@@ -85,12 +85,13 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 		Calendar mData = Calendar.getInstance();
 		String appInStoreDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY) + 1, mData.get(Calendar.DAY_OF_MONTH));
 		hHandle.AddARecord(to_barcode, to_Batch_Lot, Integer.toString(to_QTY), "0", "0", "empty", "Material_Supply", "MB_Incise_Station", appInStoreDate);
+		((ITableInterface)hHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(to_barcode, to_Batch_Lot));
 	}
 	
-	public void UpdateStorageOutQty(String outQty, String barcode, String batchLot)
+	public void UpdateStorageInQty(String inQty, String barcode, String batchLot)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		((ITableInterface)hHandle).UpdateRecordByKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		((ITableInterface)hHandle).UpdateRecordByKeyList("IN_QTY", inQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
 }

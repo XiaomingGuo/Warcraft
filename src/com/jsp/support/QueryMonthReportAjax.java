@@ -5,15 +5,25 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.*;
 
 public class QueryMonthReportAjax extends PageParentClass
 {
 	public List<String> QueryProTypeStorage(String storageName)
 	{
-		List<String> rtnRst = null;
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		hPTHandle.GetRecordByStoreroom(storageName);
-		rtnRst = hPTHandle.getDBRecordList("name");
+		List<String> rtnRst = new ArrayList<String>();
+		IStorageTableInterface hHandle = GenStorageHandleByStorageName(storageName);
+		((DBTableParent)hHandle).QueryRecordGroupByList(Arrays.asList("Bar_Code"));
+		List<String> barcodeList = hHandle.getDBRecordList("Bar_Code");
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		for(String barcode : barcodeList)
+		{
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
+			String proType = hPIHandle.getDBRecordList("product_type").get(0);
+			if(!rtnRst.contains(proType))
+				rtnRst.add(proType);
+		}
 		return rtnRst;
 	}
 	
@@ -87,9 +97,9 @@ public class QueryMonthReportAjax extends PageParentClass
 	public List<String> QueryAllBarcode()
 	{
 		List<String> rtnRst = null;
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetAllRecord();
-		rtnRst = hPIHandle.getDBRecordList("Bar_Code");
+		Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+		((DBTableParent)hORHandle).QueryRecordGroupByList(Arrays.asList("Bar_Code"));
+		rtnRst = hORHandle.getDBRecordList("Bar_Code");
 		return rtnRst;
 	}
 }
