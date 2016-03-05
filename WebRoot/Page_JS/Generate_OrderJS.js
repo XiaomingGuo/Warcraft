@@ -12,7 +12,7 @@ function changeOrderName(obj)
 		alert("我的乖乖,你就不能起个长点儿的PO单名吗?");
 		return;
 	}
-	$.post("Ajax/Query_PO_Item_Ajax.jsp", {"po_name":order_name, "status":"0"}, function(data, textStatus)
+	$.post("Ajax/Query_Order_Item_Ajax.jsp", {"po_name":order_name, "status":"0"}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
@@ -56,6 +56,10 @@ function changeOrderName(obj)
 								td.append("<label>已录入</label>");
 							}
 						}
+						else if(0 == iColCount - iCol)
+						{
+						
+						}
 						else
 						{
 							td.append(data_list[iRow*iColCount + iCol + 3]);
@@ -92,7 +96,7 @@ function addorderitem(obj)
 		alert("我说大姐,你这输入信息糊弄谁呢?");
 		return;
 	}
-	$.post("Ajax/Add_PO_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "cpo_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":GetSelectedContent("vendor_name"), "po_name":order_name}, function(data, textStatus)
+	$.post("Ajax/Add_Order_Item_Ajax.jsp", {"bar_code":$("#barcode").val(), "delivery_date":$("#delivery_date").val(), "corder_QTY":$("#Input_QTY").val(), "percent":$("#percent").val(), "vendor_name":GetSelectedContent("vendor_name"), "order_name":order_name}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{

@@ -1,46 +1,39 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order" %>
 <%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.Discard_Material_Record"%>
+<%@ page import="com.DB.operation.Product_Storage"%>
+<%@ page import="com.DB.operation.Semi_Product_Storage"%>
 <%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Query_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
-	String order_name = request.getParameter("order_name").replace(" ", "");
+	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
-	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "状态",  "操作"};
-	
-	String order_status = null;
-	if (order_name.length() > 12)
+	String po_status = null;
+	String[] displayList = {"ID", "产品类型", "产品名称", "供应商", "八码", "PO单名", "交货时间", "数量", "成品库存", "半成品库存", "物料库存", "采购余量", "进货余量", "创建时间", "操作"};
+	if(po_name.length() > 6)
 	{
-		String sql = null;
+		Query_PO_Item_Ajax hPageHandle = new Query_PO_Item_Ajax();
 		if (status != null)
 		{
-			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
-			if (hPOHandle.RecordDBCount() > 0)
+			po_status = hPageHandle.GetCustomerPoStatus(po_name);
+			if (po_status != null)
 			{
-				order_status = hPOHandle.getDBRecordList("status").get(0);
-				if (Integer.parseInt(order_status) > Integer.parseInt(status))
+				if (Integer.parseInt(po_status) > Integer.parseInt(status))
 				{
 					rtnRst += "error:该PO单已经存在!";
 					out.write(rtnRst);
 				}
 			}
 		}
-		rtnRst += order_status + "$";
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
-
-		if (hPORHandle.RecordDBCount() > 0)
+		rtnRst += po_status + "$";
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		
+		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(po_name);
+		if (recordList.size() > 0)
 		{
-			String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
-			List<List<String>> recordList = new ArrayList<List<String>>();
-			for(int idx=0; idx < sqlKeyList.length; idx++)
-			{
-				recordList.add(hPORHandle.getDBRecordList(sqlKeyList[idx]));
-			}
 			int iRowCount = recordList.get(0).size(), iColCount = displayList.length;
 			rtnRst += Integer.toString(iColCount) + "$";
 			rtnRst += Integer.toString(iRowCount) + "$";
@@ -48,94 +41,80 @@
 			{
 				rtnRst += displayList[i] + "$";
 			}
-			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-			Discard_Material_Record hDMRHandle = new Discard_Material_Record(new EarthquakeManagement());
-			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 			for(int iRow = 0; iRow < iRowCount; iRow++)
 			{
-				int iPro_storage = 0, iMat_storage = 0, iOrderQTY = 0, iCompleteQTY = 0;
-				String strBarcode = recordList.get(1).get(iRow);
+				int iPro_storage = 0, iSemiPro_storage = 0, iMat_storage = 0;
+				String strBarcode = recordList.get(2).get(iRow);
 				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				for(int iCol = 0; iCol < iColCount; iCol++)
 				{
 					if("ID" == displayList[iCol])
 					{
-						rtnRst += recordList.get(0).get(iRow) + "$";
+						rtnRst += Integer.toString(iRow+1) + "$";
 					}
 					else if("产品类型" == displayList[iCol])
 					{
-						rtnRst += hPIHandle.getDBRecordList("product_type").get(0) + "$";
+						String protype = hPIHandle.getDBRecordList("product_type").get(0);
+						rtnRst += protype + "$";
 					}
 					else if("产品名称" == displayList[iCol])
 					{
-						rtnRst += hPIHandle.getDBRecordList("name").get(0) + "$";
+						String proname = hPIHandle.getDBRecordList("name").get(0);
+						rtnRst += proname + "$";
 					}
-					else if("八码" == displayList[iCol])
+					else if("成品库存" == displayList[iCol])
 					{
-						rtnRst += strBarcode + "$";
+						iPro_storage = hPageHandle.GetProductRepertory(strBarcode, po_name);
+						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
-					else if("交货时间" == displayList[iCol])
+					else if("半成品库存" == displayList[iCol])
 					{
-						rtnRst += recordList.get(2).get(iRow) + "$";
+						String curBarcode = hSPSHandle.GetUsedBarcode(strBarcode, "semi_storage");
+						iSemiPro_storage = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
+								hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
+						rtnRst += Integer.toString(iSemiPro_storage)  + "$";
 					}
-					else if("数量" == displayList[iCol])
+					else if ("物料库存" == displayList[iCol])
 					{
-						iOrderQTY = Integer.parseInt(recordList.get(3).get(iRow));
-						rtnRst += recordList.get(3).get(iRow) + "$";
+						String curBarcode = hMSHandle.GetUsedBarcode(strBarcode, "material_storage");
+						iMat_storage = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, "Material_Supply", "1")) + 
+								hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(curBarcode, po_name, "1"));
+						rtnRst += Integer.toString(iMat_storage) + "$";
 					}
-					else if("完成数量" == displayList[iCol])
+					else if ("采购余量" == displayList[iCol])
 					{
-						iCompleteQTY = Integer.parseInt(recordList.get(4).get(iRow));
-						rtnRst += recordList.get(4).get(iRow) + "$";
-					}
-					else if("报废数量" == displayList[iCol])
-					{
-						rtnRst += hDMRHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(strBarcode, order_name)) + "$";
-					}
-					else if("未完成数" == displayList[iCol])
-					{
-						rtnRst += Integer.toString(iOrderQTY - iCompleteQTY) + "$";
-					}
-					else if("检验合格数" == displayList[iCol])
-					{
-						rtnRst += recordList.get(5).get(iRow) + "$";
-					}
-					else if("材料库存" == displayList[iCol])
-					{
-						int iMaterialQTY = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"))) - 
-								hPORHandle.GetUncompleteOrderRecord(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"));
-						if (iMaterialQTY < 0)
+						int poCount = hPageHandle.GetSurplusPurchaseQty(strBarcode, po_name);
+						if(poCount <= 0)
 						{
-							rtnRst += "0$";
+							int SurplusQty = hPageHandle.CalcOrderQty(recordList.get(5).get(iRow), recordList.get(6).get(iRow));
+							rtnRst += SurplusQty + "$";
 						}
 						else
-						{
-							rtnRst += iMaterialQTY + "$";
-						}
+							rtnRst += poCount + "$";
 					}
-					else if("客户PO单名" == displayList[iCol])
+					else if ("进货余量" == displayList[iCol])
 					{
 						rtnRst += recordList.get(6).get(iRow) + "$";
 					}
-					else if("生产单名" == displayList[iCol])
+					else if ("操作" == displayList[iCol])
 					{
-						rtnRst += recordList.get(7).get(iRow) + "$";
+						rtnRst += recordList.get(0).get(iRow) + "#" + recordList.get(7).get(iRow) + "$";
 					}
-					else if("创建时间" == displayList[iCol])
+					else if ("创建时间" == displayList[iCol])
 					{
-						rtnRst += recordList.get(8).get(iRow)  + "$";
+						rtnRst += recordList.get(8).get(iRow) + "$";
 					}
-					else if("状态" == displayList[iCol])
+					else
 					{
-						rtnRst += recordList.get(9).get(iRow)  + "$";
-					}
-					else if("操作" == displayList[iCol])
-					{
-						rtnRst += recordList.get(0).get(iRow) + "#" + recordList.get(1).get(iRow) + "$";
+						rtnRst += recordList.get(iCol-2).get(iRow) + "$";
 					}
 				}
 			}
 		}
+	}
+	else
+	{
+		rtnRst += "error:产品订单号稍微复杂点儿行不?";
 	}
 	out.write(rtnRst);
 %>

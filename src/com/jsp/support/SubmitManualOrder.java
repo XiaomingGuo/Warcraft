@@ -151,6 +151,7 @@ public class SubmitManualOrder extends PageParentClass
 	{
 		if (recordList != null)
 		{
+			//{"Bar_Code", "QTY", "delivery_date", "percent"};
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
 				String strBarcode = recordList.get(0).get(iRow);

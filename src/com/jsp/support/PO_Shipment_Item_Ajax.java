@@ -51,4 +51,12 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
 		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Storage"), po_name, "1"));
 	}
+	
+	public int GetMBPurchaseOrderQty(String strBarcode, String po_name)
+	{
+		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		return hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Material_Storage"), po_name)) +
+				hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Storage"), po_name)) +
+				hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), po_name));
+	}
 }

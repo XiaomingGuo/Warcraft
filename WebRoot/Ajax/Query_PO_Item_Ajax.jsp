@@ -86,8 +86,11 @@
 						int poCount = hPageHandle.GetSurplusPurchaseQty(strBarcode, po_name);
 						if (poCount <= 0)
 						{
-							int iAllPoCount = hPageHandle.CalcOrderQty(recordList.get(5).get(iRow), recordList.get(6).get(iRow));
-							rtnRst += Math.abs(iPro_storage+iSemiPro_storage+iMat_storage-iAllPoCount) + "$";
+							int SurplusQty = hPageHandle.CalcOrderQty(recordList.get(5).get(iRow), recordList.get(6).get(iRow)) - (iPro_storage+iSemiPro_storage+iMat_storage);
+							if(SurplusQty > 0)
+								rtnRst += SurplusQty + "$";
+							else
+								rtnRst += "0$";
 						}
 						else
 						{

@@ -30,7 +30,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
 		((ITableInterface)hHandle).UpdateRecordByKeyList("po_name", poName, Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 	}
-	
+		
 	public void UpdateStoragePoName(String strBarcode, String POName, int mbPoQty)
 	{
 		int tempQty = SetStoragePoName(strBarcode, POName, mbPoQty, "Product_Storage");

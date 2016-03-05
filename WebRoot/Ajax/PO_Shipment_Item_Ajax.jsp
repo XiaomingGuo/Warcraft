@@ -64,7 +64,11 @@
 				}
 				else if("成品库存" == displayList[iCol])
 				{
-					iPro_storage = hPageHandle.GetProductRepertory(proInfoList.get(0), recordList.get(1).get(iRow));
+					int MBPOQty = hPageHandle.GetMBPurchaseOrderQty(proInfoList.get(0), recordList.get(1).get(iRow));
+					if(MBPOQty >= iCPOQTY)
+						iPro_storage = hPageHandle.GetReleaseRepertory(proInfoList.get(0), recordList.get(1).get(iRow));
+					else
+						iPro_storage = hPageHandle.GetProductRepertory(proInfoList.get(0), recordList.get(1).get(iRow));
 					rtnRst += Integer.toString(iPro_storage)  + "$";
 				}
 				else if ("交付数量" == displayList[iCol])

@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order" %>
+<%@ page import="com.DB.operation.Customer_Po" %>
 <%@ page import="com.DB.operation.Mb_Material_Po"%>
 <%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.Product_Order_Record"%>
+<%@ page import="com.DB.operation.Customer_Po_Record"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
@@ -13,44 +13,28 @@
 	String percent = (String)request.getParameter("percent").replace(" ", "");
 	String order_name = (String)request.getParameter("order_name").replace(" ", "");
 	
-	if (order_name != null&&order_name != "")
+	if (order_name != null&&!order_name.isEmpty())
 	{
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-		hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
-		if (hPOHandle.RecordDBCount() <= 0)
+		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		hCPHandle.QueryRecordByPoNameAndMoreThanStatus(order_name, "0");
+		if (hCPHandle.RecordDBCount() <= 0)
 		{
-			if (vendor != null&&vendor != ""&&bar_code != null&&deliv_date != null&&pro_qty != null&&percent != null)
+			if (bar_code != null&&deliv_date != null&&pro_qty != null&&vendor != null)
 			{
-				int iOrderQTY = Integer.parseInt(pro_qty)*(100 + Integer.parseInt(percent))/100;
-				Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-				String wBarcode = hPORHandle.GetUsedBarcode(bar_code, "product_order_record");
-				hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(wBarcode, order_name));
-				if (hPORHandle.RecordDBCount() <= 0)
+				Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Product_Storage"), order_name));
+				int recordCount = hCPRHandle.RecordDBCount();
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Semi_Pro_Storage"), order_name));
+				recordCount += hCPRHandle.RecordDBCount();
+				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Material_Storage"), order_name));
+				recordCount += hCPRHandle.RecordDBCount();
+				if (recordCount <= 0)
 				{
-					hPORHandle.AddARecord(wBarcode, deliv_date, iOrderQTY, "Internal_po", order_name);
+					hCPRHandle.AddARecord(bar_code, order_name, deliv_date, pro_qty, vendor, percent);
 				}
 				else
 				{
-					int tempQTY = hPORHandle.GetIntSumOfValue("QTY", Arrays.asList("Bar_Code", "Order_Name"), Arrays.asList(wBarcode, order_name));
-					hPORHandle.UpdateRecordByKeyList("QTY", Integer.toString(tempQTY + iOrderQTY), Arrays.asList("Order_Name", "Bar_Code"), Arrays.asList(order_name, wBarcode));
-				}
-				
-				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-				String material_barcode = hMSHandle.GetUsedBarcode(bar_code, "mb_material_po");
-				int po_qty = iOrderQTY - hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(material_barcode));
-				if (po_qty > 0)
-				{
-					Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-					hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
-					if (hMMPHandle.RecordDBCount() <= 0)
-					{
-						hMMPHandle.AddARecord(material_barcode, vendor, order_name, po_qty, "null");
-					}
-					else
-					{
-						int tempQTY = hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
-						hMMPHandle.UpdateRecordByKeyList("PO_QTY", Integer.toString(tempQTY + po_qty), Arrays.asList("Bar_Code", "po_name"), Arrays.asList(material_barcode, order_name));
-					}
+					rtnRst += "error:大哥这产品已经有了,要不删掉重新输入!";
 				}
 			}
 		}
