@@ -83,15 +83,15 @@
 					}
 					else if ("采购余量" == displayList[iCol])
 					{
-						int poCount = Integer.parseInt(recordList.get(5).get(iRow)) * (100 + Integer.parseInt(recordList.get(6).get(iRow)))/100;
-						int iRepertory = hPageHandle.GetHasFinishPurchaseNum(strBarcode, po_name) + iPro_storage + iSemiPro_storage + iMat_storage;
-						if (iRepertory >= poCount)
+						int poCount = hPageHandle.GetSurplusPurchaseQty(strBarcode, po_name);
+						if (poCount <= 0)
 						{
-							rtnRst += "0$";
+							int iAllPoCount = hPageHandle.CalcOrderQty(recordList.get(5).get(iRow), recordList.get(6).get(iRow));
+							rtnRst += Math.abs(iPro_storage+iSemiPro_storage+iMat_storage-iAllPoCount) + "$";
 						}
 						else
 						{
-							rtnRst += Integer.toString(poCount - iRepertory) + "$";
+							rtnRst += poCount + "$";
 						}
 					}
 					else if ("进货余量" == displayList[iCol])

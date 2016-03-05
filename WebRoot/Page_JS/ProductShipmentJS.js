@@ -128,7 +128,8 @@ function ShowSalePage(obj)
 	{
 		if (!CheckAjaxResult(textStatus, data))
 		{
-			alert(data.split("$")[1]);
+			location.href ="Product_Shipment.jsp";
+			return;
 		}
 		location.href ="List_SaleOrder.jsp?PO_Name="+po_name;
 	});

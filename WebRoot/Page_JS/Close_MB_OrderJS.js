@@ -14,14 +14,14 @@ $(function()
 			$confirmOrder.empty();
 			return;
 		}
-		$.post("Ajax/PO_Shipment_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
+		$.post("Ajax/Close_MB_Order_Item_Ajax.jsp", {"po_name":po_name, "status":"0"}, function(data, textStatus)
 		{
 			if (CheckAjaxResult(textStatus, data))
 			{
 				$displayOrder.empty();
 				$confirmOrder.empty();
 				var data_list = data.split("$");
-				var iColCount = data_list[1], iRowCount = data_list[2];
+				var iColCount = data_list[1], iRowCount = data_list[2], iJudgeCount = 0;
 				if (iColCount > 0&&iRowCount > 0)
 				{
 					var tr = $("<tr></tr>");
@@ -37,15 +37,7 @@ $(function()
 						for (var iCol = 1; iCol <= iColCount; iCol++)
 						{
 							var td = $("<td></td>");
-							if (2 == iColCount - iCol)
-							{
-								td.append(data_list[iRow*iColCount + iCol + 1]);
-							}
-							else if (1 == iColCount - iCol)
-							{
-								td.append(data_list[iRow*iColCount + iCol + 1]);
-							}
-							else if (0 == iColCount - iCol)
+							if (0 == iColCount - iCol)
 							{
 								td.append("<label>无需操作</label>");
 							}
@@ -56,9 +48,11 @@ $(function()
 							tr.append(td);
 						}
 						$displayOrder.append(tr);
+						iJudgeCount += parseInt(data_list[iRow*iColCount + 10]) - parseInt(data_list[iRow*iColCount + 11]);
 					}
 					var cmdtr = $("<tr></tr>");
-					cmdtr.append("<td><input align='middle' type='submit' value='关闭订单'></td>");
+					if(iJudgeCount <= 0)
+						cmdtr.append("<td><input align='middle' type='submit' value='关闭订单'></td>");
 					$confirmOrder.append(cmdtr);
 				}
 			}

@@ -36,4 +36,13 @@ public class Query_PO_Item_Ajax extends PageParentClass
 		}
 		return rtnRst;
 	}
+	
+	public int GetSurplusPurchaseQty(String strBarcode, String po_name)
+	{
+		int rtnRst = 0;
+		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		rtnRst = hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(strBarcode, po_name));
+		rtnRst -= GetHasFinishPurchaseNum(strBarcode, po_name);
+		return rtnRst;
+	}
 }

@@ -30,7 +30,7 @@ public class QueryMaterial extends PageParentClass
 	private List<List<String>> GetAllRecordWithoutEnsure(IStorageTableInterface hTableHandle)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
+		String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "po_name", "IN_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
 
 		hTableHandle.QueryRecordByFilterKeyList(Arrays.asList("isEnsure"), Arrays.asList("0"));
 		for(int keywordIdx = 0; keywordIdx < sqlKeyList.length; keywordIdx++)

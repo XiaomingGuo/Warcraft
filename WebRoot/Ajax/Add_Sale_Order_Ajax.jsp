@@ -23,6 +23,10 @@
 				hSRHandle.UpdateRecordByKeyList("shipping_no", ship_no, Arrays.asList("id"), Arrays.asList(idList.get(index)));
 			}
 		}
+		else
+		{
+			rtnRst += "error:没有需要打印的销售单!"+"$";
+		}
 	}
 	out.write(rtnRst);
 %>

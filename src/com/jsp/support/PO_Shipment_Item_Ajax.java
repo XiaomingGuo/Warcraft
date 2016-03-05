@@ -35,4 +35,20 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 		rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 		return rtnRst;
 	}
+	
+	public int GetInProcessRepertory(String strBarcode, String po_name)
+	{
+		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		return hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Material_Storage"), po_name)) +
+				hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Storage"), po_name)) +
+				hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), po_name));
+	}
+	
+	public int GetReleaseRepertory(String strBarcode, String po_name)
+	{
+		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
+		return hPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Storage"), po_name, "1"));
+	}
 }

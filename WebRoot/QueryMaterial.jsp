@@ -17,7 +17,7 @@
 		QueryMaterial hPageHandle = new QueryMaterial();
 		List<List<String>> recordList = hPageHandle.GetManufactureStorageRecord();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
+		String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "PO单", "总进货量", "单价", "总进货价", "供应商", "备注", "操作"};
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -91,22 +91,16 @@
     			<td><%= recordList.get(1).get(iRow-1) %></td>
 <%
 			    	}
+			    	else if (displayKeyList[iCol-1] == "PO单")
+			    	{
+%>
+    			<td><%= recordList.get(2).get(iRow-1) %></td>
+<%
+			    	}
 			    	else if (displayKeyList[iCol-1] == "总进货量")
 			    	{
 %>
-    			<td><%= recordList.get(2).get(iRow-1)%></td>
-<%
-			    	}
-			    	else if (displayKeyList[iCol-1] == "已消耗")
-			    	{
-%>
-    			<td><%= recordList.get(3).get(iRow-1) %></td>
-<%
-			    	}
-			    	else if (displayKeyList[iCol-1] == "库存")
-			    	{
-%>
-    			<td><%= (Integer.parseInt(recordList.get(2).get(iRow-1)) - Integer.parseInt(recordList.get(3).get(iRow-1)))%></td>
+    			<td><%= recordList.get(3).get(iRow-1)%></td>
 <%
 			    	}
 			    	else if (displayKeyList[iCol-1] == "单价")
