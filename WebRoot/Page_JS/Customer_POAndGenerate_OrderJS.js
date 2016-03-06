@@ -119,15 +119,17 @@ function Qty_Calc(obj)
 function InputBarcode(obj)
 {
 	var barcode = $("#barcode").val();
-	if(barcode == null||barcode.length != 8)
+	if(barcode == null||barcode.length == 0)
+		return;
+	if(barcode.length != 8)
 	{
-		alert("输入八码不对吧!");
+		alert("八码八码,就是输入8位的数字,你知道了不？");
 		$("#bar_code").val("");
 		return;
 	}
 	if (parseInt(barcode) < 50000000 || parseInt(barcode) >= 80000000)
 	{
-		alert("只能输入八码(大于等于50000000或小于80000000)!");
+		alert("只能输入八码格式如下(大于等于50000000或小于80000000)!");
 		$("#barcode").val("");
 		return;
 	}

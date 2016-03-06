@@ -3,9 +3,11 @@
  */
 function changePOName(obj)
 {
+	var po_name = $.trim($("#POName").val());
+	if(po_name.length == 0)
+		return;
 	var $displayOrder = $("#display_po");
 	var $confirmOrder = $("#confirm_po");
-	var po_name = $.trim($("#POName").val());
 	if (po_name.length < 6)
 	{
 		alert("你就不能取个长点儿的PO单号吗?");
