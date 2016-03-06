@@ -6,8 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
-import com.Warcraft.Interface.ITableInterface;
+import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 
 public class PageParentClass
@@ -257,5 +256,33 @@ public class PageParentClass
 		IStorageTableInterface hExStorageHandle = GenExStorageHandle(barcode);
 		return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName)) + 
 				hExStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
+	}
+	
+	public String CheckRequestPara(String checkValue)
+	{
+		if (checkValue != null)
+			checkValue.replace(" ", "");
+		return checkValue;
+	}
+	
+	public boolean CheckParamValidityMoreThanLength(String chekcVal, int valLen)
+	{
+		if(chekcVal != null&&chekcVal.length() > valLen)
+			return true;
+		return false;
+	}
+	
+	public boolean CheckParamValidityEqualsLength(String chekcVal, int valLen)
+	{
+		if(chekcVal != null&&chekcVal.length() == valLen)
+			return true;
+		return false;
+	}
+	
+	public boolean CheckParamValidityMoreThanValue(String chekcVal, int val)
+	{
+		if(chekcVal != null&&Integer.parseInt(chekcVal) > val)
+			return true;
+		return false;
 	}
 }
