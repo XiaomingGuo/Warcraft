@@ -24,17 +24,12 @@
 			request.setCharacterEncoding("UTF-8");
 		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 			String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-%02d-", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
+			MonthReport hPageHandle = new MonthReport();
+			String currentDate = hPageHandle.GenYearMonthString("-");
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			MonthReport hPageHandle = new MonthReport();
-			List<String> store_nameList = hPageHandle.GetAllStorageroom();
-			store_nameList.remove("成品库");
-			store_nameList.remove("原材料库");
-			store_nameList.remove("半成品库");
+			List<String> store_nameList = hPageHandle.GetStoreName("TOOLS");
 			List<String> userNameList = hPageHandle.GetUserName(Arrays.asList("user_name"));
 %>
 

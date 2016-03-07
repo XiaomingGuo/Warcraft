@@ -324,4 +324,22 @@ public class PageParentClass
 			return true;
 		return false;
 	}
+	
+	public List<String> GetStoreName(String storeType)
+	{
+		List<String> rtnRst = new ArrayList<String>();
+		List<String> displayStoreName = Arrays.asList("成品库", "原材料库", "半成品库");
+		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+		hSNHandle.GetAllRecord();
+		List<String> tempList = hSNHandle.getDBRecordList("name");
+		
+		for(String storeName : tempList)
+		{
+			if((storeType.contains("MFG")&&!displayStoreName.contains(storeName))||
+					(!storeType.contains("MFG")&&displayStoreName.contains(storeName)))
+				continue;
+			rtnRst.add(storeName);
+		}
+		return rtnRst;
+	}
 }

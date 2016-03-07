@@ -23,18 +23,12 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
 		    String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
-			String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-%02d-", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
+			String[] selectKeyList = {"库名", "类别", "名称", "操作"};
+			String currentDate = hPageHandle.GenYearMonthString("-");
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			List<String> store_nameList = hPageHandle.GetAllStorageroom();
-			store_nameList.remove("成品库");
-			store_nameList.remove("原材料库");
-			store_nameList.remove("半成品库");
-			List<String> userNameList = hPageHandle.GetUserName(Arrays.asList("user_name"));
+			List<String> store_nameList = hPageHandle.GetStoreName("MFG");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -101,19 +95,6 @@
 					  	<option value = "--请选择--">--请选择--</option>
 					</select>
 				</td>
-				<td align="right">
-				  	<select name="user_name" id="user_name" style="width:120px">
-					  	<option value = "--请选择--">--请选择--</option>
-<%
-				for(int i = 0; i < userNameList.size(); i++)
-				{
-%>
-				  		<option value = <%=userNameList.get(i) %>><%=userNameList.get(i)%></option>
-<%
-				}
-%>
-				  	</select>
-			  	</td>
 				<td align="center">
 					<input align="middle" type="button" value="查询" onclick="SubmitDateChange()">
 				</td>

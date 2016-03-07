@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.OtherSummary" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	OtherSummary hPageHandle = new OtherSummary();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -21,13 +21,7 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-			hSNHandle.GetAllRecord();
-			List<String> store_name = hSNHandle.getDBRecordList("name");
-			
-			store_name.remove("成品库");
-			store_name.remove("原材料库");
-			store_name.remove("半成品库");
+			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

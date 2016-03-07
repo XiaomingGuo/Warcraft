@@ -15,11 +15,4 @@ public class StorageReport extends PageParentClass
 		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(tempBarcode)) - 
 				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(tempBarcode));
 	}
-	
-	public List<String> GetAllStorageroom()
-	{
-		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-		hSNHandle.GetAllRecord();
-		return hSNHandle.getDBRecordList("name");
-	}
 }

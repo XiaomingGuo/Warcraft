@@ -21,7 +21,7 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			List<String> storeNameList = hPageHandle.GetMFGStoreName();
+			List<String> storeNameList = hPageHandle.GetStoreName("MFG");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

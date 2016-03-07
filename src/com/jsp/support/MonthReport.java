@@ -16,13 +16,6 @@ public class MonthReport extends PageParentClass
 				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(tempBarcode));
 	}
 	
-	public List<String> GetAllStorageroom()
-	{
-		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-		hSNHandle.GetAllRecord();
-		return hSNHandle.getDBRecordList("name");
-	}
-	
 	public List<String> GetUserName(List<String> groupList)
 	{
 		Other_Record hORHandle = new Other_Record(new EarthquakeManagement());

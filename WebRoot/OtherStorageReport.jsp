@@ -1,7 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.Product_Type" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.StorageReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -32,10 +29,7 @@
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			List<String> store_nameList = hPageHandle.GetAllStorageroom();
-			store_nameList.remove("成品库");
-			store_nameList.remove("原材料库");
-			store_nameList.remove("半成品库");
+			List<String> store_nameList = hPageHandle.GetStoreName("TOOLS");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
