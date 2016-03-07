@@ -1,17 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.Vendor_Info" %>
 <%@ page import="com.jsp.support.Generate_Order" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
-<%!
-	String[] selectKeyList = {"库名", "产品类型", "产品名称", "八码"};
-	String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "半成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
-	String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
-	List<List<String>> recordList = null;
-%>
 <%
 	String message="";
+	Generate_Order hPageHandle = new Generate_Order();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -29,22 +21,11 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			String[] selectKeyList = {"库名", "产品类型", "产品名称", "八码"};
+			String[] displayKeyList = {"八码", "供应商", "交货日期", "数量", "成品库存", "半成品库存", "原材料库存", "缺料数量", "进货余量(%)", "操作"};
+			String[] sqlKeyList = {"product_type", "product_name", "Bar_Code", "delivery_date", "QTY", "percent", "status"};
 			
-			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-			hSNHandle.GetAllRecord();
-			List<String> store_name = hSNHandle.getDBRecordList("name");
-
-			for (int index = 0; index < store_name.size();)
-			{
-				if (store_name.get(index).indexOf("成品库") == 0||store_name.get(index).indexOf("半成品库") == 0||store_name.get(index).indexOf("原材料库") == 0)
-				{
-					index++;
-					continue;
-				}
-				store_name.remove(index);
-			}
-			
-			Generate_Order hPageHandle = new Generate_Order();
+			List<String> store_name = hPageHandle.GetStoreName("MFG");
 			String OrderName = hPageHandle.GenOrderName(hPageHandle.GenYearMonthDayString());
 %>
 

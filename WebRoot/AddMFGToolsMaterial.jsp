@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	PageParentClass hPageHandle = new PageParentClass();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -24,14 +24,7 @@
 			String[] selectKeyList = {"库名", "类别", "名称", "八码"};
 			String[] inputKeyList = {"八码", "产品名称:", "入库数量", "单重", "单价", "备注", "供应商", "操作"};
 			//product_type Database query
-			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-			hSNHandle.GetAllRecord();
-			List<String> store_name = hSNHandle.getDBRecordList("name");
-			store_name.remove(store_name.indexOf("成品库"));
-			store_name.remove(store_name.indexOf("半成品库"));
-			store_name.remove(store_name.indexOf("原材料库"));
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-%02d-%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
+			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -154,7 +147,7 @@
 					<tr>
 			   			<td align="center">
 				   			<label>交货时间:</label>
-			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=currentDate %>"></div>
+			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>"></div>
 						</td>
 			   			<td align="center">
 							<input type="button" value="提交" style='width:100px' onclick="AddMFGToolsMaterialFun()">

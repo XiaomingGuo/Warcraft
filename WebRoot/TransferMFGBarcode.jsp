@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	PageParentClass hPageHandle = new PageParentClass();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -25,21 +25,7 @@
 			String[] from_inputKeyList = {"八码", "产品名称", "转出数量", "库存数量", "原材料单重", "成品单重", "备注"};
 			String[] to_inputKeyList = {"八码", "产品名称", "转换数量", "原材料单重", "成品单重", "备注"};
 			//product_type Database query
-			Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-			hSNHandle.GetAllRecord();
-			List<String> store_name = hSNHandle.getDBRecordList("name");
-
-			for (int index = 0; index < store_name.size();)
-			{
-				if (store_name.get(index).indexOf("成品库") == 0||store_name.get(index).indexOf("半成品库") == 0||store_name.get(index).indexOf("原材料库") == 0)
-				{
-					index++;
-					continue;
-				}
-				store_name.remove(index);
-			}
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-%02d-%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
+			List<String> store_name = hPageHandle.GetStoreName("MFG");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

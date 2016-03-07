@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	PageParentClass hPageHandle = new PageParentClass();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -16,13 +16,7 @@
 		String[] displayKeyList = {"库名", "类别", "名称", "八码", "使用者", "数量", "库存数量", "操作"};
 		
 		//storeroom name Database query
-		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-		hSNHandle.GetAllRecord();
-		List<String> store_name = hSNHandle.getDBRecordList("name");
-		
-		store_name.remove("成品库");
-		store_name.remove("原材料库");
-		store_name.remove("半成品库");
+		List<String> store_name = hPageHandle.GetStoreName("TOOLS");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
