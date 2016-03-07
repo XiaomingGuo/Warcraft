@@ -18,7 +18,8 @@
 			if(storeroom.indexOf("原材料库") == 0)
 			{
 				hPTHandle.AddARecord(pro_type, "成品库");
-				hPTHandle.AddARecord(pro_type+ "原锭", storeroom);
+				hPTHandle.AddARecord(pro_type + "半成品", "半成品库");
+				hPTHandle.AddARecord(pro_type + "原锭", storeroom);
 			}
 			else
 				hPTHandle.AddARecord(pro_type, storeroom);

@@ -23,6 +23,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
 			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
+			store_name.add("原材料库");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
