@@ -41,8 +41,7 @@
 	else
 		bar_code_List = hPageHandle.QueryAllBarcode();
 	
-	Calendar mData = Calendar.getInstance();
-	String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1) + String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+	String currentDate = hPageHandle.GenYearMonthDayString("-");
 	List<String> recordList = null;
 	//List<String> recordList = hPageHandle.GetAllRecordByBarCodeList(bar_code_List);
 

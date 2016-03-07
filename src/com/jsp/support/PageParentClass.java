@@ -219,11 +219,45 @@ public class PageParentClass
 		return rtnRst;
 	}
 	
-	public String GenBatchLot(String strBarcode)
+	public String GenYearMonthDayString()
 	{
 		Calendar mData = Calendar.getInstance();
-		String batch_lot_Head = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-		return CheckBatchLot(batch_lot_Head, strBarcode);
+		String rtnRst = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
+		return rtnRst;
+	}
+
+	public String GenYearMonthDayString(String strSpan)
+	{
+		Calendar mData = Calendar.getInstance();
+		String rtnRst = String.format("%04d%s%02d%s%02d", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan, mData.get(Calendar.DAY_OF_MONTH));
+		return rtnRst;
+	}
+	public String GenYearMonthString()
+	{
+		Calendar mData = Calendar.getInstance();
+		String rtnRst = String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
+		return rtnRst;
+	}
+
+	public String GenYearMonthString(String strSpan)
+	{
+		Calendar mData = Calendar.getInstance();
+		String rtnRst = String.format("%04d%s%02d%s", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan);
+		return rtnRst;
+	}
+	
+	public String GenYearString()
+	{
+		Calendar mData = Calendar.getInstance();
+		String rtnRst = String.format("%04d", mData.get(Calendar.YEAR));
+		return rtnRst;
+	}
+
+	public String GenYearString(String strSpan)
+	{
+		Calendar mData = Calendar.getInstance();
+		String rtnRst = String.format("%04d%s", mData.get(Calendar.YEAR), strSpan);
+		return rtnRst;
 	}
 	
 	private int GetExAndStorageRecordCount(String strBarcode, String Batch_Lot)
@@ -235,7 +269,12 @@ public class PageParentClass
 		return hHandle.RecordDBCount() + hExHandle.RecordDBCount();
 	}
 	
-	public String CheckBatchLot(String batch_lot_Head, String strBarcode)
+	public String GenBatchLot(String strBarcode)
+	{
+		return GenBatchLot(GenYearMonthDayString(), strBarcode);
+	}
+	
+	public String GenBatchLot(String batch_lot_Head, String strBarcode)
 	{
 		String rtnRst = "";
 		int loopNum = 1;

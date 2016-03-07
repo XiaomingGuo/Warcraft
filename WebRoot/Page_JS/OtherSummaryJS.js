@@ -126,12 +126,6 @@ function CheckBarcode()
 		$("#barcode").val("");
 		return false;
 	}
-	if (IsProductionMaterial(Barcode))
-	{
-		ClearSelectContent("product_type");
-		ClearSelectContent("product_name");
-		return false;
-	}
 	return true;
 }
 

@@ -43,7 +43,7 @@
   </head>
   	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/ManufactorySummaryJS.js"></script>
+  	<script language="javascript" src="Page_JS/OtherSummaryJS.js"></script>
   <body>
     <jsp:include page="Menu/MFGReportMenu.jsp"/>
     <form action="ReportPage/SaveOtherSummary.jsp" method="post">

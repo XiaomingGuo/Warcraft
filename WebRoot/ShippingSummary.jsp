@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.jsp.support.MonthReport" %>
+<%@ page import="com.jsp.support.ShippingSummary" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	ShippingSummary hPageHandle = new ShippingSummary();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -30,7 +30,6 @@
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			MonthReport hPageHandle = new MonthReport();
 			List<String> store_nameList = hPageHandle.GetAllStorageroom();
 			store_nameList.remove("成品库");
 			store_nameList.remove("原材料库");
@@ -43,7 +42,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>五金消耗报表</title>
+    <title>出货报表</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -63,7 +62,7 @@
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
+    <jsp:include page="Menu/MFGReportMenu.jsp"/>
     <br>
     <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">

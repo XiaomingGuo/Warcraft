@@ -2,7 +2,6 @@ package com.jsp.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -99,8 +98,7 @@ public class SubmitManualOrder extends PageParentClass
 	public List<Integer> CreateProduceOrderFromProductStorage(String appPOName, List<List<String>> recordList, List<Integer> nextOrderQty)
 	{
 		List<Integer> rtnRst = new ArrayList<Integer>();
-		Calendar mData = Calendar.getInstance();
-		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String createDate = GenYearMonthDayString();
 		
 		if (recordList != null)
 		{
@@ -125,8 +123,7 @@ public class SubmitManualOrder extends PageParentClass
 	public List<Integer> CreateProduceOrderFromMaterialStorage(String appPOName, List<List<String>> recordList, List<Integer> nextOrderQty)
 	{
 		List<Integer> rtnRst = new ArrayList<Integer>();
-		Calendar mData = Calendar.getInstance();
-		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String createDate = GenYearMonthDayString();
 		
 		if (recordList != null)
 		{

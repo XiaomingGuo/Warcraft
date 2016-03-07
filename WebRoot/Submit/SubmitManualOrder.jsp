@@ -3,6 +3,7 @@
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
+	SubmitManualOrder hPageSupport = new SubmitManualOrder();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -10,10 +11,8 @@
 	else
 	{
 		request.setCharacterEncoding("UTF-8");
-		Calendar mData = Calendar.getInstance();
-		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String createDate = hPageSupport.GenYearMonthDayString();
 		String OrderName = request.getParameter("OrderHeader").replace(" ", "") + request.getParameter("OrderName").replace(" ", "");
-		SubmitManualOrder hPageSupport = new SubmitManualOrder();
 		
 		if (OrderName.length() > 12)
 		{

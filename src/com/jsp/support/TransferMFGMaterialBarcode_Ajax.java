@@ -2,7 +2,6 @@ package com.jsp.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -82,9 +81,7 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 			}
 		}
 		IStorageTableInterface hHandle = GenStorageHandle(to_barcode);
-		Calendar mData = Calendar.getInstance();
-		String appInStoreDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY) + 1, mData.get(Calendar.DAY_OF_MONTH));
-		hHandle.AddARecord(to_barcode, to_Batch_Lot, Integer.toString(to_QTY), "0", "0", "empty", "Material_Supply", "MB_Incise_Station", appInStoreDate);
+		hHandle.AddARecord(to_barcode, to_Batch_Lot, Integer.toString(to_QTY), "0", "0", "empty", "Material_Supply", "MB_Incise_Station", GenYearMonthDayString());
 		((ITableInterface)hHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(to_barcode, to_Batch_Lot));
 	}
 	

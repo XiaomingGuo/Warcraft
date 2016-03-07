@@ -72,7 +72,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		String rtnRst = null;
 		IStorageTableInterface hHandle = GenStorageHandle(curBarcode);
 		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot", "isEnsure"), Arrays.asList(curBarcode, curBatchLot, "1"));
-		rtnRst = CheckBatchLot(curBatchLot.split("-")[0], curBarcode);
+		rtnRst = GenBatchLot(curBatchLot.split("-")[0], curBarcode);
 		double pricePerUnit = Double.parseDouble(hHandle.getDBRecordList("Price_Per_Unit").get(0));
 		String vendor = hHandle.getDBRecordList("vendor_name").get(0);
 		String inStoreDate = hHandle.getDBRecordList("in_store_date").get(0);

@@ -23,8 +23,6 @@
 			List<String> vendorList = hPageHandle.GetCustomerPoVendorGroup(POName);
 			
 			List<String> deliveryDateList = new ArrayList<String>();
-			Calendar mData = Calendar.getInstance();
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR));
 
 			for (int index = 0; index < vendorList.size(); )
 			{
@@ -53,7 +51,7 @@
 				}
 				String tempDelivDate = hPageHandle.GetMBMaterialPoDeliveryDate(vendorList.get(index), POName);
 				if(tempDelivDate == null)
-					tempDelivDate = DeliveryDate;
+					tempDelivDate = hPageHandle.GenYearString();
 				deliveryDateList.add(tempDelivDate);
 				index++;
 			}

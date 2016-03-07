@@ -44,11 +44,8 @@
 				store_name.remove(index);
 			}
 			
-			Generate_Order hPageSupport = new Generate_Order();
-			Calendar mData = Calendar.getInstance();
-			String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
-			String DeliveryDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1);
-			String OrderName = hPageSupport.GenOrderName(createDate);
+			Generate_Order hPageHandle = new Generate_Order();
+			String OrderName = hPageHandle.GenOrderName(hPageHandle.GenYearMonthDayString());
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -145,7 +142,7 @@
 									<option value = "--请选择--">--请选择--</option>
 								</select>
 							</td>
-							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=DeliveryDate %>></td>
+							<td align="center"><input type="text" name="delivery_date" id="delivery_date" style="width:80px" value=<%=hPageHandle.GenYearMonthString() %>></td>
 							<td align="center"><input type="text" name="Input_QTY" id="Input_QTY" onblur="Qty_Calc(this)" style="width:40px"></td>
 							<td align="center"><input type="text" name="product_QTY" id="product_QTY" value="0" style="width:80px" readonly></td>
 							<td align="center"><input type="text" name="semi_pro_QTY" id="semi_pro_QTY" value="0" onchange="Qty_Calc(this)" style="width:80px" readonly></td>

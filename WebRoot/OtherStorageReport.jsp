@@ -6,6 +6,8 @@
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	StorageReport hPageHandle = new StorageReport();
+
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -26,13 +28,10 @@
 			request.setCharacterEncoding("UTF-8");
 			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
 			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期", "操作"};
-			Calendar mData = Calendar.getInstance();
-			String currentDate = String.format("%04d-", mData.get(Calendar.YEAR)) + String.format("%02d-", mData.get(Calendar.MONDAY)+1);
-			String todayDate = String.format("%s%s", currentDate, String.format("%02d", mData.get(Calendar.DAY_OF_MONTH)));
+			String currentDate = hPageHandle.GenYearMonthString("-");
 			String beginDate = String.format("%s%s", currentDate, "01");
 			String endDate = String.format("%s%s", currentDate, "31");
 			
-			StorageReport hPageHandle = new StorageReport();
 			List<String> store_nameList = hPageHandle.GetAllStorageroom();
 			store_nameList.remove("成品库");
 			store_nameList.remove("原材料库");
@@ -110,7 +109,7 @@
 			  	</td>
 	   			<td align="center">
 		   			<label>交货时间:</label>
-	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=todayDate %>">
+	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>">
 				</td>
 				<td align="center">
 					<input align="middle" id="confirm_button" type="button" value="查询" onclick="SubmitDateChange()">

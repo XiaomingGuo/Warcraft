@@ -2,7 +2,6 @@ package com.jsp.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -70,8 +69,7 @@ public class SubmitCreateOrder extends PageParentClass
 	
 	public void CreateCustomerOrder(String appPOName, List<List<String>> recordList)
 	{
-		Calendar mData = Calendar.getInstance();
-		String createDate = String.format("%04d", mData.get(Calendar.YEAR)) + String.format("%02d", mData.get(Calendar.MONDAY)+1)+ String.format("%02d", mData.get(Calendar.DAY_OF_MONTH));
+		String createDate = GenYearMonthDayString();
 		List<Integer> nextOrderQty = new ArrayList<Integer>();
 		
 		if (recordList != null)
