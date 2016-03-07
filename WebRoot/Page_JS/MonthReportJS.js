@@ -18,7 +18,6 @@ $(function()
 					AddNewSelectItem("product_type", pro_list[i]);
 				}
 			}
-			//DisplayAddList();
 		});
 	});
 	
@@ -35,18 +34,7 @@ $(function()
 					AddNewSelectItem("product_name", pro_list[i]);
 				}
 			}
-			//DisplayAddList();
 		});
-	});
-	
-	$('#product_name').change(function()
-	{
-		//DisplayAddList();
-	});
-	
-	$('#user_name').change(function()
-	{
-		//DisplayAddList();
 	});
 });
 
