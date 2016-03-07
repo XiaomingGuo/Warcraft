@@ -9,8 +9,6 @@ import com.Warcraft.Interface.IStorageTableInterface;
 
 public class QueryMaterial extends PageParentClass
 {
-	public QueryMaterial() { }
-	
 	public List<List<String>> GetManufactureStorageRecord()
 	{
 		List<List<String>> rtnRst = GetAllRecordWithoutEnsure(new Material_Storage(new EarthquakeManagement()));

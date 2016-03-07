@@ -7,8 +7,6 @@ import com.Warcraft.Interface.IStorageTableInterface;
 
 public class Summary extends PageParentClass
 {
-	public Summary() { }
-	
 	public int GetIN_QTYByBarCode(String barcode)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);

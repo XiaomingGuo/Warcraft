@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Mb_Material_Po" %>
-<%@page import="com.DB.operation.Product_Info"%>
-<%@page import="com.DB.operation.Vendor_Info"%>
+<%@ page import="com.DB.operation.Product_Info"%>
+<%@ page import="com.DB.operation.Vendor_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
