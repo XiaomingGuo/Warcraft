@@ -2,7 +2,7 @@
 <%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.Other_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
-<%@ page import="com.jsp.support.CreateMonthReport" %>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
@@ -91,7 +91,7 @@
 						}
 						else if("价值" == displayKeyList[iCol])
 						{
-							CreateMonthReport hPageHandle = new CreateMonthReport();
+							PageParentClass hPageHandle = new PageParentClass();
 							double perPrice = hPageHandle.GetPrice_Pre_Unit(recordList.get(0).get(iRow), recordList.get(1).get(iRow));
 							double totalPrice = perPrice * Integer.parseInt(recordList.get(3).get(iRow));
 							tempList.add(Double.toString(totalPrice));
