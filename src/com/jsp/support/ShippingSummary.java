@@ -1,17 +1,20 @@
 package com.jsp.support;
 
 import java.util.Arrays;
+import java.util.List;
+
 import com.DB.operation.*;
 
 public class ShippingSummary extends PageParentClass
 {
-	public boolean IsCustomerPoClose(String poname)
+	public List<String> GetShippingNoList(String beginDate, String endDate)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.QueryRecordByPoNameAndMoreThanStatus(poname, "0");
-		if (hCPHandle.RecordDBCount() <= 0)
-			return true;
-		return false;
+		List<String> rtnRst = null;
+		Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
+		hSNHandle.QueryRecordByDateSpan(beginDate, endDate);;
+		if (hSNHandle.RecordDBCount() <= 0)
+			rtnRst = hSNHandle.getDBRecordList("shipping_no");
+		return rtnRst;
 	}
 	
 	public boolean IsCustomerPoRecordHasCurrentRecord(String curBarcode, String po_name)

@@ -156,6 +156,14 @@ public abstract class DBTableParent
 		getEQMHandle().EQQuery(hql);
 	}
 	
+	public void QueryRecordByDateSpan(String beginDate, String endDate)
+	{
+		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName());
+		hql += String.format(" tbn.createDate>'%s' and tbn.createDate<'%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+
 	public void QueryAllRecord()
 	{
 		String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName());

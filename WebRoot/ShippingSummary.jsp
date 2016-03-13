@@ -30,7 +30,7 @@
 			//product_type Database query
 			Product_Order hSNHandle = new Product_Order(new EarthquakeManagement());
 			hSNHandle.GetRecordByStatus(1);
-			List<String> orderName = hSNHandle.getDBRecordList("Order_Name");
+			List<String> shipNoList = hPageHandle.GetShippingNoList(beginDate, endDate);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -95,11 +95,11 @@
 				<h5>
 					<ul>
 <%
-					if (orderName != null)
+					if (shipNoList != null)
 					{
-						for(int iRow = 0; iRow < orderName.size(); iRow++)
+						for(int iRow = 0; iRow < shipNoList.size(); iRow++)
 						{
-							displayName = orderName.get(iRow);
+							displayName = shipNoList.get(iRow);
 %>
 						<li><%=displayName %></li>
 <%

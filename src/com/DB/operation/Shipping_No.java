@@ -52,7 +52,7 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 			case "customer_po":
 				rtnRst.add(tempRecord.getCustomerPo());
 				break;
-			case "name":
+			case "Delivery_date":
 				rtnRst.add(tempRecord.getDeliveryDate().toString());
 				break;
 			case "shipping_no":
@@ -106,8 +106,8 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("customer_po") >= 0) {
 			rtnRst = "customerPo";
 		}
-		else if(keyword.toLowerCase().indexOf("name") >= 0) {
-			rtnRst = "name";
+		else if(keyword.toLowerCase().indexOf("delivery_date") >= 0) {
+			rtnRst = "Delivery_date";
 		}
 		else if(keyword.toLowerCase().indexOf("shipping_no") >= 0) {
 			rtnRst = "shippingNo";
