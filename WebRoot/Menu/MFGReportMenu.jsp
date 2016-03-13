@@ -80,7 +80,7 @@
 			    		<li><a href="ManufactorySummary.jsp">生产库存</a></li>
 			    		<li><a href="ShippingSummary.jsp">出货报表</a></li>
 			    		<li><a href="ManufactorySummary.jsp">半成品库存</a></li>
-			    		<!-- <li><a href="OtherStorageReport.jsp">库房报表</a></li> -->
+			    		<li><a href="Temp_ShippingSummary.jsp">参考页面</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>
