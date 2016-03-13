@@ -148,7 +148,14 @@ public abstract class DBTableParent
 			hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName()) + " order by " + GenerateGroupAndOrderString(orderList) + " desc";
 		getEQMHandle().EQQueryWithLimit(hql, iStart, iCount);
 	}
-
+	
+	public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String beginDate, String endDate)
+	{
+		String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
+		hql += String.format(" and tbn.createDate>'%s' and tbn.createDate<'%s'", beginDate, endDate);
+		getEQMHandle().EQQuery(hql);
+	}
+	
 	public void QueryAllRecord()
 	{
 		String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName());

@@ -141,12 +141,4 @@ public class Other_Record extends DBTableParent implements ITableInterface
 	{
 		
 	}
-	
-	public void QueryRecordByKeyListBetweenCreateDate(List<String> keyList, List<String> valueList, String beginDate, String endDate)
-	{
-		String hql = String.format("from %s tbn where", GetTableName()) + GenerateWhereString(keyList, valueList);
-		hql += String.format(" and tbn.createDate>'%s' and tbn.createDate<'%s'", beginDate, endDate);
-		getEQMHandle().EQQuery(hql);
-	}
-	
 }

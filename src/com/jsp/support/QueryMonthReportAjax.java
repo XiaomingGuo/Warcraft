@@ -57,7 +57,7 @@ public class QueryMonthReportAjax extends PageParentClass
 				keyList = Arrays.asList("Bar_Code", "user_name");
 				valueList = Arrays.asList(strBarcode, user_name);
 			}
-			hORHandle.QueryRecordByKeyListBetweenCreateDate(keyList, valueList, beginDate, endDate);
+			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
 			//{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
 			for(int recordIdx=0; recordIdx < hORHandle.RecordDBCount(); recordIdx++)
 			{

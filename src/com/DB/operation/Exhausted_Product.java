@@ -208,20 +208,6 @@ public class Exhausted_Product extends DBTableParent implements ITableInterface,
 	}
 
 	@Override
-	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
-			List<String> keyList, List<String> valueList, String beginDate,
-			String endDate)
-	{
-		String hql = "from ExhaustedProduct ep where ";
-		for(int idx=0; idx<keyList.size(); idx++)
-		{
-			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("ep.createDate>='%s' and ep.createDate<='%s'", beginDate, endDate);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {

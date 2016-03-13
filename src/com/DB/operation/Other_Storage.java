@@ -211,18 +211,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 
 	@Override
-	public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String beginDate, String endDate)
-	{
-		String hql = "from OtherStorage os where ";
-		for(int idx=0; idx<keyList.size(); idx++)
-		{
-			hql += String.format("os.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("os.createDate>='%s' and os.createDate<='%s'", beginDate, endDate);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
 			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,

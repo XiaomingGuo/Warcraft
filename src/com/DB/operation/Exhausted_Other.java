@@ -194,20 +194,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	}
 
 	@Override
-	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
-			List<String> keyList, List<String> valueList, String beginDate,
-			String endDate)
-	{
-		String hql = "from ExhaustedOther eo where ";
-		for(int idx=0; idx<keyList.size(); idx++)
-		{
-			hql += String.format("eo.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("eo.createDate>='%s' and eo.createDate<='%s'", beginDate, endDate);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {

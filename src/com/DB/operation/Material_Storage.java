@@ -217,20 +217,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	}
 
 	@Override
-	public void QueryRecordByFilterKeyListAndBetweenDateSpan(
-			List<String> keyList, List<String> valueList, String beginDate,
-			String endDate)
-	{
-		String hql = "from MaterialStorage ms where ";
-		for(int idx=0; idx<keyList.size(); idx++)
-		{
-			hql += String.format("ms.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("ms.createDate>='%s' and ms.createDate<='%s'", beginDate, endDate);
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
 			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
