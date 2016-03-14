@@ -307,22 +307,22 @@ public class PageParentClass
 	public boolean CheckParamValidityMoreThanLength(String chekcVal, int valLen)
 	{
 		if(chekcVal != null&&chekcVal.length() > valLen)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 	
 	public boolean CheckParamValidityEqualsLength(String chekcVal, int valLen)
 	{
 		if(chekcVal != null&&chekcVal.length() == valLen)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 	
 	public boolean CheckParamValidityMoreThanValue(String chekcVal, int val)
 	{
 		if(chekcVal != null&&Integer.parseInt(chekcVal) > val)
-			return true;
-		return false;
+			return false;
+		return true;
 	}
 	
 	public List<String> GetStoreName(String storeType)
