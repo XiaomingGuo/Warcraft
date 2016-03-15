@@ -12,7 +12,7 @@ public class ShippingSummary extends PageParentClass
 		List<String> rtnRst = null;
 		Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
 		hSNHandle.QueryRecordByDateSpan(beginDate, endDate);;
-		if (hSNHandle.RecordDBCount() <= 0)
+		if (hSNHandle.RecordDBCount() >= 0)
 			rtnRst = hSNHandle.getDBRecordList("shipping_no");
 		return rtnRst;
 	}

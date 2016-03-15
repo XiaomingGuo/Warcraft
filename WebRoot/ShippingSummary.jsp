@@ -23,10 +23,12 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+			String beginDate = request.getParameter("beginDate");
+			String endDate = request.getParameter("endDate");
 			String displayName = null;
 			String currentDate = hPageHandle.GenYearMonthString("-");
-			String beginDate = String.format("%s%s", currentDate, "01");
-			String endDate = String.format("%s%s", currentDate, "31");
+			beginDate = (null != beginDate)?beginDate:String.format("%s%s", currentDate, "01");
+			endDate = (null != endDate)?endDate:String.format("%s%s", currentDate, "31");
 			//product_type Database query
 			Product_Order hSNHandle = new Product_Order(new EarthquakeManagement());
 			hSNHandle.GetRecordByStatus(1);
@@ -80,6 +82,7 @@
 						    			<label>截止日期:</label>
 						    			<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
 							  		</td>
+							  		<td><input name="commit" type="button" value="查询" style="width:100" onclick="commitShippingDate()"></td>
 							  	</tr>
 						  	</table>
 					  	</td>
@@ -92,7 +95,7 @@
 				<table align="center" border="1" width="100%">
 					<tr><th>生产单号:</th></tr>
 				</table>
-				<h5>
+				<h3>
 					<ul>
 <%
 					if (shipNoList != null)
@@ -107,12 +110,17 @@
 					}
 %>
 	   				</ul>
-	   			</h5>
+	   			</h3>
    			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
    			<td width="80.5%" valign="top" align="center">
    				<table width="100%" border="1">
    					<tr><th>生产单内容：</th></tr>
+	   			</table>
+	   			<table>
+   			    	<tr>
+			    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">生产单号</label></font></b></td>
+    				</tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>
    			</td>

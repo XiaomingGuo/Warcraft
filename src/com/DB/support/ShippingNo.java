@@ -12,7 +12,7 @@ public class ShippingNo implements java.io.Serializable {
 
 	private Integer id;
 	private String customerPo;
-	private Timestamp deliveryDate;
+	private Timestamp createDate;
 	private Integer shippingNo;
 
 	// Constructors
@@ -22,10 +22,10 @@ public class ShippingNo implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public ShippingNo(String customerPo, Timestamp deliveryDate,
+	public ShippingNo(String customerPo, Timestamp createDate,
 			Integer shippingNo) {
 		this.customerPo = customerPo;
-		this.deliveryDate = deliveryDate;
+		this.createDate = createDate;
 		this.shippingNo = shippingNo;
 	}
 
@@ -47,12 +47,12 @@ public class ShippingNo implements java.io.Serializable {
 		this.customerPo = customerPo;
 	}
 
-	public Timestamp getDeliveryDate() {
-		return this.deliveryDate;
+	public Timestamp getCreateDate() {
+		return this.createDate;
 	}
 
-	public void setDeliveryDate(Timestamp deliveryDate) {
-		this.deliveryDate = deliveryDate;
+	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
 	}
 
 	public Integer getShippingNo() {

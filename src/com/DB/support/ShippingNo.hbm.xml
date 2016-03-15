@@ -14,8 +14,8 @@
    <column length="50" name="customer_po" not-null="true"/>
   </property>
   <property generated="never" insert="false" lazy="false"
-   name="deliveryDate" type="java.sql.Timestamp">
-   <column length="19" name="Delivery_date" not-null="true"/>
+   name="createDate" type="java.sql.Timestamp">
+   <column length="19" name="create_date" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="shippingNo" type="java.lang.Integer">
    <column name="shipping_no" not-null="true"/>
