@@ -7,7 +7,7 @@
 <%@ page import="com.jsp.support.Query_Shipping_No_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
-	String shipNo = request.getParameter("Shipping_No").replace(" ", "");
+	String shipNo = request.getParameter("Shipping_No").replace("MOB", "");
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "批号", "PO单号", "数量", "出货时间"};
 	if(shipNo.length() > 6)
 	{

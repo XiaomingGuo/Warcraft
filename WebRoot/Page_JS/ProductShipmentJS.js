@@ -128,7 +128,7 @@ function ShowSalePage(obj)
 	{
 		if (!CheckAjaxResult(textStatus, data))
 		{
-			location.href ="Product_Shipment.jsp";
+			location.href ="List_SaleOrder.jsp?PO_Name="+po_name;
 			return;
 		}
 		location.href ="List_SaleOrder.jsp?PO_Name="+po_name;

@@ -104,7 +104,7 @@
 						{
 							displayName = shipNoList.get(iRow);
 %>
-						<li><%=displayName %></li>
+						<li>MOB<%=displayName %></li>
 <%
 						}
 					}
@@ -119,7 +119,7 @@
 	   			</table>
 	   			<table>
    			    	<tr>
-			    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">生产单号</label></font></b></td>
+			    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">销售单号</label></font></b></td>
     				</tr>
 	   			</table>
 	   			<table id="OrderBlock" border="1"></table>

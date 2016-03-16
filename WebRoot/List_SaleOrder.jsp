@@ -58,7 +58,7 @@
 %>
 			<tr>
 				<td align="center"><label>销售单号:</label></td>
-				<td align="center"><h1><a onclick="func(this)" name="<%=POName %>$<%=shipping_no.get(iRow) %>$<%=iRow %>" href="javascript:void(0)"><%=shipping_no.get(iRow) %></a></h1></td>
+				<td align="center"><h1><a onclick="func(this)" name="<%=POName %>$<%=shipping_no.get(iRow) %>$<%=iRow %>" href="javascript:void(0)">MOB<%=shipping_no.get(iRow) %></a></h1></td>
 				<td align="center"><label></label></td>
 			</tr>
 <%

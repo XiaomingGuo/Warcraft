@@ -56,7 +56,5 @@ function commitShippingDate()
 {
 	var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
 	var endDate = dojo.widget.byId("EndDate").inputNode.value;
-	alert(beginDate);
-	alert(endDate);
 	location.href ="ShippingSummary.jsp?beginDate="+beginDate + "&endDate=" + endDate;
 }
