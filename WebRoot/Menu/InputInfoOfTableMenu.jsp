@@ -41,7 +41,7 @@
 					<tr>
 						<td width="60%" align="left">
 							<img src="IMAGE/Logo.png" align="middle">
-							<font size="5"><b>常州市茂邦机械有限公司内部网络-V1.1.1</b></font>
+							<font size="5"><b>常州市茂邦机械有限公司内部网络-V1.1.2</b></font>
 						</td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
 <%
@@ -77,9 +77,10 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="AddMFGMaterial.jsp">上一页</a></li>
+			    		<li><a href="MainPage.jsp">上一页</a></li>
 			    		<li><a href="AddStoreroom.jsp">添加库房</a></li>
 			    		<li><a href="AddProductType.jsp">添加类型</a></li>
+			    		<li><a href="AddNewMaterial.jsp">添加新物料</a></li>
 			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>

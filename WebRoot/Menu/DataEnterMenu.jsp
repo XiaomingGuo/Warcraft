@@ -41,7 +41,7 @@
 					<tr>
 						<td width="60%" align="left">
 							<img src="IMAGE/Logo.png" align="middle">
-							<font size="5"><b>常州市茂邦机械有限公司内部网络-V1.1.1</b></font>
+							<font size="5"><b>常州市茂邦机械有限公司内部网络-V1.1.2</b></font>
 							<font size="4"><b></b></font>
 						</td>
 						<td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
@@ -78,7 +78,6 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="AddStoreroom.jsp">信息录入</a></li>
 			    		<li><a href="TransferMFGBarcode.jsp">生产物料八码转换</a></li>
 			    		<li><a href="AddMFGMaterial.jsp">生产物料入库</a></li>
 			    		<li><a href="AddMFGMaterial_ReferTo_PO.jsp">PO物料入库</a></li>

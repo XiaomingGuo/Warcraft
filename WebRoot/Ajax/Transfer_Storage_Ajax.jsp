@@ -4,10 +4,10 @@
 <%@ page import="com.jsp.support.Transfer_Storage_Ajax" %>
 <%
 	String rtnRst = "remove$";
+	Transfer_Storage_Ajax hPageHandle = new Transfer_Storage_Ajax();
 	String POName = (String)request.getParameter("PO_Name").replace(" ", "");
-	if (POName != null)
+	if (hPageHandle.CheckParamValidityMoreThanLength(POName, 6))
 	{
-		Transfer_Storage_Ajax hPageHandle = new Transfer_Storage_Ajax();
 		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(POName);
 		//{"Bar_Code", "QTY", "percent"};
 		if (recordList.size() > 0)
