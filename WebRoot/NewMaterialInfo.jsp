@@ -21,10 +21,11 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			String[] selectKeyList = {"库名", "类别", "名称", "八码"};
-			String[] inputKeyList = {"八码", "产品名称", "入库数量", "原材料单重", "成品单重", "单价", "备注", "供应商", "操作"};
+			String[] selectKeyList = {"库名", "类别"};
+			String[] inputKeyList = {"八码", "产品名称", "原材料单重", "成品单重", "备注", "操作"};
 			//product_type Database query
 			List<String> store_name = hPageHandle.GetStoreName("MFG");
+			store_name.addAll(hPageHandle.GetStoreName("Other"));
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -32,7 +33,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>生产物料入库</title>
+    <title>添加新物料</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -46,8 +47,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMFGMaterialJS.js"></script>
+  	<script language="javascript" src="Page_JS/NewMaterialInfoJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
   	<script type="text/javascript">
@@ -59,7 +59,7 @@
     	<tr>
     		<td>
 		    	<table align="center" border="1">
-		    		<caption><b>添加产品</b></caption>
+		    		<caption><b>添加物料信息</b></caption>
     				<tr>
 <%
 				for(int iCol = 1; iCol <= selectKeyList.length; iCol++)
@@ -89,16 +89,6 @@
 							  	<option value = "--请选择--">--请选择--</option>
 						  	</select>
 					  	</td>
-						<td align="right">
-							<select name="product_name" id="product_name" style="width:150px">
-							  	<option value = "--请选择--">--请选择--</option>
-							</select>
-						</td>
-						<td align="right">
-							<select name="bar_code" id="bar_code" style="width:100px">
-							  	<option value = "--请选择--">--请选择--</option>
-							</select>
-						</td>
 				  	</tr>
 			  	</table>
 			  	<br>
@@ -115,13 +105,10 @@
 					</tr>
 				  	<tr>
 			   			<td align="right">
-							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()">
+							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="checkBarcode()">
 						</td>
 			   			<td align="right">
 							<input type="text" name="productname" id="productname" style='width:120px'>
-						</td>
-			   			<td align="right">
-							<input type="text" name="QTY" id="QTY" style='width:70px'>
 						</td>
 			   			<td align="right">
 							<input type="text" name="WeightUnit" id="WeightUnit" style='width:90px'>
@@ -130,16 +117,8 @@
 							<input type="text" name="ProductWeight" id="ProductWeight" style='width:70px'>
 						</td>
 			   			<td align="right">
-							<input type="text" name="PriceUnit" id="PriceUnit" style='width:70px'>
-						</td>
-			   			<td align="right">
 							<input type="text" name="Description" id="Description" value="无备注" style='width:120px'>
 						</td>
-				  		<td align="right">
-						  	<select name="supplier_name" id="supplier_name" style="width:120px">
-							  	<option value = "--请选择--">--请选择--</option>
-						  	</select>
-					  	</td>
 						<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="additem(this)"></td>
 				  	</tr>
 			  	</table>
@@ -148,10 +127,6 @@
 			  	<br>
 			  	<table align="center">
 					<tr>
-			   			<td align="center">
-				   			<label>交货时间:</label>
-			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>"></div>
-						</td>
 			   			<td align="center">
 							<input type="button" value="提交" style='width:100px' onclick="AddMaterialFun()">
 						</td>

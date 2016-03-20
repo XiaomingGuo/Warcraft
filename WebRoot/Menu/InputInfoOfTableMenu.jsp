@@ -77,10 +77,9 @@
 	  			<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="MainPage.jsp">上一页</a></li>
 			    		<li><a href="AddStoreroom.jsp">添加库房</a></li>
 			    		<li><a href="AddProductType.jsp">添加类型</a></li>
-			    		<li><a href="AddNewMaterial.jsp">添加新物料</a></li>
+			    		<li><a href="NewMaterialInfo.jsp">添加新物料</a></li>
 			    		<li><a href="AddSupplier.jsp">添加供应商</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>

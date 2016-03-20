@@ -83,7 +83,7 @@
 			    		<li><a href="Customer_PO.jsp">生产过程控制</a></li>
 			    		<li><a href="AddMFGMaterial.jsp">生产物料录入</a></li>
 			    		<li><a href="ManufactorySummary.jsp">生产报表</a></li>
-			    		<li><a href="AddProductType.jsp">物料信息录入</a></li>
+			    		<li><a href="NewMaterialInfo.jsp">物料信息录入</a></li>
 			    		<li><a href="Quit.jsp">退出</a></li>
 			    	</ul>
 			    </h2>
