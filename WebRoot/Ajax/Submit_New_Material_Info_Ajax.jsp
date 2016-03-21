@@ -1,11 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.jsp.support.Submit_Material_Ajax" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Submit_New_Material_Info_Ajax" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String rtnRst = "remove$";
+	Submit_New_Material_Info_Ajax hPageHandle = new Submit_New_Material_Info_Ajax();
 	if(session.getAttribute("logonuser")==null)
 	{
 		rtnRst += "error:未登陆";
@@ -19,93 +20,60 @@
 		String appBarcode = request.getParameter("barcode").replace(" ", "");
 		String appWeightUnit = request.getParameter("WeightUnit").replace(" ", "");
 		String appDescription = request.getParameter("Description").replace(" ", "");
-		String storageName="other_storage";
-		Submit_Material_Ajax hPageHandle = new Submit_Material_Ajax();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		
 		if (!appStore_name.isEmpty() && !appProduct_type.isEmpty() && !appProductname.isEmpty() && !appBarcode.isEmpty() && !appWeightUnit.isEmpty())
 		{
-			if(appStore_name.indexOf("原材料库") >= 0)
+			if (hPageHandle.CheckBarcodeStatus(appBarcode))
 			{
 				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
-				if(Integer.parseInt(appBarcode) < 50000000||Integer.parseInt(appBarcode) >= 60000000)
+				if(appStore_name.indexOf("原材料库") >= 0)
 				{
-					rtnRst += "error:弄啥呢?原材料八码必须介于[50000000 ~ 60000000)之间, 你不知道吗?";
-					out.write(rtnRst);
-					return;
+					if(!hPageHandle.IsMaterialBarcode(appBarcode))
+					{
+						rtnRst += "error:弄啥呢?原材料八码必须介于[50000000 ~ 60000000)之间, 你不知道吗?";
+						out.write(rtnRst);
+						return;
+					}
+					appProduct_type = appProduct_type.contains("原锭")?appProduct_type:appProduct_type+"原锭";
+					hPageHandle.AddNewProductInfo(appBarcode, appProductname, appProduct_type, productWeight, appWeightUnit, appDescription);
 				}
-				storageName = "material_storage";
-				appProduct_type = appProduct_type.contains("原锭")?appProduct_type:appProduct_type+"原锭";
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"));
-				if (hPIHandle.RecordDBCount() <= 0)
+				else if(appStore_name.indexOf("半成品库") >= 0)
 				{
-					//product_type Database query
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
-							productWeight, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
-							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
-							"0", appDescription);
+					if(!hPageHandle.IsSemiProBarcode(appBarcode))
+					{
+						rtnRst += "error:弄啥呢?半成品八码必须介于[70000000 ~ 80000000)之间, 你不知道吗?";
+						out.write(rtnRst);
+						return;
+					}
+					appProduct_type = appProduct_type.contains("半成品")?appProduct_type.replace("半成品", "原锭"):appProduct_type+"原锭";
+					hPageHandle.AddNewProductInfo(appBarcode, appProductname, appProduct_type, productWeight, appWeightUnit, appDescription);
 				}
-			}
-			else if(appStore_name.indexOf("半成品库") >= 0)
-			{
-				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
-				if(Integer.parseInt(appBarcode) < 70000000||Integer.parseInt(appBarcode) >= 80000000)
+				else if(appStore_name.indexOf("成品库") >= 0)
 				{
-					rtnRst += "error:弄啥呢?半成品八码必须介于[70000000 ~ 80000000)之间, 你不知道吗?";
-					out.write(rtnRst);
-					return;
+					if(!hPageHandle.IsProductBarcode(appBarcode))
+					{
+						rtnRst += "error:弄啥呢?成品八码必须介于[60000000 ~ 70000000)之间, 你不知道吗?";
+						out.write(rtnRst);
+						return;
+					}
+					appProduct_type = appProduct_type.contains("原锭")?appProduct_type:appProduct_type+"原锭";
+					hPageHandle.AddNewProductInfo(appBarcode, appProductname, appProduct_type, productWeight, appWeightUnit, appDescription);
 				}
-				storageName = "semi_pro_storage";
-				appProduct_type = appProduct_type.contains("半成品")?appProduct_type:appProduct_type+"半成品";
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"));
-				if (hPIHandle.RecordDBCount() <= 0)
+				else
 				{
-					//product_type Database query
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("半成品", ""),
-							productWeight, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type.replace("半成品", "原锭"),
-							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type,
-							"0", appDescription);
-				}
-			}
-			else if(appStore_name.indexOf("成品库") >= 0)
-			{
-				String productWeight = request.getParameter("ProductWeight").replace(" ", "");
-				if(Integer.parseInt(appBarcode) < 60000000||Integer.parseInt(appBarcode) >= 70000000)
-				{
-					rtnRst += "error:弄啥呢?半成品八码必须介于[60000000 ~ 70000000)之间, 你不知道吗?";
-					out.write(rtnRst);
-					return;
-				}
-				storageName = "product_storage";
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"));
-				if (hPIHandle.RecordDBCount() <= 0)
-				{
-					//product_type Database query
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type,
-							productWeight, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type + "原锭",
-							appWeightUnit, appDescription);
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type + "半成品",
-							"0", appDescription);
+					if(!hPageHandle.IsOtherBarcode(appBarcode))
+					{
+						rtnRst += "error:弄啥呢?其他库不能使用[50000000 ~ 79999999]之间的八码, 你不知道吗?";
+						out.write(rtnRst);
+						return;
+					}
+					hPageHandle.AddNewOtherInfo(appBarcode, appProductname, appProduct_type, productWeight, appWeightUnit, appDescription);
 				}
 			}
 			else
 			{
-				if(Integer.parseInt(appBarcode) >= 50000000&&Integer.parseInt(appBarcode) < 70000000)
-				{
-					rtnRst += "error:弄啥呢?介于[50000000 ~ 69999999]之间的八码已经被原材料库和成品库占用了, 你不知道吗?";
-					out.write(rtnRst);
-					return;
-				}
-				hPIHandle.GetRecordByBarcode(hPIHandle.GetUsedBarcode(appBarcode, "other_storage"));
-				if (hPIHandle.RecordDBCount() <= 0)
-				{
-					hPIHandle.AddARecord(hPIHandle.GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type, appWeightUnit, appDescription);
-				}
+				rtnRst += "error:弄啥呢?这八码不是已经有了吗,换一个吧?";
 			}
 		}
 		else
