@@ -342,4 +342,17 @@ public class PageParentClass
 		}
 		return rtnRst;
 	}
+	
+	public boolean CheckBarcodeStatus(String barcode)
+	{
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		String[] storageList = new String[] {"Material_Storage", "Product_Storage", "Semi_Pro_Storage", "Other_Storage"};
+		int recordCount = 0;
+		for(String storageName : storageList)
+		{
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(GetUsedBarcode(barcode, storageName)));
+			recordCount += hPIHandle.RecordDBCount();
+		}
+		return recordCount > 0?false:true;
+	}
 }

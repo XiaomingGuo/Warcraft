@@ -1,25 +1,9 @@
 package com.jsp.support;
 
-import java.util.Arrays;
-
 import com.DB.operation.*;
-import com.Warcraft.Interface.*;
 
 public class Submit_New_Material_Info_Ajax extends PageParentClass
 {
-	public boolean CheckBarcodeStatus(String barcode)
-	{
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		String[] storageList = new String[] {"Material_Storage", "Product_Storage", "Semi_Pro_Storage", "Other_Storage"};
-		int recordCount = 0;
-		for(String storageName : storageList)
-		{
-			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(GetUsedBarcode(barcode, storageName)));
-			recordCount += hPIHandle.RecordDBCount();
-		}
-		return recordCount > 0?false:true;
-	}
-	
 	private void AddNewManufactoryMaterialInfo(String appBarcode, String appProductname, String appProduct_type, String productWeight, String appWeightUnit, String appDescription)
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());

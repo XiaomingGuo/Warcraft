@@ -30,6 +30,10 @@ function InputBarcode(obj)
 			AddNewSelectItem("product_name", proInfoList[3]);
 			$("#product_name").change();
 		}
+		else
+		{
+			$("#barcode").val("");
+		}
 	});
 }
 
