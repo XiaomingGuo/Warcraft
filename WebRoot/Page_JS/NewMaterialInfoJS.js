@@ -188,21 +188,20 @@ function AddMaterialFun()
 	var tab = document.getElementById('display_add');
 	if(tab.rows.length < 2)
 	{
-		alert("申领数量超出库存数量或申领信息填写不完整!");
+		alert("我没发现有新物料信息要添加啊!");
 		return;
 	}
 
 	for(var iRow=1; iRow < tab.rows.length; iRow++)
 	{
-		$.post("Ajax/Submit_New_Material_Info_Ajax.jsp", {"store_name_addproduct":tab.rows[iRow].cells[1].innerText,
+		$.post("Ajax/Submit_New_Material_Info_Ajax.jsp", {"store_name":tab.rows[iRow].cells[1].innerText,
 			"product_type":tab.rows[iRow].cells[2].innerText, "productname":tab.rows[iRow].cells[3].innerText,
-			"barcode":tab.rows[iRow].cells[4].innerText, "WeightUnit":tab.rows[iRow].cells[6].innerText,
-			"ProductWeight":tab.rows[iRow].cells[7].innerText, "Description":tab.rows[iRow].cells[9].innerText},
+			"barcode":tab.rows[iRow].cells[4].innerText, "WeightUnit":tab.rows[iRow].cells[5].innerText,
+			"ProductWeight":tab.rows[iRow].cells[6].innerText, "Description":tab.rows[iRow].cells[7].innerText},
 			function(data, textStatus)
 		{
 			if (!CheckAjaxResult(textStatus, data))
 			{
-				alert(data);
 				return;
 			}
 		});
