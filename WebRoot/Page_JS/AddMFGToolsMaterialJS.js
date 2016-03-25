@@ -64,8 +64,8 @@ function AddMFGToolsMaterialFun()
 	for(var iRow=1; iRow < tab.rows.length; iRow++)
 	{
 		$.post("Ajax/Submit_Material_Ajax.jsp", {"barcode":tab.rows[iRow].cells[4].innerText,
-			"QTY":tab.rows[iRow].cells[5].innerText,"PriceUnit":tab.rows[iRow].cells[8].innerText,
-			"supplier_name":tab.rows[iRow].cells[10].innerText,"SubmitDate":addDate},
+			"QTY":tab.rows[iRow].cells[5].innerText,"PriceUnit":tab.rows[iRow].cells[7].innerText,
+			"supplier_name":tab.rows[iRow].cells[9].innerText,"SubmitDate":addDate},
 			function(data, textStatus)
 		{
 			if (!CheckAjaxResult(textStatus, data))
