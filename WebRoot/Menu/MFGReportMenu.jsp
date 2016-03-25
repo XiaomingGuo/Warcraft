@@ -15,9 +15,9 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    
+<head>
+	<base href="<%=basePath%>">
+	    
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -27,11 +27,11 @@
 	<style>
 	body{background:#ECF5FF}
 	</style>
-  </head>
-  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/MenuJS.js"></script>
-  <body>
+</head>
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/MenuJS.js"></script>
+<body>
 <!-- -->
 <br>
 	<table width="80%" align="center">
@@ -47,20 +47,20 @@
 <%
 						int temp = mylogon.getUserRight()&2;
 						if(temp == 0)
-					  	{
+						{
 %>
 						
 						<a href = 'ChangePassword.jsp'>修改密码</a>
 <%
-					  	}
-					  	else
-					  	{
+						}
+						else
+						{
 %>
 						<a href = 'ChangePassword.jsp'>修改密码</a>&nbsp;&nbsp;
 						<a href = 'UserManagement.jsp?BeginPage=1'>用户管理</a>
 				
 <%
-				  		}
+						}
 %>
 						</td>
 					</tr>
@@ -74,20 +74,20 @@
 						</td>
 					</tr>
 				</table>
-	  			<h2 align="center">
-			    	<ul>
-			    		<li><a href="MainPage.jsp">首页</a></li>
-			    		<li><a href="ManufactorySummary.jsp">生产库存</a></li>
-			    		<li><a href="ShippingSummary.jsp">出货报表</a></li>
-			    		<li><a href="ManufactorySummary.jsp">半成品库存</a></li>
-			    		<li><a href="Quit.jsp">退出</a></li>
-			    	</ul>
-			    </h2>
-	    		<hr width=95% noshade="noshade" size="5">
-	    	</td>
-    	</tr>
-    </table>
-  </body>
+					<h2 align="center">
+					<ul>
+						<li><a href="MainPage.jsp">首页</a></li>
+						<li><a href="ManufactorySummary.jsp">生产库存</a></li>
+						<li><a href="ShippingSummary.jsp">出货报表</a></li>
+						<li><a href="ManufactorySummary.jsp">半成品库存</a></li>
+						<li><a href="Quit.jsp">退出</a></li>
+					</ul>
+				</h2>
+				<hr width=95% noshade="noshade" size="5">
+			</td>
+		</tr>
+	</table>
+	</body>
 </html>
 <%
 	}
