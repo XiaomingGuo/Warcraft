@@ -3,12 +3,7 @@
  */
 $(function()
 {
-	var $store_name_addproduct = $('#store_name_addproduct');
-	var $product_type = $('#product_type');
-	var $product_name = $('#product_name');
-	var $bar_code = $('#bar_code');
-	
-	$store_name_addproduct.change(function()
+	$('#store_name_addproduct').change(function()
 	{
 		ClearSelectContent("supplier_name");
 		ClearSelectContent("product_type");
@@ -39,7 +34,7 @@ $(function()
 		});
 	});
 	
-	$product_type.change(function()
+	$('#product_type').change(function()
 	{
 		ClearSelectContent("product_name");
 		ClearSelectContent("bar_code");
@@ -64,9 +59,9 @@ $(function()
 		});
 	});
 	
-	$product_name.change(function()
+	$('#product_name').change(function()
 	{
-		$bar_code.empty();
+		$('#bar_code').empty();
 		$("#productname").val("");
 		$("#barcode").val("");
 		$("#QTY").val("");
@@ -95,7 +90,7 @@ $(function()
 				}
 				else
 				{
-					$bar_code.append('<option value="请选择">--请选择--</option>');
+					$('#bar_code').append('<option value="请选择">--请选择--</option>');
 					$("#barcode").val("");
 					$("#WeightUnit").val(code_list[2]);
 				}
@@ -103,7 +98,7 @@ $(function()
 		});
 	});	
 	
-	$bar_code.change(function()
+	$('#bar_code').change(function()
 	{
 		$("#barcode").val("");
 		var selectedBarcode = GetSelectedContent("bar_code");
@@ -167,73 +162,73 @@ function additem(obj)
 	}
 	var tab = document.getElementById('display_add');
 	var sampleCount = inputHead.length;
-    if(1 > tab.rows.length)
+	if(1 > tab.rows.length)
 	{
-        var myHeadRow = document.createElement("tr");
-        myHeadRow.setAttribute("align", "center");
-    	myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
-        for(var iCol=0; iCol < sampleCount; iCol++)
-    	{
-        	myHeadRow.appendChild(CreateTabCellContext("th", inputHead[iCol]));
-    	}
-        myHeadRow.appendChild(CreateTabCellContext("th", "操作"));
-        tab.appendChild(myHeadRow);
+		var myHeadRow = document.createElement("tr");
+		myHeadRow.setAttribute("align", "center");
+		myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
+		for(var iCol=0; iCol < sampleCount; iCol++)
+		{
+			myHeadRow.appendChild(CreateTabCellContext("th", inputHead[iCol]));
+		}
+		myHeadRow.appendChild(CreateTabCellContext("th", "操作"));
+		tab.appendChild(myHeadRow);
 	}
 
-    var myCurrentRow = document.createElement("tr");
-    var index = tab.rows.length;
-    myCurrentRow.appendChild(CreateTabCellContext("td", index));
-    for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
+	var myCurrentRow = document.createElement("tr");
+	var index = tab.rows.length;
+	myCurrentRow.appendChild(CreateTabCellContext("td", index));
+	for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
 	{
-    	var val = "";
-    	if("库名" == tab.rows[0].cells[iCol].innerText)
+		var val = "";
+		if("库名" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = GetSelectedContent("store_name_addproduct");
+			val = GetSelectedContent("store_name_addproduct");
 		}
-    	else if("类别" == tab.rows[0].cells[iCol].innerText)
+		else if("类别" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = GetSelectedContent("product_type");
+			val = GetSelectedContent("product_type");
 		}
-    	else if("产品名称" == tab.rows[0].cells[iCol].innerText)
+		else if("产品名称" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#productname").val();
+			val = $("#productname").val();
 		}
-    	else if("八码" == tab.rows[0].cells[iCol].innerText)
+		else if("八码" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#barcode").val();
+			val = $("#barcode").val();
 		}
-    	else if("入库数量" == tab.rows[0].cells[iCol].innerText)
+		else if("入库数量" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#QTY").val();
+			val = $("#QTY").val();
 		}
-    	else if("原材料单重" == tab.rows[0].cells[iCol].innerText)
+		else if("原材料单重" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#WeightUnit").val();
+			val = $("#WeightUnit").val();
 		}
-    	else if("成品单重" == tab.rows[0].cells[iCol].innerText)
+		else if("成品单重" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#ProductWeight").val();
+			val = $("#ProductWeight").val();
 		}
-    	else if("单重" == tab.rows[0].cells[iCol].innerText)
+		else if("单重" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#WeightUnit").val();
+			val = $("#WeightUnit").val();
 		}
-    	else if("单价" == tab.rows[0].cells[iCol].innerText)
+		else if("单价" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#PriceUnit").val();
+			val = $("#PriceUnit").val();
 		}
-    	else if("备注" == tab.rows[0].cells[iCol].innerText)
+		else if("备注" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = $("#Description").val();
+			val = $("#Description").val();
 		}
-    	else if("供应商" == tab.rows[0].cells[iCol].innerText)
+		else if("供应商" == tab.rows[0].cells[iCol].innerText)
 		{
-    		val = GetSelectedContent("supplier_name");
+			val = GetSelectedContent("supplier_name");
 		}
-    	myCurrentRow.appendChild(CreateTabCellContext("td", val));
+		myCurrentRow.appendChild(CreateTabCellContext("td", val));
 	}
-    myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='deladditem(this)'>"));
-    tab.appendChild(myCurrentRow);
+	myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='deladditem(this)'>"));
+	tab.appendChild(myCurrentRow);
 }
 
 function deladditem(obj)

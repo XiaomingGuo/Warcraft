@@ -1,6 +1,8 @@
 /**
  * 
  */
+var inputHead = ["库名", "类别", "产品名称", "八码", "入库数量", "原材料单重", "成品单重", "备注"];
+
 $(function()
 {
 	$('#from_store_name').change(function()
@@ -277,6 +279,12 @@ function DoTranferBarcode()
 	var to_store_name = GetSelectedContent("to_store_name");
 	var from_barcode = GetSelectedContent("from_bar_code");
 	var to_barcode = GetSelectedContent("to_bar_code");
+	var tab = document.getElementById('display_add');
+	if(tab.rows.length < 2)
+	{
+		alert("申领数量超出库存数量或申领信息填写不完整!");
+		return;
+	}
 	if(from_store_name.indexOf("请选择") > 0||to_store_name.indexOf("请选择") > 0||
 			$("#from_QTY").val() == ""||$("#to_QTY").val() == ""||
 			from_barcode.indexOf("请选择") > 0||to_barcode.indexOf("请选择") > 0)
@@ -299,14 +307,127 @@ function DoTranferBarcode()
 		alert("同一种物料无需转换!");
 		return;
 	}
-	$.post("Ajax/TransferMFGMaterialBarcode_Ajax.jsp", {"store_name":from_store_name,
-		"from_bar_code":from_barcode, "to_bar_code":to_barcode,
-		"from_QTY":$("#from_QTY").val(), "to_QTY":$("#to_QTY").val()}, function(data, textStatus)
+	for(var iRow=1; iRow < tab.rows.length; iRow++)
 	{
-		if (!CheckAjaxResult(textStatus, data))
+		$.post("Ajax/TransferMFGMaterialBarcode_Ajax.jsp", {"store_name":from_store_name,
+			"from_bar_code":from_barcode, "to_bar_code":tab.rows[iRow].cells[4].innerText,
+			"from_QTY":$("#from_QTY").val(), "to_QTY":tab.rows[iRow].cells[5].innerText, "saveFromFlag":iRow-1}, function(data, textStatus)
 		{
-			alert(data);
-			return;
-		}
-	});
+			if (!CheckAjaxResult(textStatus, data))
+			{
+				return;
+			}
+		});
+	}
+	while(tab.rows.length > 0)
+	{
+		tab.deleteRow(0);
+	}
 }
+
+function CheckSubmitInfo()
+{
+	if(GetSelectedContent("to_store_name").indexOf("请选择")>0||GetSelectedContent("to_product_type").indexOf("请选择")>0||$("#to_productname").val() == ""||
+			$("#to_barcode").val() == ""||$("#to_QTY").val() == ""||$("#to_WeightUnit").val() == ""||$("#to_Description").val() == "")
+	{
+		return false;
+	}
+	if(parseInt($("#to_QTY").val()) <= 0)
+	{
+		return false;
+	}
+	return true;
+}
+
+function additem(obj)
+{
+	if(!CheckSubmitInfo())
+	{
+		alert("申领数量超出库存数量或申领信息填写不完整!");
+		return;
+	}
+	var tab = document.getElementById('display_add');
+	var sampleCount = inputHead.length;
+	if(1 > tab.rows.length)
+	{
+		var myHeadRow = document.createElement("tr");
+		myHeadRow.setAttribute("align", "center");
+		myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
+		for(var iCol=0; iCol < sampleCount; iCol++)
+		{
+			myHeadRow.appendChild(CreateTabCellContext("th", inputHead[iCol]));
+		}
+		myHeadRow.appendChild(CreateTabCellContext("th", "操作"));
+		tab.appendChild(myHeadRow);
+	}
+
+	var myCurrentRow = document.createElement("tr");
+	var index = tab.rows.length;
+	myCurrentRow.appendChild(CreateTabCellContext("td", index));
+	for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
+	{
+		var val = "";
+		if("库名" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = GetSelectedContent("to_store_name");
+		}
+		else if("类别" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = GetSelectedContent("to_product_type");
+		}
+		else if("产品名称" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_productname").val();
+		}
+		else if("八码" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_barcode").val();
+		}
+		else if("入库数量" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_QTY").val();
+		}
+		else if("原材料单重" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_WeightUnit").val();
+		}
+		else if("成品单重" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_ProductWeight").val();
+		}
+		else if("备注" == tab.rows[0].cells[iCol].innerText)
+		{
+			val = $("#to_Description").val();
+		}
+		myCurrentRow.appendChild(CreateTabCellContext("td", val));
+	}
+	myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='deladditem(this)'>"));
+	tab.appendChild(myCurrentRow);
+}
+
+function deladditem(obj)
+{
+	var tab = document.getElementById('display_add');
+	for(var iRow=1; iRow < tab.rows.length; iRow++)
+	{
+		if(tab.rows[iRow].cells[0].innerText == obj.name)
+		{
+			tab.deleteRow(iRow);
+			if(tab.rows.length == 1)
+				tab.deleteRow(0);
+			break;
+		}
+	}
+	initRows(tab);
+}
+
+function initRows(tab)
+{
+	var tabRows = tab.rows.length;  
+	for(var i = 1; i<tabRows; i++)
+	{
+		tab.rows[i].cells[0].innerText=i;
+		tab.rows[i].cells[tab.rows[i].cells.length-1].innerHTML="<input align='middle' type='button' name='"+ i +"' value='删除' onclick='deladditem(this)'>";  
+	}
+}
+

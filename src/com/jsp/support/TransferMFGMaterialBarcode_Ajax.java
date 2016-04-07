@@ -54,7 +54,7 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 		return rtnRst;
 	}
 	
-	public void UpdateStorageRecord(List<List<String>> recordList, String from_barcode, int from_QTY, String to_barcode, int to_QTY)
+	public void UpdateStorageRecord(List<List<String>> recordList, String from_barcode, int from_QTY, String to_barcode, int to_QTY, int saveFromFlag)
 	{
 		int used_count = from_QTY;
 		String to_Batch_Lot = GenBatchLot(to_barcode);
