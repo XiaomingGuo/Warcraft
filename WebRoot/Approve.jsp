@@ -61,6 +61,7 @@
 
   </head>
   	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   <body>
     <jsp:include page="Menu/MFGToolsMenu.jsp"/>
     <center>
@@ -138,7 +139,7 @@
 			function change(obj)
 			{
 				var tempList = obj.name.split("$");
-				$("#"+tempList[0]).attr("disabled","disabled");
+				DisableButton(tempList[0]);
 				$.post("Ajax/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
 				{
 					if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))

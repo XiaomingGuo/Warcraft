@@ -76,7 +76,7 @@ function DoTransfer(obj)
 		alert("物料数量怎么能小于等于零呢？");
 		return;
 	}
-	$("#"+tempList[2]+"_Button").attr("disabled", "disabled");
+	DisableButton(tempList[2]+"_Button");
 	$.post("Ajax/Transfer_To_SemiProduct_Ajax.jsp", {"Bar_Code":tempList[0], "PO_Name":tempList[1], "TransQty":storeQTY}, function(data, textStatus)
 	{
 		if (!(textStatus == "success"))

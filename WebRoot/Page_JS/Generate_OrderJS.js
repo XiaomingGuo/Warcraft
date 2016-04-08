@@ -23,11 +23,11 @@ function changeOrderName(obj)
 			var status = data_list[1], iColCount = data_list[2], iRowCount = data_list[3];
 			if (status != "null")
 			{
-				$("#confirm_button").attr("disabled", "disabled");
+				DisableButton("confirm_button");
 			}
 			else
 			{
-				$("#confirm_button").removeAttr("disabled");
+				EnableButton("confirm_button");
 			}
 			if (iColCount > 0&&iRowCount > 0)
 			{

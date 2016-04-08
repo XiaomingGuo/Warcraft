@@ -91,7 +91,6 @@ function AddToMaterialStorage(obj)
 		return;
 	}
 	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-	//$("#"+valueList[1]+"_Button").attr("disabled", "disabled");
 	$.post("Ajax/AddMFGMaterial_ReferTo_PO_Ajax.jsp", {"mb_material_po_id":tempList[0], "PutInQTY":storeQTY, "AddDate":addDate}, function(data, textStatus)
 	{
 		if (!(textStatus == "success"))

@@ -74,3 +74,13 @@ function CreateTabCellContext(keyWord, value)
     myCurrentCell.innerHTML = value;
     return myCurrentCell;
 }
+
+function DisableButton(keyWord)
+{
+	$("#"+keyWord).attr("disabled", "disabled");
+}
+
+function EnableButton(keyWord)
+{
+	$("#"+keyWord).removeAttr("disabled");
+}
