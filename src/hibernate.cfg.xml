@@ -18,10 +18,12 @@
 	<mapping resource="com/DB/support/UserInfo.hbm.xml" />
 	<mapping resource="com/DB/support/CustomerPoRecord.hbm.xml" />
 	<mapping resource="com/DB/support/CustomerPo.hbm.xml" />
+	<mapping resource="com/DB/support/ExhaustedManuStorageRecord.hbm.xml" />
 	<mapping resource="com/DB/support/ExhaustedSemiProduct.hbm.xml" />
 	<mapping resource="com/DB/support/ExhaustedMaterial.hbm.xml" />
 	<mapping resource="com/DB/support/ExhaustedOther.hbm.xml" />
 	<mapping resource="com/DB/support/ExhaustedProduct.hbm.xml" />
+	<mapping resource="com/DB/support/ManuStorageRecord.hbm.xml" />
 	<mapping resource="com/DB/support/MaterialRecord.hbm.xml" />
 	<mapping resource="com/DB/support/MaterialStorage.hbm.xml" />
 	<mapping resource="com/DB/support/MbMaterialPoRecord.hbm.xml" />
