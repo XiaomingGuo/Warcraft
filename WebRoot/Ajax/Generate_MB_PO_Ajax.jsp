@@ -20,7 +20,7 @@
 				String strVendor = recordList.get(1).get(iRow);
 				int iRepertory = 0;
 				if(!POName.contains("MB_"))
-					iRepertory = hPageHandle.GetAllRepertoryByPOName(strBarcode, POName);
+					iRepertory = hPageHandle.GetHasFinishPurchaseNum(strBarcode, POName);
 				int manufacture_QTY = hPageHandle.CalcOrderQty(recordList.get(2).get(iRow), recordList.get(3).get(iRow));
 				
 				if (iRepertory < manufacture_QTY)

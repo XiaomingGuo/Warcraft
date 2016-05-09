@@ -74,7 +74,6 @@ function changePOName()
 					}
 					$displayOrder.append(tr);
 				}
-				
 			}
 		}
 	});

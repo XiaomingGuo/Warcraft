@@ -49,7 +49,7 @@
 		for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 		{
 %>
-	   			<th><%= displayKeyList[iCol-1]%></th>
+				<th><%= displayKeyList[iCol-1]%></th>
 <%
 		}
 %>
@@ -68,19 +68,19 @@
 					String Bar_Code = recordList.get(0).get(iRow-1);
 					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Bar_Code));
 					if (displayKeyList[iCol-1] == "ID")
-			    	{
+					{
 %>
-    			<td><%=iRow %></td>
+				<td><%=iRow %></td>
 <%
-			    	}
-			    	else if (displayKeyList[iCol-1] == "产品名称")
-			    	{
+					}
+					else if (displayKeyList[iCol-1] == "产品名称")
+					{
 %>
     			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
 <%
-			    	}
-			    	else if (displayKeyList[iCol-1] == "八码")
-			    	{
+					}
+					else if (displayKeyList[iCol-1] == "八码")
+					{
 %>
     			<td><%= Bar_Code %></td>
 <%

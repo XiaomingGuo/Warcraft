@@ -12,19 +12,19 @@ public class Query_Material_PO_Item_Ajax extends PageParentClass
 	public List<List<String>> GetAllStorageRecord(String po_name)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
-		hMSHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name", "isEnsure"), Arrays.asList(po_name, "1"), Arrays.asList("Bar_Code"));
-		if (hMSHandle.RecordDBCount() > 0)
+		Manu_Storage_Record hMSRHandle = new Manu_Storage_Record(new EarthquakeManagement());
+		hMSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name", "isEnsure"), Arrays.asList(po_name, "1"), Arrays.asList("Bar_Code"));
+		if (hMSRHandle.RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"Bar_Code", "po_name", "date_of_delivery", "vendor_name",  "QTY"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
 			{
 				if("date_of_delivery" == sqlKeyList[idx])
-					rtnRst.add(GetDeliveryDate(hMSHandle.getDBRecordList("Bar_Code"), po_name));
+					rtnRst.add(GetDeliveryDate(hMSRHandle.getDBRecordList("Bar_Code"), po_name));
 				else if("QTY" == sqlKeyList[idx])
-					rtnRst.add(GetRepertoryOfStorage(hMSHandle.getDBRecordList("Bar_Code"), po_name));
+					rtnRst.add(GetRepertoryOfStorage(hMSRHandle.getDBRecordList("Bar_Code"), po_name));
 				else
-					rtnRst.add(hMSHandle.getDBRecordList(sqlKeyList[idx]));
+					rtnRst.add(hMSRHandle.getDBRecordList(sqlKeyList[idx]));
 			}
 		}
 		return rtnRst;
@@ -47,7 +47,7 @@ public class Query_Material_PO_Item_Ajax extends PageParentClass
 	private List<String> GetQTYOfStorage(String getKeyWord, List<String> barcodeList, String po_name)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		Manu_Storage_Record hMSHandle = new Manu_Storage_Record(new EarthquakeManagement());
 		for (String barcode : barcodeList)
 		{
 			int curQty = hMSHandle.GetIntSumOfValue(getKeyWord, Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));

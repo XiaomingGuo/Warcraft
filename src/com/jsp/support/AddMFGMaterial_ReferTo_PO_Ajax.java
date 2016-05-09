@@ -1,7 +1,6 @@
 package com.jsp.support;
 
 import java.util.Arrays;
-
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 
@@ -22,11 +21,5 @@ public class AddMFGMaterial_ReferTo_PO_Ajax extends PageParentClass
 			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "empty", poName, vendor, addDate);
 		}
 		return hMMPHandle.getDBRecordList("po_name").get(0);
-	}
-	
-	public int GetOUT_QTYByBarCode(String barcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 	}
 }

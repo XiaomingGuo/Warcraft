@@ -25,12 +25,18 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		return rtnRst;
 	}
 	
-	private void UpdateARecordPoName(String barcode, String batchLot, String poName)
+	private void UpdateARecordPoName(String barcode, String batchLot, String POName, int iQty)
 	{
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		((ITableInterface)hHandle).UpdateRecordByKeyList("po_name", poName, Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		((ITableInterface)hHandle).UpdateRecordByKeyList("OUT_QTY", Integer.toString(iQty+Integer.parseInt(hHandle.getDBRecordList("OUT_QTY").get(0))), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		IStorageTableInterface hProcessHandle = GenProcessStorageHandle(barcode);
+		hProcessHandle.AddARecord(barcode, batchLot, Integer.toString(iQty), hHandle.getDBRecordList("Price_Per_Unit").get(0),
+				hHandle.getDBRecordList("Total_Price").get(0), hHandle.getDBRecordList("Order_Name").get(0), POName,
+				hHandle.getDBRecordList("vendor_name").get(0), hHandle.getDBRecordList("in_store_date").get(0));
+		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
-		
+	
 	public void UpdateStoragePoName(String strBarcode, String POName, int mbPoQty)
 	{
 		int tempQty = SetStoragePoName(strBarcode, POName, mbPoQty, "Product_Storage");
@@ -54,44 +60,35 @@ public class Transfer_Storage_Ajax extends PageParentClass
 				
 				if(icurRepertory <= rtnRst)
 				{
-					UpdateARecordPoName(curBarcode, curBatchLot, POName);
+					UpdateARecordPoName(curBarcode, curBatchLot, POName, icurRepertory);
 					rtnRst -= icurRepertory;
 				}
 				else
 				{
-					UpdateARecordPoName(curBarcode, SplitStorageRecord(curBarcode, curBatchLot, rtnRst), POName);
+					UpdateARecordPoName(curBarcode, curBatchLot, POName, rtnRst);
 					break;
 				}
 			}
 		}
 		return rtnRst;
 	}
-
-	private String SplitStorageRecord(String curBarcode, String curBatchLot, int usedQty)
-	{
-		String rtnRst = null;
-		IStorageTableInterface hHandle = GenStorageHandle(curBarcode);
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot", "isEnsure"), Arrays.asList(curBarcode, curBatchLot, "1"));
-		rtnRst = GenBatchLot(curBatchLot.split("-")[0], curBarcode);
-		double pricePerUnit = Double.parseDouble(hHandle.getDBRecordList("Price_Per_Unit").get(0));
-		String vendor = hHandle.getDBRecordList("vendor_name").get(0);
-		String inStoreDate = hHandle.getDBRecordList("in_store_date").get(0);
-		hHandle.AddARecord(curBarcode, rtnRst, Integer.toString(usedQty), Double.toString(pricePerUnit), Double.toString(pricePerUnit*usedQty), "empty", "Material_Supply", vendor, inStoreDate);
-		((ITableInterface)hHandle).UpdateRecordByKeyList("isEnsure", hHandle.getDBRecordList("isEnsure").get(0), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, rtnRst));
-		int oriInQty = Integer.parseInt(hHandle.getDBRecordList("IN_QTY").get(0));
-		((ITableInterface)hHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(oriInQty-usedQty), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(curBarcode, curBatchLot));
-		return rtnRst;
-	}
-
-	public List<List<String>> GetStorageRecordList(String barcode, String storageName)
+	
+	private List<List<String>> GetStorageRecordList(String barcode, String storageName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hHandle.GetUsedBarcode(barcode, storageName), "Material_Supply", "1"));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(hHandle.GetUsedBarcode(barcode, storageName), "1"));
+		List<String> tempPoName = hHandle.getDBRecordList("po_name");
 		String[] KeywordList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY"};
-		for(int idx=0; idx < KeywordList.length; idx++)
+		for(int keyWordIdx=0; keyWordIdx < KeywordList.length; keyWordIdx++)
 		{
-			rtnRst.add(hHandle.getDBRecordList(KeywordList[idx]));
+			rtnRst.add(new ArrayList<String>());
+			List<String> tempRstList = hHandle.getDBRecordList(KeywordList[keyWordIdx]);
+			for(int recordIdx=0; recordIdx < tempPoName.size(); recordIdx++)
+			{
+				if(IsCustomerPoClose(tempPoName.get(recordIdx)))
+					rtnRst.get(keyWordIdx).add(tempRstList.get(recordIdx));
+			}
 		}
 		return rtnRst;
 	}
@@ -131,5 +128,14 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
 		if(hCPHandle.RecordDBCount() <= 0)
 			hCPHandle.AddARecord(POName);
+	}
+	
+	public boolean CheckSubmitPo(String POName)
+	{
+		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
+		if (hCPHandle.RecordDBCount() > 0)
+			return true;
+		return false;
 	}
 }

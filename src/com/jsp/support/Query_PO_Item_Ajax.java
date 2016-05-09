@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.*;
 
 public class Query_PO_Item_Ajax extends PageParentClass
 {
@@ -44,5 +45,11 @@ public class Query_PO_Item_Ajax extends PageParentClass
 		rtnRst = hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(strBarcode, po_name));
 		rtnRst -= GetHasFinishPurchaseNum(strBarcode, po_name);
 		return rtnRst;
+	}
+	
+	public int GetInProcessQty(String barcode, String po_name)
+	{
+		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		return ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
 	}
 }

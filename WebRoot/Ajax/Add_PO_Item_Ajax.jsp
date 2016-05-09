@@ -1,7 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.Customer_Po_Record"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Add_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -16,21 +13,15 @@
 	
 	if (hPageHandle.CheckParamValidityMoreThanLength(poname, 6))
 	{
-		if (hPageHandle.IsCustomerPoClose(poname))
+		if (!hPageHandle.IsCustomerPoClose(poname))
 		{
-			if (hPageHandle.IsCustomerPoRecordHasCurrentRecord(barcode, poname))
-			{
-				if(!hPageHandle.NewARecordInCustomerPoRecord(barcode, poname, deliv_date, cpo_qty, vendorname, percent))
-					rtnRst += "error:大哥这输入的参数好像有问题,麻烦检查下重新输入一下吧？";
-			}
-			else
-				rtnRst += "error:大哥这产品已经有了,要不麻烦您删掉重新输入下？";
+			if(!hPageHandle.NewARecordInCustomerPoRecord(barcode, poname, deliv_date, cpo_qty, vendorname, percent))
+				rtnRst += "error:大哥这输入的参数好像有问题,麻烦检查下重新输入一下吧？";
 		}
 		else
 			rtnRst += "error:大哥这生产单已经有了,换个生产单名吧!";
 	}
 	else
 		rtnRst += "error:PO单号忒短了点儿!";
-
 	out.write(rtnRst);
 %>

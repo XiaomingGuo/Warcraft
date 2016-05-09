@@ -1,9 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Material_Storage" %>
+<%@ page import="com.DB.operation.Manu_Storage_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Transfer_To_SemiProStorage" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	Transfer_To_SemiProStorage hPageHandle = new Transfer_To_SemiProStorage();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -21,12 +23,10 @@
 			message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
-			hMSHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
-			List<String> POList = hMSHandle.getDBRecordList("po_name");
+			List<String> POList = hPageHandle.GetManuStoragePOList();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

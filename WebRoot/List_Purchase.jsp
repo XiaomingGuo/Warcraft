@@ -2,6 +2,7 @@
 <%@ page import="com.jsp.support.List_Purchase" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
+	List_Purchase hPageHandle = new List_Purchase();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -19,11 +20,10 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			String POName = request.getParameter("PO_Name").replace(" ", "");
-			List_Purchase hPageHandle = new List_Purchase();
-			List<String> vendorList = hPageHandle.GetCustomerPoVendorGroup(POName);
 			
+			List<String> vendorList = hPageHandle.GetCustomerPoVendorGroup(POName);
 			List<String> deliveryDateList = new ArrayList<String>();
-
+			
 			for (int index = 0; index < vendorList.size(); )
 			{
 				boolean isRemoveVendor = true;
@@ -37,7 +37,7 @@
 					String percent = recordList.get(2).get(recordIndex);
 					int poQty = hPageHandle.CalcOrderQty(cusPoQty, percent);
 					
-					int repertory = hPageHandle.GetAllRepertoryByPOName(barcode, POName);
+					int repertory = hPageHandle.GetHasFinishPurchaseNum(barcode, POName) + ;
 					if (repertory < poQty)
 					{
 						isRemoveVendor = false;
@@ -60,10 +60,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <base href="<%=basePath%>">
-    
-    <title>生产单查询</title>
-    
+	<base href="<%=basePath%>">
+	
+	<title>生产单查询</title>
+	
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -76,9 +76,9 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
-    <br><br><br>
-    <table align="center">
+	<jsp:include page="Menu/ManufactureMenu.jsp"/>
+	<br><br><br>
+	<table align="center">
 <%
 			for (int iRow = 0; iRow < vendorList.size(); iRow++)
 			{
@@ -91,9 +91,9 @@
 <%
 			}
 %>
-   	</table>
+	</table>
   </body>
-   	<script type="text/javascript">
+	<script type="text/javascript">
 		function func(obj)
 		{
 			var paramList = obj.name.split("$");
