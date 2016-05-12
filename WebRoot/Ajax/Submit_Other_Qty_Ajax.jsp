@@ -3,12 +3,12 @@
 <%
 	String rtnRst = "remove$";
 	String barcode = request.getParameter("Bar_Code");
-	String recordId = request.getParameter("recordId");
+	String batchLot = request.getParameter("Batch_Lot");
 	
 	if (barcode != null||barcode == "")
 	{
 		Submit_Reject_Storage_Qty_Ajax hPageHandle = new Submit_Reject_Storage_Qty_Ajax();
-		hPageHandle.EnsureStorageStatusByIdAndBarcode(recordId, barcode);
+		hPageHandle.EnsureProductStorageStatusByBarcodeAndBatchLot(barcode, batchLot);
 	}
 	out.write(rtnRst);
 %>

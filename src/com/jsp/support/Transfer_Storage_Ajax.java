@@ -34,6 +34,9 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		hProcessHandle.AddARecord(barcode, batchLot, Integer.toString(iQty), hHandle.getDBRecordList("Price_Per_Unit").get(0),
 				hHandle.getDBRecordList("Total_Price").get(0), hHandle.getDBRecordList("Order_Name").get(0), POName,
 				hHandle.getDBRecordList("vendor_name").get(0), hHandle.getDBRecordList("in_store_date").get(0));
+		((ITableInterface)hProcessHandle).UpdateRecordByKeyList("isEnsure", "1", 
+				Arrays.asList("Bar_Code", "Batch_Lot", "in_store_date"), 
+				Arrays.asList(barcode, batchLot, hHandle.getDBRecordList("in_store_date").get(0)));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
 	

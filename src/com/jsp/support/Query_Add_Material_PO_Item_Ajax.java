@@ -49,7 +49,7 @@ public class Query_Add_Material_PO_Item_Ajax extends PageParentClass
 		
 		if (recordList.size() > 0)
 		{
-			//int iRowCount = recordList.get(0).size(), iColCount = m_displayList.length;
+			//"id", "Bar_Code", "po_name", "date_of_delivery", "vendor",  "PO_QTY", "create_date"
 			for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
 			{
 				int iPurchaseCount = 0, iFinishCount = 0;
@@ -93,7 +93,7 @@ public class Query_Add_Material_PO_Item_Ajax extends PageParentClass
 					}
 					else if ("已交数量" == m_displayList[iCol])
 					{
-						iFinishCount = GetHasFinishPurchaseNum(strBarcode, recordList.get(2).get(iRow));
+						iFinishCount = GetHasFinishPurchaseNumWithoutEnsure(strBarcode, recordList.get(2).get(iRow));
 						rtnRst += Integer.toString(iFinishCount) + "$";
 					}
 					else if ("未交数量" == m_displayList[iCol])

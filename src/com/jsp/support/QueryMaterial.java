@@ -14,9 +14,13 @@ public class QueryMaterial extends PageParentClass
 		List<List<String>> rtnRst = GetAllRecordWithoutEnsure(new Manu_Storage_Record(new EarthquakeManagement()));
 		List<List<String>> tempList = GetAllRecordWithoutEnsure(new Product_Storage(new EarthquakeManagement()));
 		for(int idx = 0; idx < rtnRst.size(); idx++)
-		{
 			rtnRst.get(idx).addAll(tempList.get(idx));
-		}
+		tempList = GetAllRecordWithoutEnsure(new Material_Storage(new EarthquakeManagement()));
+		for(int idx = 0; idx < rtnRst.size(); idx++)
+			rtnRst.get(idx).addAll(tempList.get(idx));
+		tempList = GetAllRecordWithoutEnsure(new Semi_Product_Storage(new EarthquakeManagement()));
+		for(int idx = 0; idx < rtnRst.size(); idx++)
+			rtnRst.get(idx).addAll(tempList.get(idx));
 		return rtnRst;
 	}
 	

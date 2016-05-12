@@ -64,7 +64,7 @@
 					}
 					else if("成品库存" == displayList[iCol])
 					{
-						iPro_storage = hPageHandle.GetProductRepertory(strBarcode, po_name);
+						iPro_storage = hPageHandle.GetAllRepertoryByPOName(strBarcode, po_name);
 						rtnRst += Integer.toString(iPro_storage)  + "$";
 					}
 					else if("半成品库存" == displayList[iCol])

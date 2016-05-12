@@ -28,14 +28,13 @@
 			String DeliveryDate = hPageHandle.GenYearString();
 			String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <base href="<%=basePath%>">
-    
-    <title>PO物料入库</title>
-    
+	<base href="<%=basePath%>">
+	
+	<title>PO物料入库</title>
+	
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -47,57 +46,57 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMFGMaterial_ReferTo_POJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/AddMFGMaterial_ReferTo_POJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
-   	<script type="text/javascript">
+	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/DataEnterMenu.jsp"/>
-    <br><br>
-    <table align="center">
-    	<tr>
-    		<td>
-		  		<table align="center">
-		  			<tr>
-				  		<td align="right">
-				  			<h1>
-						  		<label>PO号:</label>
-							  	<select name="POName" id="POName" style="width:200px">
-								  	<option value = "--请选择--">--请选择--</option>
+	<jsp:include page="Menu/DataEnterMenu.jsp"/>
+	<br><br>
+	<table align="center">
+		<tr>
+			<td>
+				<table align="center">
+					<tr>
+						<td align="right">
+							<h1>
+								<label>PO号:</label>
+								<select name="POName" id="POName" style="width:200px">
+									<option value = "--请选择--">--请选择--</option>
 <%
 									for(int i = 0; i < POList.size(); i++)
 									{
 										if(curPOName.contains(POList.get(i)))
 										{
 %>
-								  	<option value = <%=POList.get(i) %> selected><%=POList.get(i)%></option>
+									<option value = <%=POList.get(i) %> selected><%=POList.get(i)%></option>
 <%
 										}
 										else
 										{
 %>
-								  	<option value = <%=POList.get(i) %>><%=POList.get(i)%></option>
+									<option value = <%=POList.get(i) %>><%=POList.get(i)%></option>
 <%											
 										}
 									}
 %>
-							  	</select>
-					  		</h1>
-					  	</td>
-			  		</tr>
-			  		<tr>
-			   			<td align="center">
-				   			<label>交货时间:</label>
-			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+								</select>
+							</h1>
 						</td>
-			  		</tr>
-		  		</table>
-	 		   	<table id="display_po" border='1' align="center"></table>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>交货时间:</label>
+							<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+						</td>
+					</tr>
+				</table>
+				<table id="display_po" border='1' align="center"></table>
 			</td>
 		</tr>
-   	</table>
+	</table>
   </body>
 </html>
 <%

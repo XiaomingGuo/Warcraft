@@ -19,8 +19,8 @@
 					if(!POName.split("_")[0].contains("MB"))
 						hPageHandle.UpdateStoragePoName(strBarcode, POName, manufacture_QTY);
 					hPageHandle.EnsureCustomerPoRecordInput(POName);
-					hPageHandle.AddCustomerPo(POName);
 				}
+				hPageHandle.AddCustomerPo(POName);
 			}
 			else
 				rtnRst += "error:po单不存在!";

@@ -5,13 +5,14 @@ import java.util.List;
 
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.*;
 
 public class Transfer_To_SemiProStorage extends PageParentClass
 {
-	public List<String> GetManuStoragePOList()
+	public List<String> GetSemiProductStoragePOList()
 	{
-		Manu_Storage_Record hMSRHandle = new Manu_Storage_Record(new EarthquakeManagement());
-		hMSRHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
-		return hMSRHandle.getDBRecordList("po_name");
+		IStorageTableInterface hHandle = new Semi_Product_Storage(new EarthquakeManagement());
+		((DBTableParent)hHandle).QueryRecordGroupByList(Arrays.asList("po_name"));
+		return hHandle.getDBRecordList("po_name");
 	}
 }

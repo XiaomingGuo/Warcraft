@@ -1,6 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Manu_Storage_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Transfer_To_SemiProStorage" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -26,7 +24,7 @@
 			String curPOName = request.getParameter("POName");
 			if(null == curPOName)
 				curPOName = "";
-			List<String> POList = hPageHandle.GetManuStoragePOList();
+			List<String> POList = hPageHandle.GetSemiProductStoragePOList();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

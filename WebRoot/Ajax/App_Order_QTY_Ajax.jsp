@@ -20,7 +20,7 @@
 	Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 	Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 	
-	int iProRepertory = hPageHandle.GetProductRepertory(hPageHandle.GetUsedBarcode(strBarcode, "Product_Storage"), po_name);
+	int iProRepertory = hPageHandle.GetAllRepertoryByPOName(hPageHandle.GetUsedBarcode(strBarcode, "Product_Storage"), po_name);
 	int iSemiProductRepertory = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_pro_storage"), "Material_Supply", "1"));
 	int iMatRepertory = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage"), "Material_Supply", "1"));
 	rtnRst += strBarcode + "$";

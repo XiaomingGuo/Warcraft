@@ -2,18 +2,17 @@
 <%@ page import="com.DB.operation.Material_Storage"%>
 <%@ page import="com.DB.operation.Product_Storage"%>
 <%@ page import="com.DB.operation.Semi_Product_Storage"%>
-<%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Query_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
+	Query_PO_Item_Ajax hPageHandle = new Query_PO_Item_Ajax();
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
 	String po_status = null;
 	String[] displayList = {"ID", "产品类型", "产品名称", "供应商", "八码", "PO单名", "交货时间", "数量", "成品库存", "半成品库存", "物料库存", "未交货数量", "进货余量", "创建时间", "操作"};
 	if(po_name.length() > 6)
 	{
-		Query_PO_Item_Ajax hPageHandle = new Query_PO_Item_Ajax();
 		if (status != null)
 		{
 			po_status = hPageHandle.GetCustomerPoStatus(po_name);
@@ -27,7 +26,6 @@
 			}
 		}
 		rtnRst += po_status + "$";
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
 		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 		
@@ -45,7 +43,6 @@
 			{
 				int iPro_storage = 0, iSemiPro_storage = 0, iMat_storage = 0;
 				String strBarcode = recordList.get(2).get(iRow);
-				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				for(int iCol = 0; iCol < iColCount; iCol++)
 				{
 					if("ID" == displayList[iCol])
@@ -54,12 +51,12 @@
 					}
 					else if("产品类型" == displayList[iCol])
 					{
-						String protype = hPIHandle.getDBRecordList("product_type").get(0);
+						String protype = hPageHandle.GetProductInfoByBarcode(strBarcode, "product_type");
 						rtnRst += protype + "$";
 					}
 					else if("产品名称" == displayList[iCol])
 					{
-						String proname = hPIHandle.getDBRecordList("name").get(0);
+						String proname = hPageHandle.GetProductInfoByBarcode(strBarcode, "name");
 						rtnRst += proname + "$";
 					}
 					else if("成品库存" == displayList[iCol])

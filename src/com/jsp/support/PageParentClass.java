@@ -269,6 +269,15 @@ public class PageParentClass
 		return hHandle.RecordDBCount() + hExHandle.RecordDBCount();
 	}
 	
+	private int GetExAndProcessStorage(String strBarcode, String Batch_Lot)
+	{
+		IStorageTableInterface hHandle = GenProcessStorageHandle(strBarcode);
+		IStorageTableInterface hExHandle = GenProcessExStorageHandle(strBarcode);
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
+		hExHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
+		return hHandle.RecordDBCount() + hExHandle.RecordDBCount();
+	}
+	
 	public String GenBatchLot(String strBarcode)
 	{
 		return GenBatchLot(GenYearMonthDayString(), strBarcode);
@@ -281,8 +290,9 @@ public class PageParentClass
 		do
 		{
 			rtnRst = batch_lot_Head + "-" + String.format("%02d", loopNum);
-			if ((GetExAndStorageRecordCount(GetUsedBarcode(strBarcode, "Product_Storage"), rtnRst) + GetExAndStorageRecordCount(GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), rtnRst) +
-					GetExAndStorageRecordCount(GetUsedBarcode(strBarcode, "Material_Storage"), rtnRst) + GetExAndStorageRecordCount(GetUsedBarcode(strBarcode, "Other_Storage"), rtnRst)) <= 0)
+			if ((GetExAndProcessStorage(GetUsedBarcode(strBarcode, "Product_Storage"), rtnRst) + GetExAndProcessStorage(GetUsedBarcode(strBarcode, "Semi_Pro_Storage"), rtnRst) +
+					GetExAndProcessStorage(GetUsedBarcode(strBarcode, "Material_Storage"), rtnRst) + GetExAndStorageRecordCount(GetUsedBarcode(strBarcode, "Other_Storage"), rtnRst) +
+					GetExAndStorageRecordCount(strBarcode, rtnRst)) <= 0)
 				break;
 			loopNum ++;
 		}while(true);
@@ -290,6 +300,14 @@ public class PageParentClass
 	}
 	
 	public int GetHasFinishPurchaseNum(String barcode, String POName)
+	{
+		IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
+		IStorageTableInterface hExStorageHandle = GenProcessExStorageHandle(barcode);
+		return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, POName, "1")) + 
+				hExStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
+	}
+	
+	public int GetHasFinishPurchaseNumWithoutEnsure(String barcode, String POName)
 	{
 		IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
 		IStorageTableInterface hExStorageHandle = GenProcessExStorageHandle(barcode);

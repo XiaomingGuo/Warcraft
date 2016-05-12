@@ -14,7 +14,7 @@
 		Update_Customer_OUT_QTY_Ajax hPageHandle = new Update_Customer_OUT_QTY_Ajax();
 		
 		String proBarcode = hPageHandle.GetUsedBarcode(appBarcode, "product_storage");
-		int repertory_count = hPageHandle.GetProductRepertory(proBarcode, appPONum);
+		int repertory_count = hPageHandle.GetAllRepertoryByPOName(proBarcode, appPONum);
 		if (repertory_count >= used_count)
 		{
 			int saveCount = used_count;

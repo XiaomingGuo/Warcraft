@@ -1,6 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Query_Material_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -9,7 +7,6 @@
 	if(po_name.length() > 6)
 	{
 		Query_Material_PO_Item_Ajax hPageHandle = new Query_Material_PO_Item_Ajax();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		
 		List<List<String>> recordList = hPageHandle.GetAllStorageRecord(po_name);
 		if (recordList.size() > 0)
@@ -26,7 +23,6 @@
 				int iPurchaseCount = 0, iFinishCount = 0;
 				//{"Bar_Code", "po_name", "date_of_delivery", "vendor_name",  "IN_QTY"};
 				String strBarcode = recordList.get(0).get(iRow);
-				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				for(int iCol = 0; iCol < iColCount; iCol++)
 				{
 					if("ID" == displayList[iCol])
@@ -35,12 +31,12 @@
 					}
 					else if("产品类型" == displayList[iCol])
 					{
-						String protype = hPIHandle.getDBRecordList("product_type").get(0);
+						String protype = hPageHandle.GetProductInfoByBarcode(strBarcode, "product_type");
 						rtnRst += protype + "$";
 					}
 					else if("产品名称" == displayList[iCol])
 					{
-						String proname = hPIHandle.getDBRecordList("name").get(0);
+						String proname = hPageHandle.GetProductInfoByBarcode(strBarcode, "name");
 						rtnRst += proname + "$";
 					}
 					else if("供应商" == displayList[iCol])
