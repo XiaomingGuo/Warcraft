@@ -45,7 +45,7 @@ function changePOName()
 						var td = $("<td></td>");
 						if (0 == iColCount - iCol)
 						{
-							td.append("<input type='button' value='转出' name='" + data_list[iRow*iColCount + 7] + "$" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 3] + "' id='" +data_list[iRow*iColCount + 3] + "_Button' onclick=DoTransfer(this)>");
+							td.append("<input type='button' value='入库' name='" + data_list[iRow*iColCount + 7] + "$" + data_list[iRow*iColCount + 8] + "$" + data_list[iRow*iColCount + 3] + "' id='" +data_list[iRow*iColCount + 3] + "_Button' onclick=DoTransfer(this)>");
 						}
 						else if(1 == iColCount - iCol)
 						{

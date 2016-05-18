@@ -1,8 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.Product_Storage"%>
-<%@ page import="com.DB.operation.Semi_Product_Storage"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Query_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -26,8 +22,6 @@
 			}
 		}
 		rtnRst += po_status + "$";
-		Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
 		
 		List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(po_name);
 		if (recordList.size() > 0)
