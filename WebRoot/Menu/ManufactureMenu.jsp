@@ -79,6 +79,7 @@
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="Customer_PO.jsp">客户PO生成</a></li>
 			    		<li><a href="Generate_Order.jsp">生产单生成</a></li>
+			    		<li><a href="Planned_Production.jsp">计划投产</a></li>
 			    		<li><a href="Transfer_To_SemiProStorage.jsp">原材料转半成品</a></li>
 			    		<li><a href="Transfer_To_ProductStorage.jsp">半成品转成品</a></li>
 			    		<li><a href="Discard_Material.jsp">材料报废</a></li>
