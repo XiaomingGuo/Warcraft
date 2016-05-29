@@ -52,17 +52,17 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 			case "Bar_Code":
 				rtnRst.add(tempRecord.getBarCode());
 				break;
-			case "vendor":
-				rtnRst.add(tempRecord.getVendor());
-				break;
 			case "po_name":
 				rtnRst.add(tempRecord.getPoName());
 				break;
-			case "PO_QTY":
-				rtnRst.add(tempRecord.getPoQty().toString());
-				break;
 			case "date_of_delivery":
 				rtnRst.add(tempRecord.getDateOfDelivery());
+				break;
+			case "vendor":
+				rtnRst.add(tempRecord.getVendor());
+				break;
+			case "PO_QTY":
+				rtnRst.add(tempRecord.getPoQty().toString());
 				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
@@ -109,17 +109,17 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	public void AddARecord(String barCode, String vendor, String poName, int poQty, String dateOfDelivery)
+	public void AddARecord(String barCode, String poName, String dateOfDelivery, String vendor, int poQty)
 	{
 		aWriteRecord = new MbMaterialPo();
 		aWriteRecord.setBarCode(barCode);
-		aWriteRecord.setVendor(vendor);
 		aWriteRecord.setPoName(poName);
-		aWriteRecord.setPoQty(poQty);
 		aWriteRecord.setDateOfDelivery(dateOfDelivery);
+		aWriteRecord.setVendor(vendor);
+		aWriteRecord.setPoQty(poQty);
 		getEQMHandle().addANewRecord();
 	}
-
+	
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
@@ -129,17 +129,17 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("bar_code") >= 0) {
 			rtnRst = "barCode";
 		}
-		else if(keyword.toLowerCase().indexOf("vendor") >= 0) {
-			rtnRst = "vendor";
-		}
 		else if(keyword.toLowerCase().indexOf("po_name") >= 0) {
 			rtnRst = "poName";
 		}
-		else if(keyword.toLowerCase().indexOf("po_qty") >= 0) {
-			rtnRst = "poQty";
-		}
 		else if(keyword.toLowerCase().indexOf("date_of_delivery") >= 0) {
 			rtnRst = "dateOfDelivery";
+		}
+		else if(keyword.toLowerCase().indexOf("vendor") >= 0) {
+			rtnRst = "vendor";
+		}
+		else if(keyword.toLowerCase().indexOf("po_qty") >= 0) {
+			rtnRst = "poQty";
 		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";

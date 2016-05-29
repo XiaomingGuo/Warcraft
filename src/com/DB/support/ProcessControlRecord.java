@@ -3,35 +3,36 @@ package com.DB.support;
 import java.sql.Timestamp;
 
 /**
- * MbMaterialPo entity. @author MyEclipse Persistence Tools
+ * ProcessControlRecord entity. @author MyEclipse Persistence Tools
  */
 
-public class MbMaterialPo implements java.io.Serializable {
+public class ProcessControlRecord implements java.io.Serializable {
 
 	// Fields
 
 	private Integer id;
 	private String barCode;
 	private String poName;
-	private String dateOfDelivery;
-	private String vendor;
-	private Integer poQty;
+	private Integer processId;
+	private Integer qty;
+	private String operator;
 	private Timestamp createDate;
 
 	// Constructors
 
 	/** default constructor */
-	public MbMaterialPo() {
+	public ProcessControlRecord() {
 	}
 
 	/** full constructor */
-	public MbMaterialPo(String barCode, String poName, String dateOfDelivery,
-			String vendor, Integer poQty, Timestamp createDate) {
+	public ProcessControlRecord(String barCode, String poName,
+			Integer processId, Integer qty, String operator,
+			Timestamp createDate) {
 		this.barCode = barCode;
 		this.poName = poName;
-		this.dateOfDelivery = dateOfDelivery;
-		this.vendor = vendor;
-		this.poQty = poQty;
+		this.processId = processId;
+		this.qty = qty;
+		this.operator = operator;
 		this.createDate = createDate;
 	}
 
@@ -61,28 +62,28 @@ public class MbMaterialPo implements java.io.Serializable {
 		this.poName = poName;
 	}
 
-	public String getDateOfDelivery() {
-		return this.dateOfDelivery;
+	public Integer getProcessId() {
+		return this.processId;
 	}
 
-	public void setDateOfDelivery(String dateOfDelivery) {
-		this.dateOfDelivery = dateOfDelivery;
+	public void setProcessId(Integer processId) {
+		this.processId = processId;
 	}
 
-	public String getVendor() {
-		return this.vendor;
+	public Integer getQty() {
+		return this.qty;
 	}
 
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
+	public void setQty(Integer qty) {
+		this.qty = qty;
 	}
 
-	public Integer getPoQty() {
-		return this.poQty;
+	public String getOperator() {
+		return this.operator;
 	}
 
-	public void setPoQty(Integer poQty) {
-		this.poQty = poQty;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
 	public Timestamp getCreateDate() {

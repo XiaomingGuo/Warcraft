@@ -22,6 +22,12 @@
   <property generated="never" lazy="false" name="weight" type="java.lang.Float">
    <column name="weight" not-null="true" precision="12" scale="0"/>
   </property>
+  <property generated="never" lazy="false" name="processName" type="java.lang.String">
+   <column length="10" name="process_name" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="capacity" type="java.lang.Integer">
+   <column name="capacity" not-null="true"/>
+  </property>
   <property generated="never" lazy="false" name="description" type="java.lang.String">
    <column length="200" name="description" not-null="true"/>
   </property>

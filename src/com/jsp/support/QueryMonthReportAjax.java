@@ -47,7 +47,7 @@ public class QueryMonthReportAjax extends PageParentClass
 			hPIHandle.GetRecordByBarcode(strBarcode);
 			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
 			List<String> keyList = null, valueList = null;
-			if(user_name.indexOf("ÇëÑ¡Ôñ") >= 0)
+			if(user_name.indexOf("è¯·é€‰æ‹©") >= 0)
 			{
 				keyList = Arrays.asList("Bar_Code");
 				valueList = Arrays.asList(strBarcode);
@@ -58,7 +58,6 @@ public class QueryMonthReportAjax extends PageParentClass
 				valueList = Arrays.asList(strBarcode, user_name);
 			}
 			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
-			//{"ID", "Ãû³Æ", "°ËÂë", "ÅúºÅ", "ÉêÇëÈË", "ÊıÁ¿", "Ê¹ÓÃÕß", "µ¥¼Û", "×Ü¼Û", "ÉêÇëÈÕÆÚ", "ÁìÈ¡È·ÈÏ"};
 			for(int recordIdx=0; recordIdx < hORHandle.RecordDBCount(); recordIdx++)
 			{
 				String strCurBatchLot = hORHandle.getDBRecordList("Batch_Lot").get(recordIdx);
@@ -76,9 +75,9 @@ public class QueryMonthReportAjax extends PageParentClass
 				rtnRst.add(Double.toString(GetPrice_Pre_Unit(strBarcode, strCurBatchLot)*in_Qty));
 				rtnRst.add(hORHandle.getDBRecordList("create_date").get(recordIdx));
 				if(hORHandle.getDBRecordList("isApprove").get(recordIdx).contains("1"))
-					rtnRst.add("ÒÑÁìÈ¡");
+					rtnRst.add("å·²é¢†å–");
 				else
-					rtnRst.add("Î´ÁìÈ¡");
+					rtnRst.add("æœªé¢†å–");
 				iRowNum++;
 			}
 		}

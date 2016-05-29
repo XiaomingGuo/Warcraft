@@ -62,6 +62,12 @@ public class Product_Info extends DBTableParent implements ITableInterface
 			case "weight":
 				rtnRst.add(tempRecord.getWeight().toString());
 				break;
+			case "process_name":
+				rtnRst.add(tempRecord.getProcessName());
+				break;
+			case "capacity":
+				rtnRst.add(tempRecord.getCapacity().toString());
+				break;
 			case "description":
 				rtnRst.add(tempRecord.getDescription());
 				break;
@@ -135,6 +141,12 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		else if(keyword.toLowerCase().indexOf("weight") >= 0) {
 			rtnRst = "weight";
 		}
+		else if(keyword.toLowerCase().indexOf("process_name") >= 0) {
+			rtnRst = "processName";
+		}
+		if(keyword.toLowerCase().indexOf("capacity") >= 0){
+			rtnRst = "capacity";
+		}
 		else if(keyword.toLowerCase().indexOf("description") >= 0) {
 			rtnRst = "description";
 		}
@@ -144,17 +156,19 @@ public class Product_Info extends DBTableParent implements ITableInterface
 		return rtnRst;
 	}
 	
-	public void AddARecord(String barCode, String name, String productType, String weight, String description)
+	public void AddARecord(String barCode, String name, String productType, String weight, String processName, String capacity, String description)
 	{
 		aWriteRecord = new ProductInfo();
 		aWriteRecord.setBarCode(barCode);
 		aWriteRecord.setName(name);
 		aWriteRecord.setProductType(productType);
 		aWriteRecord.setWeight(Float.parseFloat(weight));
+		aWriteRecord.setProcessName(processName);
+		aWriteRecord.setCapacity(Integer.parseInt(capacity));
 		if(null == description)
 			aWriteRecord.setDescription(description);
 		else
-			aWriteRecord.setDescription("�ޱ�ע");
+			aWriteRecord.setDescription("无备注");
 		getEQMHandle().addANewRecord();
 	}
 

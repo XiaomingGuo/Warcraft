@@ -9,49 +9,52 @@ public class Submit_New_Material_Info_Ajax extends PageParentClass
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		if(!IsOtherBarcode(appBarcode))
 		{
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("Ô­¶§", ""),
-					productWeight, appDescription);
+			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("åŸé”­", ""),
+					productWeight, "0", "0", appDescription);
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
-					appWeightUnit, appDescription);
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("Ô­¶§", "°ë³ÉÆ·"),
-					"0", appDescription);
+					appWeightUnit, "0", "0", appDescription);
+			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("åŸé”­", "åŠæˆå“"),
+					"0", "0", "0", appDescription);
 		}
 		else
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type,
-					"0", appDescription);
+					"0", "0", "0", appDescription);
 	}
 	
 	public String AddProductInfoRecord(String appStore_name, String appBarcode, String appProduct_type, String appProductname, String appWeightUnit, String productWeight, String appDescription)
 	{
-		if(appStore_name.indexOf("Ô­²ÄÁÏ¿â") >= 0)
+		if(appStore_name.indexOf("åŸææ–™åº“") >= 0)
 		{
 			if(!IsMaterialBarcode(appBarcode))
 			{
-				return "error:ÅªÉ¶ÄØ?Ô­²ÄÁÏ°ËÂë±ØĞë½éÓÚ[50000000 ~ 60000000)Ö®¼ä, Äã²»ÖªµÀÂğ?";
+				return "error:è¾“å…¥çš„åŸææ–™åº“å…«ç å¿…é¡»ä»‹äº[50000000 ~ 60000000)ä½ ä¸çŸ¥é“å—?";
 			}
-			appProduct_type = appProduct_type.contains("Ô­¶§")?appProduct_type:appProduct_type+"Ô­¶§";
+			appProduct_type = appProduct_type.contains("åŸé”­")?appProduct_type:appProduct_type+"åŸé”­";
+			appProduct_type = appProduct_type.contains("åŠæˆå“")?appProduct_type.replace("åŠæˆå“", "åŸé”­"):appProduct_type;
 		}
-		else if(appStore_name.indexOf("°ë³ÉÆ·¿â") >= 0)
+		else if(appStore_name.indexOf("åŠæˆå“åº“") >= 0)
 		{
 			if(!IsSemiProBarcode(appBarcode))
 			{
-				return "error:ÅªÉ¶ÄØ?°ë³ÉÆ·°ËÂë±ØĞë½éÓÚ[70000000 ~ 80000000)Ö®¼ä, Äã²»ÖªµÀÂğ?";
+				return "error:è¾“å…¥çš„åŠæˆå“åº“å…«ç å¿…é¡»ä»‹äº[70000000 ~ 80000000)ä½ ä¸çŸ¥é“å—?";
 			}
-			appProduct_type = appProduct_type.contains("°ë³ÉÆ·")?appProduct_type.replace("°ë³ÉÆ·", "Ô­¶§"):appProduct_type+"Ô­¶§";
+			appProduct_type = appProduct_type.contains("åŠæˆå“")?appProduct_type:appProduct_type+"åŠæˆå“";
+			appProduct_type = appProduct_type.contains("åŸé”­")?appProduct_type.replace("åŸé”­", "åŠæˆå“"):appProduct_type;
 		}
-		else if(appStore_name.indexOf("³ÉÆ·¿â") >= 0)
+		else if(appStore_name.indexOf("æˆå“åº“") >= 0)
 		{
 			if(!IsProductBarcode(appBarcode))
 			{
-				return "error:ÅªÉ¶ÄØ?³ÉÆ·°ËÂë±ØĞë½éÓÚ[60000000 ~ 70000000)Ö®¼ä, Äã²»ÖªµÀÂğ?";
+				return "error:è¾“å…¥çš„æˆå“åº“å…«ç å¿…é¡»ä»‹äº[60000000 ~ 70000000)ä½ ä¸çŸ¥é“å—?";
 			}
-			appProduct_type = appProduct_type.contains("Ô­¶§")?appProduct_type:appProduct_type+"Ô­¶§";
+			appProduct_type = appProduct_type.contains("åŸé”­")?appProduct_type.replace("åŸé”­", ""):appProduct_type;
+			appProduct_type = appProduct_type.contains("åŠæˆå“")?appProduct_type.replace("åŠæˆå“", ""):appProduct_type;
 		}
 		else
 		{
 			if(!IsOtherBarcode(appBarcode))
 			{
-				return "error:ÅªÉ¶ÄØ?ÆäËû¿â²»ÄÜÊ¹ÓÃ[50000000 ~ 79999999]Ö®¼äµÄ°ËÂë, Äã²»ÖªµÀÂğ?";
+				return "error:è¾“å…¥çš„äº”é‡‘åº“å…«ç å¿…é¡»ä»‹äº[50000000 ~ 79999999]ä½ ä¸çŸ¥é“å—?";
 			}
 		}
 		AddNewManufactoryMaterialInfo(appBarcode, appProductname, appProduct_type, productWeight, appWeightUnit, appDescription);

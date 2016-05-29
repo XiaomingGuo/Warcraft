@@ -13,6 +13,8 @@ public class ProductInfo implements java.io.Serializable {
 	private String name;
 	private String productType;
 	private Float weight;
+	private String processName;
+	private Integer capacity;
 	private String description;
 	private String picture;
 
@@ -24,21 +26,25 @@ public class ProductInfo implements java.io.Serializable {
 
 	/** minimal constructor */
 	public ProductInfo(String barCode, String name, String productType,
-			Float weight, String description) {
+			Float weight, String processName, Integer capacity, String description) {
 		this.barCode = barCode;
 		this.name = name;
 		this.productType = productType;
 		this.weight = weight;
+		this.processName = processName;
+		this.capacity = capacity;
 		this.description = description;
 	}
 
 	/** full constructor */
 	public ProductInfo(String barCode, String name, String productType,
-			Float weight, String description, String picture) {
+			Float weight, String processName, Integer capacity, String description, String picture) {
 		this.barCode = barCode;
 		this.name = name;
 		this.productType = productType;
 		this.weight = weight;
+		this.processName = processName;
+		this.capacity = capacity;
 		this.description = description;
 		this.picture = picture;
 	}
@@ -83,6 +89,22 @@ public class ProductInfo implements java.io.Serializable {
 
 	public void setWeight(Float weight) {
 		this.weight = weight;
+	}
+
+	public String getProcessName() {
+		return this.processName;
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
+	}
+
+	public Integer getCapacity() {
+		return this.capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
 	}
 
 	public String getDescription() {
