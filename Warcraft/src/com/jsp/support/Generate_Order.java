@@ -19,5 +19,4 @@ public class Generate_Order extends PageParentClass
 		}while(true);
 		return orderName;
 	}
-	
 }

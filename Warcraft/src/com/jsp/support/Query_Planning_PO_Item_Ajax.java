@@ -2,6 +2,7 @@ package com.jsp.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.DB.operation.*;
@@ -22,6 +23,40 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
         }
         else if(rtnRst.isEmpty()&&!tempSemiRecord.isEmpty())
             rtnRst = tempSemiRecord;
+        return SortRecordOrder(rtnRst, "date_of_delivery");
+    }
+    
+    private int GetArrayIndex(String[] kewordArray, String keyword)
+    {
+        for(int idx=0; idx < kewordArray.length; idx++)
+        {
+            if(kewordArray[idx].equalsIgnoreCase(keyword))
+                return idx;
+        }
+        return -1;
+    }
+    
+    private List<List<String>> SortRecordOrder(List<List<String>> rawRecordList, String sortKeyword)
+    {
+        List<List<String>> rtnRst = rawRecordList;
+        if(rtnRst.size() > 0)
+        {
+            int sortKeywordIndex = GetArrayIndex(m_sqlKeyList, sortKeyword);
+            for(int iXRecordIdx = 0; iXRecordIdx < rtnRst.get(sortKeywordIndex).size(); iXRecordIdx++)
+            {
+                int sortMinValue = Integer.parseInt(rtnRst.get(sortKeywordIndex).get(iXRecordIdx));
+                for(int iYRecordIdx = iXRecordIdx; iYRecordIdx < rtnRst.get(sortKeywordIndex).size(); iYRecordIdx++)
+                {
+                    int curRecordValue = Integer.parseInt(rtnRst.get(sortKeywordIndex).get(iYRecordIdx));
+                    if(curRecordValue < sortMinValue)
+                    {
+                        sortMinValue = curRecordValue;
+                        for(int iSwitchIdx = 0; iSwitchIdx < m_sqlKeyList.length; iSwitchIdx++)
+                            Collections.swap(rtnRst.get(iSwitchIdx), iXRecordIdx, iYRecordIdx);
+                    }
+                }
+            }
+        }
         return rtnRst;
     }
     
