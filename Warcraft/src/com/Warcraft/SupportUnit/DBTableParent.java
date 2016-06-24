@@ -156,6 +156,13 @@ public abstract class DBTableParent
         getEQMHandle().EQQuery(hql);
     }
     
+    public void QueryRecordByFilterKeyListOrderbyListASC(List<String> keyList, List<String> valueList, List<String> orderList)
+    {
+        String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList)
+                + " order by " + GenerateGroupAndOrderString(orderList) + " asc";
+        getEQMHandle().EQQuery(hql);
+    }
+    
     public void QueryRecordByDateSpan(String beginDate, String endDate)
     {
         String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName());

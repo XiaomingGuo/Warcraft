@@ -1,5 +1,7 @@
 package com.DB.operation;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,8 +54,11 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
             case "check_in_id":
                 rtnRst.add(tempRecord.getCheckInId());
                 break;
+            case "check_in_date":
+                rtnRst.add(tempRecord.getCheckInDate().toString().split(" ")[0]);
+                break;
             case "check_in_time":
-                rtnRst.add(tempRecord.getCheckInTime());
+                rtnRst.add(tempRecord.getCheckInTime().toString());
                 break;
             case "work_group":
                 rtnRst.add(tempRecord.getWorkGroup().toString());
@@ -97,11 +102,12 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
         getEQMHandle().EQQuery(hql);
     }
     
-    public void AddARecord(String checkInId, String checkInTime)
+    public void AddARecord(String checkInId, String checkInDate, String checkInTime)
     {
         aWriteRecord = new CheckInRawData();
         aWriteRecord.setCheckInId(checkInId);
-        aWriteRecord.setCheckInTime(checkInTime);
+        aWriteRecord.setCheckInDate(Date.valueOf(checkInDate));
+        aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
         getEQMHandle().addANewRecord();
     }
     
@@ -113,6 +119,9 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
         }
         else if(keyword.toLowerCase().indexOf("check_in_id") == 0) {
             rtnRst = "checkInId";
+        }
+        else if(keyword.toLowerCase().indexOf("check_in_date") >= 0) {
+            rtnRst = "checkInDate";
         }
         else if(keyword.toLowerCase().indexOf("check_in_time") >= 0) {
             rtnRst = "checkInTime";

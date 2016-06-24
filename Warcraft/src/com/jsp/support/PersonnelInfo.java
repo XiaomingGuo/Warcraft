@@ -8,7 +8,7 @@ import com.DB.operation.*;
 
 public class PersonnelInfo extends PageParentClass
 {
-    String[] m_displayList = {"ID", "姓名", "工号", "打卡时间", "班次"};
+    String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次"};
     public List<String> GetAllUserName()
     {
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
@@ -31,7 +31,7 @@ public class PersonnelInfo extends PageParentClass
         hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)));
         if (hCIRDHandle.RecordDBCount() > 0)
         {
-            String[] sqlKeyList = {"id", "check_in_id", "check_in_time", "work_group"};
+            String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group"};
             for(int idx=0; idx < sqlKeyList.length; idx++)
             {
                 rtnRst.add(hCIRDHandle.getDBRecordList(sqlKeyList[idx]));
@@ -80,16 +80,20 @@ public class PersonnelInfo extends PageParentClass
                     {
                         rtnRst += recordList.get(1).get(iRow) + "$";
                     }
-                    else if("打卡时间" == m_displayList[iCol])
+                    else if("打卡日期" == m_displayList[iCol])
                     {
                         rtnRst += recordList.get(2).get(iRow) + "$";
                     }
+                    else if("打卡时间" == m_displayList[iCol])
+                    {
+                        rtnRst += recordList.get(3).get(iRow) + "$";
+                    }
                     else if("班次" == m_displayList[iCol])
                     {
-                        if(recordList.get(3).get(iRow).indexOf("0") == 0)
+                        if(recordList.get(4).get(iRow).indexOf("0") == 0)
                             rtnRst += "未排班$";
                         else
-                            rtnRst += GetWorkGroupName(recordList.get(3).get(iRow)) + "$";
+                            rtnRst += GetWorkGroupName(recordList.get(4).get(iRow)) + "$";
                     }
                 }
             }

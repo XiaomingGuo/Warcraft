@@ -13,11 +13,13 @@
   <property generated="never" lazy="false" name="checkInId" type="java.lang.String">
    <column length="5" name="check_in_id" not-null="true"/>
   </property>
-  <property generated="never" lazy="false" name="checkInTime" type="java.lang.String">
-   <column length="20" name="check_in_time" not-null="true"/>
+  <property generated="never" lazy="false" name="checkInDate" type="java.util.Date">
+   <column length="10" name="check_in_date" not-null="true"/>
   </property>
-  <property generated="never" insert="false" lazy="false"
-   name="workGroup" type="java.lang.Integer">
+  <property generated="never" lazy="false" name="checkInTime" type="java.sql.Time">
+   <column length="8" name="check_in_time" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="workGroup" type="java.lang.Integer">
    <column name="work_group" not-null="true"/>
   </property>
   <property generated="never" insert="false" lazy="false"

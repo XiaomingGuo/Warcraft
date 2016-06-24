@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonnelInfo" %>
+<%@ page import="com.jsp.support.SummarizeCheckInTime" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
-    PersonnelInfo hPageHandle = new PersonnelInfo();
+    SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("tishi.jsp");
@@ -33,7 +33,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>人员考勤查询</title>
+    <title>考勤汇总</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -47,7 +47,7 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonnelInfoJS.js"></script>
+    <script language="javascript" src="Page_JS/SummarizeCheckInTimeJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">

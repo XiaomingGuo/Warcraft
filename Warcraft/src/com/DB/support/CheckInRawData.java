@@ -1,87 +1,87 @@
 package com.DB.support;
 
-
+import java.sql.Time;
+import java.util.Date;
 
 /**
  * CheckInRawData entity. @author MyEclipse Persistence Tools
  */
 
-public class CheckInRawData  implements java.io.Serializable {
+public class CheckInRawData implements java.io.Serializable {
 
+	// Fields
 
-    // Fields    
+	private Integer id;
+	private String checkInId;
+	private Date checkInDate;
+	private Time checkInTime;
+	private Integer workGroup;
+	private Integer isEnsure;
 
-     private Integer id;
-     private String checkInId;
-     private String checkInTime;
-     private Integer workGroup;
-     private Integer isEnsure;
+	// Constructors
 
+	/** default constructor */
+	public CheckInRawData() {
+	}
 
-    // Constructors
+	/** full constructor */
+	public CheckInRawData(String checkInId, Date checkInDate, Time checkInTime,
+			Integer workGroup, Integer isEnsure) {
+		this.checkInId = checkInId;
+		this.checkInDate = checkInDate;
+		this.checkInTime = checkInTime;
+		this.workGroup = workGroup;
+		this.isEnsure = isEnsure;
+	}
 
-    /** default constructor */
-    public CheckInRawData() {
-    }
+	// Property accessors
 
-    
-    /** full constructor */
-    public CheckInRawData(String checkInId, String checkInTime, Integer workGroup, Integer isEnsure) {
-        this.checkInId = checkInId;
-        this.checkInTime = checkInTime;
-        this.workGroup = workGroup;
-        this.isEnsure = isEnsure;
-    }
+	public Integer getId() {
+		return this.id;
+	}
 
-   
-    // Property accessors
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getId() {
-        return this.id;
-    }
-    
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public String getCheckInId() {
+		return this.checkInId;
+	}
 
-    public String getCheckInId() {
-        return this.checkInId;
-    }
-    
-    public void setCheckInId(String checkInId) {
-        this.checkInId = checkInId;
-    }
+	public void setCheckInId(String checkInId) {
+		this.checkInId = checkInId;
+	}
 
-    public String getCheckInTime() {
-        return this.checkInTime;
-    }
-    
-    public void setCheckInTime(String checkInTime) {
-        this.checkInTime = checkInTime;
-    }
+	public Date getCheckInDate() {
+		return this.checkInDate;
+	}
 
-    public Integer getWorkGroup() {
-        return this.workGroup;
-    }
-    
-    public void setWorkGroup(Integer workGroup) {
-        this.workGroup = workGroup;
-    }
+	public void setCheckInDate(Date checkInDate) {
+		this.checkInDate = checkInDate;
+	}
 
-    public Integer getIsEnsure() {
-        return this.isEnsure;
-    }
-    
-    public void setIsEnsure(Integer isEnsure) {
-        this.isEnsure = isEnsure;
-    }
-   
+	public Time getCheckInTime() {
+		return this.checkInTime;
+	}
 
+	public void setCheckInTime(Time checkInTime) {
+		this.checkInTime = checkInTime;
+	}
 
+	public Integer getWorkGroup() {
+		return this.workGroup;
+	}
 
+	public void setWorkGroup(Integer workGroup) {
+		this.workGroup = workGroup;
+	}
 
+	public Integer getIsEnsure() {
+		return this.isEnsure;
+	}
 
-
-
+	public void setIsEnsure(Integer isEnsure) {
+		this.isEnsure = isEnsure;
+	}
 
 }
