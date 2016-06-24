@@ -44,7 +44,6 @@
                             <font size="5"><b>常州市茂邦机械有限公司内部网络-V1.1.2</b></font>
                         </td>
                         <td width="40%" align="right">您好！<jsp:getProperty property="username" name="mylogon"/>！欢迎登录！
-                        
 <%
                         int temp = mylogon.getUserRight()&2;
                         if(temp == 0)
@@ -75,16 +74,14 @@
                         </td>
                     </tr>
                 </table>
-                
                   <h2 align="center">
                     <ul>
                         <li><a href="MainPage.jsp">首页</a></li>
-                        <li><a href="Application.jsp">五金库管理</a></li>
-                        <li><a href="Customer_PO.jsp">生产过程控制</a></li>
-                        <li><a href="AddMFGMaterial.jsp">生产物料录入</a></li>
-                        <li><a href="ManufactorySummary.jsp">生产报表</a></li>
-                        <li><a href="NewMaterialInfo.jsp">物料信息录入</a></li>
-                        <li><a href="PersonnelInfo.jsp">人事信息统计</a></li>
+                        <li><a href="PersonnelInfo.jsp">人员考勤查询</a></li>
+                        <li><a href="SummarizeCheckInTime.jsp">考勤汇总</a></li>
+                        <li><a href="PersonnelInfo.jsp">考勤数据修改</a></li>
+                        <li><a href="PersonnelInfo.jsp">班次信息录入</a></li>
+                        <li><a href="PersonnelInfo.jsp">员工班次变更</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
                     </ul>
                 </h2>

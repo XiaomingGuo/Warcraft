@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.AddMFGMaterial_ReferTo_PO" %>
+<%@ page import="com.jsp.support.PersonnelInfo" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
-    AddMFGMaterial_ReferTo_PO hPageHandle = new AddMFGMaterial_ReferTo_PO();
+    PersonnelInfo hPageHandle = new PersonnelInfo();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("tishi.jsp");
@@ -21,11 +21,11 @@
             message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-            String curPOName = request.getParameter("POName");
-            if(null == curPOName)
-                curPOName = "";
-            List<String> POList = hPageHandle.GetAllPOListNotFinishPurchange();
-            String DeliveryDate = hPageHandle.GenYearString();
+            String curUserName = request.getParameter("userName");
+            if(null == curUserName)
+                curUserName = "";
+            List<String> UserList = hPageHandle.GetAllUserName();
+            UserList.remove("root");
             String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -33,7 +33,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>PO物料入库</title>
+    <title>考勤查询</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -47,13 +47,13 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/AddMFGMaterial_ReferTo_POJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonnelInfoJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/DataEnterMenu.jsp"/>
+    <jsp:include page="Menu/PersonnelMenu.jsp"/>
     <br><br>
     <table align="center">
         <tr>
@@ -62,22 +62,22 @@
                     <tr>
                         <td align="right">
                             <h1>
-                                <label>PO号:</label>
-                                <select name="POName" id="POName" style="width:200px">
+                                <label>姓名:</label>
+                                <select name="UserName" id="UserName" style="width:200px">
                                     <option value = "--请选择--">--请选择--</option>
 <%
-                                    for(int i = 0; i < POList.size(); i++)
+                                    for(int i = 0; i < UserList.size(); i++)
                                     {
-                                        if(curPOName.contains(POList.get(i)))
+                                        if(curUserName.contains(UserList.get(i)))
                                         {
 %>
-                                    <option value = <%=POList.get(i) %> selected><%=POList.get(i)%></option>
+                                    <option value = <%=UserList.get(i) %> selected><%=UserList.get(i)%></option>
 <%
                                         }
                                         else
                                         {
 %>
-                                    <option value = <%=POList.get(i) %>><%=POList.get(i)%></option>
+                                    <option value = <%=UserList.get(i) %>><%=UserList.get(i)%></option>
 <%                                            
                                         }
                                     }
@@ -88,8 +88,8 @@
                     </tr>
                     <tr>
                         <td align="center">
-                            <label>交货时间:</label>
-                            <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+                            <label>考勤月份:</label>
+                            <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMM" value="<%=currentDate %>"></div>
                         </td>
                     </tr>
                 </table>

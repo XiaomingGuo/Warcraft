@@ -7,73 +7,73 @@
 <%@ page import="com.DB.operation.Storeroom_Name" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
-	request.setCharacterEncoding("UTF-8");
-	String filePath = request.getParameter("filePath").replace(" ", "");
-	String fileName = request.getParameter("fileName").replace(" ", "");
-	ExcelManagment excelUtil = new ExcelManagment(new ExcelRead(filePath, fileName));
-	int[] startCell, endCell;
-	if (fileName.contains("Summary-other"))
-	{
-		startCell = new int[] {2,1};
-		endCell = new int[] {261,6};
-	}
-	else
-	{
-		startCell = new int[] {2,1};
-		endCell = new int[] {1237,6};
-	}
-	List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
-	if(res.size() > 0)
-	{
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-		for(int iRow = 0; iRow < res.size(); iRow++)
-		{
-			String storename = res.get(iRow).get(0);
-			String product_type = res.get(iRow).get(1);
-			String product_name = res.get(iRow).get(2);
-			String Barcode = res.get(iRow).get(3);
-			String weight = res.get(iRow).get(4);
-			String description = res.get(iRow).get(5);
-			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-			if(hPIHandle.RecordDBCount() > 0)
-			{
-				hPIHandle.UpdateRecordByKeyList("name", product_name, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-				hPIHandle.UpdateRecordByKeyList("product_type", product_type, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-				hPIHandle.UpdateRecordByKeyList("weight", weight, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-				hPIHandle.UpdateRecordByKeyList("description", description, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-			}
-			else
-			{
-				hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
-				if (hSNHandle.RecordDBCount() == 0)
-					hSNHandle.AddARecord(storename);
-				
-				hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
-				if (hPTHandle.RecordDBCount() == 0)
-					hPTHandle.AddARecord(product_type, storename);
-				
-				hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
-				if(hPIHandle.RecordDBCount() == 0)
-					hPIHandle.AddARecord(Barcode, product_name, product_type, weight, description);
-			}
-		}
-	}
-	response.setCharacterEncoding("utf-8");
-	String fileFullPath = filePath + fileName;
-	fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
-	SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
-	su.initialize(pageContext); 		// 初始化准备操作  
+    request.setCharacterEncoding("UTF-8");
+    String filePath = request.getParameter("filePath").replace(" ", "");
+    String fileName = request.getParameter("fileName").replace(" ", "");
+    ExcelManagment excelUtil = new ExcelManagment(new ExcelRead(filePath, fileName));
+    int[] startCell, endCell;
+    if (fileName.contains("Summary-other"))
+    {
+        startCell = new int[] {2,1};
+        endCell = new int[] {261,6};
+    }
+    else
+    {
+        startCell = new int[] {2,1};
+        endCell = new int[] {1237,6};
+    }
+    List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
+    if(res.size() > 0)
+    {
+        Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+        Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+        Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+        for(int iRow = 0; iRow < res.size(); iRow++)
+        {
+            String storename = res.get(iRow).get(0);
+            String product_type = res.get(iRow).get(1);
+            String product_name = res.get(iRow).get(2);
+            String Barcode = res.get(iRow).get(3);
+            String weight = res.get(iRow).get(4);
+            String description = res.get(iRow).get(5);
+            hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+            if(hPIHandle.RecordDBCount() > 0)
+            {
+                hPIHandle.UpdateRecordByKeyList("name", product_name, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+                hPIHandle.UpdateRecordByKeyList("product_type", product_type, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+                hPIHandle.UpdateRecordByKeyList("weight", weight, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+                hPIHandle.UpdateRecordByKeyList("description", description, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
+            }
+            else
+            {
+                hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
+                if (hSNHandle.RecordDBCount() == 0)
+                    hSNHandle.AddARecord(storename);
+                
+                hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
+                if (hPTHandle.RecordDBCount() == 0)
+                    hPTHandle.AddARecord(product_type, storename);
+                
+                hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
+                if(hPIHandle.RecordDBCount() == 0)
+                    hPIHandle.AddARecord(Barcode, product_name, product_type, weight, "", "", description);
+            }
+        }
+    }
+    response.setCharacterEncoding("utf-8");
+    String fileFullPath = filePath + fileName;
+    fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
+    SmartUpload su = new SmartUpload(); // 新建一个smartupload对象     
+    su.initialize(pageContext);         // 初始化准备操作  
 
-	// 设定contentdisposition为null以禁止浏览器自动打开文件， 
-	//保证点击链接后是下载文件。若不设定，则下载的文件扩展名为 
-	//doc时，浏览器将自动用word打开它。扩展名为pdf时， 
-	//浏览器将用acrobat打开。 
-	su.setContentDisposition(null);
-	 
-	su.downloadFile(fileFullPath); // 下载文件
-	out.clear();
-	out=pageContext.pushBody();
-	out.println("<script>alert('创建成功！');window.location.href = 'index.jsp';</script>");
+    // 设定contentdisposition为null以禁止浏览器自动打开文件， 
+    //保证点击链接后是下载文件。若不设定，则下载的文件扩展名为 
+    //doc时，浏览器将自动用word打开它。扩展名为pdf时， 
+    //浏览器将用acrobat打开。 
+    su.setContentDisposition(null);
+     
+    su.downloadFile(fileFullPath); // 下载文件
+    out.clear();
+    out=pageContext.pushBody();
+    out.println("<script>alert('创建成功！');window.location.href = 'index.jsp';</script>");
 %>

@@ -10,6 +10,9 @@
    <column name="id"/>
    <generator class="identity"/>
   </id>
+  <property generated="never" lazy="false" name="checkInId" type="java.lang.String">
+   <column length="5" name="check_in_id" not-null="true" unique="true"/>
+  </property>
   <property generated="never" lazy="false" name="name" type="java.lang.String">
    <column length="50" name="name" not-null="true" unique="true"/>
   </property>

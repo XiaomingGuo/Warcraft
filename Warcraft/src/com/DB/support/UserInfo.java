@@ -11,6 +11,7 @@ public class UserInfo implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
+	private String checkInId;
 	private String name;
 	private String password;
 	private Timestamp createDate;
@@ -25,8 +26,9 @@ public class UserInfo implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public UserInfo(String name, String password, Timestamp createDate,
-			String department, Integer permission) {
+	public UserInfo(String checkInId, String name, String password,
+			Timestamp createDate, String department, Integer permission) {
+		this.checkInId = checkInId;
 		this.name = name;
 		this.password = password;
 		this.createDate = createDate;
@@ -35,8 +37,10 @@ public class UserInfo implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public UserInfo(String name, String password, Timestamp createDate,
-			String department, Integer permission, String picture) {
+	public UserInfo(String checkInId, String name, String password,
+			Timestamp createDate, String department, Integer permission,
+			String picture) {
+		this.checkInId = checkInId;
 		this.name = name;
 		this.password = password;
 		this.createDate = createDate;
@@ -53,6 +57,14 @@ public class UserInfo implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getCheckInId() {
+		return this.checkInId;
+	}
+
+	public void setCheckInId(String checkInId) {
+		this.checkInId = checkInId;
 	}
 
 	public String getName() {

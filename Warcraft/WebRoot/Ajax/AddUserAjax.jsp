@@ -10,7 +10,7 @@
 	if (name != null&&password != null&&department != null&&!name.isEmpty()&&!password.isEmpty()&&!department.isEmpty())
 	{
 		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-		hUIHandle.AddARecord(name, password, department, permission);
+		hUIHandle.AddARecord("", name, password, department, permission);
 	}
 	out.write(rtnRst);
 %>
