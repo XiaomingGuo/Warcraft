@@ -1,7 +1,6 @@
 package com.DB.support;
 
 import java.sql.Time;
-import java.util.Date;
 
 /**
  * CheckInRawData entity. @author MyEclipse Persistence Tools
@@ -13,7 +12,7 @@ public class CheckInRawData implements java.io.Serializable {
 
 	private Integer id;
 	private String checkInId;
-	private Date checkInDate;
+	private String checkInDate;
 	private Time checkInTime;
 	private Integer workGroup;
 	private Integer isEnsure;
@@ -25,8 +24,8 @@ public class CheckInRawData implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public CheckInRawData(String checkInId, Date checkInDate, Time checkInTime,
-			Integer workGroup, Integer isEnsure) {
+	public CheckInRawData(String checkInId, String checkInDate,
+			Time checkInTime, Integer workGroup, Integer isEnsure) {
 		this.checkInId = checkInId;
 		this.checkInDate = checkInDate;
 		this.checkInTime = checkInTime;
@@ -52,11 +51,11 @@ public class CheckInRawData implements java.io.Serializable {
 		this.checkInId = checkInId;
 	}
 
-	public Date getCheckInDate() {
+	public String getCheckInDate() {
 		return this.checkInDate;
 	}
 
-	public void setCheckInDate(Date checkInDate) {
+	public void setCheckInDate(String checkInDate) {
 		this.checkInDate = checkInDate;
 	}
 

@@ -1,6 +1,5 @@
 package com.DB.operation;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +54,7 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
                 rtnRst.add(tempRecord.getCheckInId());
                 break;
             case "check_in_date":
-                rtnRst.add(tempRecord.getCheckInDate().toString().split(" ")[0]);
+                rtnRst.add(tempRecord.getCheckInDate());
                 break;
             case "check_in_time":
                 rtnRst.add(tempRecord.getCheckInTime().toString());
@@ -106,7 +105,7 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
     {
         aWriteRecord = new CheckInRawData();
         aWriteRecord.setCheckInId(checkInId);
-        aWriteRecord.setCheckInDate(Date.valueOf(checkInDate));
+        aWriteRecord.setCheckInDate(checkInDate);
         aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
         getEQMHandle().addANewRecord();
     }

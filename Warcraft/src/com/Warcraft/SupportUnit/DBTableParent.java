@@ -149,10 +149,11 @@ public abstract class DBTableParent
         getEQMHandle().EQQueryWithLimit(hql, iStart, iCount);
     }
     
-    public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String beginDate, String endDate)
+    public void QueryRecordByFilterKeyListAndBetweenDateSpan(List<String> keyList, List<String> valueList, String betweenKeyWord, String beginDate, String endDate)
     {
         String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
-        hql += String.format(" and tbn.createDate>'%s' and tbn.createDate<'%s'", beginDate, endDate);
+        hql += String.format(" and tbn.%s>'%s' and tbn.%s<'%s'", ((ITableInterface)this).GetDatabaseKeyWord(betweenKeyWord), beginDate,
+                ((ITableInterface)this).GetDatabaseKeyWord(betweenKeyWord), endDate);
         getEQMHandle().EQQuery(hql);
     }
     

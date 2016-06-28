@@ -1,6 +1,5 @@
 package com.jsp.support;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -71,18 +70,18 @@ public class SummarizeCheckInTime extends PageParentClass
                 tempList.add(hCIRDHandle.getDBRecordList(sqlKeyList[recordIdx]));
             }
             List<String> oneDayRecord = GetOneDayDateRecord(tempList);
-            for(int writeIdx = 0; writeIdx < oneDayRecord.size(); writeIdx++)
-            {
-            	List<String> tempList1;
-                if(rtnRst.size() < oneDayRecord.size())
+                for(int writeIdx = 0; writeIdx < oneDayRecord.size(); writeIdx++)
                 {
-                	tempList1 = new ArrayList<String>();
-                	tempList1.add(oneDayRecord.get(writeIdx));
-                    rtnRst.add(tempList1);
+                    List<String> tempList1;
+                    if(rtnRst.size() < oneDayRecord.size())
+                    {
+                        tempList1 = new ArrayList<String>();
+                        tempList1.add(oneDayRecord.get(writeIdx));
+                        rtnRst.add(tempList1);
+                    }
+                    else
+                        rtnRst.get(writeIdx).add(oneDayRecord.get(writeIdx));
                 }
-                else
-                    rtnRst.get(writeIdx).add(oneDayRecord.get(writeIdx));
-            }
         }
         return rtnRst;
     }
@@ -90,7 +89,7 @@ public class SummarizeCheckInTime extends PageParentClass
     private List<String> GetOneDayDateRecord(List<List<String>> recordList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        if(recordList.size() > 0)
+        if(recordList.size() > 0&&Integer.parseInt(recordList.get(3).get(0)) > 0)
         {
             rtnRst.add(recordList.get(0).get(0));
             rtnRst.add(recordList.get(1).get(0));

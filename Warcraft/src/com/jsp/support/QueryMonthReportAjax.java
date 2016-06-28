@@ -57,7 +57,7 @@ public class QueryMonthReportAjax extends PageParentClass
 				keyList = Arrays.asList("Bar_Code", "user_name");
 				valueList = Arrays.asList(strBarcode, user_name);
 			}
-			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
+			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, "create_date", beginDate, endDate);
 			for(int recordIdx=0; recordIdx < hORHandle.RecordDBCount(); recordIdx++)
 			{
 				String strCurBatchLot = hORHandle.getDBRecordList("Batch_Lot").get(recordIdx);

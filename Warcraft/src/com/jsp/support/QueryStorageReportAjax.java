@@ -43,7 +43,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
 			submitDate = submitDate.replace("-", "");
-			if(supplier_name.indexOf("ÇëÑ¡Ôñ") >= 0)
+			if(supplier_name.indexOf("ï¿½ï¿½Ñ¡ï¿½ï¿½") >= 0)
 			{
 				keyList = Arrays.asList("Bar_Code", "in_store_date");
 				valueList = Arrays.asList(strBarcode, submitDate);
@@ -109,7 +109,7 @@ public class QueryStorageReportAjax extends PageParentClass
 	public List<String> GetResultByStartEndDate(List<String> barcodeList, String supplier_name, String beginDate, String endDate)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		//{"ID", "°ËÂë", "Ãû³Æ", "¿âÃû", "¹æ¸ñ", "ÅúºÅ", "½ø»õÊýÁ¿", "ÏûºÄÊýÁ¿", "Ê£ÓàÊýÁ¿", "µ¥¼Û", "½ø»õ×Ü¼Û", "ÏûºÄ×Ü¼Û", "Ê£Óà×Ü¼Û", "¹©Ó¦ÉÌ", "½ø»õµ¥Ê±¼ä"};
+		//{"ID", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½Ü¼ï¿½", "ï¿½ï¿½ï¿½ï¿½Ü¼ï¿½", "Ê£ï¿½ï¿½ï¿½Ü¼ï¿½", "ï¿½ï¿½Ó¦ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½"};
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
 		int iRowNum = 1;
@@ -120,7 +120,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
 			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
-			if(supplier_name.indexOf("ÇëÑ¡Ôñ") >= 0)
+			if(supplier_name.indexOf("ï¿½ï¿½Ñ¡ï¿½ï¿½") >= 0)
 			{
 				keyList = Arrays.asList("Bar_Code");
 				valueList = Arrays.asList(strBarcode);
@@ -130,7 +130,7 @@ public class QueryStorageReportAjax extends PageParentClass
 				keyList = Arrays.asList("Bar_Code", "vendor_name");
 				valueList = Arrays.asList(strBarcode, supplier_name);
 			}
-			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
+			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, "create_date", beginDate, endDate);
 			NumberFormat formatter = new DecimalFormat("#.###");
 			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
 			{
@@ -155,7 +155,7 @@ public class QueryStorageReportAjax extends PageParentClass
 				iRowNum++;
 			}
 			hStorageHandle = GenExStorageHandle(strBarcode);
-			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, beginDate, endDate);
+			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, "create_date", beginDate, endDate);
 			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
 			{
 				rtnRst.add(Integer.toString(iRowNum));

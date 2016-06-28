@@ -5,7 +5,7 @@
     String username = request.getParameter("user_name").replace(" ", "");
     String queryDate = request.getParameter("queryDate").replace(" ", "");
     
-    if(username.length() > 0)
+    if(username.length() > 0&&queryDate.length() > 0)
     {
         PersonnelInfo hPageHandle = new PersonnelInfo();
         rtnRst += hPageHandle.GenerateReturnString(username, queryDate);

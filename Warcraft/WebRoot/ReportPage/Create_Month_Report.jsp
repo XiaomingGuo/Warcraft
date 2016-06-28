@@ -32,7 +32,7 @@
 			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
 			
 			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), beginDate, endDate);
+			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), "create_date", beginDate, endDate);
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			for(int idx=0; idx<sqlKeyList.length;idx++)
 			{

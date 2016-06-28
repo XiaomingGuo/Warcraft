@@ -27,8 +27,9 @@ public class PersonnelInfo extends PageParentClass
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        
-        hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)));
+        String beginDate = queryDate + "00";
+        String endDate = queryDate + "32";
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)), "check_in_date", beginDate, endDate);
         if (hCIRDHandle.RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group"};
