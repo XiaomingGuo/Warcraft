@@ -31,7 +31,11 @@ public class SummarizeCheckInTime extends PageParentClass
     {
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         
-        hCIRDHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)), Arrays.asList("check_in_date"));
+        String beginDate = queryDate + "00";
+        String endDate = queryDate + "32";
+        hCIRDHandle.QueryRecordByFilterKeyList_GroupByList_BetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name))
+                                                                    , Arrays.asList("check_in_date"), "check_in_date", beginDate, endDate);
+        //hCIRDHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)), Arrays.asList("check_in_date"));
         if (hCIRDHandle.RecordDBCount() > 0)
         {
             return hCIRDHandle.getDBRecordList("check_in_date");
@@ -58,6 +62,8 @@ public class SummarizeCheckInTime extends PageParentClass
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         List<String> dateRecord = GetAllCheckInDate(user_name, queryDate);
+        if(null == dateRecord)
+            return null;
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         for(int idx = 0; idx < dateRecord.size(); idx++)
         {
@@ -137,6 +143,8 @@ public class SummarizeCheckInTime extends PageParentClass
     public String GenerateReturnString(String user_name, String queryDate)
     {
         List<List<String>> recordList = GetAllDisplayData(user_name, queryDate);
+        if(null == recordList)
+            return "";
         String rtnRst = PrepareHeader(recordList);
         
         if (recordList.size() > 0)

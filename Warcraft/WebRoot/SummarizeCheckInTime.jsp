@@ -54,7 +54,7 @@
         dojo.require("dojo.widget.*");
     </script>
     <jsp:include page="Menu/PersonnelMenu.jsp"/>
-    <br><br>
+    <br>
     <table align="center">
         <tr>
             <td>
@@ -85,15 +85,17 @@
                                 </select>
                             </h1>
                         </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            <label>考勤月份:</label>
+                        <td align="right">
+                            <h1>
+                            <label>考勤时间:</label>
                             <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMM" value="<%=currentDate %>"></div>
+                            </h1>
                         </td>
+                        <td align="right"><h1><input name="query" type="button" value="查询" style="width:100" onclick="changeUserName()"></h1></td>
                     </tr>
                 </table>
                 <table id="display_po" border='1' align="center"></table>
+                <br><br>
             </td>
         </tr>
     </table>
