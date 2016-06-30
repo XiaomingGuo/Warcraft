@@ -27,31 +27,14 @@ function OnloadDisplay()
                     {
                         var td = $("<td></td>");
                         if(iColCount - iCol == 0)
-                            td.append("<input type='button' value='确认' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "_Button' onclick=SubmitCheckInData(this)>");
+                            td.append("<input type='button' value='确认' name='" + data_list[iRow*iColCount + iCol + 3] +
+                                    "' onclick=SubmitCheckInData(this)>");
                         else if(iColCount - iCol == 1)
                         {
                             var selectItem = data_list[iRow*iColCount + iCol + 3].split("#");
-                            var appendString = "<select name='WorkGroup' id='WorkGroup' style='width:100px'><option value = '--请选择--'>--请选择--</option>";
+                            var appendString = "<select name='WorkGroup" + data_list[iRow*iColCount + iCol + 4] + "' id='WorkGroup" + data_list[iRow*iColCount + iCol + 4] + "' style='width:100px'><option value = '--请选择--'>--请选择--</option>";
                             for(var idx = 0; idx < selectItem.length; idx++)
-                            {
                                 appendString += "<option value = " + selectItem[idx] +">" + selectItem[idx] + "</option>";
-                            }
-                            /*
-                                <select name="UserName" id="UserName" style="width:200px">
-                                    <option value = "--请选择--">--请选择--</option>
-                                    for(int i = 0; i < UserList.size(); i++)
-                                    {
-                                        if(curUserName.contains(UserList.get(i)))
-                                        {
-                                    <option value = <%=UserList.get(i) %> selected><%=UserList.get(i)%></option>
-                                        }
-                                        else
-                                        {
-                                    <option value = <%=UserList.get(i) %>><%=UserList.get(i)%></option>
-                                        }
-                                    }
-                                </select>
-                            */
                             appendString += "</select>";
                             td.append(appendString);
                         }
@@ -68,5 +51,21 @@ function OnloadDisplay()
 
 function SubmitCheckInData(obj)
 {
-    alert(obj.name);
+    var workGroup = GetSelectedContent("WorkGroup"+obj.name);
+    if(workGroup.indexOf("请选择") >= 0)
+    {
+        alert("请选择班次信息!");
+        return;
+    }
+    $.post("Ajax/Submit_Arrange_Check_In_Data_Ajax.jsp", {"userId":obj.name, "WorkGroup":workGroup}, function(data, textStatus)
+    {
+        if (!CheckAjaxResult(textStatus, data))
+        {
+            alert(data);
+        }
+        else
+        {
+            alert("完成排班");
+        }
+    });
 }
