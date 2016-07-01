@@ -1,13 +1,13 @@
 /**
  * 
  */
-$(function()
+/*$(function()
 {
     $('#UserName').change(function()
     {
         changeUserName();
     });
-});
+});*/
 
 function changeUserName()
 {

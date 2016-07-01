@@ -87,7 +87,7 @@
                         </td>
                         <td align="right">
                             <h1>
-                            <label>考勤时间:</label>
+                            <label>考勤月:</label>
                             <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMM" value="<%=currentDate %>"></div>
                             </h1>
                         </td>

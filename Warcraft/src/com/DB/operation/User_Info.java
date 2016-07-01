@@ -101,7 +101,7 @@ public class User_Info extends DBTableParent implements ITableInterface
         if(keyword.toLowerCase().indexOf("id") == 0){
             rtnRst = "id";
         }
-        else if(keyword.toLowerCase().indexOf("check_in_id") > 0) {
+        else if(keyword.toLowerCase().indexOf("check_in_id") == 0) {
             rtnRst = "checkInId";
         }
         else if(keyword.toLowerCase().indexOf("name") >= 0) {
