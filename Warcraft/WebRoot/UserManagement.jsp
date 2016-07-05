@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.User_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.UserManagement" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	UserManagement hPageHandle = new UserManagement();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -23,34 +23,23 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			int PageRecordCount = 20;
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
-			List<List<String>> recordList = new ArrayList<List<String>>();
-			String[] keyList = {"ID", "name", "create_date", "department", "password", "permission", "submit"};
 			
-			User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-			hUIHandle.QueryAllRecord();
-			int recordCount = hUIHandle.RecordDBCount();
-			
-			hUIHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hUIHandle.RecordDBCount() > 0)
-			{
-				String[] sqlkeyList = {"id", "name", "create_date", "department", "password", "permission"};
-				for(int idx=0; idx < sqlkeyList.length; idx++)
-				{
-					recordList.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
-				}
-			}
+			String[] keyList = {"ID", "考勤工号", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+			String[] codeKeyList = {"ID", "check_in_id", "name", "create_date", "department", "password", "permission", "submit"};
+			int recordCount = hPageHandle.GetUserCount();
+			List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <base href="<%=basePath%>">
-    
-    <title>用户管理</title>
-    
+	<base href="<%=basePath%>">
+	
+	<title>用户管理</title>
+	
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="expires" content="0">	
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<!--
@@ -58,59 +47,59 @@
 	-->
 
   </head>
-  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
-    <center>
-    	<table border="1">
-    		<tr>
+	<jsp:include page="Menu/MainMenu.jsp"/>
+	<center>
+		<table border="1">
+			<tr>
 <%
 			for(int iCol = 1; iCol <= keyList.length; iCol++)
 			{
 %>
-	   			<th><%= keyList[iCol-1]%></th>
+				<th><%= keyList[iCol-1]%></th>
 <%
 			}
 %>
-    		</tr>
- 
+			</tr>
+
 <%
 			if (!recordList.isEmpty())
 			{
 				int iRow = 0;
 				for(iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
-					if (recordList.get(1).get(iRow-1).equalsIgnoreCase("root"))
+					if (recordList.get(2).get(iRow-1).equalsIgnoreCase("root"))
 						continue;
 %>
-  			<tr>
+			<tr>
 <%
 					for(int iCol = 1; iCol <= keyList.length; iCol++)
 					{
 						String tempValue = recordList.get(0).get(iRow-1);
-						if(keyList[iCol-1] == "permission")
+						if(keyList[iCol-1] == "用户权限")
 						{
 %>
-    			<td>
-    				<center>
-	    				<input type="checkbox" name="permission" value="2048">仓库管理员
-	    				<input type="checkbox" name="permission" value="1024">计划员
-	    				<input type="checkbox" name="permission" value="512">计划审核
-	    				<input type="checkbox" name="permission" value="256">生产管理
-	    				<input type="checkbox" name="permission" value="128">质量检验员
-	    				<input type="checkbox" name="permission" value="64">出货管理员
-	    				<input type="checkbox" name="permission" value="32">会计员
-	    				<br>
-	    				<input type="checkbox" name="permission" value="4092">管理员
-	    				<input type="checkbox" name="permission" value="4095">超级管理员
-    				</center>
-    			</td>
+				<td>
+					<center>
+						<input type="checkbox" name="permission" value="2048">仓库管理员
+						<input type="checkbox" name="permission" value="1024">计划员
+						<input type="checkbox" name="permission" value="512">计划审核
+						<input type="checkbox" name="permission" value="256">生产管理
+						<input type="checkbox" name="permission" value="128">质量检验员
+						<input type="checkbox" name="permission" value="64">出货管理员
+						<input type="checkbox" name="permission" value="32">会计员
+						<br>
+						<input type="checkbox" name="permission" value="4092">管理员
+						<input type="checkbox" name="permission" value="4095">超级管理员
+					</center>
+				</td>
 <%
-				    	}
-						else if(keyList[iCol-1] == "submit")
+						}
+						else if(keyList[iCol-1] == "操作")
 						{
 %>
-    			<td>
+				<td>
 					<center><input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)"></center>
 				</td>
 <%
@@ -118,13 +107,13 @@
 						else if(keyList[iCol-1] == "ID")
 						{
 %>
-   				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
 						}
-				    	else
-				    	{
+						else
+						{
 %>
-   				<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+				<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
 <%
 						}
 					}
@@ -133,33 +122,33 @@
 <%
 				}
 %>
-  			<tr>
+			<tr>
 <%
 				for(int iCol = 1; iCol <= keyList.length; iCol++)
 				{
-					if(keyList[iCol-1] == "permission")
+					if(keyList[iCol-1] == "用户权限")
 					{
 %>
-    			<td>
-    				<center>
-	    				<input type="checkbox" name="AddPermission" value="2048">仓库管理员
-	    				<input type="checkbox" name="AddPermission" value="1024">计划员
-	    				<input type="checkbox" name="AddPermission" value="512">计划审核
-	    				<input type="checkbox" name="AddPermission" value="256">生产管理
-	    				<input type="checkbox" name="AddPermission" value="128">质量检验员
-	    				<input type="checkbox" name="AddPermission" value="64">出货管理员
-	    				<input type="checkbox" name="AddPermission" value="32">会计员
-	    				<br>
-	    				<input type="checkbox" name="AddPermission" value="4092">管理员
-	    				<input type="checkbox" name="AddPermission" value="4095">超级管理员
-    				</center>
-    			</td>
+				<td>
+					<center>
+						<input type="checkbox" name="AddPermission" value="2048">仓库管理员
+						<input type="checkbox" name="AddPermission" value="1024">计划员
+						<input type="checkbox" name="AddPermission" value="512">计划审核
+						<input type="checkbox" name="AddPermission" value="256">生产管理
+						<input type="checkbox" name="AddPermission" value="128">质量检验员
+						<input type="checkbox" name="AddPermission" value="64">出货管理员
+						<input type="checkbox" name="AddPermission" value="32">会计员
+						<br>
+						<input type="checkbox" name="AddPermission" value="4092">管理员
+						<input type="checkbox" name="AddPermission" value="4095">超级管理员
+					</center>
+				</td>
 <%
-			    	}
-					else if(keyList[iCol-1] == "submit")
+					}
+					else if(keyList[iCol-1] == "操作")
 					{
 %>
-    			<td>
+				<td>
 					<center><input type="button" value="添加" name="<%=iRow %>" id="<%=iRow %>" onclick="Add(this)"></center>
 				</td>
 <%
@@ -167,20 +156,20 @@
 					else if(keyList[iCol-1] == "ID")
 					{
 %>
-   				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
 <%
 					}
-			    	else if(keyList[iCol-1] == "create_date")
-			    	{
+					else if(keyList[iCol-1] == "创建时间")
+					{
 %>
 				<td></td>
 <%
 					}
-			    	else
-			    	{
+					else
+					{
 %>
-   				<td>
-					<center><input type="text" name="<%=keyList[iCol-1] %>" id="<%=keyList[iCol-1] %>"></center>
+				<td>
+					<center><input type="text" name="<%=codeKeyList[iCol-1] %>" id="<%=codeKeyList[iCol-1] %>"></center>
 				</td>
 <%
 					}
@@ -190,15 +179,15 @@
 <%
 			}
 %>
-    	</table>
-    	<br><br>
-   	    <jsp:include page="PageNum.jsp">
-   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
-   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
-   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="UserManagement.jsp" name="PageName"/>
-   	    </jsp:include>
-    </center>
+		</table>
+		<br><br>
+		<jsp:include page="PageNum.jsp">
+			<jsp:param value="<%=recordCount %>" name="recordCount"/>
+			<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+			<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+			<jsp:param value="UserManagement.jsp" name="PageName"/>
+		</jsp:include>
+	</center>
 		<script type="text/javascript">
 			function change(obj)
 			{
@@ -219,7 +208,8 @@
 				$("input:checkbox[name=AddPermission]:checked").each(function(i){
 					iPermission += Number($(this).val());
 				});
-				$.post("Ajax/AddUserAjax.jsp", {"name":$('#name').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
+				//"ID", "考勤工号", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"
+				$.post("Ajax/AddUserAjax.jsp", {"name":$('#name').val(), "check_in_id":$('#check_in_id').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
 					if (textStatus == "success") {
 						location.reload();
 					}

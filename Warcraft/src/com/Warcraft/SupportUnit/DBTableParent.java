@@ -180,7 +180,6 @@ public abstract class DBTableParent
         getEQMHandle().EQQuery(hql);
     }
     
-
     public void QueryAllRecord()
     {
         String hql = String.format("from %s tbn", ((ITableInterface)this).GetTableName());

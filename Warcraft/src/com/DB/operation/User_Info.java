@@ -89,12 +89,6 @@ public class User_Info extends DBTableParent implements ITableInterface
         return aWriteRecord;
     }
 
-    public void GetRecordByName(String name)
-    {
-        String hql = String.format("from UserInfo ui where ui.name='%s'", name);
-        getEQMHandle().EQQuery(hql);
-    }
-
     @Override
     public String GetDatabaseKeyWord(String keyword) {
         String rtnRst = "";
@@ -128,7 +122,7 @@ public class User_Info extends DBTableParent implements ITableInterface
     public void AddARecord(String checkInId, String name, String password, String department, String permission)
     {
         aWriteRecord = new UserInfo();
-        aWriteRecord.setName(checkInId);
+        aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setName(name);
         aWriteRecord.setPassword(password);
         aWriteRecord.setDepartment(department);
@@ -138,7 +132,6 @@ public class User_Info extends DBTableParent implements ITableInterface
 
     @Override
     public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-        // TODO Auto-generated method stub
         
     }
     

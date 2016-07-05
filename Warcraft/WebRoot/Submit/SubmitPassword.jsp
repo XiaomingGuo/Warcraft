@@ -18,7 +18,7 @@
 		if (!cur_PWD.isEmpty() && !new_PWD.isEmpty() && !confirm_PWD.isEmpty() && new_PWD.equals(confirm_PWD))
 		{
 			User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-			hUIHandle.GetRecordByName(user_name);
+			hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
 			if(hUIHandle.RecordDBCount() == 1)
 			{
 				String sql_PWD = hUIHandle.getDBRecordList("password").get(0);

@@ -5,17 +5,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass
 {
     String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"};
+    private IRecordsQueryUtil hQueryHandle;
     
-    public List<String> GetAllUserName()
+    public SummarizeCheckInTime() {hQueryHandle = new CRecordsQueryUtil();}
+    
+    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryAllRecord();
-        return hUIHandle.getDBRecordList("name");
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+    }
+    
+    public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
+    {
+    	hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
     }
     
     private List<String> GetAllCheckInDate(String queryDate)
@@ -33,16 +43,6 @@ public class SummarizeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
-    private List<String> GetCheckInIdFromUserInfo(String user_name)
-    {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        if(user_name.indexOf("请选择") >= 0)
-            hUIHandle.QueryAllRecord();
-        else
-            hUIHandle.GetRecordByName(user_name);
-        return hUIHandle.getDBRecordList("check_in_id");
-    }
-    
     private List<List<String>> GenDisplayResultList()
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
@@ -56,7 +56,9 @@ public class SummarizeCheckInTime extends PageParentClass
         List<List<String>> rtnRst = GenDisplayResultList();
         if(user_name.length() > 0&&queryDate.length() != 6)
             return rtnRst;
-        List<String> checkInIdList = GetCheckInIdFromUserInfo(user_name);
+        
+        List<String> checkInIdList = GetAllUserRecordByName(user_name.indexOf("请选择") >= 0?"AllRecord":user_name, "check_in_id");
+        checkInIdList.remove("99999");
         List<String> checkInDateList = GetAllCheckInDate(queryDate);
         
         for(int idx = 0; idx < checkInIdList.size(); idx++)
@@ -69,18 +71,11 @@ public class SummarizeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
-    private String GetUserNameByCheckInId(String checkInId)
-    {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
-        return hUIHandle.getDBRecordList("name").get(0);
-    }
-    
     private List<String> GetAPersonCheckInSummary(String checkInId, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
         int absenceDay = 0, delayTime = 0;
-        rtnRst.add(GetUserNameByCheckInId(checkInId));
+        rtnRst.add(GetAllUserRecordByCheckInId(checkInId, "name").get(0));
         rtnRst.add(checkInId);
         //"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"
         for(int idx = 0; idx < checkInDateList.size(); idx++)
@@ -115,7 +110,7 @@ public class SummarizeCheckInTime extends PageParentClass
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         hCIRDHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("check_in_id", "check_in_date"), 
                 Arrays.asList(checkInId, checkInDate), Arrays.asList("check_in_time"));
-        if(hCIRDHandle.RecordDBCount() > 0)
+        if(hCIRDHandle.RecordDBCount() > 0&&Integer.parseInt(hCIRDHandle.getDBRecordList("work_group").get(0)) > 0)
         {
             List<String> workGroupTimeList = GetWorkGroupTime(hCIRDHandle.getDBRecordList("work_group").get(0));
             List<String> checkInTimeList = hCIRDHandle.getDBRecordList("check_in_time");

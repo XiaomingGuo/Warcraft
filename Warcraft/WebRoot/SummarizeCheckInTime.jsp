@@ -24,7 +24,7 @@
             String curUserName = request.getParameter("userName");
             if(null == curUserName)
                 curUserName = "";
-            List<String> UserList = hPageHandle.GetAllUserName();
+            List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
             UserList.remove("root");
             String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>

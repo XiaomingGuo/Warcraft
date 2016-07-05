@@ -19,7 +19,7 @@ public class PersonnelInfo extends PageParentClass
     private String GetCheckInIdFromUserInfo(String user_name)
     {
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.GetRecordByName(user_name);
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
         return hUIHandle.getDBRecordList("check_in_id").get(0);
     }
     
