@@ -16,6 +16,16 @@ public class SummarizeCheckInTime extends PageParentClass
     
     public SummarizeCheckInTime() {hQueryHandle = new CRecordsQueryUtil();}
     
+    public void setQueryHandle(IRecordsQueryUtil hHandle)
+    {
+        this.hQueryHandle = hHandle;
+    }
+    
+    public IRecordsQueryUtil getQueryHandle()
+    {
+        return this.hQueryHandle;
+    }
+    
     public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
         hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
