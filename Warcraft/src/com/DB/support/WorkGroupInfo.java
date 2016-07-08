@@ -14,6 +14,7 @@ public class WorkGroupInfo implements java.io.Serializable {
 	private String groupName;
 	private Time checkInTime;
 	private Time checkOutTime;
+	private Integer workDaysAweek;
 
 	// Constructors
 
@@ -22,10 +23,12 @@ public class WorkGroupInfo implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public WorkGroupInfo(String groupName, Time checkInTime, Time checkOutTime) {
+	public WorkGroupInfo(String groupName, Time checkInTime, Time checkOutTime,
+			Integer workDaysAweek) {
 		this.groupName = groupName;
 		this.checkInTime = checkInTime;
 		this.checkOutTime = checkOutTime;
+		this.workDaysAweek = workDaysAweek;
 	}
 
 	// Property accessors
@@ -60,6 +63,14 @@ public class WorkGroupInfo implements java.io.Serializable {
 
 	public void setCheckOutTime(Time checkOutTime) {
 		this.checkOutTime = checkOutTime;
+	}
+
+	public Integer getWorkDaysAweek() {
+		return this.workDaysAweek;
+	}
+
+	public void setWorkDaysAweek(Integer workDaysAweek) {
+		this.workDaysAweek = workDaysAweek;
 	}
 
 }

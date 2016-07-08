@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface IPageAjaxUtil
 {
-    public String PrepareHeader(List<List<String>> recordList);
+    public String GenerateAjaxString(List<List<String>> recordList);
+    public List<List<String>> GenDisplayResultList();
     public void setTableHandle(IPageInterface hHandle);
     public IPageInterface getTableHandle();
 }

@@ -60,6 +60,9 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 			case "check_out_time":
 				rtnRst.add(tempRecord.getCheckOutTime().toString());
 				break;
+			case "work_days_aweek":
+				rtnRst.add(tempRecord.getWorkDaysAweek().toString());
+				break;
 			default:
 				break;
 			}
@@ -96,12 +99,13 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	public void AddARecord(String groupName, String checkInTime, String checkOutTime, String qty, String vendor, String percent)
+	public void AddARecord(String groupName, String checkInTime, String checkOutTime, String workDaysAweek)
 	{
 		aWriteRecord = new WorkGroupInfo();
 		aWriteRecord.setGroupName(groupName);
 		aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
 		aWriteRecord.setCheckOutTime(Time.valueOf(checkOutTime));
+		aWriteRecord.setWorkDaysAweek(Integer.parseInt(workDaysAweek));
 		getEQMHandle().addANewRecord();
 	}
 
@@ -119,6 +123,9 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 		}
 		else if(keyword.toLowerCase().indexOf("check_out_time") >= 0) {
 			rtnRst = "checkOutTime";
+		}
+		else if(keyword.toLowerCase().indexOf("work_days_aweek") >= 0) {
+			rtnRst = "workDaysAweek";
 		}
 		return rtnRst;
 	}

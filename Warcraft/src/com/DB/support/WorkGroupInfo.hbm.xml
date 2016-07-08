@@ -19,5 +19,8 @@
         <property name="checkOutTime" type="java.sql.Time">
             <column name="check_out_time" length="8" not-null="true" />
         </property>
+        <property name="workDaysAweek" type="java.lang.Integer">
+            <column name="work_days_aweek" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -23,7 +23,7 @@ public class CRecordsQueryUtil implements IRecordsQueryUtil
         this.hTableHandle = hTableHandle;
     }
     
-	@Override
+    @Override
     public List<String> GetTableContentByKeyWord(String queryWord, String queryVal, String getKeyWord)
     {
         if(queryVal.indexOf("AllRecord") == 0)
@@ -32,5 +32,4 @@ public class CRecordsQueryUtil implements IRecordsQueryUtil
         	hTableHandle.QueryRecordByFilterKeyList(Arrays.asList(queryWord), Arrays.asList(queryVal));
         return hTableHandle.getDBRecordList(getKeyWord);
     }
-    
 }

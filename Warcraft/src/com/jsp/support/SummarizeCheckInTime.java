@@ -41,13 +41,21 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
         hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
-        return hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+        rtnRst.remove("99999");
+        return rtnRst;
     }
     
     public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
     {
         hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
         return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
+    }
+    
+    public int GetWorkDayOfAWeekByWorkGroupId(String queryKeyVal)
+    {
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
     }
     
     private List<String> GetAllCheckInDate(String queryDate)
@@ -59,28 +67,18 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
         {
             int curDate = beginDate + dateOffset;
-            if(DateAdapter.getDayOfAWeek(Integer.toString(curDate)) > 1)
-                rtnRst.add(Integer.toString(curDate));
+            rtnRst.add(Integer.toString(curDate));
         }
-        return rtnRst;
-    }
-    
-    private List<List<String>> GenDisplayResultList()
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        for(int idx = 0; idx < m_displayArray.length; idx++)
-            rtnRst.add(new ArrayList<String>());
         return rtnRst;
     }
     
     private List<List<String>> GetAllDisplayData(String user_name, String queryDate)
     {
-        List<List<String>> rtnRst = GenDisplayResultList();
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         if(user_name.length() > 0&&queryDate.length() != 6)
             return rtnRst;
         
         List<String> checkInIdList = GetAllUserRecordByName(user_name.indexOf("请选择") >= 0?"AllRecord":user_name, "check_in_id");
-        checkInIdList.remove("99999");
         List<String> checkInDateList = GetAllCheckInDate(queryDate);
         
         for(int idx = 0; idx < checkInIdList.size(); idx++)
@@ -112,64 +110,106 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<String> GetWorkGroupTime(String workGroup)
+    private List<String> GetWorkGroupTime(int workGroupId)
     {
         List<String> rtnRst = new ArrayList<String>();
         Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(workGroup));
-        String checkInTime = hWGIHandle.getDBRecordList("check_in_time").get(0);
-        String checkOutTime = hWGIHandle.getDBRecordList("check_out_time").get(0);
-        String middleTime = DateAdapter.getMiddleTimeBetweenTimeSpan(checkInTime, checkOutTime);
-        rtnRst.add(checkInTime);
-        rtnRst.add(middleTime);
-        rtnRst.add(checkOutTime);
+        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(Integer.toString(workGroupId)));
+        rtnRst.add(hWGIHandle.getDBRecordList("check_in_time").get(0));
+        rtnRst.add(hWGIHandle.getDBRecordList("check_out_time").get(0));
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetOneDayCheckRawData(String checkInId, String checkInDate)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        hCIRDHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("check_in_id", "check_in_date"), 
+                Arrays.asList(checkInId, checkInDate), Arrays.asList("check_in_time"));
+        String[] getKeyWord = {"check_in_date", "check_in_time", "work_group"};
+        for(int idx=0; idx < getKeyWord.length; idx++)
+            rtnRst.add(hCIRDHandle.getDBRecordList(getKeyWord[idx]));
+        return rtnRst;
+    }
+    
+    private String GetTomorrowCheckOutDate(String checkInId, int checkInDate)
+    {
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id", "check_in_date"), 
+                Arrays.asList(checkInId, Integer.toString(checkInDate+1)), "check_in_time", "00:00:00", "12:00:00", Arrays.asList("check_in_time"));
+        if(hCIRDHandle.RecordDBCount() > 0)
+            return hCIRDHandle.getDBRecordList("check_in_time").get(hCIRDHandle.RecordDBCount()-1);
+        return null;
+    }
+    
+    private String GetCurrentCheckInDate(List<String> checkInTimeList)
+    {
+        for(int idx=0; idx < checkInTimeList.size(); idx++)
+        {
+            if(DateAdapter.TimeSpan(checkInTimeList.get(idx), "12:00:00") > 0)
+                return checkInTimeList.get(idx);
+        }
+        return checkInTimeList.get(checkInTimeList.size()-1);
+    }
+    
+    private List<String> GenCheckInAndOutTime(int workGroupId, String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
+        {
+            rtnRst.add(checkInTimeList.get(0));
+            rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
+        }
+        else
+        {
+            rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
+            String checkOutDate = GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate));
+            if(null != checkOutDate)
+                rtnRst.add(GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate)));
+            else
+                rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
+        }
         return rtnRst;
     }
     
     private List<Long> GetAbsenceDayAndDelayTime(String checkInId, String checkInDate)
     {
         List<Long> rtnRst = new ArrayList<Long>();
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        hCIRDHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("check_in_id", "check_in_date"), 
-                Arrays.asList(checkInId, checkInDate), Arrays.asList("check_in_time"));
-        if(hCIRDHandle.RecordDBCount() > 0&&Integer.parseInt(hCIRDHandle.getDBRecordList("work_group").get(0)) > 0)
+        //int workDaysAWeek = GetWorkDayOfAWeekByWorkGroupId();
+        //if(DateAdapter.getDayOfAWeek(curDate) > 1)
+        List<List<String>> recordList = GetOneDayCheckRawData(checkInId, checkInDate);
+        if(recordList.get(0).size() > 0)
         {
-            List<String> workGroupTimeList = GetWorkGroupTime(hCIRDHandle.getDBRecordList("work_group").get(0));
-            List<String> checkInTimeList = hCIRDHandle.getDBRecordList("check_in_time");
-            String checkInTime, checkOutTime;
-            if(DateAdapter.TimeSpan(workGroupTimeList.get(0), "16:29:00") < 0)
+            int workGroupId = Integer.parseInt(recordList.get(2).get(0));
+            if(workGroupId == 0)
             {
-                checkInTime = checkInTimeList.get(0);
-                checkOutTime = checkInTimeList.get(checkInTimeList.size()-1);
-            }
-            else
-            {
-                checkInTime = checkInTimeList.get(checkInTimeList.size()-1);
-                checkOutTime = checkInTimeList.get(0);
-            }
-            long timeSpan = 0;
-            if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(1)) > 0||DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(2)) < 0)
-            {
-                rtnRst.add(1L);
-                if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(1)) > 0&&DateAdapter.TimeSpan(workGroupTimeList.get(2), checkOutTime) > 0)
-                {
-                    timeSpan = DateAdapter.TimeSpan(workGroupTimeList.get(2), checkOutTime);
-                }
-                else if(DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(1)) < 0&&DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
-                {
-                    timeSpan = DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
-                }
-                rtnRst.add(timeSpan);
-            }
-            else
-            {
+                rtnRst.add(2L);
                 rtnRst.add(0L);
+                return rtnRst;
+            }
+            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
+            List<String> checkINAndOutTime = GenCheckInAndOutTime(workGroupId, checkInId, checkInDate, workGroupTimeList, recordList.get(1));
+            String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
+            
+            long absenceTime = 0, timeSpan = 0;
+            if(Math.abs(DateAdapter.TimeSpan(checkInTime, checkOutTime)) > 240)
+            {
+                absenceTime = 0L;
                 if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
                     timeSpan += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
-                if(DateAdapter.TimeSpan(workGroupTimeList.get(2), checkOutTime) > 0)
-                    timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(2), checkOutTime);
-                rtnRst.add(timeSpan);
+                if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
+                    timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
             }
+            else
+            {
+                absenceTime = 1L;
+                if(Math.abs(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0))) > 240&&DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
+                    timeSpan = DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
+                else if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
+                    timeSpan = DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
+            }
+            rtnRst.add(absenceTime);
+            rtnRst.add(timeSpan);
         }
         else
         {
@@ -181,40 +221,12 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     }
     
     // Finish End
-    
-    private String PrepareHeader(List<List<String>> recordList)
-    {
-        String rtnRst = "remove$";
-        if (recordList.size() > 0)
-        {
-            rtnRst += Integer.toString(m_displayArray.length) + "$";
-            rtnRst += Integer.toString(recordList.get(0).size()) + "$";
-            for(int i = 0; i < m_displayArray.length; i++)
-            {
-                rtnRst += m_displayArray[i] + "$";
-            }
-        }
-        return rtnRst;
-    }
-    
     public String GenerateReturnString(String user_name, String queryDate)
     {
         List<List<String>> recordList = GetAllDisplayData(user_name, queryDate);
         if(recordList.size() == 0)
             return "";
-        String rtnRst = hAjaxHandle.PrepareHeader(recordList);
-        
-        if (recordList.size() > 0)
-        {
-            //"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"
-            for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
-            {
-                for(int iCol = 0; iCol < m_displayArray.length; iCol++)
-                {
-                    rtnRst += recordList.get(iCol).get(iRow) + "$";
-                }
-            }
-        }
+        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
         return rtnRst;
     }
 }

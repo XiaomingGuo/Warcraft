@@ -1,6 +1,5 @@
 package com.Warcraft.SupportUnit;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,5 +72,20 @@ public class DateAdapter
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public static Date parseToTime(String convertTime)
+    {
+        Date rtnRst = null;
+        DateFormat df = new SimpleDateFormat("HH:mm:ss");
+        try
+        {
+            rtnRst = df.parse(convertTime);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return rtnRst;
     }
 }

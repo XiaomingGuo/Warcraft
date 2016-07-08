@@ -1,5 +1,6 @@
 package com.page.utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.Warcraft.Interface.IPageAjaxUtil;
@@ -21,8 +22,7 @@ public class CPageAjaxUtil  implements IPageAjaxUtil
         return this.m_PageHandle;
     }
     
-    @Override
-    public String PrepareHeader(List<List<String>> recordList)
+    private String PrepareHeader(List<List<String>> recordList)
     {
         String rtnRst = "remove$";
         String[] displayArray = m_PageHandle.GetDisplayArray();
@@ -33,6 +33,33 @@ public class CPageAjaxUtil  implements IPageAjaxUtil
             for(int i = 0; i < displayArray.length; i++)
             {
                 rtnRst += displayArray[i] + "$";
+            }
+        }
+        return rtnRst;
+    }
+    
+    @Override
+    public List<List<String>> GenDisplayResultList()
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        for(int idx = 0; idx < m_PageHandle.GetDisplayArray().length; idx++)
+            rtnRst.add(new ArrayList<String>());
+        return rtnRst;
+    }
+    
+    @Override
+    public String GenerateAjaxString(List<List<String>> recordList)
+    {
+        String rtnRst = PrepareHeader(recordList);
+        
+        if (recordList.size() > 0)
+        {
+            for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+            {
+                for(int iCol = 0; iCol < m_PageHandle.GetDisplayArray().length; iCol++)
+                {
+                    rtnRst += recordList.get(iCol).get(iRow) + "$";
+                }
             }
         }
         return rtnRst;

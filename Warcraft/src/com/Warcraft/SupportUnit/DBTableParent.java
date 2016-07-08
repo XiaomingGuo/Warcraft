@@ -157,6 +157,16 @@ public abstract class DBTableParent
         getEQMHandle().EQQuery(hql);
     }
     
+    public void QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(List<String> keyList, List<String> valueList, 
+    		String betweenKeyWord, String beginDate, String endDate, List<String> orderList)
+    {
+        String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
+        hql += String.format(" and tbn.%s>'%s' and tbn.%s<'%s'", ((ITableInterface)this).GetDatabaseKeyWord(betweenKeyWord), beginDate,
+                ((ITableInterface)this).GetDatabaseKeyWord(betweenKeyWord), endDate);
+        hql += " order by " + GenerateGroupAndOrderString(orderList) + " asc";
+        getEQMHandle().EQQuery(hql);
+    }
+    
     public void QueryRecordByFilterKeyList_GroupByList_BetweenDateSpan(List<String> keyList, List<String> valueList, List<String>groupList, String betweenKeyWord, String beginDate, String endDate)
     {
         String hql = String.format("from %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);

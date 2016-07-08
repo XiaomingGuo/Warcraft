@@ -65,7 +65,7 @@ public class TestSummarizeCheckInTime
 	{
 		SummarizeCheckInTime mockHandle = mock(SummarizeCheckInTime.class);
 		mockHandle.GenerateReturnString("AllRecord", "20161102");
-		mockHandle.
+		//mockHandle.
 		//fail("Not yet implemented");
 	}
 
