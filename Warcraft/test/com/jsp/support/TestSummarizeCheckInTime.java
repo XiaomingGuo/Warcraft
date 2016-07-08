@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
-import org.mockito.ArgumentMatcher;
-
 import com.jsp.support.SummarizeCheckInTime;
 import com.Warcraft.Interface.*;
 
@@ -63,7 +61,11 @@ public class TestSummarizeCheckInTime
 	 * Test method for {@link com.jsp.support.SummarizeCheckInTime#GenerateReturnString(java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	public void testGenerateReturnString() {
+	public void testGenerateReturnString()
+	{
+		SummarizeCheckInTime mockHandle = mock(SummarizeCheckInTime.class);
+		mockHandle.GenerateReturnString("AllRecord", "20161102");
+		mockHandle.
 		//fail("Not yet implemented");
 	}
 

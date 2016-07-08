@@ -9,12 +9,24 @@ import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.page.utilities.*;
 
-public class SummarizeCheckInTime extends PageParentClass
+public class SummarizeCheckInTime extends PageParentClass implements IPageInterface
 {
-    String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
+    private IPageAjaxUtil hAjaxHandle;
     
-    public SummarizeCheckInTime() {hQueryHandle = new CRecordsQueryUtil();}
+    public SummarizeCheckInTime()
+    {
+        hQueryHandle = new CRecordsQueryUtil();
+        hAjaxHandle = new CPageAjaxUtil();
+        hAjaxHandle.setTableHandle(this);
+    }
+    
+    @Override
+    public String[] GetDisplayArray()
+    {
+        return m_displayArray;
+    }
     
     public void setQueryHandle(IRecordsQueryUtil hHandle)
     {
@@ -34,7 +46,7 @@ public class SummarizeCheckInTime extends PageParentClass
     
     public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
     {
-    	hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
         return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
     }
     
@@ -188,9 +200,9 @@ public class SummarizeCheckInTime extends PageParentClass
     public String GenerateReturnString(String user_name, String queryDate)
     {
         List<List<String>> recordList = GetAllDisplayData(user_name, queryDate);
-        if(null == recordList)
+        if(recordList.size() == 0)
             return "";
-        String rtnRst = PrepareHeader(recordList);
+        String rtnRst = hAjaxHandle.PrepareHeader(recordList);
         
         if (recordList.size() > 0)
         {
