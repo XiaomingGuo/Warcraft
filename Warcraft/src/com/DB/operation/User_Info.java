@@ -52,6 +52,9 @@ public class User_Info extends DBTableParent implements ITableInterface
             case "check_in_id":
                 rtnRst.add(tempRecord.getCheckInId());
                 break;
+            case "isFixWorkGroup":
+                rtnRst.add(tempRecord.getIsFixWorkGroup().toString());
+                break;
             case "name":
                 rtnRst.add(tempRecord.getName());
                 break;
@@ -98,6 +101,9 @@ public class User_Info extends DBTableParent implements ITableInterface
         else if(keyword.toLowerCase().indexOf("check_in_id") == 0) {
             rtnRst = "checkInId";
         }
+        else if(keyword.toLowerCase().indexOf("isfixworkgroup") == 0) {
+            rtnRst = "isfixworkgroup";
+        }
         else if(keyword.toLowerCase().indexOf("name") >= 0) {
             rtnRst = "name";
         }
@@ -119,10 +125,11 @@ public class User_Info extends DBTableParent implements ITableInterface
         return rtnRst;
     }
     
-    public void AddARecord(String checkInId, String name, String password, String department, String permission)
+    public void AddARecord(String checkInId, String isFixWorkGroup, String name, String password, String department, String permission)
     {
         aWriteRecord = new UserInfo();
         aWriteRecord.setCheckInId(checkInId);
+        aWriteRecord.setIsFixWorkGroup(Integer.parseInt(isFixWorkGroup));
         aWriteRecord.setName(name);
         aWriteRecord.setPassword(password);
         aWriteRecord.setDepartment(department);

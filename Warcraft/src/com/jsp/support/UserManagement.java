@@ -23,7 +23,7 @@ public class UserManagement extends PageParentClass
         hUIHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
         if (hUIHandle.RecordDBCount() > 0)
         {
-            String[] sqlkeyList = {"id", "check_in_id", "name", "create_date", "department", "password", "permission"};
+            String[] sqlkeyList = {"id", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission"};
             for(int idx=0; idx < sqlkeyList.length; idx++)
             {
             	rtnRst.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));

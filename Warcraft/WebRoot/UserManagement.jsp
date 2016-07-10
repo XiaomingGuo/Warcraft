@@ -24,8 +24,8 @@
 			int PageRecordCount = 20;
 			int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
 			
-			String[] keyList = {"ID", "考勤工号", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
-			String[] codeKeyList = {"ID", "check_in_id", "name", "create_date", "department", "password", "permission", "submit"};
+			String[] keyList = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+			String[] codeKeyList = {"ID", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "submit"};
 			int recordCount = hPageHandle.GetUserCount();
 			List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
 %>
@@ -87,9 +87,9 @@
 						<input type="checkbox" name="permission" value="512">计划审核
 						<input type="checkbox" name="permission" value="256">生产管理
 						<input type="checkbox" name="permission" value="128">质量检验员
+						<br>
 						<input type="checkbox" name="permission" value="64">出货管理员
 						<input type="checkbox" name="permission" value="32">会计员
-						<br>
 						<input type="checkbox" name="permission" value="4092">管理员
 						<input type="checkbox" name="permission" value="4095">超级管理员
 					</center>
@@ -99,7 +99,7 @@
 						else if(keyList[iCol-1] == "操作")
 						{
 %>
-				<td>
+				<td width="50px">
 					<center><input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)"></center>
 				</td>
 <%
@@ -107,13 +107,19 @@
 						else if(keyList[iCol-1] == "ID")
 						{
 %>
-				<td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+				<td width="50px"><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+<%
+						}
+						else if(keyList[iCol-1] == "创建时间")
+						{
+%>
+				<td width="150px"><%=recordList.get(iCol-1).get(iRow-1) %></td>
 <%
 						}
 						else
 						{
 %>
-				<td><%= recordList.get(iCol-1).get(iRow-1)%></td>
+				<td width="50px"><%=recordList.get(iCol-1).get(iRow-1)%></td>
 <%
 						}
 					}
@@ -136,9 +142,9 @@
 						<input type="checkbox" name="AddPermission" value="512">计划审核
 						<input type="checkbox" name="AddPermission" value="256">生产管理
 						<input type="checkbox" name="AddPermission" value="128">质量检验员
+						<br>
 						<input type="checkbox" name="AddPermission" value="64">出货管理员
 						<input type="checkbox" name="AddPermission" value="32">会计员
-						<br>
 						<input type="checkbox" name="AddPermission" value="4092">管理员
 						<input type="checkbox" name="AddPermission" value="4095">超级管理员
 					</center>
@@ -169,7 +175,7 @@
 					{
 %>
 				<td>
-					<center><input type="text" name="<%=codeKeyList[iCol-1] %>" id="<%=codeKeyList[iCol-1] %>"></center>
+					<center><input type="text" name="<%=codeKeyList[iCol-1] %>" id="<%=codeKeyList[iCol-1] %>" style="width:100px"></center>
 				</td>
 <%
 					}
