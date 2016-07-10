@@ -134,9 +134,15 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     private String GetTomorrowCheckOutDate(String checkInId, int checkInDate)
     {
+        String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
+        int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
+        if(checkInDate == Integer.parseInt(usedDay) + maxDay)
+            usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
+        else
+            usedDay = Integer.toString(checkInDate+1);
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id", "check_in_date"), 
-                Arrays.asList(checkInId, Integer.toString(checkInDate+1)), "check_in_time", "00:00:00", "12:00:00", Arrays.asList("check_in_time"));
+                Arrays.asList(checkInId, usedDay), "check_in_time", "00:00:00", "05:30:00", Arrays.asList("check_in_time"));
         if(hCIRDHandle.RecordDBCount() > 0)
             return hCIRDHandle.getDBRecordList("check_in_time").get(hCIRDHandle.RecordDBCount()-1);
         return null;
@@ -149,25 +155,35 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             if(DateAdapter.TimeSpan(checkInTimeList.get(idx), "12:00:00") > 0)
                 return checkInTimeList.get(idx);
         }
-        return checkInTimeList.get(checkInTimeList.size()-1);
+        return null;
     }
     
-    private List<String> GenCheckInAndOutTime(int workGroupId, String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
+    private List<String> GenCheckInAndOutTime(String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            rtnRst.add(checkInTimeList.get(0));
-            rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
+            if(Math.abs(DateAdapter.TimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1))) > 300)
+            {
+                rtnRst.add(checkInTimeList.get(0));
+                rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
+            }
+            else
+            {
+                if(Math.abs(DateAdapter.TimeSpan(checkInTimeList.get(0), workGroupTimeList.get(0))) < 240)
+                    rtnRst.add(checkInTimeList.get(0));
+                else
+                    rtnRst.add(null);
+                if(Math.abs(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkInTimeList.get(checkInTimeList.size()-1))) < 240)
+                    rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
+                else
+                    rtnRst.add(null);
+            }
         }
         else
         {
             rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
-            String checkOutDate = GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate));
-            if(null != checkOutDate)
-                rtnRst.add(GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate)));
-            else
-                rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
+            rtnRst.add(GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate)));
         }
         return rtnRst;
     }
@@ -175,8 +191,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<Long> GetAbsenceDayAndDelayTime(String checkInId, String checkInDate)
     {
         List<Long> rtnRst = new ArrayList<Long>();
-        //int workDaysAWeek = GetWorkDayOfAWeekByWorkGroupId();
-        //if(DateAdapter.getDayOfAWeek(curDate) > 1)
         List<List<String>> recordList = GetOneDayCheckRawData(checkInId, checkInDate);
         if(recordList.get(0).size() > 0)
         {
@@ -187,26 +201,31 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                 rtnRst.add(0L);
                 return rtnRst;
             }
+                
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
-            List<String> checkINAndOutTime = GenCheckInAndOutTime(workGroupId, checkInId, checkInDate, workGroupTimeList, recordList.get(1));
+            List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(1));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
             long absenceTime = 0, timeSpan = 0;
-            if(Math.abs(DateAdapter.TimeSpan(checkInTime, checkOutTime)) > 240)
+            if(null == checkInTime)
             {
-                absenceTime = 0L;
-                if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
-                    timeSpan += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
-                if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
-                    timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
+                absenceTime += 1L;
+                timeSpan += 0L;
             }
             else
             {
-                absenceTime = 1L;
-                if(Math.abs(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0))) > 240&&DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
-                    timeSpan = DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
-                else if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
-                    timeSpan = DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
+                if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
+                    timeSpan += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
+            }
+            if(null == checkOutTime)
+            {
+                absenceTime += 1L;
+                timeSpan += 0L;
+            }
+            else
+            {
+                if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
+                    timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
             }
             rtnRst.add(absenceTime);
             rtnRst.add(timeSpan);
@@ -216,7 +235,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             rtnRst.add(2L);
             rtnRst.add(0L);
         }
-        
         return rtnRst;
     }
     
