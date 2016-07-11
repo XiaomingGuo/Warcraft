@@ -5,9 +5,25 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.IPageAjaxUtil;
+import com.Warcraft.Interface.IPageInterface;
+import com.Warcraft.Interface.IRecordsQueryUtil;
+import com.page.utilities.CPageAjaxUtil;
+import com.page.utilities.CRecordsQueryUtil;
 
-public class UserManagement extends PageParentClass
+public class UserManagement extends PageParentClass implements IPageInterface
 {
+    public String[] m_displayArray = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+    private IRecordsQueryUtil hQueryHandle;
+    private IPageAjaxUtil hAjaxHandle;
+    
+    public UserManagement()
+    {
+        hQueryHandle = new CRecordsQueryUtil();
+        hAjaxHandle = new CPageAjaxUtil();
+        hAjaxHandle.setTableHandle(this);
+    }
+    
     public int GetUserCount()
     {
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
@@ -24,13 +40,18 @@ public class UserManagement extends PageParentClass
         if (hUIHandle.RecordDBCount() > 0)
         {
             String[] sqlkeyList = {"id", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission"};
+            List<String> idList = new ArrayList<String>();
+            for(int item=0; item < hUIHandle.getDBRecordList(sqlkeyList[0]).size(); item++)
+                idList.add(Integer.toString(item+1));
+            rtnRst.add(idList);
             for(int idx=0; idx < sqlkeyList.length; idx++)
             {
-            	rtnRst.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
+                rtnRst.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
             }
         }
         return rtnRst;
     }
+    
     public boolean NewARecordInCustomerPoRecord(String barCode, String poName, String deliveryDate, String qty, String vendor, String percent)
     {
         if (CheckParamValidityEqualsLength(barCode, 8)&&CheckParamValidityMoreThanLength(poName, 6)&&CheckParamValidityEqualsLength(deliveryDate, 8)&&
@@ -45,5 +66,22 @@ public class UserManagement extends PageParentClass
             }
         }
         return false;
+    }
+    
+    @Override
+    public String[] GetDisplayArray()
+    {
+        return m_displayArray;
+    }
+    
+    public String GenerateReturnString(int BeginPage)
+    {
+        String[] codeKeyList = {"ID", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "submit"};
+        
+        List<List<String>> recordList = GetUserInfo(20, BeginPage);
+        if(recordList.size() == 0)
+            return "";
+        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
+        return rtnRst;
     }
 }
