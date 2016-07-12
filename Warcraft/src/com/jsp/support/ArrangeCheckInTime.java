@@ -17,6 +17,13 @@ public class ArrangeCheckInTime extends PageParentClass
         return hWGIHandle.getDBRecordList("group_name");
     }
     
+    private List<String> GetAllUserName()
+    {
+        User_Info hWGIHandle = new User_Info(new EarthquakeManagement());
+        hWGIHandle.QueryAllRecord();
+        return hWGIHandle.getDBRecordList("name");
+    }
+    
     private List<List<String>> GetAllDisplayInfo()
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
@@ -40,6 +47,16 @@ public class ArrangeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
+    private String GetUserNameString()
+    {
+        List<String> tempList = GetAllUserName();
+        tempList.remove("root");
+        String rtnRst = tempList.get(0);
+        for(int idx = 1; idx < tempList.size(); idx++)
+            rtnRst += "#" + tempList.get(idx);
+        return rtnRst;
+    }
+    
     public String GenerateReturnString()
     {
         List<List<String>> recordList = GetAllDisplayInfo();
@@ -49,36 +66,31 @@ public class ArrangeCheckInTime extends PageParentClass
         {
             //"id", "name", "check_in_id", "department"
             //"ID", "姓名", "工号", "部门", "选择班次", "操作"
-            for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
+            for(int iCol = 0; iCol < m_displayList.length; iCol++)
             {
-                for(int iCol = 0; iCol < m_displayList.length; iCol++)
+                if("ID" == m_displayList[iCol])
                 {
-                    if(recordList.get(1).get(iRow).equals("root"))
-                        break;
-                    if("ID" == m_displayList[iCol])
-                    {
-                        rtnRst += Integer.toString(iRow) + "$";
-                    }
-                    else if("姓名" == m_displayList[iCol])
-                    {
-                        rtnRst += recordList.get(1).get(iRow) + "$";
-                    }
-                    else if("工号" == m_displayList[iCol])
-                    {
-                        rtnRst += recordList.get(2).get(iRow) + "$";
-                    }
-                    else if("部门" == m_displayList[iCol])
-                    {
-                        rtnRst += recordList.get(3).get(iRow) + "$";
-                    }
-                    else if("选择班次" == m_displayList[iCol])
-                    {
-                        rtnRst += GetWorkGroupString() + "$";
-                    }
-                    else if("操作" == m_displayList[iCol])
-                    {
-                        rtnRst += recordList.get(0).get(iRow) + "$";
-                    }
+                    rtnRst += "...$";
+                }
+                else if("姓名" == m_displayList[iCol])
+                {
+                    rtnRst += GetUserNameString() + "$";
+                }
+                else if("工号" == m_displayList[iCol])
+                {
+                    rtnRst += "...$";
+                }
+                else if("部门" == m_displayList[iCol])
+                {
+                    rtnRst += "...$";
+                }
+                else if("选择班次" == m_displayList[iCol])
+                {
+                    rtnRst += GetWorkGroupString() + "$";
+                }
+                else if("操作" == m_displayList[iCol])
+                {
+                    rtnRst += "...$";
                 }
             }
         }

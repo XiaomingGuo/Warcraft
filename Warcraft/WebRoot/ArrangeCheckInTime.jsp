@@ -1,7 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
+    PageParentClass hPageHandle = new PageParentClass();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("tishi.jsp");
@@ -19,13 +21,14 @@
             message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+            String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <base href="<%=basePath%>">
     
-    <title>人员考勤查询</title>
+    <title>人员排班</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -49,11 +52,21 @@
     <br><br>
     <table align="center">
         <tr>
-            <td>
-                <table id="display_info" border='1' align="center"></table>
+            <td align="center">
+                <h2>
+                    <label>开始时间:</label>
+                    <div dojoType="dropdowndatepicker" name="BeginDate" id="BeginDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+                </h2>
+            </td>
+            <td align="center">
+                <h2>
+                    <label>结束时间:</label>
+                    <div dojoType="dropdowndatepicker" name="EndDate" id="EndDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+                </h2>
             </td>
         </tr>
     </table>
+    <table id="display_info" border='1' align="center"></table>
   </body>
 </html>
 <%

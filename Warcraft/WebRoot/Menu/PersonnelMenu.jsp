@@ -81,7 +81,7 @@
                         <li><a href="SummarizeCheckInTime.jsp">考勤汇总</a></li>
                         <li><a href="PersonnelInfo.jsp">考勤数据修改</a></li>
                         <li><a href="PersonnelInfo.jsp">班次信息录入</a></li>
-                        <li><a href="ArrangeCheckInTime.jsp">员工排班</a></li>
+                        <li><a href="ArrangeCheckInTime.jsp">人员排班</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
                     </ul>
                 </h2>

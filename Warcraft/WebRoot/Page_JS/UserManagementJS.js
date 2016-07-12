@@ -39,7 +39,7 @@ function DisplayUserTable(beginPage)
     {
         if (CheckAjaxResult(textStatus, data))
         {
-        	$displayUser.empty();
+            $displayUser.empty();
             var data_list = data.split("$");
             var iColCount = parseInt(data_list[1]), iRowCount = parseInt(data_list[2]);
             if (iColCount > 0&&iRowCount > 0)

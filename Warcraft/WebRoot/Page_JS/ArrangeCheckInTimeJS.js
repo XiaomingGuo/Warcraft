@@ -38,6 +38,15 @@ function OnloadDisplay()
                             appendString += "</select>";
                             td.append(appendString);
                         }
+                        else if(iColCount - iCol == 4)
+                        {
+                            var selectItem = data_list[iRow*iColCount + iCol + 3].split("#");
+                            var appendString = "<select name='WorkGroup" + data_list[iRow*iColCount + iCol + 4] + "' id='WorkGroup" + data_list[iRow*iColCount + iCol + 4] + "' style='width:100px'><option value = '--请选择--'>--请选择--</option>";
+                            for(var idx = 0; idx < selectItem.length; idx++)
+                                appendString += "<option value = " + selectItem[idx] +">" + selectItem[idx] + "</option>";
+                            appendString += "</select>";
+                            td.append(appendString);
+                        }
                         else
                             td.append(data_list[iRow*iColCount + iCol + 3]);
                         tr.append(td);

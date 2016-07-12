@@ -5,11 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
-import com.Warcraft.Interface.IPageAjaxUtil;
-import com.Warcraft.Interface.IPageInterface;
-import com.Warcraft.Interface.IRecordsQueryUtil;
-import com.page.utilities.CPageAjaxUtil;
-import com.page.utilities.CRecordsQueryUtil;
+import com.Warcraft.Interface.*;
+import com.page.utilities.*;
 
 public class UserManagement extends PageParentClass implements IPageInterface
 {
