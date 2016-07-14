@@ -67,6 +67,8 @@
         </tr>
     </table>
     <table id="display_info" border='1' align="center"></table>
+    <br>
+    <table id="check_in_list" border='1' align="center"></table>
   </body>
 </html>
 <%

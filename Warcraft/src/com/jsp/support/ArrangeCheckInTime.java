@@ -8,7 +8,7 @@ import com.DB.operation.*;
 
 public class ArrangeCheckInTime extends PageParentClass
 {
-    String[] m_displayList = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
+    String[] m_displayList = {"姓名", "工号", "部门", "选择班次", "操作"};
     
     private List<String> GetAllWorkGroup()
     {
@@ -29,7 +29,7 @@ public class ArrangeCheckInTime extends PageParentClass
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
         hUIHandle.QueryAllRecord();
-        String[] sqlKeyList = {"id", "name", "check_in_id", "department"};
+        String[] sqlKeyList = {"name", "check_in_id", "department"};
         if (hUIHandle.RecordDBCount() > 0)
         {
             for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -57,59 +57,52 @@ public class ArrangeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
+    public String GetUserNameString(String userName)
+    {
+        String rtnRst = "";
+        return rtnRst;
+    }
+    
     public String GenerateReturnString()
     {
-        List<List<String>> recordList = GetAllDisplayInfo();
-        String rtnRst = PrepareHeader(recordList);
+        String rtnRst = PrepareHeader();
         
-        if (recordList.size() > 0)
+        //"id", "name", "check_in_id", "department"
+        //"ID", "姓名", "工号", "部门", "选择班次", "操作"
+        for(int iCol = 0; iCol < m_displayList.length; iCol++)
         {
-            //"id", "name", "check_in_id", "department"
-            //"ID", "姓名", "工号", "部门", "选择班次", "操作"
-            for(int iCol = 0; iCol < m_displayList.length; iCol++)
+            if("姓名" == m_displayList[iCol])
             {
-                if("ID" == m_displayList[iCol])
-                {
-                    rtnRst += "...$";
-                }
-                else if("姓名" == m_displayList[iCol])
-                {
-                    rtnRst += GetUserNameString() + "$";
-                }
-                else if("工号" == m_displayList[iCol])
-                {
-                    rtnRst += "...$";
-                }
-                else if("部门" == m_displayList[iCol])
-                {
-                    rtnRst += "...$";
-                }
-                else if("选择班次" == m_displayList[iCol])
-                {
-                    rtnRst += GetWorkGroupString() + "$";
-                }
-                else if("操作" == m_displayList[iCol])
-                {
-                    rtnRst += "...$";
-                }
+                rtnRst += GetUserNameString() + "$";
+            }
+            else if("工号" == m_displayList[iCol])
+            {
+                rtnRst += "...$";
+            }
+            else if("部门" == m_displayList[iCol])
+            {
+                rtnRst += "...$";
+            }
+            else if("选择班次" == m_displayList[iCol])
+            {
+                rtnRst += GetWorkGroupString() + "$";
+            }
+            else if("操作" == m_displayList[iCol])
+            {
+                rtnRst += "...$";
             }
         }
         return rtnRst;
     }
     
-    private String PrepareHeader(List<List<String>> recordList)
+    private String PrepareHeader()
     {
         String rtnRst = "remove$";
-        List<String> tempList = GetAllWorkGroup();
-        if (recordList.size() > 0)
+        rtnRst += Integer.toString(m_displayList.length) + "$";
+        rtnRst += "1$";
+        for(int i = 0; i < m_displayList.length; i++)
         {
-            rtnRst += Integer.toString(m_displayList.length) + "$";
-            rtnRst += Integer.toString(recordList.get(0).size()-1) + "$";
-            rtnRst += Integer.toString(tempList.size()) + "$";
-            for(int i = 0; i < m_displayList.length; i++)
-            {
-                rtnRst += m_displayList[i] + "$";
-            }
+            rtnRst += m_displayList[i] + "$";
         }
         return rtnRst;
     }
