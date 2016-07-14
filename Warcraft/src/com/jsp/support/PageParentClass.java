@@ -8,6 +8,7 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
+import com.Warcraft.SupportUnit.DateAdapter;
 
 public class PageParentClass
 {
@@ -244,6 +245,11 @@ public class PageParentClass
         Calendar mData = Calendar.getInstance();
         String rtnRst = String.format("%04d%s%02d%s", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan);
         return rtnRst;
+    }
+    
+    public String GetEndDayOfMonth(String yearMonth)
+    {
+        return Integer.toString(DateAdapter.getMaxDaysByYearMonth(yearMonth));
     }
     
     public String GenYearString()

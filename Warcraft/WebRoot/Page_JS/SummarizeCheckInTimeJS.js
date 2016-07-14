@@ -18,7 +18,7 @@ function changeUserName()
         alert("你就不能起个靠谱的名字吗?");
         return;
     }
-	var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
+    var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
     $.post("Ajax/Query_Summarize_Check_In_Data_Ajax.jsp", {"user_name":user_name, "queryDate": addDate}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))

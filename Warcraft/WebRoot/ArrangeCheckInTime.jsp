@@ -21,7 +21,8 @@
             message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-            String currentDate = hPageHandle.GenYearMonthDayString("-");
+            String currentDate = hPageHandle.GenYearMonthString("-");
+            String endDayOfMonth = currentDate+hPageHandle.GetEndDayOfMonth(currentDate.replaceAll("-", ""));
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -55,13 +56,13 @@
             <td align="center">
                 <h2>
                     <label>开始时间:</label>
-                    <div dojoType="dropdowndatepicker" name="BeginDate" id="BeginDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+                    <div dojoType="dropdowndatepicker" name="BeginDate" id="BeginDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01" %>"></div>
                 </h2>
             </td>
             <td align="center">
                 <h2>
                     <label>结束时间:</label>
-                    <div dojoType="dropdowndatepicker" name="EndDate" id="EndDate" displayFormat="yyyyMMdd" value="<%=currentDate %>"></div>
+                    <div dojoType="dropdowndatepicker" name="EndDate" id="EndDate" displayFormat="yyyyMMdd" value="<%=endDayOfMonth %>"></div>
                 </h2>
             </td>
         </tr>
@@ -69,6 +70,12 @@
     <table id="display_info" border='1' align="center"></table>
     <br>
     <table id="check_in_list" border='1' align="center"></table>
+    <br>
+    <table align="center">
+        <tr>
+            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitArrangeCheckIn()"></td>
+        </tr>
+    </table>
   </body>
 </html>
 <%

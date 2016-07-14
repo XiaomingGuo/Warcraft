@@ -8,7 +8,7 @@ import com.DB.operation.*;
 
 public class ArrangeCheckInTime extends PageParentClass
 {
-    String[] m_displayList = {"姓名", "工号", "部门", "选择班次", "操作"};
+    String[] m_displayList = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
     
     private List<String> GetAllWorkGroup()
     {
@@ -24,12 +24,12 @@ public class ArrangeCheckInTime extends PageParentClass
         return hWGIHandle.getDBRecordList("name");
     }
     
-    private List<List<String>> GetAllDisplayInfo()
+    private List<List<String>> GetAllDisplayInfo(String userName)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryAllRecord();
-        String[] sqlKeyList = {"name", "check_in_id", "department"};
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(userName));
+        String[] sqlKeyList = {"id", "name", "check_in_id", "department", "isFixWorkGroup"};
         if (hUIHandle.RecordDBCount() > 0)
         {
             for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -59,19 +59,50 @@ public class ArrangeCheckInTime extends PageParentClass
     
     public String GetUserNameString(String userName)
     {
-        String rtnRst = "";
+        String rtnRst = PrepareHeader();
+        List<List<String>> recordList = GetAllDisplayInfo(userName);
+        for(int iCol = 0; iCol < m_displayList.length; iCol++)
+        {
+            if("ID" == m_displayList[iCol])
+            {
+                rtnRst += Integer.toString(iCol+1) + "$";
+            }
+            else if("姓名" == m_displayList[iCol])
+            {
+                rtnRst += recordList.get(iCol).get(0) + "$";
+            }
+            else if("工号" == m_displayList[iCol])
+            {
+                rtnRst += recordList.get(iCol).get(0) + "$";
+            }
+            else if("部门" == m_displayList[iCol])
+            {
+                rtnRst += recordList.get(iCol).get(0) + "$";
+            }
+            else if("选择班次" == m_displayList[iCol])
+            {
+                rtnRst += recordList.get(iCol).get(0) + "$";
+            }
+            else
+            {
+                rtnRst += "...$";
+            }
+        }
         return rtnRst;
     }
     
     public String GenerateReturnString()
     {
         String rtnRst = PrepareHeader();
-        
         //"id", "name", "check_in_id", "department"
         //"ID", "姓名", "工号", "部门", "选择班次", "操作"
         for(int iCol = 0; iCol < m_displayList.length; iCol++)
         {
-            if("姓名" == m_displayList[iCol])
+            if("ID" == m_displayList[iCol])
+            {
+                rtnRst += "...$";
+            }
+            else if("姓名" == m_displayList[iCol])
             {
                 rtnRst += GetUserNameString() + "$";
             }
@@ -107,21 +138,18 @@ public class ArrangeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
-    public String SubmitArrangeCheckInData(String strUserId, String strWorkGroup)
+    public String SubmitArrangeCheckInData(String strCheckInId, String strWorkGroup, String beginDate, String endDate)
     {
         String rtnRst = "";
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(strUserId));
-        
         Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
         hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("group_name"), Arrays.asList(strWorkGroup));
         
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        if(hUIHandle.RecordDBCount() > 0&&hWGIHandle.RecordDBCount() > 0)
+        if(hWGIHandle.RecordDBCount() > 0)
         {
-            String workNum = hUIHandle.getDBRecordList("check_in_id").get(0);
-            String workGroupId = hUIHandle.getDBRecordList("id").get(0);
-            hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(workNum, "0"));
+            String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
+            hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
+                                                                        "check_in_date", beginDate, endDate);
             List<String> updateIdList = hCIRDHandle.getDBRecordList("id");
             if(updateIdList.size() > 0)
             {
