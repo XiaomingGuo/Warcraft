@@ -74,12 +74,12 @@
                         </td>
                     </tr>
                 </table>
-                  <h2 align="center">
+                <h2 align="center">
                     <ul>
                         <li><a href="MainPage.jsp">首页</a></li>
                         <li><a href="PersonnelInfo.jsp">人员考勤查询</a></li>
                         <li><a href="SummarizeCheckInTime.jsp">考勤汇总</a></li>
-                        <li><a href="PersonnelInfo.jsp">考勤数据修改</a></li>
+                        <li><a href="AddCheckInTime.jsp">补刷考勤</a></li>
                         <li><a href="PersonnelInfo.jsp">班次信息录入</a></li>
                         <li><a href="ArrangeCheckInTime.jsp">人员排班</a></li>
                         <li><a href="Quit.jsp">退出</a></li>

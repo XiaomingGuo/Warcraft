@@ -164,4 +164,30 @@ public class ArrangeCheckInTime extends PageParentClass
             rtnRst += "error:班次不存在或用户不存在!";
         return rtnRst;
     }
+    
+    public String SubmitAddCheckInData(String strCheckInId, String strWorkGroup, String addDate)
+    {
+        String rtnRst = "";
+        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("group_name"), Arrays.asList(strWorkGroup));
+        
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        if(hWGIHandle.RecordDBCount() > 0)
+        {
+            String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
+            String checkInDate = addDate.split(" ")[0];
+            String checkInTime = addDate.split(" ")[1];
+            
+            hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "check_in_date", "check_in_time"), Arrays.asList(strCheckInId, checkInDate, checkInTime));
+            if(hCIRDHandle.RecordDBCount() < 0)
+            {
+                hCIRDHandle.AddARecord(strCheckInId, checkInDate, checkInTime, workGroupId);
+                hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("check_in_id", "check_in_date", "check_in_time", "work_group"), Arrays.asList(strCheckInId, checkInDate, checkInTime, workGroupId));
+            }
+        }
+        else
+            rtnRst += "error:班次不存在或用户不存在!";
+        return rtnRst;
+    }
+    
 }

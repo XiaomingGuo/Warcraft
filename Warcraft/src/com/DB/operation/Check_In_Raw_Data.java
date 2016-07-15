@@ -101,12 +101,13 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
         getEQMHandle().EQQuery(hql);
     }
     
-    public void AddARecord(String checkInId, String checkInDate, String checkInTime)
+    public void AddARecord(String checkInId, String checkInDate, String checkInTime, String workGroup)
     {
         aWriteRecord = new CheckInRawData();
         aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setCheckInDate(checkInDate);
         aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
+        aWriteRecord.setWorkGroup(Integer.parseInt(workGroup));
         getEQMHandle().addANewRecord();
     }
     
