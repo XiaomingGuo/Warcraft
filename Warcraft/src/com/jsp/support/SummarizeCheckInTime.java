@@ -58,16 +58,25 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
     }
     
-    private List<String> GetAllCheckInDate(String queryDate)
+    private List<String> GetAllCheckInDate(String queryDate, String checkInId)
     {
         List<String> rtnRst = new ArrayList<String>();
         int beginDate = Integer.parseInt(queryDate + "01");
         int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
         
         for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
         {
             int curDate = beginDate + dateOffset;
             rtnRst.add(Integer.toString(curDate));
+        }
+        hHMHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id"), Arrays.asList(checkInId),
+                                                                        "holiday_date", Integer.toString(beginDate), queryDate+Integer.toString(maxDays));
+        List<String> tempList = hHMHandle.getDBRecordList("holiday_date");
+        for(int idx=0; idx < tempList.size(); idx++)
+        {
+            if(rtnRst.contains(tempList.get(idx)))
+                rtnRst.remove(tempList.get(idx));
         }
         return rtnRst;
     }
@@ -79,10 +88,10 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             return rtnRst;
         
         List<String> checkInIdList = GetAllUserRecordByName(user_name.indexOf("请选择") >= 0?"AllRecord":user_name, "check_in_id");
-        List<String> checkInDateList = GetAllCheckInDate(queryDate);
         
         for(int idx = 0; idx < checkInIdList.size(); idx++)
         {
+            List<String> checkInDateList = GetAllCheckInDate(queryDate, checkInIdList.get(idx));
             rtnRst.get(0).add(Integer.toString(idx + 1));
             List<String> checkInResult = GetAPersonCheckInSummary(checkInIdList.get(idx), checkInDateList);
             for(int item = 1; item < m_displayArray.length; item++)

@@ -148,7 +148,7 @@ public class ArrangeCheckInTime extends PageParentClass
         if(hWGIHandle.RecordDBCount() > 0)
         {
             String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
-            hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
+            hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
                                                                         "check_in_date", beginDate, endDate);
             List<String> updateIdList = hCIRDHandle.getDBRecordList("id");
             if(updateIdList.size() > 0)
@@ -175,11 +175,11 @@ public class ArrangeCheckInTime extends PageParentClass
         if(hWGIHandle.RecordDBCount() > 0)
         {
             String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
-            String checkInDate = addDate.split(" ")[0];
-            String checkInTime = addDate.split(" ")[1];
+            String checkInDate = addDate.split("#")[0];
+            String checkInTime = addDate.split("#")[1];
             
             hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "check_in_date", "check_in_time"), Arrays.asList(strCheckInId, checkInDate, checkInTime));
-            if(hCIRDHandle.RecordDBCount() < 0)
+            if(hCIRDHandle.RecordDBCount() <= 0)
             {
                 hCIRDHandle.AddARecord(strCheckInId, checkInDate, checkInTime, workGroupId);
                 hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("check_in_id", "check_in_date", "check_in_time", "work_group"), Arrays.asList(strCheckInId, checkInDate, checkInTime, workGroupId));
@@ -187,6 +187,18 @@ public class ArrangeCheckInTime extends PageParentClass
         }
         else
             rtnRst += "error:班次不存在或用户不存在!";
+        return rtnRst;
+    }
+    
+    public String SubmitAddHolidaysDate(String strCheckInId, String addDate)
+    {
+        String rtnRst = "";
+        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
+        if(hHMHandle.RecordDBCount() <= 0)
+            hHMHandle.AddARecord(strCheckInId, addDate);
+        else
+            rtnRst += "error:节假日或转班信息已经存在!";
         return rtnRst;
     }
     

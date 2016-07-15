@@ -29,7 +29,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>补刷考勤</title>
+    <title>节假日及转班</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -54,11 +54,10 @@
     <table align="center" width="40%">
         <tr>
             <td align="right" width="40%">
-                <h2><label>补卡日期:</label></h2>
+                <h2><label>日期:</label></h2>
             </td>
             <td align="left" width="60%">
                 <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01"%>"></div>
-                <input type="text" value="12:00:00" name="AddTime" id="AddTime" style="width:100px">
             </td>
         </tr>
     </table>
@@ -68,7 +67,7 @@
     <br>
     <table align="center">
         <tr>
-            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitAddCheckInTime()"></td>
+            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitAddHolidaysDate()"></td>
         </tr>
     </table>
   </body>

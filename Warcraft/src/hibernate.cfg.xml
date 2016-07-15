@@ -42,5 +42,6 @@
     <mapping resource="com/DB/support/DiscardMaterialRecord.hbm.xml" />
     <mapping resource="com/DB/support/TransBarcodeRecord.hbm.xml" />
     <mapping resource="com/DB/support/WorkGroupInfo.hbm.xml" />
+    <mapping resource="com/DB/support/HolidayMark.hbm.xml" />
 </session-factory>
 </hibernate-configuration>
