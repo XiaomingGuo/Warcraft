@@ -44,8 +44,13 @@ function OnloadDisplay()
                         }
                         else if(iColCount - iCol == 2)
                         {
-                            td = $("<td name='department' id='department'></td>");
-                            td.append(data_list[iRow*iColCount + iCol + 2]);
+                            td = $("<td></td>");
+                            var selectItem = data_list[iRow*iColCount + iCol + 2].split("#");
+                            var appendString = "<select name='department' id='department' style='width:100px'><option value = '--请选择--'>--请选择--</option>";
+                            for(var idx = 0; idx < selectItem.length; idx++)
+                                appendString += "<option value = " + selectItem[idx] +">" + selectItem[idx] + "</option>";
+                            appendString += "</select>";
+                            td.append(appendString);
                         }
                         else if(iColCount - iCol == 3)
                         {
@@ -85,14 +90,24 @@ function ChangeUserName(obj)
             var data_list = data.split("$");
             var iColCount = parseInt(data_list[1]);
             $('#workNum').html(data_list[iColCount+5]);
-            $('#department').html(data_list[iColCount+6]);
             
-            var title = document.getElementById('WorkGroup');
-            for(var i=0;i<title.options.length;i++)
+            var department = document.getElementById('department');
+            var index = 0;
+            $("#department option").each(function()
+            {
+                if($(this).text()==data_list[iColCount+6])
+                {
+                    department.options[index].selected = true;
+                }
+                index++;
+            }); 
+            
+            var workGroup = document.getElementById('WorkGroup');
+            for(var i=0;i<workGroup.options.length;i++)
             {
                 if(i == parseInt(data_list[iColCount+7]))
                 {
-                    title.options[i].selected = true;
+                    workGroup.options[i].selected = true;
                     break;
                 }
             }
@@ -103,56 +118,63 @@ function ChangeUserName(obj)
 function EnsureCheckInData(obj)
 {
     var workNum = $('#workNum').html();
-    var department = $('#department').html();
+    var department = GetSelectedContent("department");
     var userName = GetSelectedContent("UserName");
     var workGroup = GetSelectedContent("WorkGroup");
     
-    if(userName.indexOf("请选择") >= 0||workGroup.indexOf("请选择") >= 0||workNum.indexOf("...") >= 0||department.indexOf("...") >= 0)
+    if(userName.indexOf("请选择") >= 0||department.indexOf("请选择") >= 0)
     {
-        alert("请完善信息!");
-        return;
+        $.post("Ajax/Query_AllUserInfo_Ajax.jsp", {"UserName":userName, "Department":department}, function(data, textStatus)
+        {
+            if (!CheckAjaxResult(textStatus, data))
+            {
+                alert(data);
+            }
+        });
     }
-    
-    var tab = document.getElementById('check_in_list');
-    var displayTab = document.getElementById('display_info');
-    var sampleCount = displayTab.rows[0].cells.length;
-    if(1 > tab.rows.length)
+    else
     {
-        var myHeadRow = document.createElement("tr");
-        myHeadRow.setAttribute("align", "center");
-        for(var iCol=0; iCol < sampleCount; iCol++)
+        var tab = document.getElementById('check_in_list');
+        var displayTab = document.getElementById('display_info');
+        var sampleCount = displayTab.rows[0].cells.length;
+        if(1 > tab.rows.length)
         {
-            myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
+            var myHeadRow = document.createElement("tr");
+            myHeadRow.setAttribute("align", "center");
+            for(var iCol=0; iCol < sampleCount; iCol++)
+            {
+                myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
+            }
+            tab.appendChild(myHeadRow);
         }
-        tab.appendChild(myHeadRow);
+        
+        var myCurrentRow = document.createElement("tr");
+        var index = tab.rows.length;
+        myCurrentRow.appendChild(CreateTabCellContext("td", index));
+        for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
+        {
+            var val = "";
+            if("姓名" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = userName;
+            }
+            else if("工号" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = workNum;
+            }
+            else if("部门" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = department;
+            }
+            else if("选择班次" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = workGroup;
+            }
+            myCurrentRow.appendChild(CreateTabCellContext("td", val));
+        }
+        myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='delappitem(this)'>"));
+        tab.appendChild(myCurrentRow);
     }
-    
-    var myCurrentRow = document.createElement("tr");
-    var index = tab.rows.length;
-    myCurrentRow.appendChild(CreateTabCellContext("td", index));
-    for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
-    {
-        var val = "";
-        if("姓名" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = userName;
-        }
-        else if("工号" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = workNum;
-        }
-        else if("部门" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = department;
-        }
-        else if("选择班次" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = workGroup;
-        }
-        myCurrentRow.appendChild(CreateTabCellContext("td", val));
-    }
-    myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='delappitem(this)'>"));
-    tab.appendChild(myCurrentRow);
 }
 
 function delappitem(obj)
@@ -197,13 +219,9 @@ function SubmitArrangeCheckIn()
                                                                 "BeginDate":beginDate, "EndDate":endDate}, function(data, textStatus)
         {
             if (!CheckAjaxResult(textStatus, data))
-            {
                 alert(data);
-            }
             else
-            {
                 alert("完成排班");
-            }
         });
     }
     while(tab.rows.length > 0)

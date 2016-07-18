@@ -24,6 +24,13 @@ public class ArrangeCheckInTime extends PageParentClass
         return hWGIHandle.getDBRecordList("name");
     }
     
+    private List<String> GetDepartmentName()
+    {
+        User_Info hWGIHandle = new User_Info(new EarthquakeManagement());
+        hWGIHandle.QueryRecordGroupByList(Arrays.asList("department"));
+        return hWGIHandle.getDBRecordList("department");
+    }
+    
     private List<List<String>> GetAllDisplayInfo(String userName)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
@@ -51,6 +58,15 @@ public class ArrangeCheckInTime extends PageParentClass
     {
         List<String> tempList = GetAllUserName();
         tempList.remove("root");
+        String rtnRst = tempList.get(0);
+        for(int idx = 1; idx < tempList.size(); idx++)
+            rtnRst += "#" + tempList.get(idx);
+        return rtnRst;
+    }
+    
+    private String GetDepartmentString()
+    {
+        List<String> tempList = GetDepartmentName();
         String rtnRst = tempList.get(0);
         for(int idx = 1; idx < tempList.size(); idx++)
             rtnRst += "#" + tempList.get(idx);
@@ -112,7 +128,7 @@ public class ArrangeCheckInTime extends PageParentClass
             }
             else if("部门" == m_displayList[iCol])
             {
-                rtnRst += "...$";
+                rtnRst += GetDepartmentString() + "$";
             }
             else if("选择班次" == m_displayList[iCol])
             {
