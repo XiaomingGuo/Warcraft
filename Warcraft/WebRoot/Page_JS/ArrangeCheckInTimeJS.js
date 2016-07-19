@@ -121,35 +121,68 @@ function EnsureCheckInData(obj)
     var department = GetSelectedContent("department");
     var userName = GetSelectedContent("UserName");
     var workGroup = GetSelectedContent("WorkGroup");
-    
+    if(workGroup.indexOf("请选择") >= 0)
+    {
+        alert("请选择排班班次!");
+        return;
+    }
+    var tab = document.getElementById('check_in_list');
+    var displayTab = document.getElementById('display_info');
+    var sampleCount = displayTab.rows[0].cells.length;
+    if(1 > tab.rows.length)
+    {
+        var myHeadRow = document.createElement("tr");
+        myHeadRow.setAttribute("align", "center");
+        for(var iCol=0; iCol < sampleCount; iCol++)
+        {
+            myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
+        }
+        tab.appendChild(myHeadRow);
+    }
+    var index = tab.rows.length;
     if(userName.indexOf("请选择") >= 0||department.indexOf("请选择") >= 0)
     {
         $.post("Ajax/Query_AllUserInfo_Ajax.jsp", {"UserName":userName, "Department":department}, function(data, textStatus)
         {
-            if (!CheckAjaxResult(textStatus, data))
+            if (CheckAjaxResult(textStatus, data))
             {
-                alert(data);
+                var data_list = data.split("$");
+                var iColCount = parseInt(data_list[1]), iRowCount = parseInt(data_list[2]);
+                for(var iRow=1; iRow < iRowCount+1; iRow++)
+                {
+                    var myCurrentRow = document.createElement("tr");
+                    var rowNum = index+iRow-1;
+                    myCurrentRow.appendChild(CreateTabCellContext("td", rowNum));
+                    for(var iCol=1; iCol < iColCount-1; iCol++)
+                    {
+                        var val = "";
+                        if("姓名" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = data_list[iColCount*iRow+4];
+                        }
+                        else if("工号" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = data_list[iColCount*iRow+5];;
+                        }
+                        else if("部门" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = data_list[iColCount*iRow+6];
+                        }
+                        else if("选择班次" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = workGroup;
+                        }
+                        myCurrentRow.appendChild(CreateTabCellContext("td", val));
+                    }
+                    myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ rowNum +"' value='删除' onclick='delappitem(this)'>"));
+                    tab.appendChild(myCurrentRow);
+                }
             }
         });
     }
     else
     {
-        var tab = document.getElementById('check_in_list');
-        var displayTab = document.getElementById('display_info');
-        var sampleCount = displayTab.rows[0].cells.length;
-        if(1 > tab.rows.length)
-        {
-            var myHeadRow = document.createElement("tr");
-            myHeadRow.setAttribute("align", "center");
-            for(var iCol=0; iCol < sampleCount; iCol++)
-            {
-                myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
-            }
-            tab.appendChild(myHeadRow);
-        }
-        
         var myCurrentRow = document.createElement("tr");
-        var index = tab.rows.length;
         myCurrentRow.appendChild(CreateTabCellContext("td", index));
         for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
         {

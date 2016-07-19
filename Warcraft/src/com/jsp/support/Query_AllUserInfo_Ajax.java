@@ -12,7 +12,7 @@ import com.page.utilities.CRecordsQueryUtil;
 
 public class Query_AllUserInfo_Ajax extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "部门", "选择班次"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
@@ -71,6 +71,7 @@ public class Query_AllUserInfo_Ajax extends PageParentClass implements IPageInte
             rtnRst.get(0).add(Integer.toString(index));
             for(int item = 1; item < recordList.size(); item++)
                 rtnRst.get(item).add(recordList.get(item).get(idx));
+            rtnRst.get(recordList.size()).add(recordList.get(0).get(idx));
             index++;
         }
         return rtnRst;
