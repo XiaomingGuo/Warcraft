@@ -52,7 +52,6 @@
     <script language="javascript" src="Page_JS/UserManagementJS.js"></script>
   <body onload="DisplayUserTable(<%=BeginPage%>)">
     <jsp:include page="Menu/MainMenu.jsp"/>
-    <table id="display_user" border='1' align="center"></table>
     <table border="1" align="center">
         <tr>
 <%
@@ -69,66 +68,6 @@
             if (!recordList.isEmpty())
             {
                 int iRow = 0;
-                for(iRow = 1; iRow <= recordList.get(0).size(); iRow++)
-                {
-                    if (recordList.get(2).get(iRow-1).equalsIgnoreCase("root"))
-                        continue;
-%>
-    <tr>
-<%
-                    for(int iCol = 1; iCol <= keyList.length; iCol++)
-                    {
-                        String tempValue = recordList.get(0).get(iRow-1);
-                        if(keyList[iCol-1] == "用户权限")
-                        {
-%>
-        <td>
-            <center>
-                <input type="checkbox" name="permission" value="2048">仓库管理员
-                <input type="checkbox" name="permission" value="1024">计划员
-                <input type="checkbox" name="permission" value="512">计划审核
-                <input type="checkbox" name="permission" value="256">生产管理
-                <input type="checkbox" name="permission" value="128">质量检验员
-                <br>
-                <input type="checkbox" name="permission" value="64">出货管理员
-                <input type="checkbox" name="permission" value="32">会计员
-                <input type="checkbox" name="permission" value="4092">管理员
-                <input type="checkbox" name="permission" value="4095">超级管理员
-            </center>
-        </td>
-<%
-                        }
-                        else if(keyList[iCol-1] == "操作")
-                        {
-%>
-        <td width="50px">
-            <center><input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)"></center>
-        </td>
-<%
-                        }
-                        else if(keyList[iCol-1] == "ID")
-                        {
-%>
-        <td width="50px"><%=PageRecordCount*(BeginPage-1)+iRow %></td>
-<%
-                        }
-                        else if(keyList[iCol-1] == "创建时间")
-                        {
-%>
-        <td width="150px"><%=recordList.get(iCol-1).get(iRow-1) %></td>
-<%
-                        }
-                        else
-                        {
-%>
-        <td width="50px"><%=recordList.get(iCol-1).get(iRow-1)%></td>
-<%
-                        }
-                    }
-%>
-        </tr>
-<%
-                }
 %>
         <tr>
 <%
@@ -188,6 +127,8 @@
             }
 %>
     </table>
+    <br>
+    <table id="display_user" border='1' align="center"></table>
     <br><br>
     <jsp:include page="PageNum.jsp">
         <jsp:param value="<%=recordCount %>" name="recordCount"/>

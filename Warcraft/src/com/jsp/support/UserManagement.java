@@ -36,7 +36,7 @@ public class UserManagement extends PageParentClass implements IPageInterface
         hUIHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
         if (hUIHandle.RecordDBCount() > 0)
         {
-            String[] sqlkeyList = {"id", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission"};
+            String[] sqlkeyList = {"check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "id"};
             List<String> idList = new ArrayList<String>();
             for(int item=0; item < hUIHandle.getDBRecordList(sqlkeyList[0]).size(); item++)
                 idList.add(Integer.toString(item+1));

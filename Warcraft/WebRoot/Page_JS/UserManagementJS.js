@@ -54,10 +54,13 @@ function DisplayUserTable(beginPage)
                 for(var iRow = 1; iRow <= iRowCount; iRow++)
                 {
                     var tr = $("<tr></tr>");
-                    for (var iCol = 1; iCol <= iColCount; iCol++)
+                    for (var iCol = 0; iCol < iColCount; iCol++)
                     {
                         var td = $("<td></td>");
-                        td.append(data_list[iRow*iColCount + iCol + 2]);
+                        if(8 == iCol)//<input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)">
+                            td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='change(this)'>");
+                        else
+                            td.append(data_list[iRow*iColCount + iCol + 3]);
                         tr.append(td);
                     }
                     $displayUser.append(tr);
