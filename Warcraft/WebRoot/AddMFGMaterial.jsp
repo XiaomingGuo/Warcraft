@@ -71,18 +71,18 @@
 %>
 					</tr>
 					<tr>
-				  		<td align="right">
-						  	<select name="store_name_addproduct" id="store_name_addproduct" style="width:120px">
-							  	<option value = "--请选择--">--请选择--</option>
+						<td align="right">
+							<select name="store_name_addproduct" id="store_name_addproduct" style="width:120px">
+								<option value = "--请选择--">--请选择--</option>
 <%
 								for(int i = 0; i < store_name.size(); i++)
 								{
 %>
-							  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
+								<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
 <%
 								}
 %>
-						  	</select>
+							</select>
 					  	</td>
 				  		<td align="right">
 						  	<select name="product_type" id="product_type" style="width:100px">

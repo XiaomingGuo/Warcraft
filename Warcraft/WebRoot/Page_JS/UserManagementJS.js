@@ -16,15 +16,27 @@ function change(obj)
     });
 }
 
-function Add(obj)
+function AddUser(obj)
 {
-    var iPermission = 0;
+    var strPermission = "";
     $("input:checkbox[name=AddPermission]:checked").each(function(i)
     {
-        iPermission += Number($(this).val());
+        strPermission += $(this).val() + "#";
     });
-    //"ID", "考勤工号", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"
-    $.post("Ajax/AddUserAjax.jsp", {"name":$('#name').val(), "check_in_id":$('#check_in_id').val(), "password":$('#password').val(), "department":$('#department').val(), "Permission":iPermission}, function(data, textStatus){
+    if(strPermission.length <= 0)
+    {
+        alert("请选择只是一种用户权限!");
+        return;
+    }
+    if($('#check_in_id').val().length <= 0||$('#name').val().length <= 0||
+            $('#department').val().length <= 0||$('#password').val().length <= 0)
+    {
+        alert("请先完善用户信息!");
+        return;
+    }
+    $.post("Ajax/AddUserAjax.jsp", {"check_in_id":$('#check_in_id').val(), "work_group":GetSelectedContent('workGroup'), "name":$('#name').val(),
+                                        "department":$('#department').val(), "password":$('#password').val(), "Permission":strPermission}, function(data, textStatus)
+    {
         if (CheckAjaxResult(textStatus, data))
         {
             location.reload();
@@ -57,8 +69,11 @@ function DisplayUserTable(beginPage)
                     for (var iCol = 0; iCol < iColCount; iCol++)
                     {
                         var td = $("<td></td>");
-                        if(8 == iCol)//<input type="button" value="修改" name=<%=tempValue %> id=<%=tempValue %> onclick="change(this)">
+                        if(8 == iCol)
+                        {
                             td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='change(this)'>");
+                            td.append("<input type='button' value='删除' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='change(this)'>");
+                        }
                         else
                             td.append(data_list[iRow*iColCount + iCol + 3]);
                         tr.append(td);

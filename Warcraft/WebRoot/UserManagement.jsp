@@ -29,6 +29,7 @@
             int recordCount = hPageHandle.GetUserCount();
             List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
             List<String> titleList = hPageHandle.GetTitleName();
+            List<String> workGroupList = hPageHandle.GetWorkGroupName();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -58,6 +59,8 @@
 <%
             for(int iCol = 1; iCol <= keyList.length; iCol++)
             {
+                if(keyList[iCol-1]=="ID"||keyList[iCol-1]=="创建时间")
+                    continue;
 %>
             <th><%= keyList[iCol-1]%></th>
 <%
@@ -74,6 +77,8 @@
 <%
                 for(int iCol = 1; iCol <= keyList.length; iCol++)
                 {
+                    if(keyList[iCol-1]=="ID"||keyList[iCol-1]=="创建时间")
+                        continue;
                     if(keyList[iCol-1] == "用户权限")
                     {
 %>
@@ -100,20 +105,26 @@
                     {
 %>
         <td>
-            <center><input type="button" value="添加" name="<%=iRow %>" id="<%=iRow %>" onclick="Add(this)"></center>
+            <center><input type="button" value="确认" onclick="AddUser(this)"></center>
         </td>
 <%
                     }
-                    else if(keyList[iCol-1] == "ID")
+                    else if(keyList[iCol-1] == "考勤类型")
                     {
 %>
-        <td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+        <td>
+            <select name="workGroup" id="workGroup" style="width:120px">
+                <option value = "--请选择--">--请选择--</option>
 <%
-                    }
-                    else if(keyList[iCol-1] == "创建时间")
-                    {
+                        for(int i = 0; i < workGroupList.size(); i++)
+                        {
 %>
-        <td></td>
+                <option value = <%=workGroupList.get(i) %>><%=workGroupList.get(i)%></option>
+<%
+                        }
+%>
+            </select>
+        </td>
 <%
                     }
                     else

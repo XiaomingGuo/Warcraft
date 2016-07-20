@@ -1,17 +1,16 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.User_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.UserManagement" %>
 <%
-	String rtnRst = "";
-	String name = (String)request.getParameter("name").replace(" ", "");
-	String checkInId = (String)request.getParameter("check_in_id").replace(" ", "");
-	String password = (String)request.getParameter("password").replace(" ", "");
-	String department = (String)request.getParameter("department").replace(" ", "");
-	String permission = (String)request.getParameter("Permission").replace(" ", "");
-	if (name != null&&password != null&&department != null&&!name.isEmpty()&&!password.isEmpty()&&!department.isEmpty())
-	{
-		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-		hUIHandle.AddARecord(checkInId, name, password, department, permission);
-	}
-	out.write(rtnRst);
+    String rtnRst = "";
+    String checkInId = (String)request.getParameter("check_in_id").replace(" ", "");
+    String workGroup = (String)request.getParameter("work_group").replace(" ", "");
+    String name = (String)request.getParameter("name").replace(" ", "");
+    String department = (String)request.getParameter("department").replace(" ", "");
+    String password = (String)request.getParameter("password").replace(" ", "");
+    String permission = (String)request.getParameter("Permission").replace(" ", "");
+    UserManagement hPageHandle = new UserManagement();
+    if (checkInId != null&&workGroup != null&&name != null&&department != null&&password != null&&permission != null&&
+        !checkInId.isEmpty()&&!workGroup.isEmpty()&&!name.isEmpty()&&!department.isEmpty()&&!password.isEmpty()&&!permission.isEmpty())
+        rtnRst = hPageHandle.DoUserInfoManagement(checkInId, workGroup, name, department, password, permission);
+    out.write(rtnRst);
 %>

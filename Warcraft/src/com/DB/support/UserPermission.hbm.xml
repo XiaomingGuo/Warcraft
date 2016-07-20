@@ -10,8 +10,8 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <property name="userName" type="java.lang.String">
-            <column name="user_name" length="10" not-null="true" />
+        <property name="checkInId" type="java.lang.String">
+            <column name="check_in_id" length="5" not-null="true" />
         </property>
         <property name="titleName" type="java.lang.String">
             <column name="title_name" length="45" not-null="true" />

@@ -50,7 +50,7 @@ public class User_Permission extends DBTableParent implements ITableInterface
                 rtnRst.add(tempRecord.getId().toString());
                 break;
             case "user_name":
-                rtnRst.add(tempRecord.getUserName());
+                rtnRst.add(tempRecord.getCheckInId());
                 break;
             case "title_name":
                 rtnRst.add(tempRecord.getTitleName());
@@ -91,10 +91,10 @@ public class User_Permission extends DBTableParent implements ITableInterface
         getEQMHandle().EQQuery(hql);
     }
     
-    public void AddARecord(String userName, String titleName)
+    public void AddARecord(String checkInId, String titleName)
     {
         aWriteRecord = new UserPermission();
-        aWriteRecord.setUserName(userName);
+        aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setTitleName(titleName);
         getEQMHandle().addANewRecord();
     }
@@ -105,8 +105,8 @@ public class User_Permission extends DBTableParent implements ITableInterface
         if(keyword.toLowerCase().indexOf("id") == 0){
             rtnRst = "id";
         }
-        else if(keyword.toLowerCase().indexOf("user_name") == 0) {
-            rtnRst = "userName";
+        else if(keyword.toLowerCase().indexOf("check_in_id") == 0) {
+            rtnRst = "checkInId";
         }
         else if(keyword.toLowerCase().indexOf("title_name") >= 0) {
             rtnRst = "titleName";

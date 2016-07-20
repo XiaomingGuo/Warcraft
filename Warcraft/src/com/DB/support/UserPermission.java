@@ -9,7 +9,7 @@ public class UserPermission implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private String userName;
+	private String checkInId;
 	private String titleName;
 
 	// Constructors
@@ -19,8 +19,8 @@ public class UserPermission implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public UserPermission(String userName, String titleName) {
-		this.userName = userName;
+	public UserPermission(String checkInId, String titleName) {
+		this.checkInId = checkInId;
 		this.titleName = titleName;
 	}
 
@@ -34,12 +34,12 @@ public class UserPermission implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return this.userName;
+	public String getCheckInId() {
+		return this.checkInId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setCheckInId(String checkInId) {
+		this.checkInId = checkInId;
 	}
 
 	public String getTitleName() {
