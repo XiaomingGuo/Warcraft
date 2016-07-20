@@ -24,10 +24,11 @@
             int PageRecordCount = 20;
             int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
             
-            String[] keyList = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+            String[] keyList = hPageHandle.GetDisplayArray();
             String[] codeKeyList = {"ID", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "submit"};
             int recordCount = hPageHandle.GetUserCount();
             List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
+            List<String> titleList = hPageHandle.GetTitleName();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -76,19 +77,22 @@
                     if(keyList[iCol-1] == "用户权限")
                     {
 %>
-        <td>
-            <center>
-                <input type="checkbox" name="AddPermission" value="2048">仓库管理员
-                <input type="checkbox" name="AddPermission" value="1024">计划员
-                <input type="checkbox" name="AddPermission" value="512">计划审核
-                <input type="checkbox" name="AddPermission" value="256">生产管理
-                <input type="checkbox" name="AddPermission" value="128">质量检验员
-                <br>
-                <input type="checkbox" name="AddPermission" value="64">出货管理员
-                <input type="checkbox" name="AddPermission" value="32">会计员
-                <input type="checkbox" name="AddPermission" value="4092">管理员
-                <input type="checkbox" name="AddPermission" value="4095">超级管理员
-            </center>
+        <td align="center">
+<%
+                        for(int titleIdx=1; titleIdx <= titleList.size(); titleIdx++)
+                        {
+                            String titleName = titleList.get(titleIdx-1);
+%>
+            <input type="checkbox" name="AddPermission" value="<%=titleName %>"><%=titleName %>
+<%
+                            if((titleIdx)%5 == 0)
+                            {
+%>
+            <br>
+<%
+                            }
+                        }
+%>
         </td>
 <%
                     }

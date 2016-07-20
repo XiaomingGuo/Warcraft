@@ -28,6 +28,13 @@ public class UserManagement extends PageParentClass implements IPageInterface
         return hUIHandle.RecordDBCount();
     }
     
+    public List<String> GetTitleName()
+    {
+        Title_Info hTIHandle = new Title_Info(new EarthquakeManagement());
+        hTIHandle.QueryAllRecord();
+        return hTIHandle.getDBRecordList("title_name");
+    }
+    
     public List<List<String>> GetUserInfo(int PageRecordCount, int BeginPage)
     {
         List<List<String>> rtnRst  = new ArrayList<List<String>>(); 
