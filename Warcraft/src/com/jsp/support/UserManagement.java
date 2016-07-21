@@ -57,8 +57,27 @@ public class UserManagement extends PageParentClass implements IPageInterface
             rtnRst.add(idList);
             for(int idx=0; idx < sqlkeyList.length; idx++)
             {
-                rtnRst.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
+                if("isFixWorkGroup" == sqlkeyList[idx])
+                    rtnRst.add(GetWorkGroupName(hUIHandle.getDBRecordList(sqlkeyList[idx])));
+                else
+                    rtnRst.add(hUIHandle.getDBRecordList(sqlkeyList[idx]));
             }
+        }
+        return rtnRst;
+    }
+    
+    private List<String> GetWorkGroupName(List<String> dbRecordList)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        
+        for(int idx=0; idx < dbRecordList.size(); idx++)
+        {
+            Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+            hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(dbRecordList.get(idx)));
+            if(hWGIHandle.RecordDBCount() > 0)
+                rtnRst.add(hWGIHandle.getDBRecordList("group_name").get(0));
+            else
+                rtnRst.add("未定班次");
         }
         return rtnRst;
     }
@@ -139,5 +158,50 @@ public class UserManagement extends PageParentClass implements IPageInterface
         }
         for(int delIdx = 0; delIdx < queryPerList.size(); delIdx++)
             hUPHandle.DeleteRecordByKeyList(Arrays.asList("check_in_id", "title_name"), Arrays.asList(checkInId, queryPerList.get(delIdx)));
+    }
+    
+    public String DeleteUserInfoAndUserPermission(String userId)
+    {
+        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+        User_Permission hUPHandle = new User_Permission(new EarthquakeManagement());
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(userId));
+        String checkInId = hUIHandle.getDBRecordList("check_in_id").get(0);
+        hUPHandle.DeleteRecordByKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+        hUIHandle.DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(userId));
+        return "";
+    }
+    
+    public String GetUpdateReturnString(String userId)
+    {
+        String rtnRst = "remove$";
+        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(userId));
+        String workGroupId = hUIHandle.getDBRecordList("isFixWorkGroup").get(0);
+        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(workGroupId));
+        
+        String checkInId = hUIHandle.getDBRecordList("check_in_id").get(0);
+        rtnRst += checkInId + "$";
+        if(hWGIHandle.RecordDBCount() > 0)
+            rtnRst += hWGIHandle.getDBRecordList("group_name").get(0) + "$";
+        else
+            rtnRst += "--请选择--$";
+        rtnRst += hUIHandle.getDBRecordList("name").get(0) + "$";
+        rtnRst += hUIHandle.getDBRecordList("department").get(0) + "$";
+        rtnRst += hUIHandle.getDBRecordList("password").get(0) + "$";
+        rtnRst += GetUserPermission(checkInId);
+        return rtnRst;
+    }
+    
+    private String GetUserPermission(String checkInId)
+    {
+        String rtnRst = "";
+        User_Permission hUPHandle = new User_Permission(new EarthquakeManagement());
+        hUPHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+        List<String> perList = hUPHandle.getDBRecordList("title_name");
+        rtnRst += perList.get(0);
+        for(int idx=1; idx < perList.size(); idx++)
+            rtnRst += "#" + perList.get(idx);
+        return rtnRst;
     }
 }

@@ -1,19 +1,47 @@
 /**
  * 
  */
-function change(obj)
+function ModifyUser(obj)
 {
-    var iPermission = 0;
-    $("input:checkbox[name=permission]:checked").each(function(i)
+    $.post("Ajax/UpdateUserAjax.jsp", {"UserId":obj.name}, function(data, textStatus)
     {
-        iPermission += Number($(this).val());
-    });
-    $.post("Ajax/UpdateUserAjax.jsp", {"Index":obj.name, "Permission":iPermission}, function(data, textStatus){
         if (CheckAjaxResult(textStatus, data))
         {
-            location.reload();
+            var data_list = data.split("$");
+            $('#check_in_id').val(data_list[1]);
+            var index = 0;
+            $("#workGroup option").each(function()
+            {
+                if($(this).text()==data_list[2])
+                {
+                	workGroup.options[index].selected = true;
+                }
+                index++;
+            }); 
+            $('#name').val(data_list[3]);
+            $('#department').val(data_list[4]);
+            $('#password').val(data_list[5]);
+            var perList = data_list[6].split("#");
+            $("input:checkbox[name='AddPermission']:checkbox").each(function(i)
+            {
+                if(contains(perList, $(this).val()))
+                    $(this).attr("checked", true);
+            });
+            //location.reload();
         }
     });
+}
+
+function contains(a, obj)
+{
+    for (var i = 0; i < a.length; i++)
+    {
+        if (a[i].trim() == obj.trim())
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 function AddUser(obj)
@@ -65,14 +93,16 @@ function DisplayUserTable(beginPage)
                 $displayUser.append(tr);
                 for(var iRow = 1; iRow <= iRowCount; iRow++)
                 {
+                    if(data_list[iRow*iColCount + 6].indexOf("root")==0)
+                        continue;
                     var tr = $("<tr></tr>");
                     for (var iCol = 0; iCol < iColCount; iCol++)
                     {
                         var td = $("<td></td>");
                         if(8 == iCol)
                         {
-                            td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='change(this)'>");
-                            td.append("<input type='button' value='删除' name='" + data_list[iRow*iColCount + iCol + 3] + "' id='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='change(this)'>");
+                            td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='ModifyUser(this)'>");
+                            td.append("<input type='button' value='删除' name='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='DeleteUser(this)'>");
                         }
                         else
                             td.append(data_list[iRow*iColCount + iCol + 3]);
@@ -84,3 +114,15 @@ function DisplayUserTable(beginPage)
         }
     });
 }
+
+function DeleteUser(obj)
+{
+    $.post("Ajax/DeleteUserAjax.jsp", {"id":obj.name}, function(data, textStatus)
+    {
+        if (CheckAjaxResult(textStatus, data))
+        {
+            location.reload();
+        }
+    });
+}
+
