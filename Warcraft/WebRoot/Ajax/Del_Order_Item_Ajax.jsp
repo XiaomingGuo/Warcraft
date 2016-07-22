@@ -12,7 +12,7 @@
 	{
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
 		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
-		hCPRHandle.DeleteRecordByKeyWord("id", Arrays.asList(pro_id));
+		hCPRHandle.DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
 		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
 		hMMPHandle.DeleteRecordByKeyList(Arrays.asList("Bar_Code", "po_name", "vendor"), 
 				Arrays.asList(hCPRHandle.getDBRecordList("Bar_Code").get(0), 

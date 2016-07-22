@@ -96,21 +96,6 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 		return aWriteRecord;
 	}
 	
-	public void GetRecordByOrderName(String pro_order)
-	{
-		QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(pro_order));
-	}
-	
-	public void GetRecordByPOName(String poName)
-	{
-		QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
-	}
-	
-	public void GetRecordByKeyWord(String keyWord, String keyVal)
-	{
-		QueryRecordByFilterKeyList(Arrays.asList(keyWord), Arrays.asList(keyVal));
-	}
-	
 	public void AddARecord(String barCode, String deliveryDate, int qty, String poName, String orderName)
 	{
 		aWriteRecord = new ProductOrderRecord();
@@ -162,7 +147,7 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 	{
 		int rtnRst = 0;
 		QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(GetUsedBarcode(strBarcode, "Product_Order_Record"), appPOName));
-
+		
 		if (RecordDBCount() > 0)
 		{
 			List<String> po_Qty_List = getDBRecordList(getKeyValue);
@@ -172,27 +157,6 @@ public class Product_Order_Record extends DBTableParent implements ITableInterfa
 			}
 		}
 		return rtnRst;
-	}
-	
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
-	{
-		for (String poName : delPoList)
-		{
-			String hql = String.format("delete ProductOrderRecord por where por.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
-	}
-	
-	public void UpdatetRecordByOrderName(String orderName, String barcode, String keyWord, String value)
-	{
-		String hql = String.format("update ProductOrderRecord por set por.%s='%s' where por.orderName='%s' and por.barCode='%s'", keyWord, value, orderName, barcode);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	}
-	
-	public void QuertRecordOrderByidASC(String poName)
-	{
-		String hql = String.format("from ProductOrderRecord por where por.poName='%s' order by por.id asc", poName);
-		getEQMHandle().EQQuery(hql);
 	}
 	
 	public int GetUncompleteOrderRecord(String barCode)

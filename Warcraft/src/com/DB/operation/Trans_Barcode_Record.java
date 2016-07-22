@@ -84,12 +84,6 @@ public class Trans_Barcode_Record extends DBTableParent implements ITableInterfa
 	{
 		return aWriteRecord;
 	}
-
-	private void execQuery(String keyWord, String value)
-	{
-		String hql = String.format("from TransBarcodeRecord cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), value);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String fromBarcode, String fromBatchLot, String fromQty, String toBarcode, String toBatchLot, String toQty)
 	{
@@ -128,14 +122,5 @@ public class Trans_Barcode_Record extends DBTableParent implements ITableInterfa
 			rtnRst = "toQty";
 		}
 		return rtnRst;
-	}
-
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
-	{
-		for (String poName : delPoList)
-		{
-			String hql = String.format("delete TransBarcodeRecord cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
 	}
 }

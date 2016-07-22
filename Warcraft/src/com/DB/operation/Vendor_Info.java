@@ -89,11 +89,6 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByStoreroom(String storeroom)
-	{
-		QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
-	}
 	
 	public void GetRecordExceptStoreroom(List<String> keyList)
 	{
@@ -104,11 +99,6 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 		}
 		hql+= String.format("vi.storeroom!='%s'", keyList.get(keyList.size()-1));
 		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordByNameAndStoreroom(String supplier, String storeroom)
-	{
-		QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(supplier, storeroom));
 	}
 	
 	public void AddARecord(String vendor_name, String storeroom, String vendor_fax, String vendor_tel, String vendor_e_mail, String vendor_address, String description)
@@ -153,23 +143,5 @@ public class Vendor_Info extends DBTableParent implements ITableInterface
 			rtnRst = "description";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from VendorInfo vi where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("vi.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("vi.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
 	}
 }

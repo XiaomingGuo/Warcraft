@@ -71,18 +71,6 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 	
-	public void GetAllRecord()
-	{
-		String hql = String.format("from StoreroomName");
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordByName(String name)
-	{
-		String hql = String.format("from StoreroomName sn where sn.name='%s'", name);
-		getEQMHandle().EQQuery(hql);
-	}
-
 	public void AddARecord(String poName)
 	{
 		aWriteRecord = new StoreroomName();
@@ -101,11 +89,5 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 			rtnRst = "name";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
 	}
 }

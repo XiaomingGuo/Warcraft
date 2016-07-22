@@ -85,29 +85,6 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("poName", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from MbMaterialPo cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from MbMaterialPo mmp where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("mmp.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("mmp.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String barCode, String poName, String dateOfDelivery, String vendor, int poQty)
 	{
@@ -146,20 +123,4 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		}
 		return rtnRst;
 	}
-	
-	public void DeleteRecordKeyWord(String keyWord, List<String> delPoList)
-	{
-		for (String poName : delPoList)
-		{
-			String hql = String.format("delete MbMaterialPo mmp where mmp.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

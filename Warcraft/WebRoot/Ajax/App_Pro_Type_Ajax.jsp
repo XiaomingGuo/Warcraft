@@ -12,28 +12,26 @@
 	}
 	else
 	{
-		hVIHandle.GetRecordByStoreroom(storeroom);
+		hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	}
 	List<String> vendor_name = hVIHandle.getDBRecordList("vendor_name");
 	if (vendor_name != null)
 	{
 		for(int i = 0; i < vendor_name.size(); i++)
 		{
-			rtnRst += vendor_name.get(i);
-			rtnRst += '$';
+			rtnRst += vendor_name.get(i) + '$';
 		}
 	}
 	
 	rtnRst += "#remove$";
 	Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-	hPTHandle.GetRecordByStoreroom(storeroom);
+	hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	List<String> pro_type = hPTHandle.getDBRecordList("name");
 	if (pro_type != null)
 	{
 		for(int i = 0; i < pro_type.size(); i++)
 		{
-			rtnRst += pro_type.get(i);
-			rtnRst += "$";
+			rtnRst += pro_type.get(i) + "$";
 		}
 	}
 	

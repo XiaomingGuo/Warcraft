@@ -76,25 +76,6 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("poName", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from MbMaterialPoRecord cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from MbMaterialPoRecord cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
-		getEQMHandle().EQQuery(hql);
-	}
-	*/
 	
 	public void AddARecord(String mbMaterialPoId, String barCode, String batchLot, String inQty, String inDate)
 	{
@@ -123,11 +104,5 @@ public class Mb_Material_Po_Record extends DBTableParent implements ITableInterf
 			rtnRst = "id";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -35,7 +35,7 @@ public class Product_Order extends DBTableParent implements ITableInterface
 			rtnRst = resultList.size();
 		return rtnRst;
 	}
-
+	
 	@Override
 	public List<String> getDBRecordList(String keyWord)
 	{
@@ -73,34 +73,10 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByStatus(int iStatus)
-	{
-		String hql = String.format("from ProductOrder po where po.status='%d'", iStatus);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void GetRecordLessThanStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status<='%d'", iStatus);
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordMoreThanStatus(int iStatus)
-	{
-		String hql = String.format("from ProductOrder po where po.status>='%d'", iStatus);
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordMoreThanAndLessThanStatus(int iMoreThanStatus, int iLessThanStatus)
-	{
-		String hql = String.format("from ProductOrder po where po.status>'%d' and po.status < '%d'", iMoreThanStatus, iLessThanStatus);
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordByOrderName(String orderName)
-	{
-		String hql = String.format("from ProductOrder po where po.orderName='%s'", orderName);
 		getEQMHandle().EQQuery(hql);
 	}
 	
@@ -125,32 +101,4 @@ public class Product_Order extends DBTableParent implements ITableInterface
 		}
 		return rtnRst;
 	}
-	
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
-	{
-		for (String orderName : delPoList)
-		{
-			String hql = String.format("delete ProductOrder po where po.%s='%s'", GetDatabaseKeyWord(keyWord), orderName);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
-	}
-	
-	public void UpdatetRecordByOrderName(String orderName, String keyWord, String value)
-	{
-		String hql = String.format("update ProductOrder po set po.%s='%s' where po.orderName='%s'", GetDatabaseKeyWord(keyWord), value, orderName);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	}
-
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from ProductOrder por where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("por.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("por.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-	}
-
 }

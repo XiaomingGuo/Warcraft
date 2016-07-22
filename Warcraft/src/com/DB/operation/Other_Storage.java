@@ -100,26 +100,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("poName", poName, "id");
-	}
 	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from OtherStorage cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from OtherStorage cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
-		getEQMHandle().EQQuery(hql);
-	}
-	*/
-		
 	public double GetDblPriceOfStorage(String keyword, String keyValue)
 	{
 		return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
@@ -170,17 +151,7 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		}
 		return rtnRst;
 	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-	{
-		for (String item : delList)
-		{
-			String hql = String.format("delete OtherStorage por where por.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
-	}
-
+	
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
@@ -198,24 +169,10 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 	}
 	
 	@Override
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from OtherStorage os where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("os.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("os.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
 			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
 			String appInStoreDate, String isEnsure, String createDate) {
-		// TODO Auto-generated method stub
 		
 	}
 }

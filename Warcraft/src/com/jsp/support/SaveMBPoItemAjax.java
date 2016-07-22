@@ -1,6 +1,7 @@
 package com.jsp.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.office.core.ExcelManagment;
@@ -22,7 +23,7 @@ public class SaveMBPoItemAjax extends PageParentClass
 	{
 		List<String> writeList = new ArrayList<String>();
 		Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
-		hVIHandle.GetRecordByNameAndStoreroom(vendor, "Ô­²ÄÁÏ¿â");
+		hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(vendor, "åŸææ–™åº“"));
 		writeList.add(vendor);
 		writeList.add(hVIHandle.getDBRecordList("vendor_fax").get(0));
 		writeList.add(hVIHandle.getDBRecordList("vendor_tel").get(0));

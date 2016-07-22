@@ -14,7 +14,7 @@ function ModifyUser(obj)
             {
                 if($(this).text()==data_list[2])
                 {
-                	workGroup.options[index].selected = true;
+                    workGroup.options[index].selected = true;
                 }
                 index++;
             }); 

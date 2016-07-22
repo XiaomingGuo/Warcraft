@@ -76,12 +76,6 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByName(String name)
-	{
-		String hql = String.format("from ShippingNo pi where pi.%s='%s'", GetDatabaseKeyWord("name"), name);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void QueryRecordMoreThanShipNo(String shipNo)
 	{
@@ -113,11 +107,5 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 			rtnRst = "shippingNo";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
 	}
 }

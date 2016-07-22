@@ -115,6 +115,15 @@ public abstract class DBTableParent
         getEQMHandle().DeleteAndUpdateRecord(hql);
     }
     
+    public void DeleteAllRecordListByKeyWord(String keyWord, List<String> delList)
+    {
+        for (String item : delList)
+        {
+            String hql = String.format("delete %s tbn where tbn.%s='%s'", ((ITableInterface)this).GetTableName(), ((ITableInterface)this).GetDatabaseKeyWord(keyWord), item);
+            getEQMHandle().DeleteAndUpdateRecord(hql);
+        }
+    }
+    
     public void DeleteRecordByKeyList(List<String> keyList, List<String> valueList)
     {
         String hql = String.format("delete %s tbn where", ((ITableInterface)this).GetTableName()) + GenerateWhereString(keyList, valueList);
@@ -211,7 +220,7 @@ public abstract class DBTableParent
         {
             rtnRst += String.format(" tbn.%s='%s' and ", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
         }
-        rtnRst+= String.format(" tbn.%s='%s'", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+        rtnRst += String.format(" tbn.%s='%s'", ((ITableInterface)this).GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
         return rtnRst;
     }
     

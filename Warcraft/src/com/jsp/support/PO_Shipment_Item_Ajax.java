@@ -13,7 +13,7 @@ public class PO_Shipment_Item_Ajax extends PageParentClass
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.QueryRecordOrderByIdASC(POName);
+		hCPRHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(POName), Arrays.asList("id"));
 		if (hCPRHandle.RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};

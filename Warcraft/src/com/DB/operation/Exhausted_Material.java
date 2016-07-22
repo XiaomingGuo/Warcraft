@@ -107,12 +107,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		return aWriteRecord;
 	}
 	
-	public void GetAllRecord()
-	{
-		String hql = String.format("from ExhaustedMaterial");
-		getEQMHandle().EQQuery(hql);
-	}
-
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
@@ -164,13 +158,7 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		}
 		return rtnRst;
 	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String orderName,
@@ -210,7 +198,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {
-		// TODO Auto-generated method stub
 		
 	}
 }

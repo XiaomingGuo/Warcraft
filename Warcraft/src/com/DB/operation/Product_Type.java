@@ -73,18 +73,6 @@ public class Product_Type extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByStoreroom(String storeName)
-	{
-		String hql = String.format("from ProductType pt where pt.storeroom='%s'", storeName);
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordByName(String name)
-	{
-		String hql = String.format("from ProductType pt where pt.name='%s'", name);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String proType, String storeroom)
 	{
@@ -107,11 +95,5 @@ public class Product_Type extends DBTableParent implements ITableInterface
 			rtnRst = "storeroom";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
 	}
 }

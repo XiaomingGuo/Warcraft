@@ -104,25 +104,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("poName", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from MaterialStorage cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	/*
-	private void execQueryDesc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from MaterialStorage cpr where cpr.%s='%s' order by cpr.%s desc", keyWord, value, orderKey);
-		getEQMHandle().EQQuery(hql);
-	}
-	*/
 	
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
@@ -130,16 +111,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		return super.GetDblSumOfValue("MaterialStorage", getValue, keyword, keyValue);
 	}
 	
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-	{
-		for (String item : delList)
-		{
-			String hql = String.format("delete MaterialStorage por where por.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
-	}
-
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
@@ -202,26 +173,12 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		getEQMHandle().addANewRecord();
 	}
-
-	@Override
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from MaterialStorage ms where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("ms.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("ms.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-	}
-
+	
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit,
 			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
 			String appInStoreDate, String isEnsure, String createDate) {
-		// TODO Auto-generated method stub
 		
 	}
 }

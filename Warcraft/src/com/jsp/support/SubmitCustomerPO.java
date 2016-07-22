@@ -14,7 +14,7 @@ public class SubmitCustomerPO extends PageParentClass
 		String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.GetRecordByPoName(PO_Name);
+		hCPRHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(PO_Name), Arrays.asList("id"));
 		for (int i = 0; i < sqlKeyList.length; i++)
 			rtnRst.add(hCPRHandle.getDBRecordList(sqlKeyList[i]));
 		return rtnRst;
@@ -28,7 +28,7 @@ public class SubmitCustomerPO extends PageParentClass
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);
-			hPOHandle.GetRecordByOrderName(orderName);
+			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(orderName));
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
 				break;
 			iCount += 1;
@@ -65,14 +65,14 @@ public class SubmitCustomerPO extends PageParentClass
 	public void UpdateCustomerPoStatus(String status, String poName)
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.UpdateStatusByPoName(1, poName);
+		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("status", "po_name"), Arrays.asList("1", poName));
 	}
 	
 	public void SubmitPoOrder(String appPOName)
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.GetRecordByPoName(appPOName);
-		if (hCPHandle.getDBRecordList("id").size() <= 0)
+		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(appPOName));
+		if (hCPHandle.RecordDBCount() <= 0)
 			hCPHandle.AddARecord(appPOName);
 	}
 	
@@ -88,9 +88,9 @@ public class SubmitCustomerPO extends PageParentClass
 	
 	public void CheckAndInsertProductOrder(String poName, String pro_order)
 	{
-		Product_Order_Record hHandle = new Product_Order_Record(new EarthquakeManagement());
-		hHandle.GetRecordByOrderName(pro_order);
-		if(hHandle.RecordDBCount() > 0)
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(pro_order));
+		if(hPORHandle.RecordDBCount() > 0)
 			InsertProductOrder(pro_order);
 	}
 	
@@ -174,21 +174,21 @@ public class SubmitCustomerPO extends PageParentClass
 
 	private void UpdateProductOrderRecordStatusToFinish(String OrderName)
 	{
-		Product_Order_Record hHandle = new Product_Order_Record(new EarthquakeManagement());
-		hHandle.GetRecordByOrderName(OrderName);
-		List<String> orderBarcodeList = hHandle.getDBRecordList("Bar_Code");
-		List<String> orderQTY = hHandle.getDBRecordList("QTY");
+		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(OrderName));
+		List<String> orderBarcodeList = hPORHandle.getDBRecordList("Bar_Code");
+		List<String> orderQTY = hPORHandle.getDBRecordList("QTY");
 		for (int idx = 0; idx < orderBarcodeList.size(); idx++)
 		{
-			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "status", "5");
-			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "completeQty", orderQTY.get(idx));
-			hHandle.UpdatetRecordByOrderName(OrderName, orderBarcodeList.get(idx), "oqcQty", orderQTY.get(idx));
+			hPORHandle.UpdateRecordByKeyList("status", "5", Arrays.asList("Order_Name", "Bar_Code"), Arrays.asList(OrderName, orderBarcodeList.get(idx)));
+			hPORHandle.UpdateRecordByKeyList("completeQty", orderQTY.get(idx), Arrays.asList("Order_Name", "Bar_Code"), Arrays.asList(OrderName, orderBarcodeList.get(idx)));
+			hPORHandle.UpdateRecordByKeyList("oqcQty", orderQTY.get(idx), Arrays.asList("Order_Name", "Bar_Code"), Arrays.asList(OrderName, orderBarcodeList.get(idx)));
 		}
 	}
 	
 	private void UpdateProductOrderStatusToFinish(String OrderName)
 	{
-		Product_Order hHandle = new Product_Order(new EarthquakeManagement());
-		hHandle.UpdateRecordByKeyList("status", "1", Arrays.asList("order_name"), Arrays.asList(OrderName));
+		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		hPOHandle.UpdateRecordByKeyList("status", "1", Arrays.asList("order_name"), Arrays.asList(OrderName));
 	}
 }

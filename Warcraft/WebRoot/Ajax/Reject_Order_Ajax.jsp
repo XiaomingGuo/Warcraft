@@ -12,7 +12,7 @@
 	if (order_name != null||order_name.indexOf("生产单号") < 0)
 	{
 		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-		hPORHandle.GetRecordByOrderName(order_name);
+		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
 		List<String> delPoList = hPORHandle.getDBRecordList("po_name");
 		String delPoKeyWord = "poName", delOrderKeyWord = "orderName";
 		for(int idx = 0; idx < delPoList.size(); idx++)
@@ -26,15 +26,15 @@
 
 		if(delPoList != null && delPoList.size() > 0)
 		{
-			hPORHandle.GetRecordByKeyWord(delPoKeyWord, delPoList.get(0));
+			hPORHandle.QueryRecordByFilterKeyList(Arrays.asList(delPoKeyWord), Arrays.asList(delPoList.get(0)));
 			List<String> delOrderList = hPORHandle.getDBRecordList("Order_Name");
-			hPORHandle.DeleteRecordByKeyWord(delPoKeyWord, delPoList);
+			hPORHandle.DeleteAllRecordListByKeyWord(delPoKeyWord, delPoList);
 			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-			hPOHandle.DeleteRecordByKeyWord(delOrderKeyWord, delOrderList);
+			hPOHandle.DeleteAllRecordListByKeyWord(delOrderKeyWord, delOrderList);
 			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.DeleteRecordByKeyWord("poName", delPoList);
+			hCPHandle.DeleteAllRecordListByKeyWord("poName", delPoList);
 			Mb_Material_Po hMMPRHandle = new Mb_Material_Po(new EarthquakeManagement());
-			hMMPRHandle.DeleteRecordKeyWord("poName", delPoList);
+			hMMPRHandle.DeleteAllRecordListByKeyWord("po_name", delPoList);
 		}
 	}
 	out.write(rtnRst);

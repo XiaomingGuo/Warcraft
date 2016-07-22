@@ -8,7 +8,7 @@
 	String rtnRst = "remove$";
 	//product_info Database query
 	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-	hPORHandle.GetRecordByOrderName(pro_order);
+	hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(pro_order));
 	List<String> pro_info = hPORHandle.getDBRecordList("Bar_Code");
 	if (pro_info != null)
 	{

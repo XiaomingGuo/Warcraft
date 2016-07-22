@@ -8,7 +8,7 @@
 	if (!storeroom.isEmpty())
 	{	
 		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-		hSNHandle.GetRecordByName(storeroom);
+		hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storeroom));
 		if(hSNHandle.RecordDBCount() > 0)
 		{
 			rtnRst = "库名已经存在!";

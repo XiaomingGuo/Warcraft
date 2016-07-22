@@ -106,12 +106,6 @@ public class Exhausted_Semi_Product extends DBTableParent implements ITableInter
 		return aWriteRecord;
 	}
 	
-	public void GetAllRecord()
-	{
-		String hql = String.format("from ExhaustedSemiProduct");
-		getEQMHandle().EQQuery(hql);
-	}
-
 	@Override
 	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
 	{
@@ -163,13 +157,7 @@ public class Exhausted_Semi_Product extends DBTableParent implements ITableInter
 		}
 		return rtnRst;
 	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String appOrderName,
@@ -192,26 +180,11 @@ public class Exhausted_Semi_Product extends DBTableParent implements ITableInter
 		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
 		getEQMHandle().addANewRecord();
 	}
-
-	@Override
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from ExhaustedSemiProduct ep where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("ep.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("ep.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-		
-	}
-
+	
 	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {
-		// TODO Auto-generated method stub
 		
 	}
 }

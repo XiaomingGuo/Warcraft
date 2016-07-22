@@ -24,7 +24,7 @@
 		if (!appStorename.isEmpty() && !appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())
 		{
 			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
-			hVIHandle.GetRecordByNameAndStoreroom(appSupplier, appStorename);
+			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(appSupplier, appStorename));
 			if (hVIHandle.RecordDBCount() <= 0)
 			{
 				hVIHandle.AddARecord(appSupplier, appStorename, appFaxinfo, appTelinfo, appMailaddress, appAddress, description);

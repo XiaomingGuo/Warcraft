@@ -92,24 +92,6 @@ public class Product_Info extends DBTableParent implements ITableInterface
     {
         return aWriteRecord;
     }
-
-    public void GetAllRecord()
-    {
-        String hql = String.format("from ProductInfo pi");
-        getEQMHandle().EQQuery(hql);
-    }
-    
-    public void GetRecordByBarcode(String bar_code)
-    {
-        String hql = String.format("from ProductInfo pi where pi.barCode='%s'", bar_code);
-        getEQMHandle().EQQuery(hql);
-    }
-    
-    public void GetRecordByName(String name)
-    {
-        String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
-        getEQMHandle().EQQuery(hql);
-    }
     
     @Override
     public String GetDatabaseKeyWord(String keyword) {
@@ -158,11 +140,5 @@ public class Product_Info extends DBTableParent implements ITableInterface
         else
             aWriteRecord.setDescription("无备注");
         getEQMHandle().addANewRecord();
-    }
-    
-    @Override
-    public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-        // TODO Auto-generated method stub
-        
     }
 }

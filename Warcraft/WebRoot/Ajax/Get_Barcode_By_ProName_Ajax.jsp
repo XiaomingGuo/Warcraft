@@ -7,12 +7,10 @@
 	if(proName.length() > 0)
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByName(proName);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proName));
 		List<String> tempList = hPIHandle.getDBRecordList("Bar_Code");
 		for(int idx = 0; idx < tempList.size(); idx++)
-		{
 			rtnRst += tempList.get(idx) + (idx+1==tempList.size()?"$":",");
-		}
 	}
 	else
 	{

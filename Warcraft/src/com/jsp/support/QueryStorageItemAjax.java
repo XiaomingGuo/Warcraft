@@ -14,7 +14,7 @@ public class QueryStorageItemAjax extends PageParentClass
 	{
 		List<String> rtnRst = null;
 		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		hPTHandle.GetRecordByStoreroom(storageName);
+		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storageName));
 		rtnRst = hPTHandle.getDBRecordList("name");
 		return rtnRst;
 	}
@@ -34,7 +34,7 @@ public class QueryStorageItemAjax extends PageParentClass
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
-			hPIHandle.GetRecordByBarcode(barcodeList.get(idx));
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
 			rtnRst.add(Integer.toString(idx+1));
 			rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 			rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
@@ -56,7 +56,7 @@ public class QueryStorageItemAjax extends PageParentClass
 	{
 		String rtnRst = "";
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByName(proName);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proName));
 		rtnRst = hPIHandle.getDBRecordList("Bar_Code").get(0);
 		return rtnRst;
 	}
@@ -69,7 +69,7 @@ public class QueryStorageItemAjax extends PageParentClass
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);
-			hPOHandle.GetRecordByOrderName("MB_"+orderName);
+			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList("MB_"+orderName));
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
 				break;
 			iCount += 1;

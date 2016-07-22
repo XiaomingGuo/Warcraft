@@ -12,7 +12,7 @@ public class Query_Process_Detail_Info extends PageParentClass
 	public boolean IsProductTypeExist(String proType)
 	{
 		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		hPTHandle.GetRecordByName(proType);
+		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proType));
 		if(hPTHandle.RecordDBCount() > 0)
 			return true;
 		return false;
@@ -21,7 +21,7 @@ public class Query_Process_Detail_Info extends PageParentClass
 	public boolean IsProductInfoExist(String barcode)
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByBarcode(barcode);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 		if (hPIHandle.RecordDBCount() > 0)
 			return true;
 		return false;
@@ -82,7 +82,7 @@ public class Query_Process_Detail_Info extends PageParentClass
 	{
 		List<String> rtnRst = new ArrayList<String>();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByBarcode(barcode);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 		if(hPIHandle.RecordDBCount() > 0)
 		{
 			String proType = hPIHandle.getDBRecordList("product_type").get(0);

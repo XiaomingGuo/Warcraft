@@ -125,10 +125,4 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 		aWriteRecord.setReason(reason);
 		getEQMHandle().addANewRecord();
 	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
-	}
 }

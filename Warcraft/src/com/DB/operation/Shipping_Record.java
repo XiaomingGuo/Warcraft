@@ -85,17 +85,6 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("poName", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from ShippingRecord cpr where cpr.%s='%s' order by cpr.%s asc", keyWord, value, orderKey);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String customerPo, String barCode, String batchLot, String orderName, String shipQty)
 	{
@@ -133,11 +122,5 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 			rtnRst = "shippingNo";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList) {
-		// TODO Auto-generated method stub
-		
 	}
 }

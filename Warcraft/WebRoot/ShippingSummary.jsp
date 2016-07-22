@@ -31,7 +31,7 @@
 			endDate = (null != endDate)?endDate:String.format("%s%s", currentDate, "31");
 			//product_type Database query
 			Product_Order hSNHandle = new Product_Order(new EarthquakeManagement());
-			hSNHandle.GetRecordByStatus(1);
+			hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("status"), Arrays.asList("1"));
 			List<String> shipNoList = hPageHandle.GetShippingNoList(beginDate, endDate);
 %>
 

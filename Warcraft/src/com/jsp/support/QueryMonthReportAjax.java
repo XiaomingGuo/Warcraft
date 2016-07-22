@@ -44,7 +44,7 @@ public class QueryMonthReportAjax extends PageParentClass
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
 			String strBarcode = barcodeList.get(idx);
-			hPIHandle.GetRecordByBarcode(strBarcode);
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
 			List<String> keyList = null, valueList = null;
 			if(user_name.indexOf("请选择") >= 0)

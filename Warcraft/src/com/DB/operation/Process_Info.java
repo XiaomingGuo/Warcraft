@@ -67,7 +67,7 @@ public class Process_Info extends DBTableParent implements ITableInterface
         }
         return rtnRst;
     }
-
+    
     @Override
     public void setResultList(Query query)
     {
@@ -78,23 +78,6 @@ public class Process_Info extends DBTableParent implements ITableInterface
     public Object getAWriteRecord()
     {
         return aWriteRecord;
-    }
-
-    public void GetRecordByPoName(String poName)
-    {
-        execQueryAsc("po_name", poName, "id");
-    }
-    
-    private void execQueryAsc(String keyWord, String value, String orderKey)
-    {
-        String hql = String.format("from ProcessInfo cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-        getEQMHandle().EQQuery(hql);
-    }
-    
-    public void QueryRecordOrderByIdASC(String po_name)
-    {
-        String hql = String.format("from ProcessInfo cpr where cpr.poName='%s' order by cpr.id asc", po_name);
-        getEQMHandle().EQQuery(hql);
     }
     
     public void AddARecord(String processName, String stationName, String processOrder, String processCount, String vendor, String percent)
@@ -126,15 +109,5 @@ public class Process_Info extends DBTableParent implements ITableInterface
             rtnRst = "processCount";
         }
         return rtnRst;
-    }
-
-    @Override
-    public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-    {
-        for (String item : delList)
-        {
-            String hql = String.format("delete ProcessInfo cpr where cpr.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-            getEQMHandle().DeleteAndUpdateRecord(hql);
-        }
     }
 }

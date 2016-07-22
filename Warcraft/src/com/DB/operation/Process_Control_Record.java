@@ -85,23 +85,6 @@ public class Process_Control_Record extends DBTableParent implements ITableInter
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("po_name", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from ProcessControlRecord cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void QueryRecordOrderByIdASC(String po_name)
-	{
-		String hql = String.format("from ProcessControlRecord cpr where cpr.poName='%s' order by cpr.id asc", po_name);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String barCode, String poName, String processId, String qty, String operator)
 	{
@@ -139,15 +122,5 @@ public class Process_Control_Record extends DBTableParent implements ITableInter
 			rtnRst = "createDate";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-	{
-		for (String item : delList)
-		{
-			String hql = String.format("delete ProcessControlRecord cpr where cpr.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
 	}
 }

@@ -74,23 +74,6 @@ public class User_Permission extends DBTableParent implements ITableInterface
         return aWriteRecord;
     }
     
-    public void GetRecordByPoName(String poName)
-    {
-        execQueryAsc("po_name", poName, "id");
-    }
-    
-    private void execQueryAsc(String keyWord, String value, String orderKey)
-    {
-        String hql = String.format("from UserPermission cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-        getEQMHandle().EQQuery(hql);
-    }
-    
-    public void QueryRecordOrderByIdASC(String po_name)
-    {
-        String hql = String.format("from UserPermission cpr where cpr.poName='%s' order by cpr.id asc", po_name);
-        getEQMHandle().EQQuery(hql);
-    }
-    
     public void AddARecord(String checkInId, String titleName)
     {
         aWriteRecord = new UserPermission();
@@ -112,15 +95,5 @@ public class User_Permission extends DBTableParent implements ITableInterface
             rtnRst = "titleName";
         }
         return rtnRst;
-    }
-    
-    @Override
-    public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-    {
-        for (String item : delList)
-        {
-            String hql = String.format("delete UserPermission cpr where cpr.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-            getEQMHandle().DeleteAndUpdateRecord(hql);
-        }
     }
 }

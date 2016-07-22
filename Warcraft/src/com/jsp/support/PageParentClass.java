@@ -169,7 +169,7 @@ public class PageParentClass
                         hStorageHandle.getDBRecordList(PoKeyWord).get(0), hStorageHandle.getDBRecordList("vendor_name").get(0),
                         hStorageHandle.getDBRecordList("in_store_date").get(0), hStorageHandle.getDBRecordList("isEnsure").get(0),
                         hStorageHandle.getDBRecordList("create_date").get(0));
-            ((ITableInterface)hStorageHandle).DeleteRecordByKeyWord("Id", Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
+            ((DBTableParent)hStorageHandle).DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
         }
     }
     
@@ -354,7 +354,7 @@ public class PageParentClass
         List<String> rtnRst = new ArrayList<String>();
         List<String> displayStoreName = Arrays.asList("成品库", "半成品库", "原材料库");
         Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
-        hSNHandle.GetAllRecord();
+        hSNHandle.QueryAllRecord();
         List<String> tempList = hSNHandle.getDBRecordList("name");
         
         for(String storeName : tempList)

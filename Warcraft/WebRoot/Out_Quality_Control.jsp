@@ -25,9 +25,9 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			Product_Order hSNHandle = new Product_Order(new EarthquakeManagement());
-			hSNHandle.GetRecordByStatus(1);
-			List<String> orderName = hSNHandle.getDBRecordList("Order_Name");
+			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("status"), Arrays.asList("1"));
+			List<String> orderName = hPOHandle.getDBRecordList("Order_Name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

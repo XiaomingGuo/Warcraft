@@ -135,10 +135,4 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		}
 		return rtnRst;
 	}
-	
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-	{
-		
-	}
 }

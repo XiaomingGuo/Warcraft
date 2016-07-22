@@ -81,23 +81,6 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQueryAsc("po_name", poName, "id");
-	}
-	
-	private void execQueryAsc(String keyWord, String value, String orderKey)
-	{
-		String hql = String.format("from WorkGroupInfo cpr where cpr.%s='%s' order by cpr.%s asc", GetDatabaseKeyWord(keyWord), value, GetDatabaseKeyWord(orderKey));
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void QueryRecordOrderByIdASC(String po_name)
-	{
-		String hql = String.format("from WorkGroupInfo cpr where cpr.poName='%s' order by cpr.id asc", po_name);
-		getEQMHandle().EQQuery(hql);
-	}
 	
 	public void AddARecord(String groupName, String checkInTime, String checkOutTime, String workDaysAweek)
 	{
@@ -128,15 +111,5 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 			rtnRst = "workDaysAweek";
 		}
 		return rtnRst;
-	}
-
-	@Override
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delList)
-	{
-		for (String item : delList)
-		{
-			String hql = String.format("delete WorkGroupInfo cpr where cpr.%s='%s'", GetDatabaseKeyWord(keyWord), item);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
 	}
 }

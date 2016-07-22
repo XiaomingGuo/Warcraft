@@ -11,7 +11,7 @@
 	String po_status = null;
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "物料库存", "缺料数量", "操作"};
 	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-	hPORHandle.QuertRecordOrderByidASC(po_name);
+	hPORHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(po_name), Arrays.asList("id"));
 	if (hPORHandle.RecordDBCount() > 0)
 	{
 		String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};

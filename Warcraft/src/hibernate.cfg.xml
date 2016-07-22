@@ -25,7 +25,6 @@
     <mapping resource="com/DB/support/ExhaustedOther.hbm.xml" />
     <mapping resource="com/DB/support/ExhaustedProduct.hbm.xml" />
     <mapping resource="com/DB/support/ManuStorageRecord.hbm.xml" />
-    <mapping resource="com/DB/support/MaterialRecord.hbm.xml" />
     <mapping resource="com/DB/support/MaterialStorage.hbm.xml" />
     <mapping resource="com/DB/support/MbMaterialPoRecord.hbm.xml" />
     <mapping resource="com/DB/support/MbMaterialPo.hbm.xml" />

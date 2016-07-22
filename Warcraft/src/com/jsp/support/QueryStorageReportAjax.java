@@ -15,7 +15,7 @@ public class QueryStorageReportAjax extends PageParentClass
 	{
 		List<String> rtnRst = null;
 		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-		hPTHandle.GetRecordByStoreroom(storageName);
+		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storageName));
 		rtnRst = hPTHandle.getDBRecordList("name");
 		return rtnRst;
 	}
@@ -37,8 +37,8 @@ public class QueryStorageReportAjax extends PageParentClass
 		int iRowNum = 1;
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
-			hPIHandle.GetRecordByBarcode(barcodeList.get(idx));
-			hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
+			hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(hPIHandle.getDBRecordList("product_type").get(0)));
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
 			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
@@ -115,8 +115,8 @@ public class QueryStorageReportAjax extends PageParentClass
 		int iRowNum = 1;
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
-			hPIHandle.GetRecordByBarcode(barcodeList.get(idx));
-			hPTHandle.GetRecordByName(hPIHandle.getDBRecordList("product_type").get(0));
+			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
+			hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(hPIHandle.getDBRecordList("product_type").get(0)));
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
 			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
@@ -195,7 +195,7 @@ public class QueryStorageReportAjax extends PageParentClass
 	{
 		List<String> rtnRst = null;
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetAllRecord();
+		hPIHandle.QueryAllRecord();
 		rtnRst = hPIHandle.getDBRecordList("Bar_Code");
 		return rtnRst;
 	}

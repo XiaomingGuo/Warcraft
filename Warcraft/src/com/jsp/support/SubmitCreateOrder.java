@@ -14,7 +14,7 @@ public class SubmitCreateOrder extends PageParentClass
 		String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
-		hCPRHandle.GetRecordByPoName(PO_Name);
+		hCPRHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(PO_Name), Arrays.asList("id"));
 		for (int i = 0; i < sqlKeyList.length; i++)
 			rtnRst.add(hCPRHandle.getDBRecordList(sqlKeyList[i]));
 		return rtnRst;
@@ -28,7 +28,7 @@ public class SubmitCreateOrder extends PageParentClass
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);
-			hPOHandle.GetRecordByOrderName(orderName);
+			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(orderName));
 			if (hPOHandle.getDBRecordList("id").size() <= 0)
 				break;
 			iCount += 1;
@@ -64,7 +64,7 @@ public class SubmitCreateOrder extends PageParentClass
 	public void UpdateCustomerPoStatus(String status, String poName)
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.UpdateStatusByPoName(1, poName);
+		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("status", "po_name"), Arrays.asList("1", poName));
 	}
 	
 	public void CreateCustomerOrder(String appPOName, List<List<String>> recordList)

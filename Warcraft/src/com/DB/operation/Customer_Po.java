@@ -73,16 +73,6 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	{
 		return aWriteRecord;
 	}
-
-	public void GetRecordByPoName(String poName)
-	{
-		execQuery("po_name", poName);
-	}
-	
-	public void GetRecordByStatus(int istatus)
-	{
-		execQuery("status", Integer.toString(istatus));
-	}
 	
 	public void QueryRecordByPoNameAndMoreThanStatus(String poName, String status)
 	{
@@ -96,19 +86,13 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 		getEQMHandle().EQQuery(hql);
 	}
 	
-	private void execQuery(String keyWord, String value)
-	{
-		String hql = String.format("from CustomerPo cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), value);
-		getEQMHandle().EQQuery(hql);
-	}
-	
 	public void AddARecord(String poName)
 	{
 		aWriteRecord = new CustomerPo();
 		aWriteRecord.setPoName(poName);
 		getEQMHandle().addANewRecord();
 	}
-
+	
 	@Override
 	public String GetDatabaseKeyWord(String keyword) {
 		String rtnRst = "";
@@ -122,20 +106,5 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 			rtnRst = "status";
 		}
 		return rtnRst;
-	}
-
-	public void UpdateStatusByPoName(int updateVal, String filterVal)
-	{
-		String hql = String.format("update CustomerPo cp set cp.status = '%d' WHERE cp.poName='%s'", updateVal, filterVal);
-		getEQMHandle().DeleteAndUpdateRecord(hql);
-	}
-	
-	public void DeleteRecordByKeyWord(String keyWord, List<String> delPoList)
-	{
-		for (String poName : delPoList)
-		{
-			String hql = String.format("delete CustomerPo cp where cp.%s='%s'", GetDatabaseKeyWord(keyWord), poName);
-			getEQMHandle().DeleteAndUpdateRecord(hql);
-		}
 	}
 }
