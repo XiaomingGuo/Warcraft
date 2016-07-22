@@ -1,11 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.Query_Add_Material_PO_Item_Ajax" %>
+<%@ page import="com.jsp.support.AddMFGMaterial_ReferTo_PO" %>
 <%
 	String rtnRst = "";
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	if(po_name.length() > 6)
 	{
-		Query_Add_Material_PO_Item_Ajax hPageHandle = new Query_Add_Material_PO_Item_Ajax();
+		AddMFGMaterial_ReferTo_PO hPageHandle = new AddMFGMaterial_ReferTo_PO();
 		rtnRst += hPageHandle.GenerateReturnString(po_name);
 	}
 	else

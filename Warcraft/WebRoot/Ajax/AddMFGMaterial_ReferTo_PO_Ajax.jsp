@@ -1,10 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.AddMFGMaterial_ReferTo_PO_Ajax" %>
-<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
+<%@ page import="com.jsp.support.AddMFGMaterial_ReferTo_PO" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String rtnRst = "remove$";
-	AddMFGMaterial_ReferTo_PO_Ajax hPageHandle = new AddMFGMaterial_ReferTo_PO_Ajax();
+	AddMFGMaterial_ReferTo_PO hPageHandle = new AddMFGMaterial_ReferTo_PO();
 	if(session.getAttribute("logonuser")==null)
 	{
 		rtnRst += "error:未登陆";

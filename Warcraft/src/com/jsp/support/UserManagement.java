@@ -30,16 +30,14 @@ public class UserManagement extends PageParentClass implements IPageInterface
     
     public List<String> GetTitleName()
     {
-        Title_Info hTIHandle = new Title_Info(new EarthquakeManagement());
-        hTIHandle.QueryAllRecord();
-        return hTIHandle.getDBRecordList("title_name");
+        hQueryHandle.setTableHandle(new Title_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "title_name");
     }
     
     public List<String> GetWorkGroupName()
     {
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hWGIHandle.QueryAllRecord();
-        return hWGIHandle.getDBRecordList("group_name");
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "group_name");
     }
     
     public List<List<String>> GetUserInfo(int PageRecordCount, int BeginPage)
@@ -72,10 +70,10 @@ public class UserManagement extends PageParentClass implements IPageInterface
         
         for(int idx=0; idx < dbRecordList.size(); idx++)
         {
-            Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-            hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(dbRecordList.get(idx)));
-            if(hWGIHandle.RecordDBCount() > 0)
-                rtnRst.add(hWGIHandle.getDBRecordList("group_name").get(0));
+            hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+            List<String> queryList = hQueryHandle.GetTableContentByKeyWord("id", dbRecordList.get(idx), "group_name");
+            if(queryList.size() > 0)
+                rtnRst.add(queryList.get(0));
             else
                 rtnRst.add("未定班次");
         }
@@ -135,29 +133,29 @@ public class UserManagement extends PageParentClass implements IPageInterface
     private String GetWorkGroup(String groupName)
     {
         String rtnRst = "0";
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("group_name"), Arrays.asList(groupName));
-        if(hWGIHandle.RecordDBCount() > 0)
-            rtnRst = hWGIHandle.getDBRecordList("id").get(0);
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        List<String> queryList = hQueryHandle.GetTableContentByKeyWord("group_name", groupName, "id");
+        if(queryList.size() > 0)
+            rtnRst = queryList.get(0);
         return rtnRst;
     }
     
     private void AddOrUpdatePermission(String checkInId, String permission)
     {
         List<String> perList = Arrays.asList(permission.split("#"));
-        User_Permission hUPHandle = new User_Permission(new EarthquakeManagement());
-        hUPHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
-        List<String> queryPerList = hUPHandle.getDBRecordList("title_name");
+        hQueryHandle.setTableHandle(new User_Permission(new EarthquakeManagement()));
+        List<String> queryList = hQueryHandle.GetTableContentByKeyWord("check_in_id", checkInId, "title_name");
+        
         for(int index = 0; index < perList.size(); index++)
         {
             String titleName = perList.get(index);
-            if(queryPerList.contains(titleName))
-                queryPerList.remove(titleName);
+            if(queryList.contains(titleName))
+                queryList.remove(titleName);
             else
-                hUPHandle.AddARecord(checkInId, titleName);
+                ((User_Permission)(hQueryHandle.getTableHandle())).AddARecord(checkInId, titleName);
         }
-        for(int delIdx = 0; delIdx < queryPerList.size(); delIdx++)
-            hUPHandle.DeleteRecordByKeyList(Arrays.asList("check_in_id", "title_name"), Arrays.asList(checkInId, queryPerList.get(delIdx)));
+        for(int delIdx = 0; delIdx < queryList.size(); delIdx++)
+            ((User_Permission)(hQueryHandle.getTableHandle())).DeleteRecordByKeyList(Arrays.asList("check_in_id", "title_name"), Arrays.asList(checkInId, queryList.get(delIdx)));
     }
     
     public String DeleteUserInfoAndUserPermission(String userId)
@@ -174,21 +172,24 @@ public class UserManagement extends PageParentClass implements IPageInterface
     public String GetUpdateReturnString(String userId)
     {
         String rtnRst = "remove$";
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(userId));
-        String workGroupId = hUIHandle.getDBRecordList("isFixWorkGroup").get(0);
-        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(workGroupId));
         
-        String checkInId = hUIHandle.getDBRecordList("check_in_id").get(0);
+        String[] getKeyWord = new String[]{"isFixWorkGroup", "check_in_id", "name", "department", "password"};
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        List<List<String>> queryUserInfoList = hQueryHandle.GetAllTableContentByKeyWord(getKeyWord, "id", userId);
+        
+        String workGroupId = queryUserInfoList.get(0).get(0);
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        List<String> queryGroupNameList = hQueryHandle.GetTableContentByKeyWord("id", workGroupId, "group_name");
+        
+        String checkInId = queryUserInfoList.get(1).get(0);
         rtnRst += checkInId + "$";
-        if(hWGIHandle.RecordDBCount() > 0)
-            rtnRst += hWGIHandle.getDBRecordList("group_name").get(0) + "$";
+        if(queryGroupNameList.size() > 0)
+            rtnRst += queryGroupNameList.get(0) + "$";
         else
             rtnRst += "--请选择--$";
-        rtnRst += hUIHandle.getDBRecordList("name").get(0) + "$";
-        rtnRst += hUIHandle.getDBRecordList("department").get(0) + "$";
-        rtnRst += hUIHandle.getDBRecordList("password").get(0) + "$";
+        rtnRst += queryUserInfoList.get(2).get(0) + "$";
+        rtnRst += queryUserInfoList.get(3).get(0) + "$";
+        rtnRst += queryUserInfoList.get(4).get(0) + "$";
         rtnRst += GetUserPermission(checkInId);
         return rtnRst;
     }
@@ -196,12 +197,12 @@ public class UserManagement extends PageParentClass implements IPageInterface
     private String GetUserPermission(String checkInId)
     {
         String rtnRst = "";
-        User_Permission hUPHandle = new User_Permission(new EarthquakeManagement());
-        hUPHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
-        List<String> perList = hUPHandle.getDBRecordList("title_name");
-        rtnRst += perList.get(0);
-        for(int idx=1; idx < perList.size(); idx++)
-            rtnRst += "#" + perList.get(idx);
+        hQueryHandle.setTableHandle(new User_Permission(new EarthquakeManagement()));
+        List<String> queryList = hQueryHandle.GetTableContentByKeyWord("check_in_id", checkInId, "title_name");
+        
+        rtnRst += queryList.get(0);
+        for(int idx=1; idx < queryList.size(); idx++)
+            rtnRst += "#" + queryList.get(idx);
         return rtnRst;
     }
 }

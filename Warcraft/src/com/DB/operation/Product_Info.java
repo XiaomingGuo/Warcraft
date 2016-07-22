@@ -110,19 +110,7 @@ public class Product_Info extends DBTableParent implements ITableInterface
         String hql = String.format("from ProductInfo pi where pi.name='%s'", name);
         getEQMHandle().EQQuery(hql);
     }
-
-    public void GetRecordByProType(String product_type)
-    {
-        String hql = String.format("from ProductInfo pi where pi.productType='%s'", product_type);
-        getEQMHandle().EQQuery(hql);
-    }
     
-    public void GetRecordByNameAndProType(String product_name, String product_type)
-    {
-        String hql = String.format("from ProductInfo pi where pi.name='%s' and pi.productType='%s'", product_name, product_type);
-        getEQMHandle().EQQuery(hql);
-    }
-
     @Override
     public String GetDatabaseKeyWord(String keyword) {
         String rtnRst = "";

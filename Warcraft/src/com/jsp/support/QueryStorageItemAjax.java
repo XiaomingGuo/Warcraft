@@ -23,7 +23,7 @@ public class QueryStorageItemAjax extends PageParentClass
 	{
 		List<String> rtnRst = null;
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByProType(proType);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("product_type"), Arrays.asList(proType));
 		rtnRst = hPIHandle.getDBRecordList("name");
 		return rtnRst;
 	}
@@ -31,7 +31,6 @@ public class QueryStorageItemAjax extends PageParentClass
 	public List<String> GetAllRecordByBarCodeList(List<String> barcodeList)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		//{"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "总价值"}
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{

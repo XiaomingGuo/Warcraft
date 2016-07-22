@@ -24,7 +24,7 @@ public class QueryStorageReportAjax extends PageParentClass
 	{
 		List<String> rtnRst = null;
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByProType(proType);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("product_type"), Arrays.asList(proType));
 		rtnRst = hPIHandle.getDBRecordList("name");
 		return rtnRst;
 	}
@@ -186,7 +186,7 @@ public class QueryStorageReportAjax extends PageParentClass
 	{
 		String rtnRst = "";
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		hPIHandle.GetRecordByNameAndProType(proName, proType);
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "product_type"), Arrays.asList(proName, proType));
 		rtnRst = hPIHandle.getDBRecordList("Bar_Code").get(0);
 		return rtnRst;
 	}
