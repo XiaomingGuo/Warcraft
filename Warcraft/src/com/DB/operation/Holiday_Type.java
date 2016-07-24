@@ -6,17 +6,17 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.HolidayMark;
+import com.DB.support.HolidayType;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Holiday_Mark extends DBTableParent implements ITableInterface
+public class Holiday_Type extends DBTableParent implements ITableInterface
 {
-    private List<HolidayMark> resultList = null;
-    private HolidayMark aWriteRecord = null;
+    private List<HolidayType> resultList = null;
+    private HolidayType aWriteRecord = null;
     
-    public Holiday_Mark(IEQManagement hEQMHandle)
+    public Holiday_Type(IEQManagement hEQMHandle)
     {
         super(hEQMHandle);
     }
@@ -24,7 +24,7 @@ public class Holiday_Mark extends DBTableParent implements ITableInterface
     @Override
     public String GetTableName()
     {
-        return "HolidayMark";
+        return "HolidayType";
     }
     
     @Override
@@ -40,23 +40,17 @@ public class Holiday_Mark extends DBTableParent implements ITableInterface
     public List<String> getDBRecordList(String keyWord)
     {
         List<String> rtnRst = new ArrayList<String>();
-        Iterator<HolidayMark> it = resultList.iterator();
+        Iterator<HolidayType> it = resultList.iterator();
         while(it.hasNext())
         {
-            HolidayMark tempRecord = (HolidayMark)it.next();
+            HolidayType tempRecord = (HolidayType)it.next();
             switch (keyWord)
             {
             case "id":
                 rtnRst.add(tempRecord.getId().toString());
                 break;
-            case "check_in_id":
-                rtnRst.add(tempRecord.getCheckInId());
-                break;
-            case "holiday_date":
-                rtnRst.add(tempRecord.getHolidayDate());
-                break;
-            case "holiday_info":
-                rtnRst.add(tempRecord.getHolidayInfo());
+            case "holiday_name":
+                rtnRst.add(tempRecord.getHolidayName());
                 break;
             default:
                 break;
@@ -77,12 +71,10 @@ public class Holiday_Mark extends DBTableParent implements ITableInterface
         return aWriteRecord;
     }
     
-    public void AddARecord(String checkInId, String holidayDate, String holidayInfo)
+    public void AddARecord(String holidayName)
     {
-        aWriteRecord = new HolidayMark();
-        aWriteRecord.setCheckInId(checkInId);
-        aWriteRecord.setHolidayDate(holidayDate);
-        aWriteRecord.setHolidayInfo(holidayInfo);
+        aWriteRecord = new HolidayType();
+        aWriteRecord.setHolidayName(holidayName);
         getEQMHandle().addANewRecord();
     }
     
@@ -92,14 +84,8 @@ public class Holiday_Mark extends DBTableParent implements ITableInterface
         if(keyword.toLowerCase().indexOf("id") == 0){
             rtnRst = "id";
         }
-        else if(keyword.toLowerCase().indexOf("check_in_id") == 0) {
-            rtnRst = "checkInId";
-        }
-        else if(keyword.toLowerCase().indexOf("holiday_date") >= 0) {
-            rtnRst = "holidayDate";
-        }
-        else if(keyword.toLowerCase().indexOf("holiday_info") >= 0) {
-            rtnRst = "holidayInfo";
+        else if(keyword.toLowerCase().indexOf("holiday_name") == 0) {
+            rtnRst = "holidayName";
         }
         return rtnRst;
     }

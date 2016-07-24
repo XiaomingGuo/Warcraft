@@ -11,6 +11,7 @@ public class HolidayMark implements java.io.Serializable {
 	private Integer id;
 	private String checkInId;
 	private String holidayDate;
+	private String holidayInfo;
 
 	// Constructors
 
@@ -19,9 +20,10 @@ public class HolidayMark implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public HolidayMark(String checkInId, String holidayDate) {
+	public HolidayMark(String checkInId, String holidayDate, String holidayInfo) {
 		this.checkInId = checkInId;
 		this.holidayDate = holidayDate;
+		this.holidayInfo = holidayInfo;
 	}
 
 	// Property accessors
@@ -48,6 +50,14 @@ public class HolidayMark implements java.io.Serializable {
 
 	public void setHolidayDate(String holidayDate) {
 		this.holidayDate = holidayDate;
+	}
+
+	public String getHolidayInfo() {
+		return this.holidayInfo;
+	}
+
+	public void setHolidayInfo(String holidayInfo) {
+		this.holidayInfo = holidayInfo;
 	}
 
 }

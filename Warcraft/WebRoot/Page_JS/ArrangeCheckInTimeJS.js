@@ -322,3 +322,32 @@ function SubmitAddHolidaysDate()
         tab.deleteRow(0);
     }
 }
+
+function SubmitBatchCheckIn()
+{
+    var tab = document.getElementById('check_in_list');
+    if(tab.rows.length < 2)
+    {
+        alert("申请人信息填写不完整!");
+        return;
+    }
+    var addDate = dojo.widget.byId("AddDate").inputNode.value;
+    for(var iRow=1; iRow < tab.rows.length; iRow++)
+    {
+        $.post("Submit/Submit_Add_Batch_Holidays.jsp", {"userId":tab.rows[iRow].cells[2].innerText, "AddDate":addDate}, function(data, textStatus)
+        {
+            if (!CheckAjaxResult(textStatus, data))
+            {
+                alert(data);
+            }
+            else
+            {
+                alert("完成添加!");
+            }
+        });
+    }
+    while(tab.rows.length > 0)
+    {
+        tab.deleteRow(0);
+    }
+}

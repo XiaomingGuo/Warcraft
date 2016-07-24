@@ -44,5 +44,6 @@
     <mapping resource="com/DB/support/HolidayMark.hbm.xml" />
     <mapping resource="com/DB/support/TitleInfo.hbm.xml" />
     <mapping resource="com/DB/support/UserPermission.hbm.xml" />
+    <mapping resource="com/DB/support/HolidayType.hbm.xml" />
 </session-factory>
 </hibernate-configuration>

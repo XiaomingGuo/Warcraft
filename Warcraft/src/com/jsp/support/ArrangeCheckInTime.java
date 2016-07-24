@@ -206,13 +206,13 @@ public class ArrangeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
-    public String SubmitAddHolidaysDate(String strCheckInId, String addDate)
+    public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType)
     {
         String rtnRst = "";
         Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
         hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
         if(hHMHandle.RecordDBCount() <= 0)
-            hHMHandle.AddARecord(strCheckInId, addDate);
+            hHMHandle.AddARecord(strCheckInId, addDate, holidayType);
         else
             rtnRst += "error:节假日或转班信息已经存在!";
         return rtnRst;

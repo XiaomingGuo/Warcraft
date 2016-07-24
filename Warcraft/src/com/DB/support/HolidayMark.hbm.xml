@@ -16,5 +16,8 @@
         <property name="holidayDate" type="java.lang.String">
             <column name="holiday_date" length="10" not-null="true" />
         </property>
+        <property name="holidayInfo" type="java.lang.String">
+            <column name="holiday_info" length="10" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

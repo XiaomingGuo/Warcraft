@@ -80,6 +80,7 @@
                         <li><a href="PersonnelInfo.jsp">人员考勤查询</a></li>
                         <li><a href="SummarizeCheckInTime.jsp">考勤汇总</a></li>
                         <li><a href="AddCheckInTime.jsp">补刷考勤</a></li>
+                        <li><a href="AddBatchCheckInTime.jsp">批量考勤补录</a></li>
                         <li><a href="AddHolidays.jsp">节假日及转班</a></li>
                         <li><a href="ArrangeCheckInTime.jsp">人员排班</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
