@@ -13,9 +13,9 @@ function changeUserName()
 {
     var $displayOrder = $("#display_po");
     var user_name = $.trim($("#UserName").val());
-    if(user_name.length == 0)
+    if(user_name.indexOf("请选择") >= 0)
     {
-        alert("你就不能起个靠谱的名字吗?");
+        alert("需要你指定要查询人员的名字?");
         return;
     }
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
