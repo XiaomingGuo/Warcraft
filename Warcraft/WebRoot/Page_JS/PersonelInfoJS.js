@@ -1,14 +1,6 @@
 /**
  * 
  */
-/*$(function()
-{
-    $('#UserName').change(function()
-    {
-        changeUserName();
-    });
-});*/
-
 function changeUserName()
 {
     var $displayOrder = $("#display_po");
@@ -19,7 +11,7 @@ function changeUserName()
         return;
     }
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-    $.post("Ajax/Query_Personnel_Check_In_Data_Ajax.jsp", {"user_name":user_name, "queryDate": addDate}, function(data, textStatus)
+    $.post("Ajax/Query_Personel_Check_In_Data_Ajax.jsp", {"user_name":user_name, "queryDate": addDate}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {

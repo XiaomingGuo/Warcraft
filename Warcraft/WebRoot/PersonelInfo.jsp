@@ -47,13 +47,13 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonnelInfoJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelInfoJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/PersonnelMenu.jsp"/>
+    <jsp:include page="Menu/PersonelMenu.jsp"/>
     <br>
     <table align="center">
         <tr>

@@ -53,7 +53,7 @@
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/PersonnelMenu.jsp"/>
+    <jsp:include page="Menu/PersonelMenu.jsp"/>
     <br>
     <table align="center">
         <tr>

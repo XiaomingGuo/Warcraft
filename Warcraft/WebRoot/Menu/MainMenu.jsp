@@ -84,7 +84,7 @@
                         <li><a href="AddMFGMaterial.jsp">生产物料录入</a></li>
                         <li><a href="ManufactorySummary.jsp">生产报表</a></li>
                         <li><a href="NewMaterialInfo.jsp">物料信息录入</a></li>
-                        <li><a href="PersonnelInfo.jsp">人事信息统计</a></li>
+                        <li><a href="PersonelInfo.jsp">人事信息统计</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
                     </ul>
                 </h2>
