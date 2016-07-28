@@ -36,7 +36,7 @@ public class EarthquakeManagement implements IEQManagement
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();						//´òÓ¡Òì³£ÐÅÏ¢
+			e.printStackTrace();						//ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
 			tx.rollback();
 			rtnRst = false;
 		}
@@ -52,19 +52,19 @@ public class EarthquakeManagement implements IEQManagement
 	{
 		try
 		{
-			session = HibernateSessionFactory.getSession();	//»ñÈ¡Session
-			tx = session.beginTransaction();				//¿ªÆôÊÂÎï
-			session.save(hTableHandle.getAWriteRecord());	//±£´æUserµ½Êý¾Ý¿â
-			tx.commit();									//Ìá½»ÊÂÎï
+			session = HibernateSessionFactory.getSession();	//ï¿½ï¿½È¡Session
+			tx = session.beginTransaction();				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			session.save(hTableHandle.getAWriteRecord());	//ï¿½ï¿½ï¿½ï¿½Userï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
+			tx.commit();									//ï¿½á½»ï¿½ï¿½ï¿½ï¿½
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();						//´òÓ¡Òì³£ÐÅÏ¢
-			tx.rollback();								//»Ø¹öÊÂÎï
+			e.printStackTrace();						//ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
+			tx.rollback();								//ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½
 		}
 		finally
 		{
-			HibernateSessionFactory.closeSession();		//¹Ø±ÕSession
+			HibernateSessionFactory.closeSession();		//ï¿½Ø±ï¿½Session
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class EarthquakeManagement implements IEQManagement
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();						//´òÓ¡Òì³£ÐÅÏ¢
+			e.printStackTrace();						//ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
 			tx.rollback();
 			rtnRst = false;
 		}
@@ -105,7 +105,7 @@ public class EarthquakeManagement implements IEQManagement
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();						//´òÓ¡Òì³£ÐÅÏ¢
+			e.printStackTrace();						//ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
 			tx.rollback();
 		}
 		finally
@@ -130,7 +130,7 @@ public class EarthquakeManagement implements IEQManagement
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();						//´òÓ¡Òì³£ÐÅÏ¢
+			e.printStackTrace();						//ï¿½ï¿½Ó¡ï¿½ì³£ï¿½ï¿½Ï¢
 			tx.rollback();
 			rtnRst = false;
 		}

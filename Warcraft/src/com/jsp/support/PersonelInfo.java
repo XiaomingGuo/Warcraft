@@ -5,10 +5,23 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.*;
+import com.page.utilities.CPageAjaxUtil;
+import com.page.utilities.CRecordsQueryUtil;
 
-public class PersonnelInfo extends PageParentClass
+public class PersonelInfo extends PageParentClass  implements IPageInterface
 {
-    String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次"};
+    private String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次", "操作"};
+    private IRecordsQueryUtil hQueryHandle;
+    private IPageAjaxUtil hAjaxHandle;
+    
+    public PersonelInfo()
+    {
+        hQueryHandle = new CRecordsQueryUtil();
+        hAjaxHandle = new CPageAjaxUtil();
+        hAjaxHandle.setTableHandle(this);
+    }
+    
     public List<String> GetAllUserName()
     {
         User_Info hUIHandle = new User_Info(new EarthquakeManagement());
@@ -96,6 +109,8 @@ public class PersonnelInfo extends PageParentClass
                         else
                             rtnRst += GetWorkGroupName(recordList.get(4).get(iRow)) + "$";
                     }
+                    else if("操作" == m_displayList[iCol])
+                        rtnRst += recordList.get(0).get(iRow) + "$";
                 }
             }
         }
@@ -107,5 +122,26 @@ public class PersonnelInfo extends PageParentClass
         Work_Group_Info hUIHandle = new Work_Group_Info(new EarthquakeManagement());
         hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
         return hUIHandle.getDBRecordList("group_name").get(0);
+    }
+    
+    public List<String> GetWorkGroupName()
+    {
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "group_name");
+    }
+    
+    public String UpdateCheckInRawDataRecord(String id, String workGroup)
+    {
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        String workGroupId = hQueryHandle.GetTableContentByKeyWord("group_name", workGroup, "id").get(0);
+        hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(id));
+        return "";
+    }
+    
+    @Override
+    public String[] GetDisplayArray()
+    {
+        return m_displayList;
     }
 }

@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonnelInfo" %>
+<%@ page import="com.jsp.support.PersonelInfo" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
-    PersonnelInfo hPageHandle = new PersonnelInfo();
+    PersonelInfo hPageHandle = new PersonelInfo();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("tishi.jsp");
@@ -24,7 +24,9 @@
             String curUserName = request.getParameter("userName");
             if(null == curUserName)
                 curUserName = "";
+            String[] keyList = hPageHandle.GetDisplayArray();
             List<String> UserList = hPageHandle.GetAllUserName();
+            List<String> workGroupList = hPageHandle.GetWorkGroupName();
             UserList.remove("root");
             String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
@@ -54,6 +56,62 @@
         dojo.require("dojo.widget.*");
     </script>
     <jsp:include page="Menu/PersonelMenu.jsp"/>
+    <br>
+    <table id="modify_info" border="1" align="center">
+        <tr>
+<%
+            for(int iCol = 1; iCol <= keyList.length; iCol++)
+            {
+%>
+            <th><%= keyList[iCol-1]%></th>
+<%
+            }
+%>
+        </tr>
+
+<%
+            int iRow = 0;
+%>
+        <tr>
+<%
+            for(int iCol = 1; iCol <= keyList.length; iCol++)
+            {
+                if("操作" == keyList[iCol-1])
+                {
+%>
+        <td>
+            <center><input type="button" value="确认" onclick="ExecModify()"></center>
+        </td>
+<%
+                }
+                else if("班次" == keyList[iCol-1])
+                {
+%>
+        <td>
+            <select name="workGroup" id="workGroup" style="width:120px">
+                <option value = "--请选择--">--请选择--</option>
+<%
+                    for(int i = 0; i < workGroupList.size(); i++)
+                    {
+%>
+                <option value = <%=workGroupList.get(i) %>><%=workGroupList.get(i)%></option>
+<%
+                    }
+%>
+            </select>
+        </td>
+<%
+                }
+                else
+                {
+%>
+        <td>...</td>
+<%
+                }
+            }
+%>
+        </tr>
+    </table>
     <br>
     <table align="center">
         <tr>

@@ -10,7 +10,7 @@ import com.page.utilities.*;
 
 public class UserManagement extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+    private String[] m_displayArray = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
