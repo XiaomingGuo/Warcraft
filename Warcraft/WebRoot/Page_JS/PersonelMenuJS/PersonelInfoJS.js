@@ -5,7 +5,6 @@ function changeUserName()
 {
     var $displayOrder = $("#display_po");
     var user_name = $.trim($("#UserName").val());
-    alert(user_name);
     if(user_name.indexOf("请选择") >= 0)
     {
         alert("需要你指定要查询人员的名字?");

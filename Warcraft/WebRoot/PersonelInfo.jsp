@@ -49,7 +49,7 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelInfoJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/PersonelInfoJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">

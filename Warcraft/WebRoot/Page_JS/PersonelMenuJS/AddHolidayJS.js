@@ -164,6 +164,10 @@ function EnsureCheckInData(obj)
                         {
                             val = workGroup;
                         }
+                        else if("日期" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = holidayDate;
+                        }
                         myCurrentRow.appendChild(CreateTabCellContext("td", val));
                     }
                     myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ rowNum +"' value='删除' onclick='delappitem(this)'>"));
