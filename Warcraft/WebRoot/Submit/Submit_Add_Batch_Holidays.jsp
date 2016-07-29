@@ -2,13 +2,14 @@
 <%@ page import="com.jsp.support.ArrangeCheckInTime" %>
 <%
 
-    String rtnRst = "";
+    String rtnRst = "error:添加假期信息失败！";
     ArrangeCheckInTime hPageHandle = new ArrangeCheckInTime();
     String userId = request.getParameter("userId").replace(" ", "");
-    String AddDate = request.getParameter("AddDate").replace(" ", "");
     String HolidayType = request.getParameter("HolidayType").replace(" ", "");
+    String beginDate = request.getParameter("BeginDate").replace(" ", "");
+    String endDate = request.getParameter("EndDate").replace(" ", "");
     
-    if(userId.length() > 0&&AddDate.length() > 0&&HolidayType.length() > 0)
-        rtnRst += hPageHandle.SubmitAddHolidaysDate(userId, AddDate, HolidayType);
+    if(userId.length() > 0&&HolidayType.length() > 0&&beginDate.length() > 0&&endDate.length() > 0)
+        rtnRst = hPageHandle.SubmitAddBatchHolidaysDate(userId, HolidayType, beginDate, endDate);
     out.write(rtnRst);
 %>

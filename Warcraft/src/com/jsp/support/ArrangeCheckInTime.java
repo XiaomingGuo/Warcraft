@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.SupportUnit.DateAdapter;
 
 public class ArrangeCheckInTime extends PageParentClass
 {
@@ -218,4 +219,16 @@ public class ArrangeCheckInTime extends PageParentClass
         return rtnRst;
     }
     
+    public String SubmitAddBatchHolidaysDate(String strCheckInId, String holidayType, String beginDate, String endDate)
+    {
+        String rtnRst = "";
+        if(beginDate.substring(0, 6).equals(endDate.substring(0, 6)))
+        {
+            for(int idate = Integer.parseInt(beginDate); idate <= Integer.parseInt(endDate); idate++)
+                SubmitAddHolidaysDate(strCheckInId, Integer.toString(idate), holidayType);
+        }
+        else
+            rtnRst = "error:假期不能跨月提交!";
+        return rtnRst;
+    }
 }

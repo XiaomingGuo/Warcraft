@@ -1,10 +1,11 @@
 /**
  * 
  */
+var displayHead = ["ID", "姓名", "工号", "部门", "假期类型", "操作"];
 function OnloadDisplay()
 {
     var $displayInfo = $("#display_info");
-    $.post("Ajax/Query_Arrange_Check_In_Time_Ajax.jsp", {}, function(data, textStatus)
+    $.post("Ajax/PersonalMenu/Query_AddHoliday_Ajax.jsp", {}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
@@ -31,6 +32,8 @@ function OnloadDisplay()
                             td = $("<td></td>");
                             td.append("<input type='button' value='确认' name='" + data_list[iRow*iColCount + iCol + 2] +
                                     "' onclick=EnsureCheckInData(this)>");
+                            //td.append("<input type='button' value='查询' name='" + data_list[iRow*iColCount + iCol + 2] +
+                                    //"' onclick=EnsureCheckInData(this)>");
                         }
                         else if(iColCount - iCol == 1)
                         {
@@ -101,16 +104,6 @@ function ChangeUserName(obj)
                 }
                 index++;
             }); 
-            
-            var workGroup = document.getElementById('WorkGroup');
-            for(var i=0;i<workGroup.options.length;i++)
-            {
-                if(i == parseInt(data_list[iColCount+7]))
-                {
-                    workGroup.options[i].selected = true;
-                    break;
-                }
-            }
         }
     });
 }
@@ -127,15 +120,13 @@ function EnsureCheckInData(obj)
         return;
     }
     var tab = document.getElementById('check_in_list');
-    var displayTab = document.getElementById('display_info');
-    var sampleCount = displayTab.rows[0].cells.length;
     if(1 > tab.rows.length)
     {
         var myHeadRow = document.createElement("tr");
         myHeadRow.setAttribute("align", "center");
-        for(var iCol=0; iCol < sampleCount; iCol++)
+        for(var iCol=0; iCol < displayHead.length; iCol++)
         {
-            myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
+            myHeadRow.appendChild(CreateTabCellContext("th", displayHead[iCol]));
         }
         tab.appendChild(myHeadRow);
     }
@@ -168,7 +159,7 @@ function EnsureCheckInData(obj)
                         {
                             val = data_list[iColCount*iRow+6];
                         }
-                        else if("选择班次" == tab.rows[0].cells[iCol].innerText)
+                        else if("假期类型" == tab.rows[0].cells[iCol].innerText)
                         {
                             val = workGroup;
                         }
@@ -199,7 +190,7 @@ function EnsureCheckInData(obj)
             {
                 val = department;
             }
-            else if("选择班次" == tab.rows[0].cells[iCol].innerText)
+            else if("假期类型" == tab.rows[0].cells[iCol].innerText)
             {
                 val = workGroup;
             }
@@ -210,7 +201,7 @@ function EnsureCheckInData(obj)
     }
 }
 
-function SubmitArrangeCheckIn()
+function SubmitBatchCheckIn()
 {
     var tab = document.getElementById('check_in_list');
     if(tab.rows.length < 2)
@@ -222,11 +213,13 @@ function SubmitArrangeCheckIn()
     var endDate = dojo.widget.byId("EndDate").inputNode.value;
     for(var iRow=1; iRow < tab.rows.length; iRow++)
     {
-        $.post("Submit/Submit_Arrange_Check_In_Data_Ajax.jsp", {"userId":tab.rows[iRow].cells[2].innerText, "WorkGroup":tab.rows[iRow].cells[4].innerText,
-                                                                "BeginDate":beginDate, "EndDate":endDate}, function(data, textStatus)
+        $.post("Submit/Submit_Add_Batch_Holidays.jsp", {"userId":tab.rows[iRow].cells[2].innerText, "HolidayType":tab.rows[iRow].cells[4].innerText,
+                                                        "BeginDate":beginDate, "EndDate":endDate}, function(data, textStatus)
         {
             if (!CheckAjaxResult(textStatus, data))
+            {
                 alert(data);
+            }
         });
     }
     while(tab.rows.length > 0)

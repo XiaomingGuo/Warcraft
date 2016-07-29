@@ -29,7 +29,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>批量考勤补录</title>
+    <title>批量补录假期</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -44,7 +44,7 @@
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
     <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/ArrangeCheckInTimeJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/AddBatchHolidayJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="OnloadDisplay()">
     <script type="text/javascript">
