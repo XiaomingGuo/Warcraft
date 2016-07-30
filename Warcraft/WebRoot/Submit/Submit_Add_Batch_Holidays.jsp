@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.ArrangeCheckInTime" %>
 <%
-
     String rtnRst = "error:添加假期信息失败！";
     ArrangeCheckInTime hPageHandle = new ArrangeCheckInTime();
     String userId = request.getParameter("userId").replace(" ", "");

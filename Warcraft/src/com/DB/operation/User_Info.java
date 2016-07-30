@@ -102,7 +102,7 @@ public class User_Info extends DBTableParent implements ITableInterface
             rtnRst = "checkInId";
         }
         else if(keyword.toLowerCase().indexOf("isfixworkgroup") == 0) {
-            rtnRst = "isfixworkgroup";
+            rtnRst = "isFixWorkGroup";
         }
         else if(keyword.toLowerCase().indexOf("name") >= 0) {
             rtnRst = "name";

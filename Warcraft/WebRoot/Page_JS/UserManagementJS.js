@@ -27,7 +27,6 @@ function ModifyUser(obj)
                 if(contains(perList, $(this).val()))
                     $(this).attr("checked", true);
             });
-            //location.reload();
         }
     });
 }

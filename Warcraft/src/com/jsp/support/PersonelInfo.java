@@ -9,7 +9,7 @@ import com.Warcraft.Interface.*;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
 
-public class PersonelInfo extends PageParentClass  implements IPageInterface
+public class PersonelInfo extends PageParentClass implements IPageInterface
 {
     private String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;

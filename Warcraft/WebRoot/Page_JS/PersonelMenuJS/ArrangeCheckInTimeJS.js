@@ -1,6 +1,7 @@
 /**
  * 
  */
+var displayHead = ["ID", "姓名", "工号", "部门", "选择班次", "开始日期", "结束日期", "操作"];
 function OnloadDisplay()
 {
     var $displayInfo = $("#display_info");
@@ -29,8 +30,7 @@ function OnloadDisplay()
                         if(iColCount - iCol == 0)
                         {
                             td = $("<td></td>");
-                            td.append("<input type='button' value='确认' name='" + data_list[iRow*iColCount + iCol + 2] +
-                                    "' onclick=EnsureCheckInData(this)>");
+                            td.append("<input type='button' value='确认' name='" + data_list[iRow*iColCount + iCol + 2] + "' onclick=EnsureCheckInData(this)>");
                         }
                         else if(iColCount - iCol == 1)
                         {
@@ -107,6 +107,7 @@ function ChangeUserName(obj)
             {
                 if(i == parseInt(data_list[iColCount+7]))
                 {
+                    alert("");
                     workGroup.options[i].selected = true;
                     break;
                 }
@@ -121,21 +122,21 @@ function EnsureCheckInData(obj)
     var department = GetSelectedContent("department");
     var userName = GetSelectedContent("UserName");
     var workGroup = GetSelectedContent("WorkGroup");
+    var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
+    var endDate = dojo.widget.byId("EndDate").inputNode.value;
     if(workGroup.indexOf("请选择") >= 0)
     {
         alert("请选择排班班次!");
         return;
     }
     var tab = document.getElementById('check_in_list');
-    var displayTab = document.getElementById('display_info');
-    var sampleCount = displayTab.rows[0].cells.length;
     if(1 > tab.rows.length)
     {
         var myHeadRow = document.createElement("tr");
         myHeadRow.setAttribute("align", "center");
-        for(var iCol=0; iCol < sampleCount; iCol++)
+        for(var iCol=0; iCol < displayHead.length; iCol++)
         {
-            myHeadRow.appendChild(CreateTabCellContext("th", displayTab.rows[0].cells[iCol].innerText));
+            myHeadRow.appendChild(CreateTabCellContext("th", displayHead[iCol]));
         }
         tab.appendChild(myHeadRow);
     }
@@ -172,6 +173,14 @@ function EnsureCheckInData(obj)
                         {
                             val = workGroup;
                         }
+                        else if("开始日期" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = beginDate;
+                        }
+                        else if("结束日期" == tab.rows[0].cells[iCol].innerText)
+                        {
+                            val = endDate;
+                        }
                         myCurrentRow.appendChild(CreateTabCellContext("td", val));
                     }
                     myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ rowNum +"' value='删除' onclick='delappitem(this)'>"));
@@ -203,6 +212,14 @@ function EnsureCheckInData(obj)
             {
                 val = workGroup;
             }
+            else if("开始日期" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = beginDate;
+            }
+            else if("结束日期" == tab.rows[0].cells[iCol].innerText)
+            {
+                val = endDate;
+            }
             myCurrentRow.appendChild(CreateTabCellContext("td", val));
         }
         myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='delappitem(this)'>"));
@@ -218,12 +235,10 @@ function SubmitArrangeCheckIn()
         alert("申请人信息填写不完整!");
         return;
     }
-    var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
-    var endDate = dojo.widget.byId("EndDate").inputNode.value;
     for(var iRow=1; iRow < tab.rows.length; iRow++)
     {
         $.post("Submit/Submit_Arrange_Check_In_Data_Ajax.jsp", {"userId":tab.rows[iRow].cells[2].innerText, "WorkGroup":tab.rows[iRow].cells[4].innerText,
-                                                                "BeginDate":beginDate, "EndDate":endDate}, function(data, textStatus)
+                                                                "BeginDate":tab.rows[iRow].cells[5].innerText, "EndDate":tab.rows[iRow].cells[6].innerText}, function(data, textStatus)
         {
             if (!CheckAjaxResult(textStatus, data))
                 alert(data);

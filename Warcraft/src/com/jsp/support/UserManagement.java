@@ -121,7 +121,10 @@ public class UserManagement extends PageParentClass implements IPageInterface
         }
         else
         {
-            hUIHandle.UpdateRecordByKeyList("isFixWorkGroup", GetWorkGroup(groupName), Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+            if(groupName.contains("请选择"))
+                hUIHandle.UpdateRecordByKeyList("isFixWorkGroup", "0", Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+            else
+                hUIHandle.UpdateRecordByKeyList("isFixWorkGroup", GetWorkGroup(groupName), Arrays.asList("check_in_id"), Arrays.asList(checkInId));
             hUIHandle.UpdateRecordByKeyList("name", name, Arrays.asList("check_in_id"), Arrays.asList(checkInId));
             hUIHandle.UpdateRecordByKeyList("department", department, Arrays.asList("check_in_id"), Arrays.asList(checkInId));
             hUIHandle.UpdateRecordByKeyList("password", password, Arrays.asList("check_in_id"), Arrays.asList(checkInId));

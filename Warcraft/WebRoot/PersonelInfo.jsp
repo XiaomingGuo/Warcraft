@@ -118,10 +118,16 @@
             <td>
                 <table align="center">
                     <tr>
+                        <td>
+                            <h1>
+                                <label>工号:</label>
+                                <input name="UserID" id="UserID" type="text" style="width:100" onblur="InputUserID()">
+                            </h1>
+                        </td>
                         <td align="right">
                             <h1>
                                 <label>姓名:</label>
-                                <select name="UserName" id="UserName" style="width:200px">
+                                <select name="UserName" id="UserName" style="width:100px">
                                     <option value = "--请选择--">--请选择--</option>
 <%
                                     for(int i = 0; i < UserList.size(); i++)
@@ -155,6 +161,8 @@
                     </tr>
                 </table>
                 <table id="display_po" border='1' align="center"></table>
+                <br>
+                <table align="center"><tr><td><input type="button" value="确认数据无误" style="width:100" onclick="EnsureAllData()"></td></tr></table>
             </td>
         </tr>
     </table>

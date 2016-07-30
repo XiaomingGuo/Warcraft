@@ -5,11 +5,25 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.operation.*;
+import com.Warcraft.Interface.IPageAjaxUtil;
+import com.Warcraft.Interface.IPageInterface;
+import com.Warcraft.Interface.IRecordsQueryUtil;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.page.utilities.CPageAjaxUtil;
+import com.page.utilities.CRecordsQueryUtil;
 
-public class ArrangeCheckInTime extends PageParentClass
+public class ArrangeCheckInTime extends PageParentClass implements IPageInterface
 {
     String[] m_displayList = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
+    private IRecordsQueryUtil hQueryHandle;
+    private IPageAjaxUtil hAjaxHandle;
+    
+    public ArrangeCheckInTime()
+    {
+        hQueryHandle = new CRecordsQueryUtil();
+        hAjaxHandle = new CPageAjaxUtil();
+        hAjaxHandle.setTableHandle(this);
+    }
     
     private List<String> GetAllWorkGroup()
     {
@@ -23,6 +37,12 @@ public class ArrangeCheckInTime extends PageParentClass
         User_Info hWGIHandle = new User_Info(new EarthquakeManagement());
         hWGIHandle.QueryAllRecord();
         return hWGIHandle.getDBRecordList("name");
+    }
+    
+    public String GetUserNameByKeyWord(String keyWord, String keyVal, String getKeyWord)
+    {
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord(keyWord, keyVal, getKeyWord).get(0);
     }
     
     private List<String> GetDepartmentName()
@@ -173,12 +193,30 @@ public class ArrangeCheckInTime extends PageParentClass
                 for(int idx=0; idx < updateIdList.size(); idx++)
                 {
                     hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(updateIdList.get(idx)));
-                    hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(updateIdList.get(idx)));
+                    //hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(updateIdList.get(idx)));
                 }
             }
         }
         else
             rtnRst += "error:班次不存在或用户不存在!";
+        return rtnRst;
+    }
+    
+    public String EnsureAllArrangeCheckInData(String userName, String submitDate)
+    {
+        String rtnRst = "";
+        String beginDate = submitDate+"01", endDate = submitDate+Integer.toString(DateAdapter.getMaxDaysByYearMonth(submitDate));
+        String strCheckInId = GetUserNameByKeyWord("name", userName, "check_in_id");
+        
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
+                                                                    "check_in_date", beginDate, endDate);
+        List<String> updateIdList = hCIRDHandle.getDBRecordList("id");
+        if(updateIdList.size() > 0)
+        {
+            for(int idx=0; idx < updateIdList.size(); idx++)
+                hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("id"), Arrays.asList(updateIdList.get(idx)));
+        }
         return rtnRst;
     }
     
@@ -230,5 +268,11 @@ public class ArrangeCheckInTime extends PageParentClass
         else
             rtnRst = "error:假期不能跨月提交!";
         return rtnRst;
+    }
+    
+    @Override
+    public String[] GetDisplayArray()
+    {
+        return m_displayList;
     }
 }
