@@ -47,7 +47,8 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/SummarizeCheckInTimeJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/SummarizeCheckInTimeJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">
@@ -60,10 +61,16 @@
             <td>
                 <table align="center">
                     <tr>
+                        <td>
+                            <h1>
+                                <label>工号:</label>
+                                <input name="UserID" id="UserID" type="text" style="width:100" onblur="InputUserID()">
+                            </h1>
+                        </td>
                         <td align="right">
                             <h1>
                                 <label>姓名:</label>
-                                <select name="UserName" id="UserName" style="width:200px">
+                                <select name="UserName" id="UserName" style="width:100px">
                                     <option value = "--请选择--">--请选择--</option>
 <%
                                     for(int i = 0; i < UserList.size(); i++)

@@ -1,6 +1,41 @@
 /**
  * 
  */
+$(function()
+{
+    $('#UserName').change(function()
+    {
+        var userName = GetSelectedContent("UserName");
+        if(userName.indexOf("请选择") >= 0)
+        {
+            $("#UserID").val("");
+            return;
+        }
+        $.post("Ajax/PersonalMenu/Get_CheckInId_By_Name_Ajax.jsp", {"User_Name":userName}, function(data, textStatus)
+        {
+            if (CheckAjaxResult(textStatus, data))
+            {
+                $("#UserID").val(data.split('$')[1]);
+            }
+        });
+    });
+});
+
+function InputUserID(obj)
+{
+    var userID = $("#UserID").val();
+    if(userID == null||userID.length == 0)
+        return;
+    $.post("Ajax/PersonalMenu/Get_Name_By_CheckInId_Ajax.jsp", {"UserID":userID}, function(data, textStatus)
+    {
+        if (CheckAjaxResult(textStatus, data))
+        {
+            $("#UserName").val(data.split("$")[1]);
+            changeUserName(data.split("$")[1]);
+        }
+    });
+}
+
 function delappitem(obj)
 {
     var tab = document.getElementById('check_in_list');

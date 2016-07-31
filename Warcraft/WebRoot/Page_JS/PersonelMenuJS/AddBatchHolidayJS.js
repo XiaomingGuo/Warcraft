@@ -57,14 +57,14 @@ function OnloadDisplay()
                         }
                         else if(iColCount - iCol == 3)
                         {
-                            td = $("<td name='workNum' id='workNum'></td>");
-                            td.append(data_list[iRow*iColCount + iCol + 2]);
+                            td = $("<td></td>");
+                            td.append("<input name='UserID' id='UserID' style='width:100' onblur='InputUserID()'>");
                         }
                         else if(iColCount - iCol == 4)
                         {
                             td = $("<td></td>");
                             var selectItem = data_list[iRow*iColCount + iCol + 2].split("#");
-                            var appendString = "<select name='UserName' id='UserName' style='width:100px' onchange='ChangeUserName(this.options[this.options.selectedIndex].value)'><option value = '--请选择--'>--请选择--</option>";
+                            var appendString = "<select name='UserName' id='UserName' style='width:100px' onchange='changeUserName(this.options[this.options.selectedIndex].value)'><option value = '--请选择--'>--请选择--</option>";
                             for(var idx = 0; idx < selectItem.length; idx++)
                                 appendString += "<option value = " + selectItem[idx] +">" + selectItem[idx] + "</option>";
                             appendString += "</select>";
@@ -84,7 +84,7 @@ function OnloadDisplay()
     });
 }
 
-function ChangeUserName(obj)
+function changeUserName(obj)
 {
     $.post("Ajax/Query_User_Name_Ajax.jsp", {"UserName":obj}, function(data, textStatus)
     {
@@ -92,7 +92,7 @@ function ChangeUserName(obj)
         {
             var data_list = data.split("$");
             var iColCount = parseInt(data_list[1]);
-            $('#workNum').html(data_list[iColCount+5]);
+            $('#UserID').val(data_list[iColCount+5]);
             
             var department = document.getElementById('department');
             var index = 0;
@@ -110,7 +110,7 @@ function ChangeUserName(obj)
 
 function EnsureCheckInData(obj)
 {
-    var workNum = $('#workNum').html();
+    var workNum = $('#UserID').val();
     var department = GetSelectedContent("department");
     var userName = GetSelectedContent("UserName");
     var workGroup = GetSelectedContent("WorkGroup");

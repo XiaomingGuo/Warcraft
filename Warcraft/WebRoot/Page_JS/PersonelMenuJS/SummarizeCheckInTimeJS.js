@@ -1,14 +1,6 @@
 /**
  * 
  */
-/*$(function()
-{
-    $('#UserName').change(function()
-    {
-        changeUserName();
-    });
-});*/
-
 function changeUserName()
 {
     var $displayOrder = $("#display_po");
