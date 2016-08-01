@@ -62,7 +62,7 @@ public class AddHoliday extends PageParentClass implements IPageInterface
     private List<List<String>> GetAllDisplayData()
     {
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        rtnRst.get(0).add("1");
+        rtnRst.get(0).add("...");
         rtnRst.get(1).add(GetUserNameString());
         rtnRst.get(2).add("...");
         rtnRst.get(3).add(GetDepartmentName());

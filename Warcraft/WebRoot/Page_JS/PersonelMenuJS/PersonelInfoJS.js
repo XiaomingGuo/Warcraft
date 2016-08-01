@@ -21,7 +21,7 @@ function changeUserName()
             var iColCount = parseInt(data_list[1]), iRowCount = parseInt(data_list[2]);
             if (iColCount > 0&&iRowCount > 0)
             {
-                $displayOrder.append(HeadTitle(data_list));
+                $displayOrder.append(GenPersonMenuInputTableHeadTitle(data_list));
                 for(var iRow = 1; iRow <= iRowCount; iRow++)
                 {
                     var tr = $("<tr></tr>");
