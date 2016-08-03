@@ -27,7 +27,12 @@ function changeUserName()
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
                         var td = $("<td></td>");
-                        td.append(data_list[iRow*iColCount + iCol + 2]);
+                        if(4 == iCol)
+                            td.append("<a href='MainPage.jsp'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");
+                        else if(5 == iCol)
+                            td.append("<a href='MainPage.jsp'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");
+                        else
+                            td.append(data_list[iRow*iColCount + iCol + 2]);
                         tr.append(td);
                     }
                     $displayOrder.append(tr);

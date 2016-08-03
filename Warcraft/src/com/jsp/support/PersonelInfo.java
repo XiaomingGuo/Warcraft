@@ -46,7 +46,7 @@ public class PersonelInfo extends PageParentClass implements IPageInterface
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)), "check_in_date", beginDate, endDate);
         if (hCIRDHandle.RecordDBCount() > 0)
         {
-            String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group"};
+            String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group", "isEnsure"};
             for(int idx=0; idx < sqlKeyList.length; idx++)
             {
                 rtnRst.add(hCIRDHandle.getDBRecordList(sqlKeyList[idx]));
@@ -77,10 +77,10 @@ public class PersonelInfo extends PageParentClass implements IPageInterface
         
         if (recordList.size() > 0)
         {
-            //"id", "check_in_id", "check_in_time", "work_group"
-            //"ID", "姓名", "工号", "打卡时间", "班次"
+            int iSumEnsure = 0;
             for(int iRow = 0; iRow < recordList.get(0).size(); iRow++)
             {
+                iSumEnsure += Integer.parseInt(recordList.get(5).get(iRow));
                 for(int iCol = 0; iCol < m_displayList.length; iCol++)
                 {
                     if("ID" == m_displayList[iCol])
@@ -114,6 +114,7 @@ public class PersonelInfo extends PageParentClass implements IPageInterface
                         rtnRst += recordList.get(0).get(iRow) + "$";
                 }
             }
+            rtnRst += Integer.toString(iSumEnsure) + "$";
             rtnRst += CheckPrecedingMonthData(recordList.get(1).get(0), queryDate) + "$";
         }
         return rtnRst;

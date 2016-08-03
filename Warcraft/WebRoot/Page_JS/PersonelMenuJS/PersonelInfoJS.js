@@ -37,17 +37,13 @@ function changeUserName()
                     }
                     $displayOrder.append(tr);
                 }
-                if(parseInt(data_list[iRow*iColCount + 3]) > 0)
+                if(parseInt(data_list[iRow*iColCount + 3]) != iRowCount)
                 {
-                    var tr = $("<tr></tr>");
-                    var td = $("<td></td>");
-                    for(var iNullTD=0; iNullTD < iColCount-1; iNullTD++)
-                        tr.append($("<td></td>"));
-                    td.append("<input type='button' value='数据确认' style='width:68' onclick='EnsureAllData()'>");
-                    tr.append(td);
-                    $displayOrder.append(tr);
-                    alert("为了保证考勤数据安全,请先确认上月数据!!!");
+                	$("#button_ensure").empty();
+                    $("#button_ensure").append($("<tr></tr>").append($("<td></td>").append("<input type='button' value='数据锁定' style='width:68' onclick='EnsureAllData()'>")));
                 }
+                if(parseInt(data_list[iRow*iColCount + 4]) > 0)
+                    alert("为了保证考勤数据安全,请先确认上月数据!!!");
             }
         }
     });

@@ -163,7 +163,8 @@
                 </table>
                 <table id="display_po" border='1' align="center"></table>
                 <br>
-                <!-- <table align="center"><tr><td><input type="button" value="确认数据无误" style="width:100" onclick="EnsureAllData()"></td></tr></table> -->
+                <table id="button_ensure" align="center"></table>
+                <br><br><br>
             </td>
         </tr>
     </table>

@@ -26,7 +26,7 @@ public class DateAdapter
         int Year = Integer.parseInt(yearMonth.substring(0, 4));
         int Month = Integer.parseInt(yearMonth.substring(4));
         if(Month > 1)
-            rtnRst = Integer.toString(Year) + String.format("%02d", Month);
+            rtnRst = Integer.toString(Year) + String.format("%02d", Month-1);
         else
             rtnRst = Integer.toString(Year-1) + "12";
         return rtnRst;
