@@ -6,7 +6,7 @@
     PersonelInfo hPageHandle = new PersonelInfo();
     if(session.getAttribute("logonuser")==null)
     {
-        response.sendRedirect("tishi.jsp");
+        response.sendRedirect("../tishi.jsp");
     }
     else
     {
@@ -14,7 +14,7 @@
         if(temp == 0)
         {
             session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-            response.sendRedirect("tishi.jsp");
+            response.sendRedirect("../tishi.jsp");
         }
         else
         {
@@ -163,7 +163,7 @@
                 </table>
                 <table id="display_po" border='1' align="center"></table>
                 <br>
-                <table align="center"><tr><td><input type="button" value="确认数据无误" style="width:100" onclick="EnsureAllData()"></td></tr></table>
+                <!-- <table align="center"><tr><td><input type="button" value="确认数据无误" style="width:100" onclick="EnsureAllData()"></td></tr></table> -->
             </td>
         </tr>
     </table>

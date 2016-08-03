@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DateAdapter;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
 
@@ -113,8 +114,19 @@ public class PersonelInfo extends PageParentClass implements IPageInterface
                         rtnRst += recordList.get(0).get(iRow) + "$";
                 }
             }
+            rtnRst += CheckPrecedingMonthData(recordList.get(1).get(0), queryDate) + "$";
         }
         return rtnRst;
+    }
+    
+    private String CheckPrecedingMonthData(String checkInId, String queryDate)
+    {
+        String preMonth = DateAdapter.getPrecedingMonth(queryDate);
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(checkInId, "0"), "check_in_date", preMonth + "00", preMonth + "32");
+        if(hCIRDHandle.RecordDBCount() > 0)
+            return "1";
+        return "0";
     }
     
     private String GetWorkGroupName(String id)

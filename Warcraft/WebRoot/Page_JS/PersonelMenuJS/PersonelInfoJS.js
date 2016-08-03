@@ -27,15 +27,26 @@ function changeUserName()
                     var tr = $("<tr></tr>");
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
-                        var td = $("<td></td>");
+                        var td = $("<td align='center'></td>");
                         if(iCol == iColCount)
-                            td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 2] + "#" + iRow +
+                            td.append("<input style='width:50' type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 2] + "#" + iRow +
                                       "' onclick=ModifyRecord(this)>");
                         else
                             td.append(data_list[iRow*iColCount + iCol + 2]);
                         tr.append(td);
                     }
                     $displayOrder.append(tr);
+                }
+                if(parseInt(data_list[iRow*iColCount + 3]) > 0)
+                {
+                    var tr = $("<tr></tr>");
+                    var td = $("<td></td>");
+                    for(var iNullTD=0; iNullTD < iColCount-1; iNullTD++)
+                        tr.append($("<td></td>"));
+                    td.append("<input type='button' value='数据确认' style='width:68' onclick='EnsureAllData()'>");
+                    tr.append(td);
+                    $displayOrder.append(tr);
+                    alert("为了保证考勤数据安全,请先确认上月数据!!!");
                 }
             }
         }

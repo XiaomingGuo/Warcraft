@@ -20,6 +20,18 @@ public class DateAdapter
         return handle.get(Calendar.DATE);
     }
     
+    public static String getPrecedingMonth(String yearMonth)
+    {
+        String rtnRst = null;
+        int Year = Integer.parseInt(yearMonth.substring(0, 4));
+        int Month = Integer.parseInt(yearMonth.substring(4));
+        if(Month > 1)
+            rtnRst = Integer.toString(Year) + String.format("%02d", Month);
+        else
+            rtnRst = Integer.toString(Year-1) + "12";
+        return rtnRst;
+    }
+    
     public static int getDayOfAWeek(String yearMonthDay)
     {
         int rtnRst = -1;
