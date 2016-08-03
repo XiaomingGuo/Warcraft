@@ -28,9 +28,9 @@
 	body{background:#ECF5FF}
 	</style>
   </head>
-  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/MenuJS.js"></script>
+	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/MenuJS.js"></script>
   <body>
 <!-- -->
 <br>
@@ -48,20 +48,20 @@
 <%
 						int temp = mylogon.getUserRight()&2;
 						if(temp == 0)
-					  	{
+						{
 %>
 						
 						<a href = 'ChangePassword.jsp'>修改密码</a>
 <%
-					  	}
-					  	else
-					  	{
+						}
+						else
+						{
 %>
 						<a href = 'ChangePassword.jsp'>修改密码</a>&nbsp;&nbsp;
 						<a href = 'UserManagement.jsp?BeginPage=1'>用户管理</a>
 				
 <%
-				  		}
+						}
 %>
 						</td>
 					</tr>
@@ -75,7 +75,7 @@
 						</td>
 					</tr>
 				</table>
-	  			<h2 align="center">
+				<h2 align="center">
 			    	<ul>
 			    		<li><a href="MainPage.jsp">首页</a></li>
 			    		<li><a href="TransferMFGBarcode.jsp">生产物料八码转换</a></li>

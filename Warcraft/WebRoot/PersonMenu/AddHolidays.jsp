@@ -29,7 +29,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>人员排班</title>
+    <title>节假日及转班</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -44,27 +44,21 @@
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
     <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/ArrangeCheckInTimeJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/AddHolidayJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="OnloadDisplay()">
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/PersonelMenu.jsp"/>
+    <jsp:include page="../Menu/PersonelMenu.jsp"/>
     <br><br>
-    <table align="center">
+    <table align="center" width="40%">
         <tr>
-            <td align="center">
-                <h2>
-                    <label>开始时间:</label>
-                    <div dojoType="dropdowndatepicker" name="BeginDate" id="BeginDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01" %>"></div>
-                </h2>
+            <td align="right" width="40%">
+                <h2><label>日期:</label></h2>
             </td>
-            <td align="center">
-                <h2>
-                    <label>结束时间:</label>
-                    <div dojoType="dropdowndatepicker" name="EndDate" id="EndDate" displayFormat="yyyyMMdd" value="<%=endDayOfMonth %>"></div>
-                </h2>
+            <td align="left" width="60%">
+                <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01"%>"></div>
             </td>
         </tr>
     </table>
@@ -74,7 +68,7 @@
     <br>
     <table align="center">
         <tr>
-            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitArrangeCheckIn()"></td>
+            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitAddHolidaysDate()"></td>
         </tr>
     </table>
   </body>

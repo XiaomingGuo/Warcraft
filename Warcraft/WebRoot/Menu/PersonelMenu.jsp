@@ -77,12 +77,12 @@
                 <h2 align="center">
                     <ul>
                         <li><a href="MainPage.jsp">首页</a></li>
-                        <li><a href="PersonelInfo.jsp">人员考勤查询</a></li>
-                        <li><a href="SummarizeCheckInTime.jsp">考勤汇总</a></li>
-                        <li><a href="AddCheckInTime.jsp">补刷考勤</a></li>
-                        <li><a href="AddBatchHoliday.jsp">批量补录假期</a></li>
-                        <li><a href="AddHolidays.jsp">节假日及转班</a></li>
-                        <li><a href="ArrangeCheckInTime.jsp">人员排班</a></li>
+                        <li><a href="PersonMenu/PersonelInfo.jsp">人员考勤查询</a></li>
+                        <li><a href="PersonMenu/SummarizeCheckInTime.jsp">考勤汇总</a></li>
+                        <li><a href="PersonMenu/AddCheckInTime.jsp">补刷考勤</a></li>
+                        <li><a href="PersonMenu/AddBatchHoliday.jsp">批量补录假期</a></li>
+                        <li><a href="PersonMenu/AddHolidays.jsp">节假日及转班</a></li>
+                        <li><a href="PersonMenu/ArrangeCheckInTime.jsp">人员排班</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
                     </ul>
                 </h2>
