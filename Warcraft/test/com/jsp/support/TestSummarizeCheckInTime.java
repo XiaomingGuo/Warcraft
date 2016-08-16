@@ -3,7 +3,6 @@
  */
 package com.jsp.support;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
@@ -64,9 +63,7 @@ public class TestSummarizeCheckInTime
 	public void testGenerateReturnString()
 	{
 		SummarizeCheckInTime mockHandle = mock(SummarizeCheckInTime.class);
-		mockHandle.GenerateReturnString("AllRecord", "20161102");
-		//mockHandle.
-		//fail("Not yet implemented");
+		mockHandle.GenerateReturnString("AllRecord", "", "20161102");
 	}
 
 }

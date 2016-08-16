@@ -9,11 +9,11 @@
     if(queryDate.length() > 0)
     {
         SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
-        rtnRst += hPageHandle.GenerateReturnString(userID, userName, queryDate);
+        rtnRst += hPageHandle.GenerateBeLateAndLeaveEarlyReturnString(userID, userName, queryDate);
     }
     else
     {
-        rtnRst += "remove$error:名字能靠谱点不?";
+        rtnRst += "remove$error:名字能靠谱点bu?";
     }
     out.write(rtnRst);
 %>

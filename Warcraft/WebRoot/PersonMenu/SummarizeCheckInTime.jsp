@@ -25,7 +25,6 @@
             if(null == curUserName)
                 curUserName = "";
             List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
-            UserList.remove("root");
             String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -50,7 +49,7 @@
     <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
     <script language="javascript" src="Page_JS/PersonelMenuJS/SummarizeCheckInTimeJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
-  <body onload="changePOName()">
+  <body>
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
@@ -102,7 +101,9 @@
                     </tr>
                 </table>
                 <table id="display_po" border='1' align="center"></table>
-                <br><br>
+                <br>
+                <table id="detail_display" border='1' align="center"></table>
+                <br>
             </td>
         </tr>
     </table>
