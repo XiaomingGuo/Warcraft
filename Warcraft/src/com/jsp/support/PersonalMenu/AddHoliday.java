@@ -47,7 +47,7 @@ public class AddHoliday extends PageParentClass implements IPageInterface
     private String GetDepartmentName()
     {
         hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
-        return GenSelectItemString(hQueryHandle.GetTableContentByKeyWord(null, "AllRecord", "department"));
+        return GenSelectItemString(hQueryHandle.GetTableContentGroupByKeyWord(null, "AllRecord", "department", "department"));
     }
     
     public String GenerateReturnString()

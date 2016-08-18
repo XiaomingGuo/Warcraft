@@ -193,8 +193,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         String rtnRst = null;
         for(int idx = 0; idx < tempRecord.size(); idx++)
         {
-            int curHour = Integer.parseInt(tempRecord.get(idx).split(":")[0]);
-            if(curHour > 0 && curHour < 6)
+            if(DateAdapter.TimeSpan(tempRecord.get(idx), "05:30:00") < 0)
                 rtnRst = tempRecord.get(idx);
         }
         return rtnRst;
@@ -210,12 +209,25 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return null;
     }
     
+    private long CalculateTimeSpan(String beginTime, String endTime)
+    {
+        long rtnRst = 0;
+        if(DateAdapter.TimeSpan(beginTime, endTime) <= 0)
+            rtnRst = DateAdapter.TimeSpan(endTime, beginTime);
+        else
+        {
+            rtnRst = DateAdapter.TimeSpan("24:00:00", beginTime) + DateAdapter.TimeSpan(endTime, "00:00:00") ;
+        }
+        return rtnRst;
+    }
+    
     private List<String> GenCheckInAndOutTime(String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
+        long timeSpan = CalculateTimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1));
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            if(Math.abs(DateAdapter.TimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1))) > 300)
+            if(CalculateTimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1)) > timeSpan/2)
             {
                 rtnRst.add(checkInTimeList.get(0));
                 rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
@@ -245,7 +257,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<Long> rtnRst = new ArrayList<Long>();
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(2).get(0));
+            int workGroupId = Integer.parseInt(recordList.get(2).get(recordList.get(0).size()-1));
             if(workGroupId == 0)
                 return Arrays.asList(2L, 0L);
             
