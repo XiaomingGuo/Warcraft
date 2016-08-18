@@ -11,7 +11,7 @@ import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "查询时间范围"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_recordList;
@@ -148,7 +148,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         }
         rtnRst.add(Integer.toString(absenceDay));
         rtnRst.add(Integer.toString(delayTime));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假"));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假"));
         rtnRst.add(checkInDateList.get(0)+"~"+checkInDateList.get(checkInDateList.size()-1));
+        return rtnRst;
+    }
+    
+    private String GetHolidayMark(String checkInId, String queryDate, String holidayType)
+    {
+        String rtnRst = "0";
+        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        hHMHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "holiday_info"), Arrays.asList(checkInId, holidayType),
+                                                                "holiday_date", queryDate+"00", queryDate+"32");
+        rtnRst = Integer.toString(hHMHandle.RecordDBCount());
         return rtnRst;
     }
     
@@ -188,8 +200,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         else
             usedDay = Integer.toString(checkInDate+1);
         List<String> tempRecord = GetOneDayCheckRawData(g_recordList, usedDay).get(1);
-        //"check_in_date", "check_in_time", "work_group"
-        //"check_in_time", "00:00:00", "05:30:00"
         String rtnRst = null;
         for(int idx = 0; idx < tempRecord.size(); idx++)
         {
@@ -308,6 +318,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     public String GenerateBeLateAndLeaveEarlyReturnString(String user_id, String userName, String queryDate)
     {
+        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
+            return "";
         List<List<String>> recordList = GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
         if(recordList.size() == 0)
             return "";
@@ -317,6 +329,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     public String GenerateMissCheckInDataReturnString(String user_id, String userName, String queryDate)
     {
+        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
+            return "";
         List<List<String>> recordList = GetMissCheckInDataDisplayData(user_id, userName, queryDate);
         if(recordList.size() == 0)
             return "";
@@ -329,8 +343,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
-            return rtnRst;
         
         List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
         List<List<String>> missCheckInResult = GetAPersonBeLateAndLeaveEarlySummary(user_id, queryDate, checkInDateList);
@@ -399,8 +411,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
-            return rtnRst;
         
         List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
         List<List<String>> missCheckInResult = GetAPersonMissCheckInSummary(user_id, queryDate, checkInDateList);
@@ -459,6 +469,30 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                             rtnRst.get(iCol).addAll(Arrays.asList(checkInDateList.get(idx)));
                         else
                             rtnRst.get(iCol).addAll(Arrays.asList("0"));
+                    }
+                }
+                List<String> workGroupTimeList = GetWorkGroupTime(Integer.parseInt(dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1)));
+                if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+                {
+                    int checkInDate = Integer.parseInt(checkInDateList.get(idx));
+                    String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
+                    int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
+                    if(checkInDate == Integer.parseInt(usedDay) + maxDay)
+                        usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
+                    else
+                        usedDay = Integer.toString(checkInDate+1);
+                    List<List<String>> tomorrowCheckInRecord = GetOneDayCheckRawData(g_recordList, usedDay);
+                    for(int iCol=0; iCol < tomorrowCheckInRecord.size(); iCol++)
+                    {
+                        if(tomorrowCheckInRecord.get(0).size() > 0)
+                            rtnRst.get(iCol).addAll(tomorrowCheckInRecord.get(iCol));
+                        else
+                        {
+                            if(0 == iCol)
+                                rtnRst.get(iCol).addAll(Arrays.asList(usedDay));
+                            else
+                                rtnRst.get(iCol).addAll(Arrays.asList("0"));
+                        }
                     }
                 }
             }
