@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.SummaryHoliday" %>
+<%@ page import="com.jsp.support.PersonalMenu.SummaryHoliday" %>
 <%
     String rtnRst = "";
     String userID = request.getParameter("check_in_id").replace(" ", "");

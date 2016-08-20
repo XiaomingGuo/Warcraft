@@ -1,4 +1,4 @@
-package com.jsp.support;
+package com.jsp.support.PersonalMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,7 @@ import com.Warcraft.Interface.IPageAjaxUtil;
 import com.Warcraft.Interface.IPageInterface;
 import com.Warcraft.Interface.IRecordsQueryUtil;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
 

@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonelInfo" %>
+<%@ page import="com.jsp.support.PersonalMenu.PersonalInfo" %>
 <%
 	String rtnRst = "";
     String username = request.getParameter("user_name").replace(" ", "");
@@ -7,7 +7,7 @@
     
     if(username.length() > 0&&queryDate.length() > 0)
     {
-        PersonelInfo hPageHandle = new PersonelInfo();
+        PersonalInfo hPageHandle = new PersonalInfo();
         rtnRst += hPageHandle.GenerateReturnString(username, queryDate);
     }
     else

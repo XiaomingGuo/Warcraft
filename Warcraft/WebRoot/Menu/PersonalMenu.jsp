@@ -77,7 +77,7 @@
                 <h2 align="center">
                     <ul>
                         <li><a href="MainPage.jsp">首页</a></li>
-                        <li><a href="PersonMenu/PersonelInfo.jsp">人员考勤查询</a></li>
+                        <li><a href="PersonMenu/PersonalInfo.jsp">人员考勤查询</a></li>
                         <li><a href="PersonMenu/SummarizeCheckInTime.jsp">考勤汇总</a></li>
                         <li><a href="PersonMenu/AddCheckInTime.jsp">补刷考勤</a></li>
                         <li><a href="PersonMenu/AddBatchHoliday.jsp">批量补录假期</a></li>

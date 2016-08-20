@@ -6,7 +6,8 @@ package com.jsp.support;
 import static org.mockito.Mockito.*;
 
 import org.junit.*;
-import com.jsp.support.SummarizeCheckInTime;
+
+import com.jsp.support.PersonalMenu.SummarizeCheckInTime;
 import com.Warcraft.Interface.*;
 
 /**
@@ -34,7 +35,7 @@ public class TestSummarizeCheckInTime
 	}
 	
 	/**
-	 * Test method for {@link com.jsp.support.SummarizeCheckInTime#GetAllUserName()}.
+	 * Test method for {@link com.jsp.support.PersonalMenu.SummarizeCheckInTime#GetAllUserName()}.
 	 */
 	@Test
 	public void testGetAllUserRecordByName()
@@ -57,7 +58,7 @@ public class TestSummarizeCheckInTime
 	}
 	
 	/**
-	 * Test method for {@link com.jsp.support.SummarizeCheckInTime#GenerateReturnString(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.jsp.support.PersonalMenu.SummarizeCheckInTime#GenerateReturnString(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testGenerateReturnString()

@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.SummarizeCheckInTime" %>
+<%@ page import="com.jsp.support.PersonalMenu.SummarizeCheckInTime" %>
 <%
     String rtnRst = "";
     String userID = request.getParameter("User_ID").replace(" ", "");

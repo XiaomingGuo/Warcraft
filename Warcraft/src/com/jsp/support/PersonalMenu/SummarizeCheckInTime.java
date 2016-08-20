@@ -1,4 +1,4 @@
-package com.jsp.support;
+package com.jsp.support.PersonalMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.jsp.support.PageParentClass;
 import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass implements IPageInterface

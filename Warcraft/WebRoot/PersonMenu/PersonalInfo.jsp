@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonelInfo" %>
+<%@ page import="com.jsp.support.PersonalMenu.PersonalInfo" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
-    String message="";
-    PersonelInfo hPageHandle = new PersonelInfo();
+	String message="";
+    PersonalInfo hPageHandle = new PersonalInfo();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("../tishi.jsp");
@@ -48,14 +48,14 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/PersonelInfoJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/PublicPersonalMenuJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/PersonalInfoJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="changePOName()">
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="../Menu/PersonelMenu.jsp"/>
+    <jsp:include page="../Menu/PersonalMenu.jsp"/>
     <br>
     <table id="modify_info" border="1" align="center">
         <tr>

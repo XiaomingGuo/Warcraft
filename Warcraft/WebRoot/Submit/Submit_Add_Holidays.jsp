@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.ArrangeCheckInTime" %>
+<%@ page import="com.jsp.support.PersonalMenu.ArrangeCheckInTime" %>
 <%
 
     String rtnRst = "";

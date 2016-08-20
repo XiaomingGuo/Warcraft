@@ -1,4 +1,4 @@
-package com.jsp.support;
+package com.jsp.support.PersonalMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,16 +7,17 @@ import java.util.List;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
 
-public class PersonelInfo extends PageParentClass implements IPageInterface
+public class PersonalInfo extends PageParentClass implements IPageInterface
 {
     private String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
-    public PersonelInfo()
+    public PersonalInfo()
     {
         hQueryHandle = new CRecordsQueryUtil();
         hAjaxHandle = new CPageAjaxUtil();

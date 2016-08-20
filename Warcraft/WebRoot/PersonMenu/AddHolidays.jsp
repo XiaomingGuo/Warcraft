@@ -43,14 +43,14 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/AddHolidayJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/PublicPersonalMenuJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/AddHolidayJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="OnloadDisplay()">
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="../Menu/PersonelMenu.jsp"/>
+    <jsp:include page="../Menu/PersonalMenu.jsp"/>
     <br><br>
     <table align="center" width="40%">
         <tr>

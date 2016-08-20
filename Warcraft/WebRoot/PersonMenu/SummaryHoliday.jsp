@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.SummaryHoliday" %>
+<%@ page import="com.jsp.support.PersonalMenu.SummaryHoliday" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
@@ -48,14 +48,14 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/SummaryHolidayJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/PublicPersonalMenuJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/SummaryHolidayJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body>
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="../Menu/PersonelMenu.jsp"/>
+    <jsp:include page="../Menu/PersonalMenu.jsp"/>
     <br>
     <table id="modify_info" border="1" align="center">
         <tr>

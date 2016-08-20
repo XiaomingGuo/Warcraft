@@ -12,7 +12,7 @@ function changeUserName()
         return;
     }
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-    $.post("Ajax/PersonalMenu/Query_Personel_Check_In_Data_Ajax.jsp", {"user_name":user_name, "queryDate": addDate}, function(data, textStatus)
+    $.post("Ajax/PersonalMenu/Query_Personal_Check_In_Data_Ajax.jsp", {"user_name":user_name, "queryDate": addDate}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
