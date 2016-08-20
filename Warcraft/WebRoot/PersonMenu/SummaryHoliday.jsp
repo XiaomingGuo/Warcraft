@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonelInfo" %>
+<%@ page import="com.jsp.support.SummaryHoliday" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
-    PersonelInfo hPageHandle = new PersonelInfo();
+    SummaryHoliday hPageHandle = new SummaryHoliday();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("../tishi.jsp");
@@ -26,8 +26,8 @@
                 curUserName = "";
             String[] keyList = hPageHandle.GetDisplayArray();
             List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
-            List<String> workGroupList = hPageHandle.GetWorkGroupName();
-            String currentDate = hPageHandle.GenYearMonthDayString("-");
+            List<String> holidayType = hPageHandle.GetHolidayTypeName();
+            String currentDate = hPageHandle.GenYearString();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -49,9 +49,9 @@
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
     <script language="javascript" src="Page_JS/PersonelMenuJS/PublicPersonelMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonelMenuJS/PersonelInfoJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonelMenuJS/SummaryHolidayJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
-  <body onload="changePOName()">
+  <body>
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
@@ -84,17 +84,17 @@
         </td>
 <%
                 }
-                else if("班次" == keyList[iCol-1])
+                else if("假期类型" == keyList[iCol-1])
                 {
 %>
         <td>
-            <select name="workGroup" id="workGroup" style="width:120px">
+            <select name="HolidayType" id="HolidayType" style="width:120px">
                 <option value = "--请选择--">--请选择--</option>
 <%
-                    for(int i = 0; i < workGroupList.size(); i++)
+                    for(int i = 0; i < holidayType.size(); i++)
                     {
 %>
-                <option value = <%=workGroupList.get(i) %>><%=workGroupList.get(i)%></option>
+                <option value = <%=holidayType.get(i) %>><%=holidayType.get(i)%></option>
 <%
                     }
 %>
@@ -149,10 +149,26 @@
                                 </select>
                             </h1>
                         </td>
+                        <td>
+                            <h1>
+                            <label>假期类型:</label>
+                            <select name="QHolidayType" id="QHolidayType" style="width:100px">
+                                <option value = "--请选择--">--请选择--</option>
+<%
+                    for(int i = 0; i < holidayType.size(); i++)
+                    {
+%>
+                                <option value = <%=holidayType.get(i) %>><%=holidayType.get(i)%></option>
+<%
+                    }
+%>
+                            </select>
+                            </h1>
+                        </td>
                         <td align="center">
                             <h1>
                             <label>考勤月:</label>
-                            <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMM" value="<%=currentDate %>"></div>
+                            <input type="text" name="SubmitDate" id="SubmitDate" value="<%=currentDate %>" style="width:70px">
                             </h1>
                         </td>
                         <td align="right"><h1><input name="query" type="button" value="查询" style="width:100" onclick="changeUserName()"></h1></td>
@@ -162,8 +178,6 @@
                 </table>
                 <table id="display_po" border='1' align="center"></table>
                 <br>
-                <table id="button_ensure" align="center"></table>
-                <br><br><br>
             </td>
         </tr>
     </table>

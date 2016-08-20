@@ -82,6 +82,7 @@
                         <li><a href="PersonMenu/AddCheckInTime.jsp">补刷考勤</a></li>
                         <li><a href="PersonMenu/AddBatchHoliday.jsp">批量补录假期</a></li>
                         <li><a href="PersonMenu/AddHolidays.jsp">节假日及转班</a></li>
+                        <li><a href="PersonMenu/SummaryHoliday.jsp">节假日查询</a></li>
                         <li><a href="PersonMenu/ArrangeCheckInTime.jsp">人员排班</a></li>
                         <li><a href="Quit.jsp">退出</a></li>
                     </ul>

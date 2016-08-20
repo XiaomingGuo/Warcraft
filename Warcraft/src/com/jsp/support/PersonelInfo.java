@@ -23,11 +23,15 @@ public class PersonelInfo extends PageParentClass implements IPageInterface
         hAjaxHandle.setTableHandle(this);
     }
     
-    public List<String> GetAllUserName()
+    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryAllRecord();
-        return hUIHandle.getDBRecordList("name");
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+        if(getKeyWord.contains("name"))
+            rtnRst.remove("root");
+        else if(getKeyWord.contains("check_in_id"))
+            rtnRst.remove("99999");
+        return rtnRst;
     }
     
     private String GetCheckInIdFromUserInfo(String user_name)
