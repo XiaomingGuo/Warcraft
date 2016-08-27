@@ -94,8 +94,12 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         String[] keywordList = new String[] {"name", "check_in_id"};
         for(int idx=0; idx < keywordList.length; idx++)
         {
-            if(hUIHandle.getDBRecordList(keywordList[idx]).equals("root")||hUIHandle.getDBRecordList(keywordList[idx]).equals("99999"))
-                rtnRst.add(hUIHandle.getDBRecordList(keywordList[idx]));
+            List<String> tempList = hUIHandle.getDBRecordList(keywordList[idx]);
+            if(hUIHandle.getDBRecordList(keywordList[idx]).contains("root"))
+            	tempList.remove("root");
+            else if(hUIHandle.getDBRecordList(keywordList[idx]).contains("99999"))
+            	tempList.remove("99999");
+            rtnRst.add(tempList);
         }
         return rtnRst;
     }
@@ -462,7 +466,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             {
                 for(int iCol=0; iCol < dayCheckInRecord.size(); iCol++)
                 {
-                    if(dayCheckInRecord.get(0).size() > 0)
+                    if(dayCheckInRecord.get(iCol).size() > 0)
                         rtnRst.get(iCol).addAll(dayCheckInRecord.get(iCol));
                     else
                     {
@@ -472,29 +476,32 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                             rtnRst.get(iCol).addAll(Arrays.asList("0"));
                     }
                 }
-                List<String> workGroupTimeList = GetWorkGroupTime(Integer.parseInt(dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1)));
-                if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+                if(dayCheckInRecord.get(2).size() > 0)
                 {
-                    int checkInDate = Integer.parseInt(checkInDateList.get(idx));
-                    String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
-                    int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
-                    if(checkInDate == Integer.parseInt(usedDay) + maxDay)
-                        usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
-                    else
-                        usedDay = Integer.toString(checkInDate+1);
-                    List<List<String>> tomorrowCheckInRecord = GetOneDayCheckRawData(g_recordList, usedDay);
-                    for(int iCol=0; iCol < tomorrowCheckInRecord.size(); iCol++)
-                    {
-                        if(tomorrowCheckInRecord.get(0).size() > 0)
-                            rtnRst.get(iCol).addAll(tomorrowCheckInRecord.get(iCol));
-                        else
-                        {
-                            if(0 == iCol)
-                                rtnRst.get(iCol).addAll(Arrays.asList(usedDay));
-                            else
-                                rtnRst.get(iCol).addAll(Arrays.asList("0"));
-                        }
-                    }
+	                List<String> workGroupTimeList = GetWorkGroupTime(Integer.parseInt(dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1)));
+	                if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+	                {
+	                    int checkInDate = Integer.parseInt(checkInDateList.get(idx));
+	                    String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
+	                    int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
+	                    if(checkInDate == Integer.parseInt(usedDay) + maxDay)
+	                        usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
+	                    else
+	                        usedDay = Integer.toString(checkInDate+1);
+	                    List<List<String>> tomorrowCheckInRecord = GetOneDayCheckRawData(g_recordList, usedDay);
+	                    for(int iCol=0; iCol < tomorrowCheckInRecord.size(); iCol++)
+	                    {
+	                        if(tomorrowCheckInRecord.get(0).size() > 0)
+	                            rtnRst.get(iCol).addAll(tomorrowCheckInRecord.get(iCol));
+	                        else
+	                        {
+	                            if(0 == iCol)
+	                                rtnRst.get(iCol).addAll(Arrays.asList(usedDay));
+	                            else
+	                                rtnRst.get(iCol).addAll(Arrays.asList("0"));
+	                        }
+	                    }
+	                }
                 }
             }
         }

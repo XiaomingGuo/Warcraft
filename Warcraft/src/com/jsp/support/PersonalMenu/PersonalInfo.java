@@ -35,20 +35,11 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    private String GetCheckInIdFromUserInfo(String user_name)
-    {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
-        return hUIHandle.getDBRecordList("check_in_id").get(0);
-    }
-    
     private List<List<String>> GetAllCheckInRawData(String user_name, String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        String beginDate = queryDate + "00";
-        String endDate = queryDate + "32";
-        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(GetCheckInIdFromUserInfo(user_name)), "check_in_date", beginDate, endDate);
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date", queryDate + "00", queryDate + "32");
         if (hCIRDHandle.RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group", "isEnsure"};
@@ -137,12 +128,11 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     
     private String GetWorkGroupName(String id)
     {
-        Work_Group_Info hUIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
-        return hUIHandle.getDBRecordList("group_name").get(0);
+        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        return hQueryHandle.GetTableContentByKeyWord("id", id, "group_name").get(0);
     }
     
-    public List<String> GetWorkGroupName()
+    public List<String> GetAllWorkGroupName()
     {
         hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "group_name");
@@ -151,8 +141,8 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     public String UpdateCheckInRawDataRecord(String id, String workGroup)
     {
         hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         String workGroupId = hQueryHandle.GetTableContentByKeyWord("group_name", workGroup, "id").get(0);
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(id));
         return "";
     }

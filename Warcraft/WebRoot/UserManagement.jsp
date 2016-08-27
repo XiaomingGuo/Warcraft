@@ -29,7 +29,7 @@
             int recordCount = hPageHandle.GetUserCount();
             List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
             List<String> titleList = hPageHandle.GetTitleName();
-            List<String> workGroupList = hPageHandle.GetWorkGroupName();
+            List<String> workGroupList = hPageHandle.GetAllWorkGroupName();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

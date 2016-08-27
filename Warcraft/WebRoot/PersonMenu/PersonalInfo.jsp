@@ -26,7 +26,7 @@
                 curUserName = "";
             String[] keyList = hPageHandle.GetDisplayArray();
             List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
-            List<String> workGroupList = hPageHandle.GetWorkGroupName();
+            List<String> workGroupList = hPageHandle.GetAllWorkGroupName();
             String currentDate = hPageHandle.GenYearMonthDayString("-");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

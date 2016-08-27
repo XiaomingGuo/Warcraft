@@ -34,7 +34,7 @@ public class UserManagement extends PageParentClass implements IPageInterface
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "title_name");
     }
     
-    public List<String> GetWorkGroupName()
+    public List<String> GetAllWorkGroupName()
     {
         hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "group_name");

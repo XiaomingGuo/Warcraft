@@ -97,13 +97,6 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
         return "0";
     }
     
-    private String GetWorkGroupName(String id)
-    {
-        Work_Group_Info hUIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
-        return hUIHandle.getDBRecordList("group_name").get(0);
-    }
-    
     public List<String> GetHolidayTypeName()
     {
         hQueryHandle.setTableHandle(new Holiday_Type(new EarthquakeManagement()));
