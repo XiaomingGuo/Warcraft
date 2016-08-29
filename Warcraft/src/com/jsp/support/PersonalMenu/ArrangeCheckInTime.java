@@ -186,6 +186,8 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
         if(hWGIHandle.RecordDBCount() > 0)
         {
             String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
+            //hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id"), Arrays.asList(strCheckInId),
+            //        "check_in_date", beginDate, endDate);
             hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
                                                                         "check_in_date", beginDate, endDate);
             List<String> updateIdList = hCIRDHandle.getDBRecordList("id");

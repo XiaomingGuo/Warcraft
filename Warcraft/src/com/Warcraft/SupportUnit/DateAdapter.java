@@ -50,8 +50,21 @@ public class DateAdapter
         return rtnRst;
     }
     
-    public static String getMiddleTimeBetweenTimeSpan(String checkInTime, String checkOutTime)
+    public static long CalculateTimeSpan(String beginTime, String endTime)
     {
+        long rtnRst = 0;
+        if(DateAdapter.TimeSpan(beginTime, endTime) <= 0)
+            rtnRst = DateAdapter.TimeSpan(endTime, beginTime);
+        else
+        {
+            rtnRst = DateAdapter.TimeSpan("24:00:00", beginTime) + DateAdapter.TimeSpan(endTime, "00:00:00") ;
+        }
+        return rtnRst;
+    }
+    
+    public static String GetMiddleTimeBetweenTimes(String checkInTime, String checkOutTime)
+    {
+        long timeSpan = CalculateTimeSpan(checkInTime, checkOutTime)/2;
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss"); 
         Calendar cal = Calendar.getInstance();
         try
@@ -59,13 +72,14 @@ public class DateAdapter
             Date beginTime = format.parse(checkInTime);
             //Date endTime = format.parse(checkOutTime);
             cal.setTime(beginTime);
-            cal.add(Calendar.HOUR, 4);
+            cal.add(Calendar.HOUR, (int)timeSpan/60);
+            cal.add(Calendar.MINUTE, (int)timeSpan%60);
         }
         catch(Exception e)
         {
             System.out.println("错误!");
         }
-        return Integer.toString(cal.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(cal.get(Calendar.MINUTE)) + ":" + Integer.toString(cal.get(Calendar.SECOND));
+        return String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
     }
     
     public static long TimeSpan(String beginTime, String endTime)
@@ -99,5 +113,23 @@ public class DateAdapter
             e.printStackTrace();
         }
         return rtnRst;
+    }
+    
+    public static boolean TimeBetweenTimespan(String strTime, String BeginTime, String EndTime)
+    {
+        SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss"); 
+        try
+        {
+            Date dateAfter=df.parse(EndTime);   
+            Date dateBefore=df.parse(BeginTime);
+            Date time=df.parse(strTime);
+            if(time.before(dateAfter) && time.after(dateBefore))
+                return true;
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

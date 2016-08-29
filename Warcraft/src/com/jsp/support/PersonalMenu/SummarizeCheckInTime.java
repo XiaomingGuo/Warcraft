@@ -224,36 +224,25 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return null;
     }
     
-    private long CalculateTimeSpan(String beginTime, String endTime)
-    {
-        long rtnRst = 0;
-        if(DateAdapter.TimeSpan(beginTime, endTime) <= 0)
-            rtnRst = DateAdapter.TimeSpan(endTime, beginTime);
-        else
-        {
-            rtnRst = DateAdapter.TimeSpan("24:00:00", beginTime) + DateAdapter.TimeSpan(endTime, "00:00:00") ;
-        }
-        return rtnRst;
-    }
-    
     private List<String> GenCheckInAndOutTime(String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        long timeSpan = CalculateTimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1));
+        long timeSpan = DateAdapter.CalculateTimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1));
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            if(CalculateTimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1)) > timeSpan/2)
+            if(DateAdapter.CalculateTimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1)) > timeSpan/2)
             {
                 rtnRst.add(checkInTimeList.get(0));
                 rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
             }
             else
             {
-                if(Math.abs(DateAdapter.TimeSpan(checkInTimeList.get(0), workGroupTimeList.get(0))) < 359)
+                String midTime = DateAdapter.GetMiddleTimeBetweenTimes(workGroupTimeList.get(0), workGroupTimeList.get(1));
+                if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime))
                     rtnRst.add(checkInTimeList.get(0));
                 else
                     rtnRst.add(null);
-                if(Math.abs(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkInTimeList.get(checkInTimeList.size()-1))) < 359)
+                if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
                     rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
                 else
                     rtnRst.add(null);
