@@ -59,7 +59,7 @@
             </td>
             <td align="left" width="60%">
                 <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01"%>"></div>
-                <input type="text" value="12:00:00" name="AddTime" id="AddTime" style="width:100px">
+                <input type="text" value="12:00:00" name="AddTime" id="AddTime" style="width:100px" onblur="CheckInputTime()">
             </td>
         </tr>
     </table>

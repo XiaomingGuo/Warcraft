@@ -96,9 +96,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         {
             List<String> tempList = hUIHandle.getDBRecordList(keywordList[idx]);
             if(hUIHandle.getDBRecordList(keywordList[idx]).contains("root"))
-            	tempList.remove("root");
+                tempList.remove("root");
             else if(hUIHandle.getDBRecordList(keywordList[idx]).contains("99999"))
-            	tempList.remove("99999");
+                tempList.remove("99999");
             rtnRst.add(tempList);
         }
         return rtnRst;
@@ -227,17 +227,17 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<String> GenCheckInAndOutTime(String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        long timeSpan = DateAdapter.CalculateTimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1));
+        String midTime = DateAdapter.GetMiddleTimeBetweenTimes(workGroupTimeList.get(0), workGroupTimeList.get(1));
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            if(DateAdapter.CalculateTimeSpan(checkInTimeList.get(0), checkInTimeList.get(checkInTimeList.size()-1)) > timeSpan/2)
+            if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime)&&
+                    DateAdapter.TimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
             {
                 rtnRst.add(checkInTimeList.get(0));
                 rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
             }
             else
             {
-                String midTime = DateAdapter.GetMiddleTimeBetweenTimes(workGroupTimeList.get(0), workGroupTimeList.get(1));
                 if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime))
                     rtnRst.add(checkInTimeList.get(0));
                 else
@@ -380,8 +380,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(2).get(0));
-            
+            int workGroupId = Integer.parseInt(recordList.get(2).get(recordList.get(2).size()-1));
+            if(workGroupId <= 0)
+                return true;
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(1));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
@@ -451,70 +452,38 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
             List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx));
-            if(!IsAbsenceDay(user_id, checkInDateList.get(idx), dayCheckInRecord))
+            String checkInStatus = IsAbsenceDay(user_id, checkInDateList.get(idx), dayCheckInRecord);
+            if(!checkInStatus.isEmpty())
             {
-                for(int iCol=0; iCol < dayCheckInRecord.size(); iCol++)
-                {
-                    if(dayCheckInRecord.get(iCol).size() > 0)
-                        rtnRst.get(iCol).addAll(dayCheckInRecord.get(iCol));
-                    else
-                    {
-                        if(0 == iCol)
-                            rtnRst.get(iCol).addAll(Arrays.asList(checkInDateList.get(idx)));
-                        else
-                            rtnRst.get(iCol).addAll(Arrays.asList("0"));
-                    }
-                }
-                if(dayCheckInRecord.get(2).size() > 0)
-                {
-	                List<String> workGroupTimeList = GetWorkGroupTime(Integer.parseInt(dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1)));
-	                if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
-	                {
-	                    int checkInDate = Integer.parseInt(checkInDateList.get(idx));
-	                    String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
-	                    int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
-	                    if(checkInDate == Integer.parseInt(usedDay) + maxDay)
-	                        usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
-	                    else
-	                        usedDay = Integer.toString(checkInDate+1);
-	                    List<List<String>> tomorrowCheckInRecord = GetOneDayCheckRawData(g_recordList, usedDay);
-	                    for(int iCol=0; iCol < tomorrowCheckInRecord.size(); iCol++)
-	                    {
-	                        if(tomorrowCheckInRecord.get(0).size() > 0)
-	                            rtnRst.get(iCol).addAll(tomorrowCheckInRecord.get(iCol));
-	                        else
-	                        {
-	                            if(0 == iCol)
-	                                rtnRst.get(iCol).addAll(Arrays.asList(usedDay));
-	                            else
-	                                rtnRst.get(iCol).addAll(Arrays.asList("0"));
-	                        }
-	                    }
-	                }
-                }
+                rtnRst.get(0).add(checkInDateList.get(idx));
+                rtnRst.get(1).add(checkInStatus);
+                rtnRst.get(2).add(dayCheckInRecord.get(2).size()==0?"0":dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1));
             }
         }
         return rtnRst;
     }
     
-    private boolean IsAbsenceDay(String user_id, String checkInDate,
+    private String IsAbsenceDay(String user_id, String checkInDate,
             List<List<String>> recordList)
     {
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = Integer.parseInt(recordList.get(2).get(0));
             if(workGroupId == 0)
-                return false;
+                return "未排班";
             
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(1));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
-            
-            if(null == checkInTime||null == checkOutTime)
-                return false;
+            if(null == checkInTime&&null == checkOutTime)
+                return "未刷上班&下班卡";
+            else if(null == checkInTime)
+                return "未刷上班卡";
+            else if(null == checkOutTime)
+                return "未刷下班卡";
         }
         else
-            return false;
-        return true;
+            return "未刷上班&下班卡";
+        return "";
     }
 }

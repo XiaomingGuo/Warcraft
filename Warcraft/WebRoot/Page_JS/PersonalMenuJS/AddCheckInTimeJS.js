@@ -105,3 +105,15 @@ function SubmitAddCheckInTime()
         tab.deleteRow(0);
     }
 }
+
+function CheckInputTime(obj)
+{
+    var checkInTime = $("#AddTime").val();
+    var timeList = checkInTime.split(":");
+    if((parseInt(timeList[0])*10000+parseInt(timeList[1])*100+parseInt(timeList[2])) >= 235959)
+    {
+        alert("当天补考勤时间昨晚不能超过23:59:59(包含)!");
+        $("#AddTime").val("12:00:00");
+    }
+}
+
