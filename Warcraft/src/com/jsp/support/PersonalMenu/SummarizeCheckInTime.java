@@ -12,7 +12,7 @@ import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "年假(天)", "事假(天)", "查询时间范围"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_recordList;
@@ -121,7 +121,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             rtnRst.get(2).add(checkInIdList.get(idx));
             List<String> checkInResult = GetAPersonCheckInSummary(checkInIdList.get(idx), queryDate, checkInDateList);
             for(int item = 3; item < m_displayArray.length; item++)
+            {
                 rtnRst.get(item).add(checkInResult.get(item-3));
+            }
         }
         return rtnRst;
     }
@@ -141,7 +143,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        int absenceDay = 0, delayTime = 0;
+        int absenceDay = 0, delayTime = 0, overTime = 0;
         //"check_in_date", "check_in_time", "work_group"
         g_recordList = GetAllCheckInRawDataRecord(checkInId, queryDate);
         
@@ -150,9 +152,11 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx)));
             absenceDay += tempValueList.get(0);
             delayTime += tempValueList.get(1);
+            overTime += tempValueList.get(2);
         }
         rtnRst.add(Integer.toString(absenceDay));
         rtnRst.add(Integer.toString(delayTime));
+        rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假"));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假"));
         rtnRst.add(checkInDateList.get(0)+"~"+checkInDateList.get(checkInDateList.size()-1));
@@ -263,13 +267,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         {
             int workGroupId = Integer.parseInt(recordList.get(2).get(recordList.get(0).size()-1));
             if(workGroupId == 0)
-                return Arrays.asList(2L, 0L);
+                return Arrays.asList(2L, 0L, 0L);
             
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(1));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
-            long absenceTime = 0, timeSpan = 0;
+            long absenceTime = 0, timeSpan = 0, overTime = 0;
             if(null == checkInTime)
             {
                 absenceTime += 1L;
@@ -289,12 +293,15 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             {
                 if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
                     timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
+                else
+                    overTime += DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(1));
             }
             rtnRst.add(absenceTime);
             rtnRst.add(timeSpan);
+            rtnRst.add(overTime);
         }
         else
-            return Arrays.asList(2L, 0L);
+            return Arrays.asList(2L, 0L, 0L);
         return rtnRst;
     }
     
