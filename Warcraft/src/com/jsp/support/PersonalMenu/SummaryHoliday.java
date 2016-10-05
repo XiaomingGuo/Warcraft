@@ -87,28 +87,18 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    private String CheckPrecedingMonthData(String checkInId, String queryDate)
-    {
-        String preMonth = DateAdapter.getPrecedingMonth(queryDate);
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(checkInId, "0"), "check_in_date", preMonth + "00", preMonth + "32");
-        if(hCIRDHandle.RecordDBCount() > 0)
-            return "1";
-        return "0";
-    }
-    
     public List<String> GetHolidayTypeName()
     {
         hQueryHandle.setTableHandle(new Holiday_Type(new EarthquakeManagement()));
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "holiday_name");
     }
     
-    public String UpdateCheckInRawDataRecord(String id, String workGroup)
+    public String UpdateHoldayMarkRecord(String id, String holidayType, String holidayDate)
     {
-        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        String workGroupId = hQueryHandle.GetTableContentByKeyWord("group_name", workGroup, "id").get(0);
-        hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(id));
+        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        hHMHandle.UpdateRecordByKeyList("holiday_info", holidayType, Arrays.asList("id"), Arrays.asList(id));
+        if(holidayDate.length() == 8)
+            hHMHandle.UpdateRecordByKeyList("holiday_date", holidayDate, Arrays.asList("id"), Arrays.asList(id));
         return "";
     }
     

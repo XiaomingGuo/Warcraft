@@ -25,7 +25,7 @@
 	
 	rtnRst += "#remove$";
 	Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-	hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
+	hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	List<String> pro_type = hPTHandle.getDBRecordList("name");
 	if (pro_type != null)
 	{

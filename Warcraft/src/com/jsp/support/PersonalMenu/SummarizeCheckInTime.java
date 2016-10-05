@@ -12,7 +12,7 @@ import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退总时间(分)", "加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_recordList;
@@ -143,23 +143,76 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        int absenceDay = 0, delayTime = 0, overTime = 0;
+        int absenceDay = 0, delayTime = 0, overTime = 0, overTime2Hour = 0, overTime4Hour = 0;
         //"check_in_date", "check_in_time", "work_group"
         g_recordList = GetAllCheckInRawDataRecord(checkInId, queryDate);
         
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
             List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx)));
+            List<Long> overTimeList = GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), Integer.parseInt(g_recordList.get(2).get(idx)));
             absenceDay += tempValueList.get(0);
             delayTime += tempValueList.get(1);
+            overTime2Hour += overTimeList.get(0);
+            overTime4Hour += overTimeList.get(1);
             overTime += tempValueList.get(2);
         }
         rtnRst.add(Integer.toString(absenceDay));
         rtnRst.add(Integer.toString(delayTime));
+        rtnRst.add(Integer.toString(overTime2Hour));
+        rtnRst.add(Integer.toString(overTime4Hour));
         rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假"));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假"));
         rtnRst.add(checkInDateList.get(0)+"~"+checkInDateList.get(checkInDateList.size()-1));
+        return rtnRst;
+    }
+    
+    private List<Long> GetActiveOverTime(String checkInId, String checkInDate, Long overTime, int workGroupId)
+    {
+        List<Long> rtnRst = new ArrayList<Long>();
+        Over_Time_Record hOTRHandle = new Over_Time_Record(new EarthquakeManagement());
+        hOTRHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "over_time_date"), Arrays.asList(checkInId, checkInDate));
+        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
+        if(hOTRHandle.RecordDBCount() > 0)
+        {
+            long applyOverTime = Long.parseLong(hOTRHandle.getDBRecordList("over_time_hour").get(0));
+            long overTimeHour = overTime/60;
+            if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
+            {
+                if(overTimeHour <= 2)
+                {
+                    rtnRst.add(overTimeHour);
+                    rtnRst.add(0L);
+                }
+                else if(overTimeHour >= 4)
+                {
+                    rtnRst.add(2L);
+                    if(applyOverTime > 2)
+                        rtnRst.add(2L);
+                    else
+                        rtnRst.add(0L);
+                }
+                else
+                {
+                    rtnRst.add(2L);
+                    if(applyOverTime > 2)
+                        rtnRst.add(overTimeHour-2L);
+                    else
+                        rtnRst.add(0L);
+                }
+            }
+            else
+            {
+                rtnRst.add(0L);
+                if(overTimeHour > 4)
+                    rtnRst.add(4L);
+                else
+                    rtnRst.add(overTimeHour);
+            }
+        }
+        else
+            rtnRst = Arrays.asList(0L, 0L);
         return rtnRst;
     }
     
