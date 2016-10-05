@@ -45,5 +45,6 @@
     <mapping resource="com/DB/support/TitleInfo.hbm.xml" />
     <mapping resource="com/DB/support/UserPermission.hbm.xml" />
     <mapping resource="com/DB/support/HolidayType.hbm.xml" />
+    <mapping resource="com/DB/support/OverTimeRecord.hbm.xml" />
 </session-factory>
 </hibernate-configuration>

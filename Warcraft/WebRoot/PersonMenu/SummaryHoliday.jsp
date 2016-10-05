@@ -102,6 +102,15 @@
         </td>
 <%
                 }
+                else if("日期" == keyList[iCol-1])
+                {
+%>
+        <td>
+            <center><input id="ModifyDate" name="ModifyDate" type="text" style="width:100px"></center>
+        </td>
+<%
+                }
+                
                 else
                 {
 %>

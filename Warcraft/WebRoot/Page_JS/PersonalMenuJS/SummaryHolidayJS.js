@@ -49,7 +49,7 @@ function ModifyRecord(obj)
     modifytab.rows[1].cells[0].innerText=tempVal[0];
     modifytab.rows[1].cells[1].innerText=displaytab.rows[iRow].cells[1].innerText;
     modifytab.rows[1].cells[2].innerText=displaytab.rows[iRow].cells[2].innerText;
-    modifytab.rows[1].cells[3].innerText=displaytab.rows[iRow].cells[3].innerText;
+    $("#ModifyDate").val(displaytab.rows[iRow].cells[3].innerText);
     var index = 0;
     $("#HolidayType option").each(function()
     {
@@ -63,15 +63,15 @@ function ModifyRecord(obj)
 
 function ExecModify()
 {
-    /*var modifytab = document.getElementById('modify_info');
-    $.post("Ajax/PersonalMenu/Update_Check_In_Raw_Data_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "workGroup": GetSelectedContent('workGroup')}, function(data, textStatus)
+    var modifytab = document.getElementById('modify_info');
+    $.post("Ajax/PersonalMenu/Update_SummaryHoliday_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "holidayType": GetSelectedContent('HolidayType'), "holidayDate": $("#ModifyDate").val()}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
         {
             alert("更新记录出错!");
         }
         changeUserName();
-    });*/
+    });
 }
 
 function EnsureAllData()
