@@ -140,6 +140,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
+    private int GetADayWorkGroup(List<List<String>> recordList, String checkInDate)
+    {
+        int idx=0;
+        if(!recordList.get(0).contains(checkInDate))
+            return 0;
+        for(idx=0; idx < recordList.get(0).size(); idx++)
+        {
+            if(recordList.get(0).get(idx).equals(checkInDate))
+                break;
+        }
+        return Integer.parseInt(recordList.get(2).get(idx));
+    }
+    
     private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
@@ -150,7 +163,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
             List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx)));
-            List<Long> overTimeList = GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), Integer.parseInt(g_recordList.get(2).get(idx)));
+            List<Long> overTimeList = tempValueList.size() > 0?GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), GetADayWorkGroup(g_recordList, checkInDateList.get(idx))):Arrays.asList(0L,0L);
             absenceDay += tempValueList.get(0);
             delayTime += tempValueList.get(1);
             overTime2Hour += overTimeList.get(0);
@@ -164,7 +177,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假"));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假"));
-        rtnRst.add(checkInDateList.get(0)+"~"+checkInDateList.get(checkInDateList.size()-1));
+        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getMaxDaysByYearMonth(queryDate)));
         return rtnRst;
     }
     
@@ -231,8 +244,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<String> rtnRst = new ArrayList<String>();
         Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
         hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(Integer.toString(workGroupId)));
-        rtnRst.add(hWGIHandle.getDBRecordList("check_in_time").get(0));
-        rtnRst.add(hWGIHandle.getDBRecordList("check_out_time").get(0));
+        if(hWGIHandle.RecordDBCount() > 0)
+        {
+            rtnRst.add(hWGIHandle.getDBRecordList("check_in_time").get(0));
+            rtnRst.add(hWGIHandle.getDBRecordList("check_out_time").get(0));
+        }
+        else
+            rtnRst = Arrays.asList("00:00:00", "00:00:00");
         return rtnRst;
     }
     

@@ -100,9 +100,13 @@
                         <td align="right"><h1><input name="query" type="button" value="查询" style="width:100" onclick="changeUserName()"></h1></td>
                     </tr>
                 </table>
-                <table id="display_po" border='1' align="center"></table>
-                <br>
-                <table id="detail_display" border='1' align="center"></table>
+                <form action="ReportPage/Save_CheckIn_Summary_Report.jsp" method="post">
+                    <table align="center">
+                        <tr><td><table id="display_po" border='1' align="center"></table></td></tr>
+                        <tr><td><table id="detail_display" border='1' align="center"></table></td></tr>
+                        <!--<tr><td align="center"><h1><input type="submit" value="下载报表" style="width:100"></h1></td></tr>-->
+                    </table>
+                </form>
                 <br>
             </td>
         </tr>

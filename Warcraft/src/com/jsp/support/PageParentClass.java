@@ -118,7 +118,8 @@ public class PageParentClass
             return new Material_Storage(new EarthquakeManagement());
         else if(IsProductBarcode(barcode))
             return new Product_Storage(new EarthquakeManagement());
-        return null;
+        else
+            return new Other_Storage(new EarthquakeManagement());
     }
     
     public IStorageTableInterface GenExStorageHandle(String barcode)
@@ -138,7 +139,8 @@ public class PageParentClass
             return new Exhausted_Material(new EarthquakeManagement());
         else if(IsProductBarcode(barcode))
             return new Exhausted_Product(new EarthquakeManagement());
-        return null;
+        else
+            return new Exhausted_Other(new EarthquakeManagement());
     }
     
     public void CheckMoveToExhaustedTable(String barcode, String batchLot)

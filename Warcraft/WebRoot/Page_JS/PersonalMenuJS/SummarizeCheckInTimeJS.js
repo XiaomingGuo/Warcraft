@@ -21,7 +21,7 @@ function changeUserName()
                     var tr = $("<tr></tr>");
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
-                        var td = $("<td></td>");
+                        var td = $("<td id='" + iRow.toString() + iCol.toString() + "'></td>");
                         if(4 == iCol)
                             td.append("<a name='" + data_list[iRow*iColCount + 3] + "' href='javascript:void(0);' onclick='DisplayMissCheckIn(this)'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");//
                         else if(5 == iCol)

@@ -34,16 +34,19 @@ public class Submit_Reject_Storage_Qty_Ajax extends PageParentClass
 		if(hProcessDBHandle.RecordDBCount() > 0)
 		{
 			((DBTableParent)hProcessDBHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
-			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-			Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
-			hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "vendor"),
-					Arrays.asList(hProcessDBHandle.getDBRecordList("Bar_Code").get(0),
-							hProcessDBHandle.getDBRecordList("po_name").get(0),
-							hProcessDBHandle.getDBRecordList("vendor_name").get(0)));
-			hMMPRHandle.AddARecord(hMMPHandle.getDBRecordList("id").get(0), barcode, 
-					hProcessDBHandle.getDBRecordList("Batch_Lot").get(0),
-					hProcessDBHandle.getDBRecordList("IN_QTY").get(0),
-					hProcessDBHandle.getDBRecordList("in_store_date").get(0));
+			if(!new PageParentClass().IsOtherBarcode(barcode))
+			{
+				Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+				Mb_Material_Po_Record hMMPRHandle = new Mb_Material_Po_Record(new EarthquakeManagement());
+				hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name", "vendor"),
+						Arrays.asList(hProcessDBHandle.getDBRecordList("Bar_Code").get(0),
+								hProcessDBHandle.getDBRecordList("po_name").get(0),
+								hProcessDBHandle.getDBRecordList("vendor_name").get(0)));
+				hMMPRHandle.AddARecord(hMMPHandle.getDBRecordList("id").get(0), barcode, 
+						hProcessDBHandle.getDBRecordList("Batch_Lot").get(0),
+						hProcessDBHandle.getDBRecordList("IN_QTY").get(0),
+						hProcessDBHandle.getDBRecordList("in_store_date").get(0));
+			}
 		}
 		else
 			EnsureStorageStatusByBarcodeAndBatchLot(barcode, batchLot);

@@ -30,9 +30,7 @@
 		{
 			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
-			{
 				recordList.add(hOSHandle.getDBRecordList(sqlKeyList[idx]));
-			}
 		}
 %>
 
@@ -155,9 +153,9 @@
 			    		{
 %>
     			<td>
-    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(7).get(iRow-1) %>$<%=Barcode %>' onclick='SubmitQty(this)'>
+    				<input type='button' value='确认' id='<%=recordList.get(7).get(iRow-1) %>Sure' name='<%=recordList.get(1).get(iRow-1) %>$<%=Barcode %>' onclick='SubmitQty(this)'>
     				&nbsp;
-    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(7).get(iRow-1) %>$<%=Barcode %>' onclick='RejectQty(this)'>
+    				<input type='button' value='删除' id='<%=recordList.get(7).get(iRow-1) %>Rej' name='<%=recordList.get(1).get(iRow-1) %>$<%=Barcode %>' onclick='RejectQty(this)'>
     			</td>
 <%
 			    		}
