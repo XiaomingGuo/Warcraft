@@ -104,7 +104,7 @@
                     <table align="center">
                         <tr><td><table id="display_po" border='1' align="center"></table></td></tr>
                         <tr><td><table id="detail_display" border='1' align="center"></table></td></tr>
-                        <!--<tr><td align="center"><h1><input type="submit" value="下载报表" style="width:100"></h1></td></tr>-->
+                        <tr><td align="center"><h1><input type="submit" value="下载报表" style="width:100"></h1></td></tr>
                     </table>
                 </form>
                 <br>

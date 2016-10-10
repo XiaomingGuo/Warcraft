@@ -140,30 +140,28 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private int GetADayWorkGroup(List<List<String>> recordList, String checkInDate)
+    private int GetADayWorkGroup(List<List<String>> recordList, String checkInId, String checkInDate)
     {
         int idx=0;
-        if(!recordList.get(0).contains(checkInDate))
-            return 0;
         for(idx=0; idx < recordList.get(0).size(); idx++)
         {
-            if(recordList.get(0).get(idx).equals(checkInDate))
+            if(recordList.get(0).get(idx).equals(checkInId)&&recordList.get(1).get(idx).equals(checkInDate))
                 break;
         }
-        return Integer.parseInt(recordList.get(2).get(idx));
+        if(recordList.get(0).size() == idx)
+            return 0;
+        return Integer.parseInt(recordList.get(3).get(idx));
     }
     
     private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
         int absenceDay = 0, delayTime = 0, overTime = 0, overTime2Hour = 0, overTime4Hour = 0;
-        //"check_in_date", "check_in_time", "work_group"
-        g_recordList = GetAllCheckInRawDataRecord(checkInId, queryDate);
         
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
-            List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx)));
-            List<Long> overTimeList = tempValueList.size() > 0?GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), GetADayWorkGroup(g_recordList, checkInDateList.get(idx))):Arrays.asList(0L,0L);
+            List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInId, checkInDateList.get(idx)));
+            List<Long> overTimeList = tempValueList.size() > 0?GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), GetADayWorkGroup(g_recordList, checkInId, checkInDateList.get(idx))):Arrays.asList(0L,0L);
             absenceDay += tempValueList.get(0);
             delayTime += tempValueList.get(1);
             overTime2Hour += overTimeList.get(0);
@@ -254,7 +252,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<List<String>> GetOneDayCheckRawData(List<List<String>> recordList, String checkInDate)
+    private List<List<String>> GetOneDayCheckRawData(List<List<String>> recordList, String checkInId, String checkInDate)
     {
         //"check_in_date", "check_in_time", "work_group"
         List<List<String>> rtnRst = new ArrayList<List<String>>();
@@ -263,7 +261,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             List<String> tempList = new ArrayList<String>();
             for(int item=0; item < recordList.get(0).size(); item++)
             {
-                if(recordList.get(0).get(item).equals(checkInDate))
+                if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
                     tempList.add(recordList.get(idx).get(item));
             }
             rtnRst.add(tempList);
@@ -279,7 +277,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
         else
             usedDay = Integer.toString(checkInDate+1);
-        List<String> tempRecord = GetOneDayCheckRawData(g_recordList, usedDay).get(1);
+        List<String> tempRecord = GetOneDayCheckRawData(g_recordList, checkInId, usedDay).get(2);
         String rtnRst = null;
         for(int idx = 0; idx < tempRecord.size(); idx++)
         {
@@ -336,12 +334,12 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<Long> rtnRst = new ArrayList<Long>();
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(2).get(recordList.get(0).size()-1));
+            int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
             if(workGroupId == 0)
                 return Arrays.asList(2L, 0L, 0L);
             
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
-            List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(1));
+            List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
             long absenceTime = 0, timeSpan = 0, overTime = 0;
@@ -381,10 +379,27 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(queryDate.length() != 6)
             return "error:日期输入错误 !";
+        GetAllGlobeRawDataFromDatabase(queryDate);
         List<List<String>> recordList = GetAllDisplayData(user_id, userName, queryDate);
         if(recordList.size() == 0)
             return "error:无刷卡记录!";
         String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
+        return rtnRst;
+    }
+    
+    private void GetAllGlobeRawDataFromDatabase(String queryDate)
+    {
+        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
+    }
+    
+    private List<List<String>> GetCheckInRawDataRecordByDate(String queryDate)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        hCIRDHandle.QueryRecordBetweenDateSpanAndOrderByListASC("check_in_date", queryDate+"00", queryDate+"32", Arrays.asList("check_in_time"));
+        String[] getKeyWord = {"check_in_id", "check_in_date", "check_in_time", "work_group"};
+        for(int idx=0; idx < getKeyWord.length; idx++)
+            rtnRst.add(hCIRDHandle.getDBRecordList(getKeyWord[idx]));
         return rtnRst;
     }
     
@@ -423,27 +438,25 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         {
             rtnRst.get(0).add(Integer.toString(idx + 1));
             rtnRst.get(1).add(userName);
-            rtnRst.get(2).add(user_id);
-            int item = 3;
+            int item = 2;
             for(; item < m_displayArray.length-1; item++)
-                rtnRst.get(item).add(missCheckInResult.get(item-3).get(idx));
-            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-3).get(idx)));
+                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
+            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
         }
         return rtnRst;
     }
     
-    private List<List<String>> GetAPersonBeLateAndLeaveEarlySummary(
-            String user_id, String queryDate, List<String> checkInDateList)
+    private List<List<String>> GetAPersonBeLateAndLeaveEarlySummary(String user_id, String queryDate, List<String> checkInDateList)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        g_recordList = GetAllCheckInRawDataRecord(user_id, queryDate);
-        for(int iCount=0; iCount < 3; iCount++)
+        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
+        for(int iCount=0; iCount < 4; iCount++)
             rtnRst.add(new ArrayList<String>());
         
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
-            List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx));
+            List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, user_id, checkInDateList.get(idx));
             if(!IsBeLateAndLeaveEarlyDay(user_id, checkInDateList.get(idx), dayCheckInRecord))
             {
                 for(int iCol=0; iCol < dayCheckInRecord.size(); iCol++)
@@ -458,11 +471,11 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(2).get(recordList.get(2).size()-1));
+            int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
             if(workGroupId <= 0)
                 return true;
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
-            List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(1));
+            List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
             if(null != checkInTime)
@@ -523,19 +536,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        g_recordList = GetAllCheckInRawDataRecord(user_id, queryDate);
+        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
         for(int iCount=0; iCount < 3; iCount++)
             rtnRst.add(new ArrayList<String>());
         
         for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
-            List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, checkInDateList.get(idx));
+            List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, user_id, checkInDateList.get(idx));
             String checkInStatus = IsAbsenceDay(user_id, checkInDateList.get(idx), dayCheckInRecord);
             if(!checkInStatus.isEmpty())
             {
                 rtnRst.get(0).add(checkInDateList.get(idx));
                 rtnRst.get(1).add(checkInStatus);
-                rtnRst.get(2).add(dayCheckInRecord.get(2).size()==0?"0":dayCheckInRecord.get(2).get(dayCheckInRecord.get(2).size()-1));
+                rtnRst.get(2).add(dayCheckInRecord.get(3).size()==0?"0":dayCheckInRecord.get(3).get(dayCheckInRecord.get(3).size()-1));
             }
         }
         return rtnRst;
@@ -546,12 +559,12 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(2).get(0));
+            int workGroupId = Integer.parseInt(recordList.get(3).get(0));
             if(workGroupId == 0)
                 return "未排班";
             
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
-            List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(1));
+            List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             if(null == checkInTime&&null == checkOutTime)
                 return "未刷上班&下班卡";

@@ -16,20 +16,20 @@
 	body{background:#ECF5FF;}
 	</style>
   </head>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   <body>
-  	<center>
-  		<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  		<form action="DoLogin.jsp" method="post">
-  			<fieldset style='width: 500'>
-  				<legend><font SIZE="+2" style="font-weight:bold;">登陆</font></legend><br><br>
-	  			账号:<input type='text' name='name' align='left' size='18' style='width:200px;'/><br><br>
-	  			密码:<input type='password' name='key' align='left' size='18' style='width:200px;'/><br><br>
-	  			<input id="Ensure" name="Ensure" type='submit' value='登陆' onclick="DisableSubmit()">
-  			</fieldset>
-  		</form>
-  	</center>
-  	<script type="text/javascript">
+	<center>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<form action="DoLogin.jsp" method="post">
+			<fieldset style='width: 500'>
+				<legend><font SIZE="+2" style="font-weight:bold;">登陆</font></legend><br><br>
+				账号:<input type='text' name='name' align='left' size='18' style='width:200px;'/><br><br>
+				密码:<input type='password' name='key' align='left' size='18' style='width:200px;'/><br><br>
+				<input id="Ensure" name="Ensure" type='submit' value='登陆' onclick="DisableSubmit()">
+			</fieldset>
+		</form>
+	</center>
+	<script type="text/javascript">
 		function DisableSubmit()
 		{
 			DisableButton("Ensure");
