@@ -29,7 +29,6 @@ function changeUserName()
                             td.append("<a name='" + data_list[iRow*iColCount + 3] + "' href='javascript:void(0);' onclick='DisplayBeLateAndLeaveEarly(this)'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");//
                         else
                             td.append(data_list[iRow*iColCount + iCol + 2]);
-                            //td.append("<input type='text' name='" + iRow.toString() + iCol.toString() + "' value='"+data_list[iRow*iColCount + iCol + 2]+"' style='width:100'>");
                         tr.append(td);
                     }
                     $displayOrder.append(tr);
@@ -38,7 +37,7 @@ function changeUserName()
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
                         var td = $("<td></td>");
-                        td.append("<input type='hidden' name='" + iRow.toString() + iCol.toString() + "' value='"+data_list[iRow*iColCount + iCol + 2]+"'>");
+                        td.append("<input type='hidden' name='" + iRow.toString() + "-" + iCol.toString() + "' value='"+data_list[iRow*iColCount + iCol + 2]+"'>");
                         hidtr.append(td);
                     }
                     $hiddenTable.append(hidtr);

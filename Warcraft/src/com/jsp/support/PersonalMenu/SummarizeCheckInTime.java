@@ -15,7 +15,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
-    private List<List<String>> g_recordList;
+    private List<List<String>> g_recordList, g_HolidayMarkList, g_OverTimeRecord, g_WorkGroupRecord;
     
     public SummarizeCheckInTime()
     {
@@ -68,20 +68,38 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<String> rtnRst = new ArrayList<String>();
         int beginDate = Integer.parseInt(queryDate + "01");
         int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
         
         for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
         {
             int curDate = beginDate + dateOffset;
             rtnRst.add(Integer.toString(curDate));
         }
-        hHMHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id"), Arrays.asList(checkInId),
-                                                                        "holiday_date", Integer.toString(beginDate), queryDate+Integer.toString(maxDays));
-        List<String> tempList = hHMHandle.getDBRecordList("holiday_date");
+        List<String> tempList = GetPersonHolidayMarkPerMonth(checkInId, queryDate, g_HolidayMarkList);
         for(int idx=0; idx < tempList.size(); idx++)
         {
             if(rtnRst.contains(tempList.get(idx)))
                 rtnRst.remove(tempList.get(idx));
+        }
+        return rtnRst;
+    }
+    
+    private List<String> GetPersonHolidayMarkPerMonth(String checkInId, String queryDate, List<List<String>> recordList)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        if(recordList != null&&recordList.size() > 0)
+        {
+            int beginDate = Integer.parseInt(queryDate + "01");
+            int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+            
+            for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+            {
+                String checkInDate = Integer.toString(beginDate+dateOffset);
+                for(int item=0; item < recordList.get(0).size(); item++)
+                {
+                    if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
+                        rtnRst.add(recordList.get(1).get(item));
+                }
+            }
         }
         return rtnRst;
     }
@@ -128,18 +146,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<List<String>>GetAllCheckInRawDataRecord(String checkInId, String queryDate)
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), 
-                Arrays.asList(checkInId), "check_in_date", queryDate+"00", queryDate+"32", Arrays.asList("check_in_time"));
-        String[] getKeyWord = {"check_in_date", "check_in_time", "work_group"};
-        for(int idx=0; idx < getKeyWord.length; idx++)
-            rtnRst.add(hCIRDHandle.getDBRecordList(getKeyWord[idx]));
-        return rtnRst;
-    }
-    
     private int GetADayWorkGroup(List<List<String>> recordList, String checkInId, String checkInDate)
     {
         int idx=0;
@@ -173,21 +179,37 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst.add(Integer.toString(overTime2Hour));
         rtnRst.add(Integer.toString(overTime4Hour));
         rtnRst.add(Integer.toString(overTime/60));
-        rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假"));
-        rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假"));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
         rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getMaxDaysByYearMonth(queryDate)));
+        return rtnRst;
+    }
+    
+    private String GetOverTimeRecord(String checkInId, String checkInDate, List<List<String>> recordList)
+    {
+        String rtnRst = "";
+        if(recordList.size() > 0)
+        {
+            for(int item=0; item < recordList.get(0).size(); item++)
+            {
+                if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
+                {
+                    rtnRst = recordList.get(2).get(item);
+                    break;
+                }
+            }
+        }
         return rtnRst;
     }
     
     private List<Long> GetActiveOverTime(String checkInId, String checkInDate, Long overTime, int workGroupId)
     {
         List<Long> rtnRst = new ArrayList<Long>();
-        Over_Time_Record hOTRHandle = new Over_Time_Record(new EarthquakeManagement());
-        hOTRHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "over_time_date"), Arrays.asList(checkInId, checkInDate));
-        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
-        if(hOTRHandle.RecordDBCount() > 0)
+        String curOverTimeHour = GetOverTimeRecord(checkInId, checkInDate, g_OverTimeRecord);
+        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
+        if(!curOverTimeHour.isEmpty())
         {
-            long applyOverTime = Long.parseLong(hOTRHandle.getDBRecordList("over_time_hour").get(0));
+            long applyOverTime = Long.parseLong(curOverTimeHour);
             long overTimeHour = overTime/60;
             if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
             {
@@ -227,27 +249,44 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private String GetHolidayMark(String checkInId, String queryDate, String holidayType)
+    
+    private String GetHolidayMark(String checkInId, String queryDate, String holidayType, List<List<String>> recordList)
     {
-        String rtnRst = "0";
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
-        hHMHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "holiday_info"), Arrays.asList(checkInId, holidayType),
-                                                                "holiday_date", queryDate+"00", queryDate+"32");
-        rtnRst = Integer.toString(hHMHandle.RecordDBCount());
-        return rtnRst;
+        int rtnRst = 0;
+        if(recordList != null&&recordList.size() > 0)
+        {
+            int beginDate = Integer.parseInt(queryDate + "01");
+            int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+            
+            for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+            {
+                String checkInDate = Integer.toString(beginDate+dateOffset);
+                for(int item=0; item < recordList.get(0).size(); item++)
+                {
+                    if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate)&&
+                            recordList.get(2).get(item).equals(holidayType))
+                        rtnRst++;
+                }
+            }
+        }
+        return Integer.toString(rtnRst);
     }
     
-    private List<String> GetWorkGroupTime(int workGroupId)
+    private List<String> GetWorkGroupTime(int workGroupId, List<List<String>> recordList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
-        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(Integer.toString(workGroupId)));
-        if(hWGIHandle.RecordDBCount() > 0)
+        if(recordList.size() > 0)
         {
-            rtnRst.add(hWGIHandle.getDBRecordList("check_in_time").get(0));
-            rtnRst.add(hWGIHandle.getDBRecordList("check_out_time").get(0));
+            for(int item=0; item < recordList.get(0).size(); item++)
+            {
+                if(recordList.get(0).get(item).equals(Integer.toString(workGroupId)))
+                {
+                    rtnRst.add(recordList.get(2).get(item));
+                    rtnRst.add(recordList.get(3).get(item));
+                }
+            }
         }
-        else
+        if(rtnRst.size() <= 0)
             rtnRst = Arrays.asList("00:00:00", "00:00:00");
         return rtnRst;
     }
@@ -338,7 +377,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             if(workGroupId == 0)
                 return Arrays.asList(2L, 0L, 0L);
             
-            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
+            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
@@ -390,6 +429,49 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private void GetAllGlobeRawDataFromDatabase(String queryDate)
     {
         g_recordList = GetCheckInRawDataRecordByDate(queryDate);
+        g_HolidayMarkList = GetAllHolidayMarkRecordByDate(queryDate);
+        g_OverTimeRecord = GetAllOverTimeRecordByDate(queryDate);
+        g_WorkGroupRecord = GetAllWorkGroupRecord();
+    }
+    
+    private List<List<String>> GetAllWorkGroupRecord()
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        hWGIHandle.QueryAllRecord();
+        String[] getKeyWord = {"id", "group_name", "check_in_time", "check_out_time"};
+        if(hWGIHandle.RecordDBCount() > 0)
+        {
+            for(int idx=0; idx < getKeyWord.length; idx++)
+                rtnRst.add(hWGIHandle.getDBRecordList(getKeyWord[idx]));
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetAllOverTimeRecordByDate(String queryDate)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        Over_Time_Record hOTRHandle = new Over_Time_Record(new EarthquakeManagement());
+        hOTRHandle.QueryRecordBetweenDateSpanAndOrderByListASC("over_time_date", queryDate + "00", queryDate + "32", Arrays.asList("over_time_date"));
+        if(hOTRHandle.RecordDBCount() > 0)
+        {
+            String[] getKeyWord = {"check_in_id", "over_time_date", "over_time_hour"};
+            for(int idx=0; idx < getKeyWord.length; idx++)
+                rtnRst.add(hOTRHandle.getDBRecordList(getKeyWord[idx]));
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetAllHolidayMarkRecordByDate(String queryDate)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        
+        hHMHandle.QueryRecordBetweenDateSpanAndOrderByListASC("holiday_date", queryDate + "00", queryDate + "32", Arrays.asList("holiday_date"));
+        String[] getKeyWord = {"check_in_id", "holiday_date", "holiday_info"};
+        for(int idx=0; idx < getKeyWord.length; idx++)
+            rtnRst.add(hHMHandle.getDBRecordList(getKeyWord[idx]));
+        return rtnRst;
     }
     
     private List<List<String>> GetCheckInRawDataRecordByDate(String queryDate)
@@ -407,6 +489,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
             return "";
+        GetAllGlobeRawDataFromDatabase(queryDate);
         List<List<String>> recordList = GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
         if(recordList.size() == 0)
             return "";
@@ -418,6 +501,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
             return "";
+        GetAllGlobeRawDataFromDatabase(queryDate);
         List<List<String>> recordList = GetMissCheckInDataDisplayData(user_id, userName, queryDate);
         if(recordList.size() == 0)
             return "";
@@ -450,7 +534,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
+        GetAllGlobeRawDataFromDatabase(queryDate);
         for(int iCount=0; iCount < 4; iCount++)
             rtnRst.add(new ArrayList<String>());
         
@@ -474,7 +558,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
             if(workGroupId <= 0)
                 return true;
-            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
+            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
@@ -536,7 +620,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
+        GetAllGlobeRawDataFromDatabase(queryDate);
         for(int iCount=0; iCount < 3; iCount++)
             rtnRst.add(new ArrayList<String>());
         
@@ -563,7 +647,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             if(workGroupId == 0)
                 return "未排班";
             
-            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId);
+            List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(user_id, checkInDate, workGroupTimeList, recordList.get(2));
             String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             if(null == checkInTime&&null == checkOutTime)

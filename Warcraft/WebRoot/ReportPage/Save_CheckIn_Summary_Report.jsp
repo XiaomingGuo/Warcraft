@@ -21,48 +21,26 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "总价值"};
-			String storage_name = request.getParameter("11");
-			String product_type = request.getParameter("12");
-			String product_name = request.getParameter("13");
-			String bar_code = request.getParameter("bar_code");
-			QueryStorageItemAjax hPageHandle = new QueryStorageItemAjax();
-			List<String> bar_code_List = new ArrayList<String>();
-			if (storage_name.indexOf("请选择") < 0 && product_type.indexOf("请选择") >= 0 &&product_name.indexOf("请选择") >= 0 )
-			{
-				List<String> pro_Type_List = hPageHandle.QueryProTypeStorage(storage_name);
-				for(int idx = 0; idx < pro_Type_List.size(); idx++)
-				{
-					List<String> tempList = hPageHandle.QueryProNameByProType(pro_Type_List.get(idx));
-					for(int iRecordIdx = 0; iRecordIdx < tempList.size(); iRecordIdx++)
-						bar_code_List.add(hPageHandle.QueryBarCodeByProName(tempList.get(iRecordIdx)));
-				}
-			}
-			else if(storage_name.indexOf("请选择") < 0&&product_type.indexOf("请选择") < 0&&product_name.indexOf("请选择") >= 0)
-			{
-				List<String> tempList = hPageHandle.QueryProNameByProType(product_type);
-				for(int iRecordIdx = 0; iRecordIdx < tempList.size(); iRecordIdx++)
-					bar_code_List.add(hPageHandle.QueryBarCodeByProName(tempList.get(iRecordIdx)));
-			}
-			else if(storage_name.indexOf("请选择") < 0&&product_type.indexOf("请选择") < 0&&product_name.indexOf("请选择") < 0)
-				bar_code_List.add(bar_code);
-			List<String> storageRecord = hPageHandle.GetAllRecordByBarCodeList(bar_code_List);
+			String[] displayKeyList = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
 			
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			List<String> headList = new ArrayList<String>();
 			for (int iHead = 0; iHead < displayKeyList.length; iHead++)
 				headList.add(displayKeyList[iHead]);
 			recordList.add(headList);
-			for(int iRow = 0; iRow < storageRecord.size()/displayKeyList.length;iRow++)
+			
+			for(int iRow = 1; ;iRow++)
 			{
+				if(null == request.getParameter(Integer.toString(iRow)+"-1"))
+					break;
 				List<String> tempList = new ArrayList<String>();
-				for(int iCol = 0; iCol < displayKeyList.length; iCol++)
-					tempList.add(storageRecord.get(iRow*displayKeyList.length+iCol));
+				for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+					tempList.add(request.getParameter(Integer.toString(iRow)+"-"+Integer.toString(iCol)));
 				recordList.add(tempList);
 			}
-			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "tempExcel.xls"));
-			excelUtil.execWriteExcelBlock(recordList, 3);
-			String fileFullPath = "d:\\tempFolder\\tempExcel.xls";
+			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "CheckInSummary.xls"));
+			excelUtil.execWriteExcelBlock(recordList, 10);
+			String fileFullPath = "d:\\tempFolder\\CheckInSummary.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
 			su.initialize(pageContext); 		// 初始化准备操作  
@@ -72,6 +50,6 @@
 			out.clear();
 			out=pageContext.pushBody();
 		}
-		out.println("<script>alert('下载成功！');window.location.href = '../OtherSummary.jsp';</script>");	
+		out.println("<script>alert('下载成功！');window.location.href = '../PersonMenu/SummarizeCheckInTime.jsp';</script>");	
 	}
 %>
