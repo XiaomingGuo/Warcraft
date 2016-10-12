@@ -72,7 +72,7 @@ $(function()
 			if (textStatus == "success")
 			{
 				var code_list = data.split("$");
-				if (code_list.length == 6)
+				if (code_list.length == 8)
 				{
 					AddNewSelectItem("from_bar_code", code_list[1]);
 					$("#from_productname").val(GetSelectedContent("from_product_name"));
@@ -176,7 +176,7 @@ $(function()
 			if (textStatus == "success")
 			{
 				var code_list = data.split("$");
-				if (code_list.length == 6)
+				if (code_list.length == 8)
 				{
 					AddNewSelectItem("to_bar_code", code_list[1]);
 					$("#to_productname").val(GetSelectedContent("to_product_name"));

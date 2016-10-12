@@ -62,6 +62,12 @@ public class Product_Info extends DBTableParent implements ITableInterface
             case "weight":
                 rtnRst.add(tempRecord.getWeight().toString());
                 break;
+            case "sample_price":
+                rtnRst.add(tempRecord.getSamplePrice().toString());
+                break;
+            case "sample_vendor":
+                rtnRst.add(tempRecord.getSampleVendor());
+                break;
             case "process_name":
                 rtnRst.add(tempRecord.getProcessName());
                 break;
@@ -111,6 +117,12 @@ public class Product_Info extends DBTableParent implements ITableInterface
         else if(keyword.toLowerCase().indexOf("weight") >= 0) {
             rtnRst = "weight";
         }
+        else if(keyword.toLowerCase().indexOf("sample_price") >= 0) {
+            rtnRst = "samplePrice";
+        }
+        else if(keyword.toLowerCase().indexOf("sample_vendor") >= 0) {
+            rtnRst = "sampleVendor";
+        }
         else if(keyword.toLowerCase().indexOf("process_name") >= 0) {
             rtnRst = "processName";
         }
@@ -126,13 +138,16 @@ public class Product_Info extends DBTableParent implements ITableInterface
         return rtnRst;
     }
     
-    public void AddARecord(String barCode, String name, String productType, String weight, String processName, String capacity, String description)
+    public void AddARecord(String barCode, String name, String productType, String weight, String samplePrice, String sampleVendor,
+    		String processName, String capacity, String description)
     {
         aWriteRecord = new ProductInfo();
         aWriteRecord.setBarCode(barCode);
         aWriteRecord.setName(name);
         aWriteRecord.setProductType(productType);
         aWriteRecord.setWeight(Float.parseFloat(weight));
+        aWriteRecord.setSamplePrice(Float.parseFloat(samplePrice));
+        aWriteRecord.setSampleVendor(sampleVendor);
         aWriteRecord.setProcessName(processName);
         aWriteRecord.setCapacity(Integer.parseInt(capacity));
         if(null == description)

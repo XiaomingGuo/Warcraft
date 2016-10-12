@@ -10,15 +10,15 @@ public class Submit_New_Material_Info_Ajax extends PageParentClass
 		if(!IsOtherBarcode(appBarcode))
 		{
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
-					productWeight, "0", "0", appDescription);
+					productWeight, "0", "NULL", "0", "0", appDescription);
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
-					appWeightUnit, "0", "0", appDescription);
+					appWeightUnit, "0", "NULL", "0", "0", appDescription);
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
-					"0", "0", "0", appDescription);
+					"0", "0", "NULL", "0", "0", appDescription);
 		}
 		else
 			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type,
-					"0", "0", "0", appDescription);
+					"0", "0", "NULL", "0", "0", appDescription);
 	}
 	
 	public String AddProductInfoRecord(String appStore_name, String appBarcode, String appProduct_type, String appProductname, String appWeightUnit, String productWeight, String appDescription)

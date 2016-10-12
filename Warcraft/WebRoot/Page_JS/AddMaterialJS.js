@@ -76,7 +76,7 @@ $(function()
 			if (textStatus == "success")
 			{
 				var code_list = data.split("$");
-				if (code_list.length == 6)
+				if (code_list.length == 8)
 				{
 					AddNewSelectItem("bar_code", code_list[1]);
 					$("#productname").val(GetSelectedContent("product_name"));
@@ -87,6 +87,17 @@ $(function()
 					$("#Description").attr("readonly", "readonly");
 					$("#ProductWeight").val(code_list[4]);
 					$("#ProductWeight").attr("readonly", "readonly");
+					$("#PriceUnit").val(code_list[5]);
+				    var index = 0;
+				    $("#supplier_name option").each(function()
+				    {
+				        if($(this).text()==code_list[6])
+				        {
+				        	supplier_name.options[index].selected = true;
+				        }
+				        index++;
+				    });
+					$("#ProductWeight").val(code_list[6]);
 				}
 				else
 				{

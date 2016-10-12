@@ -45,12 +45,12 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
-  	<script language="javascript" src="Page_JS/AddMFGToolsMaterialJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
+	<script language="javascript" src="Page_JS/AddMFGToolsMaterialJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
-  	<script type="text/javascript">
+	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/MFGToolsMenu.jsp"/>
@@ -71,37 +71,37 @@
 %>
 					</tr>
 					<tr>
-				  		<td align="right">
-						  	<select name="store_name_addproduct" id="store_name_addproduct" style="width:120px">
-							  	<option value = "--请选择--">--请选择--</option>
+						<td align="right">
+							<select name="store_name_addproduct" id="store_name_addproduct" style="width:120px">
+								<option value = "--请选择--">--请选择--</option>
 <%
 								for(int i = 0; i < store_name.size(); i++)
 								{
 %>
-							  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
+								<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
 <%
 								}
 %>
-						  	</select>
-					  	</td>
-				  		<td align="right">
-						  	<select name="product_type" id="product_type" style="width:100px">
-							  	<option value = "--请选择--">--请选择--</option>
-						  	</select>
-					  	</td>
+							</select>
+						</td>
+						<td align="right">
+							<select name="product_type" id="product_type" style="width:100px">
+								<option value = "--请选择--">--请选择--</option>
+							</select>
+						</td>
 						<td align="right">
 							<select name="product_name" id="product_name" style="width:150px">
-							  	<option value = "--请选择--">--请选择--</option>
+								<option value = "--请选择--">--请选择--</option>
 							</select>
 						</td>
 						<td align="right">
 							<select name="bar_code" id="bar_code" style="width:100px">
-							  	<option value = "--请选择--">--请选择--</option>
+								<option value = "--请选择--">--请选择--</option>
 							</select>
 						</td>
-				  	</tr>
-			  	</table>
-			  	<br>
+					</tr>
+				</table>
+				<br>
 		    	<table align="center" border="1">
     				<tr>
 <%
@@ -113,50 +113,50 @@
 				}
 %>
 					</tr>
-				  	<tr>
-			   			<td align="right">
+					<tr>
+						<td align="right">
 							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()">
 						</td>
-			   			<td align="right">
+						<td align="right">
 							<input type="text" name="productname" id="productname" style='width:120px'>
 						</td>
-			   			<td align="right">
+						<td align="right">
 							<input type="text" name="QTY" id="QTY" style='width:70px'>
 						</td>
-			   			<td align="right">
+						<td align="right">
 							<input type="text" name="WeightUnit" id="WeightUnit" style='width:70px'>
 						</td>
-			   			<td align="right">
+						<td align="right">
 							<input type="text" name="PriceUnit" id="PriceUnit" style='width:70px'>
 						</td>
-			   			<td align="right">
+						<td align="right">
 							<input type="text" name="Description" id="Description" value="无备注" style='width:120px'>
 						</td>
-				  		<td align="right">
-						  	<select name="supplier_name" id="supplier_name" style="width:120px">
-							  	<option value = "--请选择--">--请选择--</option>
-						  	</select>
-					  	</td>
+						<td align="right">
+							<select name="supplier_name" id="supplier_name" style="width:120px">
+								<option value = "--请选择--">--请选择--</option>
+							</select>
+						</td>
 						<td align="center"><input align="middle" type="button" value="确认" onclick="additem(this)"></td>
-				  	</tr>
-			  	</table>
-			  	<br><br>
-		  		<table id="display_add" border='1' align="center"></table>
-			  	<br>
-			  	<table align="center">
+					</tr>
+				</table>
+				<br><br>
+				<table id="display_add" border='1' align="center"></table>
+				<br>
+				<table align="center">
 					<tr>
-			   			<td align="center">
-				   			<label>交货时间:</label>
+						<td align="center">
+							<label>交货时间:</label>
 			    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>"></div>
 						</td>
-			   			<td align="center">
+						<td align="center">
 							<input type="button" value="提交" style='width:100px' onclick="AddMFGToolsMaterialFun()">
 						</td>
 					</tr>
 		    	</table>
 			</td>
 		</tr>
-   	</table>
+	</table>
   </body>
 </html>
 <%

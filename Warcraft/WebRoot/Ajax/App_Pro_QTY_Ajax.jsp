@@ -13,6 +13,8 @@
 		List<String> barcodeList = recordList.get(0);
 		List<String> weightList = recordList.get(1);
 		List<String> descList = recordList.get(2);
+		List<String> priceList = recordList.get(3);
+		List<String> vendorList = recordList.get(4);
 		
 		for (int i = 0; i < barcodeList.size(); i++)
 		{
@@ -20,6 +22,7 @@
 			iRepertory += hPageHandle.GetIN_QTYByBarCode(bar_Code) - hPageHandle.GetOUT_QTYByBarCode(bar_Code);
 			rtnRst += bar_Code + "$" + hPageHandle.GetWeightByBarcode(bar_Code, "Material_Storage") + "$";
 			rtnRst += descList.get(i) + "$" + hPageHandle.GetWeightByBarcode(bar_Code, "Product_Storage") + "$";
+			rtnRst += priceList.get(i) + "$" + vendorList.get(i) + "$";
 		}
 	}
 	rtnRst += Integer.toString(iRepertory);

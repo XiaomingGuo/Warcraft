@@ -52,7 +52,7 @@ public class Query_Process_Detail_Info extends PageParentClass
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "product_type"), Arrays.asList(proName, proType));
-		String[] keyword = new String[] {"Bar_Code", "weight", "description"};
+		String[] keyword = new String[] {"Bar_Code", "weight", "description", "sample_price", "sample_vendor"};
 		
 		for(int idx=0; idx < keyword.length; idx++)
 			rtnRst.add(hPIHandle.getDBRecordList(keyword[idx]));

@@ -13,6 +13,8 @@ public class ProductInfo implements java.io.Serializable {
 	private String name;
 	private String productType;
 	private Float weight;
+	private Float samplePrice;
+	private String sampleVendor;
 	private String processName;
 	private Integer capacity;
 	private String description;
@@ -26,23 +28,26 @@ public class ProductInfo implements java.io.Serializable {
 
 	/** minimal constructor */
 	public ProductInfo(String barCode, String name, String productType,
-			Float weight, String processName, Integer capacity, String description) {
+			Float weight, Float samplePrice, String description) {
 		this.barCode = barCode;
 		this.name = name;
 		this.productType = productType;
 		this.weight = weight;
-		this.processName = processName;
-		this.capacity = capacity;
+		this.samplePrice = samplePrice;
 		this.description = description;
 	}
 
 	/** full constructor */
 	public ProductInfo(String barCode, String name, String productType,
-			Float weight, String processName, Integer capacity, String description, String picture) {
+			Float weight, Float samplePrice, String sampleVendor,
+			String processName, Integer capacity, String description,
+			String picture) {
 		this.barCode = barCode;
 		this.name = name;
 		this.productType = productType;
 		this.weight = weight;
+		this.samplePrice = samplePrice;
+		this.sampleVendor = sampleVendor;
 		this.processName = processName;
 		this.capacity = capacity;
 		this.description = description;
@@ -89,6 +94,22 @@ public class ProductInfo implements java.io.Serializable {
 
 	public void setWeight(Float weight) {
 		this.weight = weight;
+	}
+
+	public Float getSamplePrice() {
+		return this.samplePrice;
+	}
+
+	public void setSamplePrice(Float samplePrice) {
+		this.samplePrice = samplePrice;
+	}
+
+	public String getSampleVendor() {
+		return this.sampleVendor;
+	}
+
+	public void setSampleVendor(String sampleVendor) {
+		this.sampleVendor = sampleVendor;
 	}
 
 	public String getProcessName() {

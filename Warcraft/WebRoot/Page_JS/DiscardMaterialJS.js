@@ -56,7 +56,7 @@ $(function()
 			if (textStatus == "success")
 			{
 				var code_list = data.split("$");
-				if (code_list.length == 6)
+				if (code_list.length == 8)
 				{
 					AddNewSelectItem("bar_code", code_list[1]);
 					$("#productname").val(GetSelectedContent("product_name"));
