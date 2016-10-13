@@ -151,9 +151,9 @@ public class Product_Info extends DBTableParent implements ITableInterface
         aWriteRecord.setProcessName(processName);
         aWriteRecord.setCapacity(Integer.parseInt(capacity));
         if(null == description)
-            aWriteRecord.setDescription(description);
-        else
             aWriteRecord.setDescription("无备注");
+        else
+            aWriteRecord.setDescription(description);
         getEQMHandle().addANewRecord();
     }
 }
