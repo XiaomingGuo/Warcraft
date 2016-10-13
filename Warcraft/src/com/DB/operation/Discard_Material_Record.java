@@ -12,14 +12,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Discard_Material_Record extends DBTableParent implements ITableInterface
+public class Discard_Material_Record implements ITableInterface
 {
 	private List<DiscardMaterialRecord> resultList = null;
 	private DiscardMaterialRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Discard_Material_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -123,6 +124,6 @@ public class Discard_Material_Record extends DBTableParent implements ITableInte
 		aWriteRecord.setOperator(operator);
 		aWriteRecord.setQty(Integer.parseInt(qty));
 		aWriteRecord.setReason(reason);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 }

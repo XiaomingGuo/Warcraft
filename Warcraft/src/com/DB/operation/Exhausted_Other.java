@@ -15,14 +15,15 @@ import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Exhausted_Other extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Exhausted_Other implements ITableInterface, IStorageTableInterface
 {
 	private List<ExhaustedOther> resultList = null;
 	private ExhaustedOther aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Exhausted_Other(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -103,12 +104,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 	}
 	
 	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetDblSumOfValue("ExhaustedOther", getValue, keyword, keyValue);
-	}
-	
-	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
 		String rtnRst = "";
@@ -148,7 +143,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 		return rtnRst;
 	}
 	
-	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String orderName,
 			String appSupplier_name, String poName, String appInStoreDate, String isEnsure, String createDate)
@@ -165,13 +159,6 @@ public class Exhausted_Other extends DBTableParent implements ITableInterface, I
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));
 		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
-		getEQMHandle().addANewRecord();
-	}
-	
-	@Override
-	public void AddARecord(String appBarcode, String batch_lot,
-			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {
-		
+		gEQMHandle.addANewRecord();
 	}
 }

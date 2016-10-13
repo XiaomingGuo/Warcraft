@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Customer_Po extends DBTableParent implements ITableInterface
+public class Customer_Po implements ITableInterface
 {
 	private List<CustomerPo> resultList = null;
 	private CustomerPo aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Customer_Po(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -77,20 +78,20 @@ public class Customer_Po extends DBTableParent implements ITableInterface
 	public void QueryRecordByPoNameAndMoreThanStatus(String poName, String status)
 	{
 		String hql = String.format("from CustomerPo cp where cp.poName = '%s' and cp.status > %s", poName, status);
-		getEQMHandle().EQQuery(hql);
+		gEQMHandle.EQQuery(hql);
 	}
 	
 	public void GetRecordLessThanStatus(int istatus)
 	{
 		String hql = String.format("from CustomerPo cp where cp.status<='%d'", istatus);
-		getEQMHandle().EQQuery(hql);
+		gEQMHandle.EQQuery(hql);
 	}
 	
 	public void AddARecord(String poName)
 	{
 		aWriteRecord = new CustomerPo();
 		aWriteRecord.setPoName(poName);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 	
 	@Override

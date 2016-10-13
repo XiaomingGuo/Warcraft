@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class AddMFGMaterial_ReferTo_PO extends PageParentClass
 {
@@ -13,19 +15,19 @@ public class AddMFGMaterial_ReferTo_PO extends PageParentClass
 	
 	public String AddMaterialToSuitedStorage(String MbMaterialPoId, String storeQty, String addDate)
 	{
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
-		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(MbMaterialPoId));
+		DBTableParent hDBHandle = new DatabaseStore("Mb_Material_Po");
+		hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(MbMaterialPoId));
 		
-		if(hMMPHandle.RecordDBCount() > 0)
+		if(hDBHandle.getTableInstance().RecordDBCount() > 0)
 		{
-			String barcode = hMMPHandle.getDBRecordList("Bar_Code").get(0);
-			String poName = hMMPHandle.getDBRecordList("po_name").get(0);
-			String vendor = hMMPHandle.getDBRecordList("vendor").get(0);
+			String barcode = hDBHandle.getTableInstance().getDBRecordList("Bar_Code").get(0);
+			String poName = hDBHandle.getTableInstance().getDBRecordList("po_name").get(0);
+			String vendor = hDBHandle.getTableInstance().getDBRecordList("vendor").get(0);
 			IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
 			String batch_lot = GenBatchLot(barcode);
 			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "empty", poName, vendor, addDate);
 		}
-		return hMMPHandle.getDBRecordList("po_name").get(0);
+		return hDBHandle.getTableInstance().getDBRecordList("po_name").get(0);
 	}
 	
 	private List<List<String>> GetAllMbMaterialPo(String po_name)

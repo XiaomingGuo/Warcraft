@@ -14,14 +14,15 @@ import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-public class Other_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Other_Storage implements ITableInterface, IStorageTableInterface
 {
 	private List<OtherStorage> resultList = null;
 	private OtherStorage aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Other_Storage(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -101,16 +102,10 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		return aWriteRecord;
 	}
 	
-	public double GetDblPriceOfStorage(String keyword, String keyValue)
-	{
-		return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
-	}
-	
-	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetDblSumOfValue("OtherStorage", getValue, keyword, keyValue);
-	}
+	//public double GetDblPriceOfStorage(String keyword, String keyValue)
+	//{
+	//	return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
+	//}
 	
 	@Override
 	public String GetDatabaseKeyWord(String keyword)
@@ -152,7 +147,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		return rtnRst;
 	}
 	
-	@Override
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate)
@@ -165,14 +159,6 @@ public class Other_Storage extends DBTableParent implements ITableInterface, ISt
 		aWriteRecord.setTotalPrice(Double.parseDouble(appTotalPrice));
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
-		getEQMHandle().addANewRecord();
-	}
-	
-	@Override
-	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
-			String appInStoreDate, String isEnsure, String createDate) {
-		
+		gEQMHandle.addANewRecord();
 	}
 }

@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class User_Permission extends DBTableParent implements ITableInterface
+public class User_Permission implements ITableInterface
 {
     private List<UserPermission> resultList = null;
     private UserPermission aWriteRecord = null;
+	IEQManagement gEQMHandle;
     
     public User_Permission(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -79,7 +80,7 @@ public class User_Permission extends DBTableParent implements ITableInterface
         aWriteRecord = new UserPermission();
         aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setTitleName(titleName);
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
     
     @Override

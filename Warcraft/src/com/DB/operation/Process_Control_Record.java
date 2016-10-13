@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Process_Control_Record extends DBTableParent implements ITableInterface
+public class Process_Control_Record implements ITableInterface
 {
 	private List<ProcessControlRecord> resultList = null;
 	private ProcessControlRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Process_Control_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -94,7 +95,7 @@ public class Process_Control_Record extends DBTableParent implements ITableInter
 		aWriteRecord.setProcessId(Integer.parseInt(processId));
 		aWriteRecord.setQty(Integer.parseInt(qty));
 		aWriteRecord.setOperator(operator);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

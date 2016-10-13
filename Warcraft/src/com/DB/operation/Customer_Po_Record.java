@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Customer_Po_Record extends DBTableParent implements ITableInterface
+public class Customer_Po_Record implements ITableInterface
 {
 	private List<CustomerPoRecord> resultList = null;
 	private CustomerPoRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Customer_Po_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -104,7 +105,7 @@ public class Customer_Po_Record extends DBTableParent implements ITableInterface
 		aWriteRecord.setQty(Integer.parseInt(qty));
 		aWriteRecord.setVendor(vendor);
 		aWriteRecord.setPercent(Integer.parseInt(percent));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

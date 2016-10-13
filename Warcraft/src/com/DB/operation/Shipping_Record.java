@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Shipping_Record extends DBTableParent implements ITableInterface
+public class Shipping_Record implements ITableInterface
 {
 	private List<ShippingRecord> resultList = null;
 	private ShippingRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Shipping_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -94,7 +95,7 @@ public class Shipping_Record extends DBTableParent implements ITableInterface
 		aWriteRecord.setBatchLot(batchLot);
 		aWriteRecord.setOrderName(orderName);
 		aWriteRecord.setShipQty(Integer.parseInt(shipQty));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

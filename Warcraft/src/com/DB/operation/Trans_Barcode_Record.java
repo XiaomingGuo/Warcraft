@@ -10,14 +10,15 @@ import com.DB.support.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Trans_Barcode_Record extends DBTableParent implements ITableInterface
+public class Trans_Barcode_Record implements ITableInterface
 {
 	private List<TransBarcodeRecord> resultList = null;
 	private TransBarcodeRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Trans_Barcode_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -94,7 +95,7 @@ public class Trans_Barcode_Record extends DBTableParent implements ITableInterfa
 		aWriteRecord.setToBarCode(toBarcode);
 		aWriteRecord.setToBatchLot(toBatchLot);
 		aWriteRecord.setToQty(Integer.parseInt(toQty));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

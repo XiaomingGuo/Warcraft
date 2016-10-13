@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
-<%@ page import="com.DB.operation.User_Info" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
@@ -16,14 +16,14 @@
 	else
 	{
 		String mess = "";
-		User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-		hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(name));
-		List<String> tempList = hUIHandle.getDBRecordList("password");
+		DatabaseStore hDBHandle = new DatabaseStore("User_Info");
+		hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(name));
+		List<String> tempList = hDBHandle.getTableInstance().getDBRecordList("password");
 		
 		if(tempList.size() > 0)
 		{
 			String KeyWord = tempList.get(0);
-			tempList = hUIHandle.getDBRecordList("permission");
+			tempList = hDBHandle.getTableInstance().getDBRecordList("permission");
 			int userRight = Integer.parseInt( tempList.get(0));
 			
 			mylogon.setUsername(name);

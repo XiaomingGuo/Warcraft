@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Holiday_Mark extends DBTableParent implements ITableInterface
+public class Holiday_Mark implements ITableInterface
 {
     private List<HolidayMark> resultList = null;
     private HolidayMark aWriteRecord = null;
+	IEQManagement gEQMHandle;
     
     public Holiday_Mark(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -83,7 +84,7 @@ public class Holiday_Mark extends DBTableParent implements ITableInterface
         aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setHolidayDate(holidayDate);
         aWriteRecord.setHolidayInfo(holidayInfo);
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
     
     @Override

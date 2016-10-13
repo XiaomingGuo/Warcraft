@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Over_Time_Record extends DBTableParent implements ITableInterface
+public class Over_Time_Record implements ITableInterface
 {
 	private List<OverTimeRecord> resultList = null;
 	private OverTimeRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Over_Time_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -83,7 +84,7 @@ public class Over_Time_Record extends DBTableParent implements ITableInterface
 		aWriteRecord.setCheckInId(checkInId);
 		aWriteRecord.setOverTimeDate(overTimeDate);
 		aWriteRecord.setOverTimeHour(overTimeHour);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 	
 	@Override

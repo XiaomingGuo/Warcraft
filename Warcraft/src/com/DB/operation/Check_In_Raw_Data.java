@@ -12,14 +12,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
+public class Check_In_Raw_Data implements ITableInterface
 {
     private List<CheckInRawData> resultList = null;
     private CheckInRawData aWriteRecord = null;
+    IEQManagement gEQMHandle;
     
     public Check_In_Raw_Data(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+    	gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -91,7 +92,7 @@ public class Check_In_Raw_Data extends DBTableParent implements ITableInterface
         aWriteRecord.setCheckInDate(checkInDate);
         aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
         aWriteRecord.setWorkGroup(Integer.parseInt(workGroup));
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
     
     @Override

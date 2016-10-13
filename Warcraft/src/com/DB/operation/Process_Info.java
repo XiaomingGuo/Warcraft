@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Process_Info extends DBTableParent implements ITableInterface
+public class Process_Info implements ITableInterface
 {
     private List<ProcessInfo> resultList = null;
     private ProcessInfo aWriteRecord = null;
+	IEQManagement gEQMHandle;
     
     public Process_Info(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -87,7 +88,7 @@ public class Process_Info extends DBTableParent implements ITableInterface
         aWriteRecord.setStationName(stationName);
         aWriteRecord.setProcessOrder(Integer.parseInt(processOrder));
         aWriteRecord.setProcessCount(Integer.parseInt(processCount));
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
 
     @Override

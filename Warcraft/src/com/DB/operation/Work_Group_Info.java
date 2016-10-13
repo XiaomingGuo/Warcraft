@@ -13,14 +13,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Work_Group_Info extends DBTableParent implements ITableInterface
+public class Work_Group_Info implements ITableInterface
 {
 	private List<WorkGroupInfo> resultList = null;
 	private WorkGroupInfo aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Work_Group_Info(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -89,7 +90,7 @@ public class Work_Group_Info extends DBTableParent implements ITableInterface
 		aWriteRecord.setCheckInTime(Time.valueOf(checkInTime));
 		aWriteRecord.setCheckOutTime(Time.valueOf(checkOutTime));
 		aWriteRecord.setWorkDaysAweek(Integer.parseInt(workDaysAweek));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

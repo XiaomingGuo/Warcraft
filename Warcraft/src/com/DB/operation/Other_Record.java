@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Other_Record extends DBTableParent implements ITableInterface
+public class Other_Record implements ITableInterface
 {
 	private List<OtherRecord> resultList = null;
 	private OtherRecord aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Other_Record(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -100,7 +101,7 @@ public class Other_Record extends DBTableParent implements ITableInterface
 		aWriteRecord.setQty(Integer.parseInt(appProduct_QTY));
 		aWriteRecord.setUserName(appUserName);
 		aWriteRecord.setMergeMark(Integer.parseInt(mergeMark));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 	
 	@Override

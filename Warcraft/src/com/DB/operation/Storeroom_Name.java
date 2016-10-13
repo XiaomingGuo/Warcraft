@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Storeroom_Name extends DBTableParent implements ITableInterface
+public class Storeroom_Name implements ITableInterface
 {
 	private List<StoreroomName> resultList = null;
 	private StoreroomName aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Storeroom_Name(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -75,7 +76,7 @@ public class Storeroom_Name extends DBTableParent implements ITableInterface
 	{
 		aWriteRecord = new StoreroomName();
 		aWriteRecord.setName(poName);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

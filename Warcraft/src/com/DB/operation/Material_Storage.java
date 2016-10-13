@@ -12,14 +12,15 @@ import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Material_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Material_Storage implements ITableInterface, IStorageTableInterface
 {
 	private List<MaterialStorage> resultList = null;
 	private MaterialStorage aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Material_Storage(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -106,12 +107,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 	}
 	
 	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetDblSumOfValue("MaterialStorage", getValue, keyword, keyValue);
-	}
-	
-	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
 		String rtnRst = "";
@@ -156,8 +151,7 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		}
 		return rtnRst;
 	}
-
-	@Override
+	
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate)
@@ -171,14 +165,6 @@ public class Material_Storage extends DBTableParent implements ITableInterface, 
 		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
-		getEQMHandle().addANewRecord();
-	}
-	
-	@Override
-	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
-			String appInStoreDate, String isEnsure, String createDate) {
-		
+		gEQMHandle.addANewRecord();
 	}
 }

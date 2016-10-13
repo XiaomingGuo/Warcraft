@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
-import com.page.utilities.CPageAjaxUtil;
-import com.page.utilities.CRecordsQueryUtil;
+import com.page.utilities.*;
 
 public class PersonalInfo extends PageParentClass implements IPageInterface
 {
@@ -26,7 +26,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     
     public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
         if(getKeyWord.contains("name"))
             rtnRst.remove("root");
@@ -128,19 +128,19 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     
     private String GetWorkGroupName(String id)
     {
-        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
         return hQueryHandle.GetTableContentByKeyWord("id", id, "group_name").get(0);
     }
     
     public List<String> GetAllWorkGroupName()
     {
-        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "group_name");
     }
     
     public String UpdateCheckInRawDataRecord(String id, String workGroup)
     {
-        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
         String workGroupId = hQueryHandle.GetTableContentByKeyWord("group_name", workGroup, "id").get(0);
         Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
         hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(id));

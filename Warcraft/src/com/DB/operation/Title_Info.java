@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Title_Info extends DBTableParent implements ITableInterface
+public class Title_Info implements ITableInterface
 {
     private List<TitleInfo> resultList = null;
     private TitleInfo aWriteRecord = null;
+	IEQManagement gEQMHandle;
     
     public Title_Info(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -75,7 +76,7 @@ public class Title_Info extends DBTableParent implements ITableInterface
     {
         aWriteRecord = new TitleInfo();
         aWriteRecord.setTitleName(titleName);
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
     
     @Override

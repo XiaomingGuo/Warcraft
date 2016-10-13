@@ -14,14 +14,15 @@ import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Exhausted_Material extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Exhausted_Material implements ITableInterface, IStorageTableInterface
 {
 	private List<ExhaustedMaterial> resultList = null;
 	private ExhaustedMaterial aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Exhausted_Material(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -108,12 +109,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 	}
 	
 	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetDblSumOfValue("ExhaustedMaterial", getValue, keyword, keyValue);
-	}
-	
-	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
 		String rtnRst = "";
@@ -159,7 +154,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		return rtnRst;
 	}
 	
-	@Override
 	public void AddAExRecord(String id, String appBarcode, String batch_lot,
 			String appProductQTY, String outQty, String appPriceUnit, String appTotalPrice, String orderName,
 			String poName, String appSupplier_name, String appInStoreDate, String isEnsure, String createDate)
@@ -178,26 +172,6 @@ public class Exhausted_Material extends DBTableParent implements ITableInterface
 		aWriteRecord.setInStoreDate(appInStoreDate);
 		aWriteRecord.setIsEnsure(Integer.parseInt(isEnsure));
 		aWriteRecord.setCreateDate(Timestamp.valueOf(createDate));
-		getEQMHandle().addANewRecord();
-	}
-
-	@Override
-	public void QueryRecordByFilterKeyList(List<String> keyList,
-			List<String> valueList)
-	{
-		String hql = "from ExhaustedMaterial em where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("em.%s='%s' and ", GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
-		}
-		hql+= String.format("em.%s='%s'", GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
-		getEQMHandle().EQQuery(hql);
-	}
-
-	@Override
-	public void AddARecord(String appBarcode, String batch_lot,
-			String appProductQTY, String appPriceUnit, String appTotalPrice,
-			String appOrderName, String poName, String appSupplier_name, String appInStoreDate) {
-		
+		gEQMHandle.addANewRecord();
 	}
 }

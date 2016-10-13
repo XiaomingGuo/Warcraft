@@ -12,14 +12,15 @@ import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Semi_Product_Storage extends DBTableParent implements ITableInterface, IStorageTableInterface
+public class Semi_Product_Storage implements ITableInterface, IStorageTableInterface
 {
 	private List<SemiProductStorage> resultList = null;
 	private SemiProductStorage aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Semi_Product_Storage(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -106,12 +107,6 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 	}
 	
 	@Override
-	public double GetDblSumOfValue(String getValue, String keyword, String keyValue)
-	{
-		return super.GetDblSumOfValue("SemiProductStorage", getValue, keyword, keyValue);
-	}
-	
-	@Override
 	public String GetDatabaseKeyWord(String keyword)
 	{
 		String rtnRst = "";
@@ -156,8 +151,7 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 		}
 		return rtnRst;
 	}
-
-	@Override
+	
 	public void AddARecord(String appBarcode, String batch_lot,
 			String appProductQTY, String appPriceUnit, String appTotalPrice,
 			String appOrderName, String poName, String appSupplier_name, String appInStoreDate)
@@ -171,14 +165,6 @@ public class Semi_Product_Storage extends DBTableParent implements ITableInterfa
 		aWriteRecord.setPoName(poName);
 		aWriteRecord.setVendorName(appSupplier_name);
 		aWriteRecord.setInStoreDate(appInStoreDate);
-		getEQMHandle().addANewRecord();
-	}
-	
-	@Override
-	public void AddAExRecord(String id, String appBarcode, String batch_lot,
-			String appProductQTY, String outQty, String appPriceUnit,
-			String appTotalPrice, String appOrderName, String poName, String appSupplier_name,
-			String appInStoreDate, String isEnsure, String createDate) {
-		
+		gEQMHandle.addANewRecord();
 	}
 }

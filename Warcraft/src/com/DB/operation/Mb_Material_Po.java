@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Mb_Material_Po extends DBTableParent implements ITableInterface
+public class Mb_Material_Po implements ITableInterface
 {
 	private List<MbMaterialPo> resultList = null;
 	private MbMaterialPo aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Mb_Material_Po(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -94,7 +95,7 @@ public class Mb_Material_Po extends DBTableParent implements ITableInterface
 		aWriteRecord.setDateOfDelivery(dateOfDelivery);
 		aWriteRecord.setVendor(vendor);
 		aWriteRecord.setPoQty(poQty);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 	
 	@Override

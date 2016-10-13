@@ -12,14 +12,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Info extends DBTableParent implements ITableInterface
+public class Product_Info implements ITableInterface
 {
     private List<ProductInfo> resultList = null;
     private ProductInfo aWriteRecord = null;
+	IEQManagement gEQMHandle;
     
     public Product_Info(IEQManagement hEQMHandle)
     {
-        super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
     }
     
     @Override
@@ -154,6 +155,6 @@ public class Product_Info extends DBTableParent implements ITableInterface
             aWriteRecord.setDescription("无备注");
         else
             aWriteRecord.setDescription(description);
-        getEQMHandle().addANewRecord();
+        gEQMHandle.addANewRecord();
     }
 }

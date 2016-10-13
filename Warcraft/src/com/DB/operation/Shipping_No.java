@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Shipping_No extends DBTableParent implements ITableInterface
+public class Shipping_No implements ITableInterface
 {
 	private List<ShippingNo> resultList = null;
 	private ShippingNo aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Shipping_No(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -80,7 +81,7 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 	public void QueryRecordMoreThanShipNo(String shipNo)
 	{
 		String hql = String.format("from ShippingNo pi where pi.%s>%s", GetDatabaseKeyWord("shipping_no"), shipNo);
-		getEQMHandle().EQQuery(hql);
+		gEQMHandle.EQQuery(hql);
 	}
 	
 	public void AddARecord(String customerPo, String shippingNo)
@@ -88,7 +89,7 @@ public class Shipping_No extends DBTableParent implements ITableInterface
 		aWriteRecord = new ShippingNo();
 		aWriteRecord.setCustomerPo(customerPo);
 		aWriteRecord.setShippingNo(Integer.parseInt(shippingNo));
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

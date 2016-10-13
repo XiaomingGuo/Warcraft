@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Type extends DBTableParent implements ITableInterface
+public class Product_Type implements ITableInterface
 {
 	private List<ProductType> resultList = null;
 	private ProductType aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Product_Type(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -79,7 +80,7 @@ public class Product_Type extends DBTableParent implements ITableInterface
 		aWriteRecord = new ProductType();
 		aWriteRecord.setName(proType);
 		aWriteRecord.setStoreroom(storeroom);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override

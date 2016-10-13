@@ -11,14 +11,15 @@ import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class Product_Order extends DBTableParent implements ITableInterface
+public class Product_Order implements ITableInterface
 {
 	private List<ProductOrder> resultList = null;
 	private ProductOrder aWriteRecord = null;
+	IEQManagement gEQMHandle;
 	
 	public Product_Order(IEQManagement hEQMHandle)
 	{
-		super(hEQMHandle);
+		gEQMHandle = hEQMHandle;
 	}
 	
 	@Override
@@ -77,14 +78,14 @@ public class Product_Order extends DBTableParent implements ITableInterface
 	public void GetRecordLessThanStatus(int iStatus)
 	{
 		String hql = String.format("from ProductOrder po where po.status<='%d'", iStatus);
-		getEQMHandle().EQQuery(hql);
+		gEQMHandle.EQQuery(hql);
 	}
 	
 	public void AddARecord(String orderName)
 	{
 		aWriteRecord = new ProductOrder();
 		aWriteRecord.setOrderName(orderName);
-		getEQMHandle().addANewRecord();
+		gEQMHandle.addANewRecord();
 	}
 
 	@Override
