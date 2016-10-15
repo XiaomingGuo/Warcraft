@@ -20,6 +20,7 @@ public class DatabaseStore extends DBTableParent
     {
         return hTableHandle;
     }
+    
     public ITableInterface CreateTableInstance(String tableName)
     {
         if("Check_In_Raw_Data" == tableName)
