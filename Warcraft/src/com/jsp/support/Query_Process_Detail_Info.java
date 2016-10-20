@@ -40,6 +40,17 @@ public class Query_Process_Detail_Info extends PageParentClass
 			hPTHandle.AddARecord(proType, storeName);
 	}
 	
+	public List<String> GetProductInfoByBarcode(String barcode)
+	{
+		List<String> rtnRst = new ArrayList<String>();
+		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
+		String[] keyWordList = new String[]{"id", "Bar_Code", "name", "product_type", "weight", "sample_price", "sample_vendor", "process_name", "capacity", "description"};
+		for(int idx = 0; idx < keyWordList.length; idx++)
+			rtnRst.add(hPIHandle.getDBRecordList(keyWordList[idx]).get(0));
+		return rtnRst;
+	}
+	
 	public List<String> GetProductInfoByProType(String proType)
 	{
 		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());

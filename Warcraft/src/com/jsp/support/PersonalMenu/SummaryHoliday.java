@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
-import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
@@ -21,24 +20,6 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
         hQueryHandle = new CRecordsQueryUtil();
         hAjaxHandle = new CPageAjaxUtil();
         hAjaxHandle.setTableHandle(this);
-    }
-    
-    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
-    {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
-        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
-        if(getKeyWord.contains("name"))
-            rtnRst.remove("root");
-        else if(getKeyWord.contains("check_in_id"))
-            rtnRst.remove("99999");
-        return rtnRst;
-    }
-    
-    private String GetCheckInIdFromUserInfo(String user_name)
-    {
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
-        return hUIHandle.getDBRecordList("check_in_id").get(0);
     }
     
     private List<List<String>> GetAllHolidayData(String userID, String user_name, String queryDate, String holidayType)

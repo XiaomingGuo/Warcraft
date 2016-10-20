@@ -24,17 +24,6 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
         hAjaxHandle.setTableHandle(this);
     }
     
-    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
-    {
-        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
-        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
-        if(getKeyWord.contains("name"))
-            rtnRst.remove("root");
-        else if(getKeyWord.contains("check_in_id"))
-            rtnRst.remove("99999");
-        return rtnRst;
-    }
-    
     private List<List<String>> GetAllCheckInRawData(String user_name, String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();

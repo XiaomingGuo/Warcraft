@@ -40,17 +40,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return this.hQueryHandle;
     }
     
-    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
-    {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
-        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
-        if(getKeyWord.contains("name"))
-            rtnRst.remove("root");
-        else if(getKeyWord.contains("check_in_id"))
-            rtnRst.remove("99999");
-        return rtnRst;
-    }
-    
     public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
     {
         hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
@@ -215,33 +204,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             {
                 if(overTimeHour <= 2)
                 {
-                    rtnRst.add(overTimeHour);
+                    rtnRst.add(applyOverTime >= overTimeHour?overTimeHour:applyOverTime);
                     rtnRst.add(0L);
-                }
-                else if(overTimeHour >= 4)
-                {
-                    rtnRst.add(2L);
-                    if(applyOverTime > 2)
-                        rtnRst.add(2L);
-                    else
-                        rtnRst.add(0L);
                 }
                 else
                 {
-                    rtnRst.add(2L);
-                    if(applyOverTime > 2)
-                        rtnRst.add(overTimeHour-2L);
-                    else
-                        rtnRst.add(0L);
+                    rtnRst.add(applyOverTime >= 2L?2L:applyOverTime);
+                    rtnRst.add(applyOverTime-2L >= 2L?2L:applyOverTime-2L>0?applyOverTime-2L:0);
                 }
             }
             else
             {
                 rtnRst.add(0L);
-                if(overTimeHour > 4)
-                    rtnRst.add(4L);
-                else
-                    rtnRst.add(overTimeHour);
+                rtnRst.add(applyOverTime >= overTimeHour?overTimeHour:applyOverTime);
             }
         }
         else
@@ -308,7 +283,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private String GetTomorrowCheckOutDate(String checkInId, int checkInDate)
+    private List<String> GetTomorrowCheckOutDate(String checkInId, int checkInDate)
     {
         String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
         int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
@@ -316,12 +291,17 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
         else
             usedDay = Integer.toString(checkInDate+1);
-        List<String> tempRecord = GetOneDayCheckRawData(g_recordList, checkInId, usedDay).get(2);
-        String rtnRst = null;
-        for(int idx = 0; idx < tempRecord.size(); idx++)
+        List<List<String>> tempRecord = GetOneDayCheckRawData(g_recordList, checkInId, usedDay);
+        List<String> rtnRst = new ArrayList<String>();
+        for(int idx = 0; idx < tempRecord.get(2).size(); idx++)
         {
-            if(DateAdapter.TimeSpan(tempRecord.get(idx), "05:30:00") < 0)
-                rtnRst = tempRecord.get(idx);
+            for(int iType = 0; iType < tempRecord.size(); iType++)
+            {
+                if(DateAdapter.TimeSpan(tempRecord.get(2).get(idx), "09:30:00") < 0)
+                    rtnRst.add(tempRecord.get(iType).get(idx));
+                else
+                    break;
+            }
         }
         return rtnRst;
     }
@@ -363,7 +343,24 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         else
         {
             rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
-            rtnRst.add(GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate)));
+            List<String> tempRecord = GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate));
+            rtnRst.add(tempRecord.size() > 0?tempRecord.get(2):null);
+        }
+        return rtnRst;
+    }
+    
+    private int GetWorkGroupID(String checkInId, String checkInDate, List<List<String>> recordList)
+    {
+        List<String> tomorrowRecord = GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate));
+        List<String> workGroup = recordList.get(3);
+        String tomWorkGroup = (tomorrowRecord.size() > 0)?tomorrowRecord.get(3):"";
+        int rtnRst = Integer.parseInt(workGroup.get(workGroup.size()-1));
+        if(!workGroup.get(0).equals(tomWorkGroup)&&!tomWorkGroup.isEmpty())
+        {
+            List<String> workGroupTimeList = GetWorkGroupTime(rtnRst, g_WorkGroupRecord);
+            if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+                rtnRst = Integer.parseInt(workGroup.get(workGroup.size()-1));
+                //rtnRst = Integer.parseInt(tomWorkGroup);
         }
         return rtnRst;
     }
@@ -373,7 +370,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<Long> rtnRst = new ArrayList<Long>();
         if(recordList.get(0).size() > 0)
         {
-            int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
+            int workGroupId = GetWorkGroupID(checkInId, checkInDate, recordList);
+            //int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
             if(workGroupId == 0)
                 return Arrays.asList(2L, 0L, 0L);
             

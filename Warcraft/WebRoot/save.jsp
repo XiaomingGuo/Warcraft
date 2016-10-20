@@ -56,7 +56,7 @@
                 
                 hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
                 if(hPIHandle.RecordDBCount() == 0)
-                    hPIHandle.AddARecord(Barcode, product_name, product_type, weight, "", "", description);
+                    hPIHandle.AddARecord(Barcode, product_name, product_type, weight, "","","", "", description);
             }
         }
     }
