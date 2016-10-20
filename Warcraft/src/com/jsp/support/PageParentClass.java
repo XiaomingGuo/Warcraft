@@ -9,6 +9,7 @@ import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 import com.Warcraft.SupportUnit.DateAdapter;
+import com.page.utilities.CRecordsQueryUtil;
 
 public class PageParentClass
 {
@@ -399,5 +400,17 @@ public class PageParentClass
         if (hCPHandle.RecordDBCount() > 0||"Material_Supply" == poname)
             return true;
         return false;
+    }
+    
+    public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
+    {
+        IRecordsQueryUtil hQueryHandle = new CRecordsQueryUtil();
+        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+        if(getKeyWord.contains("name"))
+            rtnRst.remove("root");
+        else if(getKeyWord.contains("check_in_id"))
+            rtnRst.remove("99999");
+        return rtnRst;
     }
 }

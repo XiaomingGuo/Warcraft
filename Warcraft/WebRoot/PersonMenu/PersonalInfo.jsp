@@ -68,10 +68,6 @@
             }
 %>
         </tr>
-
-<%
-            int iRow = 0;
-%>
         <tr>
 <%
             for(int iCol = 1; iCol <= keyList.length; iCol++)
