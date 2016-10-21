@@ -14,7 +14,7 @@ public class EarthquakeManagement implements IEQManagement
 	private Transaction tx = null;
 	private ITableInterface hTableHandle = null;
 	
-	public EarthquakeManagement(){	}
+	public EarthquakeManagement(){}
 	
 	@Override
 	public void setTableHandle(ITableInterface hTableHandle)

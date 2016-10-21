@@ -18,7 +18,7 @@ public class Exhausted_Semi_Product implements ITableInterface, IStorageTableInt
 	private ExhaustedSemiProduct aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Exhausted_Semi_Product(IEQManagement hEQMHandle){}
+	public Exhausted_Semi_Product(){}
     
     @Override
     public void setEQManagement(IEQManagement hEQHandle)

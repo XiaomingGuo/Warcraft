@@ -17,7 +17,7 @@ public class Check_In_Raw_Data implements ITableInterface
     private CheckInRawData aWriteRecord = null;
     IEQManagement gEQMHandle;
     
-    public Check_In_Raw_Data(IEQManagement hEQMHandle){}
+    public Check_In_Raw_Data(){}
     
     @Override
     public void setEQManagement(IEQManagement hEQHandle)

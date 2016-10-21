@@ -18,7 +18,7 @@ public class Exhausted_Manu_Storage_Record implements ITableInterface, IStorageT
 	private ExhaustedManuStorageRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Exhausted_Manu_Storage_Record(IEQManagement hEQMHandle){}
+	public Exhausted_Manu_Storage_Record(){}
     
     @Override
     public void setEQManagement(IEQManagement hEQHandle)
