@@ -17,9 +17,12 @@ public class Holiday_Mark implements ITableInterface
     private HolidayMark aWriteRecord = null;
 	IEQManagement gEQMHandle;
     
-    public Holiday_Mark(IEQManagement hEQMHandle)
+    public Holiday_Mark(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

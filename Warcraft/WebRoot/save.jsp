@@ -2,6 +2,7 @@
 <%@ page import="com.jspsmart.upload.*" %>
 <%@ page import="com.office.core.ExcelManagment" %>
 <%@ page import="com.office.operation.ExcelRead" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.Storeroom_Name" %>
@@ -25,9 +26,9 @@
     List<List<String>> res = excelUtil.execReadExcelBlock("Sheet1", startCell, endCell);
     if(res.size() > 0)
     {
-        Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-        Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
-        Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+    	DatabaseStore hPIHandle = new DatabaseStore("Product_Info");
+    	DatabaseStore hPTHandle = new DatabaseStore("Product_Type");
+    	DatabaseStore hSNHandle = new DatabaseStore("Storeroom_Name");
         for(int iRow = 0; iRow < res.size(); iRow++)
         {
             String storename = res.get(iRow).get(0);
@@ -37,7 +38,7 @@
             String weight = res.get(iRow).get(4);
             String description = res.get(iRow).get(5);
             hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
-            if(hPIHandle.RecordDBCount() > 0)
+            if(hPIHandle.getTableInstance().RecordDBCount() > 0)
             {
                 hPIHandle.UpdateRecordByKeyList("name", product_name, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
                 hPIHandle.UpdateRecordByKeyList("product_type", product_type, Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
@@ -47,16 +48,16 @@
             else
             {
                 hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
-                if (hSNHandle.RecordDBCount() == 0)
-                    hSNHandle.AddARecord(storename);
+                if (hSNHandle.getTableInstance().RecordDBCount() == 0)
+                    ((Storeroom_Name)hSNHandle.getTableInstance()).AddARecord(storename);
                 
                 hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
-                if (hPTHandle.RecordDBCount() == 0)
-                    hPTHandle.AddARecord(product_type, storename);
+                if (hPTHandle.getTableInstance().RecordDBCount() == 0)
+                    ((Product_Type)hPTHandle.getTableInstance()).AddARecord(product_type, storename);
                 
                 hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
-                if(hPIHandle.RecordDBCount() == 0)
-                    hPIHandle.AddARecord(Barcode, product_name, product_type, weight, "","","", "", description);
+                if(hPIHandle.getTableInstance().RecordDBCount() == 0)
+                    ((Product_Info)hPIHandle.getTableInstance()).AddARecord(Barcode, product_name, product_type, weight, "","","", "", description);
             }
         }
     }

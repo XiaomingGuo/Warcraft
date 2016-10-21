@@ -18,11 +18,14 @@ public class Discard_Material_Record implements ITableInterface
 	private DiscardMaterialRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Discard_Material_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Discard_Material_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

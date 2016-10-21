@@ -21,11 +21,14 @@ public class Exhausted_Other implements ITableInterface, IStorageTableInterface
 	private ExhaustedOther aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Exhausted_Other(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Exhausted_Other(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

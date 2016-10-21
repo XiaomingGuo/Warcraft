@@ -17,9 +17,12 @@ public class Title_Info implements ITableInterface
     private TitleInfo aWriteRecord = null;
 	IEQManagement gEQMHandle;
     
-    public Title_Info(IEQManagement hEQMHandle)
+    public Title_Info(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

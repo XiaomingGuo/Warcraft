@@ -17,11 +17,14 @@ public class Shipping_No implements ITableInterface
 	private ShippingNo aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Shipping_No(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Shipping_No(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

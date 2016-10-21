@@ -54,13 +54,6 @@ public class SubmitManualOrder extends PageParentClass
 		return hHandle.GetQtyByBarcodeAndPOName(strBarcode, appPOName, "QTY");
 	}
 	
-	public int GetRepertoryByBarCode(String storageName, String strBarcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(strBarcode);;
-		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode)) - 
-				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
-	}
-	
 	public void UpdateCustomerPoStatus(String status, String poName)
 	{
 		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
@@ -105,7 +98,7 @@ public class SubmitManualOrder extends PageParentClass
 			{
 				int iAllOrderQTY = nextOrderQty.get(iRow);
 				String strBarcode = recordList.get(0).get(iRow);
-				int repertory = GetRepertoryByBarCode("Product_Storage", strBarcode);
+				int repertory = GetStorageRepertory(GetUsedBarcode(strBarcode, "Product_Storage"), Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				rtnRst.add(iAllOrderQTY - repertory);
 				if(rtnRst.get(iRow) >= 0&&rtnRst.get(iRow) < iAllOrderQTY)
 					InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), repertory, appPOName, OrderName);
@@ -130,7 +123,7 @@ public class SubmitManualOrder extends PageParentClass
 			{
 				int iAllOrderQTY = nextOrderQty.get(iRow);
 				String strBarcode = recordList.get(0).get(iRow);
-				int repertory = GetRepertoryByBarCode("Material_Storage", strBarcode);
+				int repertory = GetStorageRepertory(GetUsedBarcode(strBarcode, "Material_Storage"), Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				rtnRst.add(iAllOrderQTY - repertory);
 				if(rtnRst.get(iRow) >= 0&&rtnRst.get(iRow) < iAllOrderQTY)
 					InsertProductOrderRecord(strBarcode, recordList.get(2).get(iRow), repertory, appPOName, OrderName);

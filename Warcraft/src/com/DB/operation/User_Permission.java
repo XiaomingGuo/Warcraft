@@ -15,11 +15,14 @@ public class User_Permission implements ITableInterface
 {
     private List<UserPermission> resultList = null;
     private UserPermission aWriteRecord = null;
-	IEQManagement gEQMHandle;
+    IEQManagement gEQMHandle;
     
-    public User_Permission(IEQManagement hEQMHandle)
+    public User_Permission(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

@@ -15,19 +15,22 @@ public class User_Info implements ITableInterface
 {
     private List<UserInfo> resultList = null;
     private UserInfo aWriteRecord = null;
-	IEQManagement gEQMHandle;
+    IEQManagement gEQMHandle;
     
-    public User_Info(IEQManagement hEQMHandle)
-    {
-		gEQMHandle = hEQMHandle;
-    }
+    public User_Info(){}
+    
+	@Override
+	public void setEQManagement(IEQManagement hEQHandle)
+	{
+		gEQMHandle = hEQHandle;
+	}
     
     @Override
     public String GetTableName()
     {
         return "UserInfo";
     }
-
+    
     @Override
     public int RecordDBCount()
     {
@@ -80,7 +83,7 @@ public class User_Info implements ITableInterface
         }
         return rtnRst;
     }
-
+    
     @Override
     public void setResultList(Query query)
     {
@@ -92,7 +95,7 @@ public class User_Info implements ITableInterface
     {
         return aWriteRecord;
     }
-
+    
     @Override
     public String GetDatabaseKeyWord(String keyword) {
         String rtnRst = "";

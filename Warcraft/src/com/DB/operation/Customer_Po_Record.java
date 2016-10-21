@@ -17,11 +17,14 @@ public class Customer_Po_Record implements ITableInterface
 	private CustomerPoRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Customer_Po_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Customer_Po_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

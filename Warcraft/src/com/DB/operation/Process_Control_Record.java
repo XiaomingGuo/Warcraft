@@ -17,11 +17,14 @@ public class Process_Control_Record implements ITableInterface
 	private ProcessControlRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Process_Control_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Process_Control_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

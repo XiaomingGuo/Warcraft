@@ -17,11 +17,14 @@ public class Product_Order implements ITableInterface
 	private ProductOrder aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Product_Order(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Product_Order(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

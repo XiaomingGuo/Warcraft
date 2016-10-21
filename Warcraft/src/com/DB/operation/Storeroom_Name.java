@@ -17,11 +17,14 @@ public class Storeroom_Name implements ITableInterface
 	private StoreroomName aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Storeroom_Name(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Storeroom_Name(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    	
 	@Override
 	public String GetTableName()
 	{

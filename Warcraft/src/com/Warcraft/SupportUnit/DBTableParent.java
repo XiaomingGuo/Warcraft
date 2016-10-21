@@ -9,8 +9,13 @@ public abstract class DBTableParent
 {
     private IEQManagement hEQMHandle = null;
     
-    protected abstract ITableInterface CreateTableInstance(String tableName);
+    protected abstract ITableInterface CreateTableInstance(String tableName, IEQManagement hEQHandle);
     public abstract ITableInterface getTableInstance();
+    
+    public List<String> getDBRecordList(String keyWord)
+    {
+        return getTableInstance().getDBRecordList(keyWord);
+    }
     
     public DBTableParent(IEQManagement hEQMHandle)
     {
@@ -218,6 +223,19 @@ public abstract class DBTableParent
         getEQMHandle().EQQuery(hql);
     }
     
+	public void QueryRecordByFilterKeyListAndMoreThanStatus(List<String> keyList, List<String> valueList, String moreThanKeyWord, String moreThanKeyValue)
+	{
+		String hql = String.format("from %s tbn where", getTableInstance().GetTableName()) + GenerateWhereString(keyList, valueList);
+		hql += String.format(" and tbn.%s>'%s'", getTableInstance().GetDatabaseKeyWord(moreThanKeyWord), moreThanKeyValue);
+		getEQMHandle().EQQuery(hql);
+	}
+	
+	public void GetRecordLessThanStatus(int istatus)
+	{
+		String hql = String.format("from CustomerPo cp where cp.status<='%d'", istatus);
+		getEQMHandle().EQQuery(hql);
+	}
+	
     public void QueryAllRecord()
     {
         String hql = String.format("from %s tbn", getTableInstance().GetTableName());

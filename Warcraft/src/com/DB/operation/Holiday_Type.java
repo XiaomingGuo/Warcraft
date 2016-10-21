@@ -17,9 +17,12 @@ public class Holiday_Type implements ITableInterface
     private HolidayType aWriteRecord = null;
 	IEQManagement gEQMHandle;
     
-    public Holiday_Type(IEQManagement hEQMHandle)
+    public Holiday_Type(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

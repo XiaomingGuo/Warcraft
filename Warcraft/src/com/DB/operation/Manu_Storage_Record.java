@@ -18,11 +18,14 @@ public class Manu_Storage_Record implements ITableInterface, IStorageTableInterf
 	private ManuStorageRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Manu_Storage_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Manu_Storage_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

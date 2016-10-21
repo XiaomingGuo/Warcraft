@@ -17,11 +17,14 @@ public class Customer_Po implements ITableInterface
 	private CustomerPo aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Customer_Po(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Customer_Po(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{
@@ -73,18 +76,6 @@ public class Customer_Po implements ITableInterface
 	public Object getAWriteRecord()
 	{
 		return aWriteRecord;
-	}
-	
-	public void QueryRecordByPoNameAndMoreThanStatus(String poName, String status)
-	{
-		String hql = String.format("from CustomerPo cp where cp.poName = '%s' and cp.status > %s", poName, status);
-		gEQMHandle.EQQuery(hql);
-	}
-	
-	public void GetRecordLessThanStatus(int istatus)
-	{
-		String hql = String.format("from CustomerPo cp where cp.status<='%d'", istatus);
-		gEQMHandle.EQQuery(hql);
 	}
 	
 	public void AddARecord(String poName)

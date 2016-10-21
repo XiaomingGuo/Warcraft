@@ -17,11 +17,14 @@ public class Product_Type implements ITableInterface
 	private ProductType aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Product_Type(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Product_Type(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

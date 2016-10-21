@@ -18,11 +18,14 @@ public class Product_Storage implements ITableInterface, IStorageTableInterface
 	private ProductStorage aWriteRecord = null;
     IEQManagement gEQMHandle;
 	
-	public Product_Storage(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Product_Storage(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

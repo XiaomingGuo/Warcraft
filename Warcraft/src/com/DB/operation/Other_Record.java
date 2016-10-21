@@ -17,11 +17,14 @@ public class Other_Record implements ITableInterface
 	private OtherRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Other_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Other_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

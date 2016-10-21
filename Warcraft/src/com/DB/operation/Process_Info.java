@@ -17,9 +17,12 @@ public class Process_Info implements ITableInterface
     private ProcessInfo aWriteRecord = null;
 	IEQManagement gEQMHandle;
     
-    public Process_Info(IEQManagement hEQMHandle)
+    public Process_Info(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

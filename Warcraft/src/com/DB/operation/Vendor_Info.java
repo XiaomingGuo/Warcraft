@@ -18,9 +18,12 @@ public class Vendor_Info implements ITableInterface
 	private VendorInfo aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Vendor_Info(IEQManagement hEQMHandle)
+	public Vendor_Info(){}
+	
+	@Override
+	public void setEQManagement(IEQManagement hEQHandle)
 	{
-		gEQMHandle = hEQMHandle;
+		gEQMHandle = hEQHandle;
 	}
 	
 	@Override

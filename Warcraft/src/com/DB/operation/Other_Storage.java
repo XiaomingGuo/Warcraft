@@ -20,11 +20,14 @@ public class Other_Storage implements ITableInterface, IStorageTableInterface
 	private OtherStorage aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Other_Storage(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Other_Storage(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

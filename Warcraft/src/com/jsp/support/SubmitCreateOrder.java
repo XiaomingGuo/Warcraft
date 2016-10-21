@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.IStorageTableInterface;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class SubmitCreateOrder extends PageParentClass
 {
@@ -54,16 +56,9 @@ public class SubmitCreateOrder extends PageParentClass
 		return hHandle.GetQtyByBarcodeAndPOName(strBarcode, appPOName, "QTY");
 	}
 	
-	public int GetRepertoryByBarCode(String strBarcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(strBarcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode)) - 
-				hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
-	}
-	
 	public void UpdateCustomerPoStatus(String status, String poName)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("status", "po_name"), Arrays.asList("1", poName));
 	}
 	
@@ -81,12 +76,12 @@ public class SubmitCreateOrder extends PageParentClass
 				int iAllOrderQTY = CalcOrderQty(recordList.get(1).get(iRow), recordList.get(3).get(iRow));
 				String strBarcode = recordList.get(0).get(iRow);
 				String strDeliDate = recordList.get(2).get(iRow);
-				int surplusOrderQty = iAllOrderQTY - GetRepertoryByBarCode(strBarcode);
+				int surplusOrderQty = iAllOrderQTY - GetStorageRepertory(strBarcode, Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 				nextOrderQty.add(surplusOrderQty);
 				if(surplusOrderQty == iAllOrderQTY)
 					recordCount++;
 				else if(surplusOrderQty >= 0)
-					InsertProductOrderRecord(strBarcode, strDeliDate, GetRepertoryByBarCode(strBarcode), appPOName, OrderName);
+					InsertProductOrderRecord(strBarcode, strDeliDate, GetStorageRepertory(strBarcode, Arrays.asList("Bar_Code"), Arrays.asList(strBarcode)), appPOName, OrderName);
 				else
 					InsertProductOrderRecord(strBarcode, strDeliDate, iAllOrderQTY, appPOName, OrderName);
 			}

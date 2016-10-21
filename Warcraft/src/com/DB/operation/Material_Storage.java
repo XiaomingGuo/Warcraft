@@ -18,11 +18,14 @@ public class Material_Storage implements ITableInterface, IStorageTableInterface
 	private MaterialStorage aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Material_Storage(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Material_Storage(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

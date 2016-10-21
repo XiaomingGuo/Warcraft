@@ -20,11 +20,14 @@ public class Exhausted_Material implements ITableInterface, IStorageTableInterfa
 	private ExhaustedMaterial aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Exhausted_Material(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Exhausted_Material(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Generate_MB_PO_Ajax extends PageParentClass
 {
 	public List<List<String>> GetCustomerPoRecordList(String appPOName, String appVendor)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(appPOName, appVendor));
-		if (hCPRHandle.RecordDBCount() > 0)
+		if (hCPRHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] colNames = {"Bar_Code", "vendor", "QTY", "percent"};
 			for(int idx=0; idx < colNames.length; idx++)
@@ -23,17 +25,5 @@ public class Generate_MB_PO_Ajax extends PageParentClass
 			}
 		}
 		return rtnRst;
-	}
-	
-	public int GetIN_QTYByBarCode(String barcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-	}
-	
-	public int GetOUT_QTYByBarCode(String barcode)
-	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 	}
 }

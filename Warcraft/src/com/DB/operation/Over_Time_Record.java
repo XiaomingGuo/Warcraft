@@ -17,11 +17,14 @@ public class Over_Time_Record implements ITableInterface
 	private OverTimeRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Over_Time_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Over_Time_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

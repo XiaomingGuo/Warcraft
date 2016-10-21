@@ -16,11 +16,14 @@ public class Trans_Barcode_Record implements ITableInterface
 	private TransBarcodeRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Trans_Barcode_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Trans_Barcode_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    	
 	@Override
 	public String GetTableName()
 	{

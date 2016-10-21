@@ -10,7 +10,7 @@
 	int used_count = Integer.parseInt((String)request.getParameter("OUT_QTY").replace(" ", ""));
 	ApproveAjax hPageHandle = new ApproveAjax();
 	Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-	int repertory_count = hPageHandle.GetStorageRepertory(barcode);
+	int repertory_count = hPageHandle.GetStorageRepertory(barcode, Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 	if (repertory_count >= used_count)
 	{
 		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};

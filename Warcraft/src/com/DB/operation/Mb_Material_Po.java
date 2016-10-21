@@ -17,11 +17,14 @@ public class Mb_Material_Po implements ITableInterface
 	private MbMaterialPo aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Mb_Material_Po(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Mb_Material_Po(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

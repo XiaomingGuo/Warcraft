@@ -23,9 +23,9 @@ public class AddMFGMaterial_ReferTo_PO extends PageParentClass
 			String barcode = hDBHandle.getTableInstance().getDBRecordList("Bar_Code").get(0);
 			String poName = hDBHandle.getTableInstance().getDBRecordList("po_name").get(0);
 			String vendor = hDBHandle.getTableInstance().getDBRecordList("vendor").get(0);
-			IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
+			DBTableParent hStorageHandle = GenProcessStorageHandle(barcode);
 			String batch_lot = GenBatchLot(barcode);
-			hStorageHandle.AddARecord(barcode, batch_lot, storeQty, "0", "0", "empty", poName, vendor, addDate);
+			AddSingleRecordToStorage(hStorageHandle, barcode, batch_lot, storeQty, "0", "0", "empty", poName, vendor, addDate);
 		}
 		return hDBHandle.getTableInstance().getDBRecordList("po_name").get(0);
 	}
@@ -33,9 +33,9 @@ public class AddMFGMaterial_ReferTo_PO extends PageParentClass
 	private List<List<String>> GetAllMbMaterialPo(String po_name)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
 		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
-		if (hMMPHandle.RecordDBCount() > 0)
+		if (hMMPHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"id", "Bar_Code", "po_name", "date_of_delivery", "vendor",  "PO_QTY", "create_date"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -140,14 +140,14 @@ public class AddMFGMaterial_ReferTo_PO extends PageParentClass
 	public List<String> GetAllPOListNotFinishPurchange()
 	{
 		List<String> rtnRst = null;
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
 		hMMPHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
 		rtnRst = hMMPHandle.getDBRecordList("po_name");
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		for (int index = 0; index < rtnRst.size(); index++)
 		{
 			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "status"), Arrays.asList(rtnRst.get(index), "5"));
-			if(hCPHandle.RecordDBCount() > 0)
+			if(hCPHandle.getTableInstance().RecordDBCount() > 0)
 				rtnRst.remove(rtnRst.get(index));
 		}
 		return rtnRst;

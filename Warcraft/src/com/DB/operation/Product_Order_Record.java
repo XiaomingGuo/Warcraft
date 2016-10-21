@@ -18,11 +18,14 @@ public class Product_Order_Record implements ITableInterface
 	private ProductOrderRecord aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Product_Order_Record(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Product_Order_Record(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{
@@ -143,37 +146,4 @@ public class Product_Order_Record implements ITableInterface
 		}
 		return rtnRst;
 	}
-	
-	//public int GetQtyByBarcodeAndPOName(String strBarcode, String appPOName, String getKeyValue)
-	//{
-	//	int rtnRst = 0;
-	//	QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(strBarcode, appPOName));
-	//	
-	//	if (RecordDBCount() > 0)
-	//	{
-	//		List<String> po_Qty_List = getDBRecordList(getKeyValue);
-	//		for (int i = 0; i < po_Qty_List.size(); i++)
-	//		{
-	//			rtnRst += Integer.parseInt(po_Qty_List.get(i));
-	//		}
-	//	}
-	//	return rtnRst;
-	//}
-	
-	//public int GetUncompleteOrderRecord(String barCode)
-	//{
-	//	int rtnRst = 0;
-	//	String hql = String.format("from ProductOrderRecord por where por.barCode='%s' and por.status<5", barCode);
-	//	gEQMHandle.EQQuery(hql);
-	//	if (RecordDBCount() > 0)
-	//	{
-	//		List<String> po_Qty_List = getDBRecordList("QTY");
-	//		List<String> po_Oqc_List = getDBRecordList("OQC_QTY");
-	//		for (int i = 0; i < po_Qty_List.size(); i++)
-	//		{
-	//			rtnRst += Integer.parseInt(po_Qty_List.get(i))-Integer.parseInt(po_Oqc_List.get(i));
-	//		}
-	//	}
-	//	return rtnRst;
-	//}
 }

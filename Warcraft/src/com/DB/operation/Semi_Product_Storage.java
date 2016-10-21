@@ -18,11 +18,14 @@ public class Semi_Product_Storage implements ITableInterface, IStorageTableInter
 	private SemiProductStorage aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Semi_Product_Storage(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Semi_Product_Storage(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

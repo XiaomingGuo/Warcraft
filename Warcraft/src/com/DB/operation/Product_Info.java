@@ -18,9 +18,12 @@ public class Product_Info implements ITableInterface
     private ProductInfo aWriteRecord = null;
 	IEQManagement gEQMHandle;
     
-    public Product_Info(IEQManagement hEQMHandle)
+    public Product_Info(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
     {
-		gEQMHandle = hEQMHandle;
+        gEQMHandle = hEQHandle;
     }
     
     @Override

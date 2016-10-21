@@ -19,9 +19,12 @@ public class Work_Group_Info implements ITableInterface
 	private WorkGroupInfo aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Work_Group_Info(IEQManagement hEQMHandle)
+	public Work_Group_Info(){}
+	
+	@Override
+	public void setEQManagement(IEQManagement hEQHandle)
 	{
-		gEQMHandle = hEQMHandle;
+		gEQMHandle = hEQHandle;
 	}
 	
 	@Override

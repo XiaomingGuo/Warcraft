@@ -118,10 +118,4 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
         }
         return rtnRst;
     }
-    
-    public int GetOUT_QTYByBarCode(String barcode)
-    {
-        IStorageTableInterface hHandle = GenStorageHandle(barcode);
-        return hHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-    }
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.EarthquakeManagement;
-import com.DB.operation.User_Info;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 
@@ -53,7 +51,7 @@ public class CRecordsQueryUtil implements IRecordsQueryUtil
         List<List<String>> rtnRst  = new ArrayList<List<String>>(); 
         hDBHandle.QueryAllRecord();
         
-        if (hDBHandle.RecordDBCount() > 0)
+        if (hDBHandle.getTableInstance().RecordDBCount() > 0)
         {
             for(int idx=0; idx < getKeyList.length; idx++)
                 rtnRst.add(hDBHandle.getDBRecordList(getKeyList[idx]));
@@ -67,7 +65,7 @@ public class CRecordsQueryUtil implements IRecordsQueryUtil
         List<List<String>> rtnRst  = new ArrayList<List<String>>(); 
         hDBHandle.QueryRecordByFilterKeyList(Arrays.asList(keyWord), Arrays.asList(keyVal));
         
-        if (hDBHandle.RecordDBCount() > 0)
+        if (hDBHandle.getTableInstance().RecordDBCount() > 0)
         {
             for(int idx=0; idx < getKeyList.length; idx++)
                 rtnRst.add(hDBHandle.getDBRecordList(getKeyList[idx]));

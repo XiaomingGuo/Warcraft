@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
@@ -63,7 +64,7 @@ public class PageParentClass
     
     public String GetUsedBarcode(String barcode, String storage_name)
     {
-        return new Product_Info(new EarthquakeManagement()).GetUsedBarcode(barcode, storage_name);
+        return new DatabaseStore("Product_Info").GetUsedBarcode(barcode, storage_name);
     }
     
     public String GetStorageNameByBarCode(String Bar_Code, boolean isExhausted)
@@ -85,68 +86,101 @@ public class PageParentClass
         return rtnRst;
     }
     
-    public IStorageTableInterface GenStorageHandleByStorageName(String storageName)
+	public int GetQTYByBarCode(String qtyType, String barcode, List<String> keyList, List<String> valueList)
+	{
+		DBTableParent hHandle = GenStorageHandle(barcode);
+		return hHandle.GetIntSumOfValue(qtyType, keyList, valueList);
+	}
+	
+	public int GetStorageRepertory(String barcode, List<String> keyList, List<String> valueList)
+	{
+		return GetQTYByBarCode("IN_QTY", barcode, keyList, valueList) -
+				GetQTYByBarCode("OUT_QTY", barcode, keyList, valueList);
+	}
+	
+    public DBTableParent GenStorageHandleByStorageName(String storageName)
     {
         if(storageName.toLowerCase().contains("other"))
-            return new Other_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Other_Storage");
         else if(storageName.toLowerCase().contains("product"))
-            return new Product_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Product_Storage");
         else if(storageName.toLowerCase().contains("semi")||storageName.toLowerCase().contains("material"))
-            return new Manu_Storage_Record(new EarthquakeManagement());
+            return new DatabaseStore("Manu_Storage_Record");
         else if(storageName.toLowerCase().contains("exother"))
-            return new Exhausted_Other(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Other");
         else if(storageName.toLowerCase().contains("exproduct"))
-            return new Exhausted_Product(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Product");
         else if(storageName.toLowerCase().contains("exsemi")||storageName.toLowerCase().contains("exmaterial"))
-            return new Exhausted_Manu_Storage_Record(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Manu_Storage_Record");
         return null;    
     }
 
-    public IStorageTableInterface GenStorageHandle(String barcode)
+    public DBTableParent GenStorageHandle(String barcode)
     {
         if(IsOtherBarcode(barcode))
-            return new Other_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Other_Storage");
         else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
-            return new Manu_Storage_Record(new EarthquakeManagement());
+            return new DatabaseStore("Manu_Storage_Record");
         return null;
     }
     
-    public IStorageTableInterface GenProcessStorageHandle(String barcode)
+    public DBTableParent GenProcessStorageHandle(String barcode)
     {
         if(IsSemiProBarcode(barcode))
-            return new Semi_Product_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Semi_Product_Storage");
         else if(IsMaterialBarcode(barcode))
-            return new Material_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Material_Storage");
         else if(IsProductBarcode(barcode))
-            return new Product_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Product_Storage");
         else
-            return new Other_Storage(new EarthquakeManagement());
+            return new DatabaseStore("Other_Storage");
     }
     
-    public IStorageTableInterface GenExStorageHandle(String barcode)
+    public void AddSingleRecordToStorage(DBTableParent hStorageHandle, String barcode, String batch_lot, String storeQty, String sPrice, String tPrice, String orderName, String poName, String vendor, String addDate)
+    {
+        if(IsSemiProBarcode(barcode))
+            ((Semi_Product_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, storeQty, sPrice, tPrice, orderName, poName, vendor, addDate);
+        else if(IsMaterialBarcode(barcode))
+            ((Material_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, storeQty, sPrice, tPrice, orderName, poName, vendor, addDate);
+        else if(IsProductBarcode(barcode))
+            ((Product_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, storeQty, sPrice, tPrice, orderName, poName, vendor, addDate);
+        else
+            ((Other_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, storeQty, sPrice, tPrice, orderName, poName, vendor, addDate);
+    }
+    
+    public void AddSingleExRecordToStorage(DBTableParent hExStorageHandle, String id, String barcode, String batch_lot, String inQty, String outQty, String sPrice, String tPrice, 
+                                                String orderName, String poName, String vendor, String storeDate, String isEnsure, String createDate)
     {
         if(IsOtherBarcode(barcode))
-            return new Exhausted_Other(new EarthquakeManagement());
+            ((Exhausted_Other)hExStorageHandle.getTableInstance()).AddAExRecord(id, barcode, batch_lot, inQty, outQty, sPrice, tPrice, orderName, poName, vendor, storeDate, isEnsure, createDate);
         else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
-            return new Exhausted_Manu_Storage_Record(new EarthquakeManagement());
+            ((Exhausted_Manu_Storage_Record)hExStorageHandle.getTableInstance()).AddAExRecord(id, barcode, batch_lot, inQty, outQty, sPrice, tPrice, orderName, poName, vendor, storeDate, isEnsure, createDate);
+    }
+    
+    public DBTableParent GenExStorageHandle(String barcode)
+    {
+        if(IsOtherBarcode(barcode))
+            return new DatabaseStore("Exhausted_Other");
+        else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
+            return new DatabaseStore("Exhausted_Manu_Storage_Record");
         return null;
     }
     
-    public IStorageTableInterface GenProcessExStorageHandle(String barcode)
+    public DBTableParent GenProcessExStorageHandle(String barcode)
     {
         if(IsSemiProBarcode(barcode))
-            return new Exhausted_Semi_Product(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Semi_Product");
         else if(IsMaterialBarcode(barcode))
-            return new Exhausted_Material(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Material");
         else if(IsProductBarcode(barcode))
-            return new Exhausted_Product(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Product");
         else
-            return new Exhausted_Other(new EarthquakeManagement());
+            return new DatabaseStore("Exhausted_Other");
     }
     
     public void CheckMoveToExhaustedTable(String barcode, String batchLot)
     {
-        IStorageTableInterface hStorageHandle = GenStorageHandle(barcode);
+        DBTableParent hStorageHandle = GenStorageHandle(barcode);
         hStorageHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
         if (hStorageHandle.getDBRecordList("IN_QTY").equals(hStorageHandle.getDBRecordList("OUT_QTY")))
         {
@@ -156,30 +190,30 @@ public class PageParentClass
                 orderKeyWord = "vendor_name";
                 PoKeyWord = "vendor_name";
             }
-            IStorageTableInterface hExStorageHandle = GenExStorageHandle(barcode);
+            DBTableParent hExStorageHandle = GenExStorageHandle(barcode);
             hExStorageHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
-            if(hExStorageHandle.RecordDBCount() > 0)
+            if(hExStorageHandle.getTableInstance().RecordDBCount() > 0)
             {
                 int setValue = Integer.parseInt(hStorageHandle.getDBRecordList("IN_QTY").get(0)) + Integer.parseInt(hExStorageHandle.getDBRecordList("IN_QTY").get(0));
-                ((ITableInterface)hExStorageHandle).UpdateRecordByKeyList("IN_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
-                ((ITableInterface)hExStorageHandle).UpdateRecordByKeyList("OUT_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
+                hExStorageHandle.UpdateRecordByKeyList("IN_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
+                hExStorageHandle.UpdateRecordByKeyList("OUT_QTY", Integer.toString(setValue), Arrays.asList("Bar_code", "batch_lot"), Arrays.asList(barcode, batchLot));
             }
             else
-                hExStorageHandle.AddAExRecord(hStorageHandle.getDBRecordList("id").get(0), hStorageHandle.getDBRecordList("Bar_Code").get(0), 
+                AddSingleExRecordToStorage(hExStorageHandle, hStorageHandle.getDBRecordList("id").get(0), hStorageHandle.getDBRecordList("Bar_Code").get(0), 
                         hStorageHandle.getDBRecordList("Batch_Lot").get(0), hStorageHandle.getDBRecordList("IN_QTY").get(0),
                         hStorageHandle.getDBRecordList("OUT_QTY").get(0), hStorageHandle.getDBRecordList("Price_Per_Unit").get(0),
                         hStorageHandle.getDBRecordList("Total_Price").get(0), hStorageHandle.getDBRecordList(orderKeyWord).get(0),
                         hStorageHandle.getDBRecordList(PoKeyWord).get(0), hStorageHandle.getDBRecordList("vendor_name").get(0),
                         hStorageHandle.getDBRecordList("in_store_date").get(0), hStorageHandle.getDBRecordList("isEnsure").get(0),
                         hStorageHandle.getDBRecordList("create_date").get(0));
-            ((DBTableParent)hStorageHandle).DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
+            hStorageHandle.DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(hStorageHandle.getDBRecordList("id").get(0)));
         }
     }
     
     public double GetPrice_Pre_Unit(String bar_code, String Batch_Lot)
     {
-        IStorageTableInterface hHandle = GenStorageHandle(bar_code);
-        IStorageTableInterface hExHandle = GenExStorageHandle(bar_code);
+        DBTableParent hHandle = GenStorageHandle(bar_code);
+        DBTableParent hExHandle = GenExStorageHandle(bar_code);
         hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(bar_code, Batch_Lot));
         hExHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(bar_code, Batch_Lot));
         List<String> tempList = new ArrayList<String>();
@@ -191,16 +225,16 @@ public class PageParentClass
     public int GetAStorageRepertoryByPOName(String barcode, String po_name)
     {
         int rtnRst = 0;
-        IStorageTableInterface hHandle = GenStorageHandle(barcode);
-        rtnRst += ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
+        DBTableParent hHandle = GenStorageHandle(barcode);
+        rtnRst += hHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
         return rtnRst;
     }
     
     public int GetRepertoryByBarcodePo(String strBarcode)
     {
         int rtnRst = 0;
-        Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-        IStorageTableInterface hHandle = GenStorageHandle(strBarcode);
+        DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
+        DBTableParent hHandle = GenStorageHandle(strBarcode);
         ((DBTableParent)hHandle).QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(strBarcode, "1"));
         List<String> loopList = hHandle.getDBRecordList("po_name");
         for (String poName : loopList)
@@ -271,20 +305,20 @@ public class PageParentClass
     
     private int GetExAndStorageRecordCount(String strBarcode, String Batch_Lot)
     {
-        IStorageTableInterface hHandle = GenStorageHandle(strBarcode);
-        IStorageTableInterface hExHandle = GenExStorageHandle(strBarcode);
+        DBTableParent hHandle = GenStorageHandle(strBarcode);
+        DBTableParent hExHandle = GenExStorageHandle(strBarcode);
         hHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
         hExHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
-        return hHandle.RecordDBCount() + hExHandle.RecordDBCount();
+        return hHandle.getTableInstance().RecordDBCount() + hExHandle.getTableInstance().RecordDBCount();
     }
     
     private int GetExAndProcessStorage(String strBarcode, String Batch_Lot)
     {
-        IStorageTableInterface hHandle = GenProcessStorageHandle(strBarcode);
-        IStorageTableInterface hExHandle = GenProcessExStorageHandle(strBarcode);
+        DBTableParent hHandle = GenProcessStorageHandle(strBarcode);
+        DBTableParent hExHandle = GenProcessExStorageHandle(strBarcode);
         hHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
         hExHandle.QueryRecordByFilterKeyList(Arrays.asList("Batch_Lot"), Arrays.asList(Batch_Lot));
-        return hHandle.RecordDBCount() + hExHandle.RecordDBCount();
+        return hHandle.getTableInstance().RecordDBCount() + hExHandle.getTableInstance().RecordDBCount();
     }
     
     public String GenBatchLot(String strBarcode)
@@ -310,16 +344,16 @@ public class PageParentClass
     
     public int GetHasFinishPurchaseNum(String barcode, String POName)
     {
-        IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
-        IStorageTableInterface hExStorageHandle = GenProcessExStorageHandle(barcode);
+        DBTableParent hStorageHandle = GenProcessStorageHandle(barcode);
+        DBTableParent hExStorageHandle = GenProcessExStorageHandle(barcode);
         return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, POName, "1")) + 
                 hExStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
     }
     
     public int GetHasFinishPurchaseNumWithoutEnsure(String barcode, String POName)
     {
-        IStorageTableInterface hStorageHandle = GenProcessStorageHandle(barcode);
-        IStorageTableInterface hExStorageHandle = GenProcessExStorageHandle(barcode);
+        DBTableParent hStorageHandle = GenProcessStorageHandle(barcode);
+        DBTableParent hExStorageHandle = GenProcessExStorageHandle(barcode);
         return hStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName)) + 
                 hExStorageHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, POName));
     }
@@ -356,7 +390,7 @@ public class PageParentClass
     {
         List<String> rtnRst = new ArrayList<String>();
         List<String> displayStoreName = Arrays.asList("成品库", "半成品库", "原材料库");
-        Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+        DBTableParent hSNHandle = new DatabaseStore("Storeroom_Name");
         hSNHandle.QueryAllRecord();
         List<String> tempList = hSNHandle.getDBRecordList("name");
         
@@ -372,13 +406,13 @@ public class PageParentClass
     
     public boolean CheckBarcodeStatus(String barcode)
     {
-        Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+        DBTableParent hPIHandle = new DatabaseStore("Product_Info");
         String[] storageList = new String[] {"Material_Storage", "Product_Storage", "Semi_Pro_Storage", "Other_Storage"};
         int recordCount = 0;
         for(String storageName : storageList)
         {
             hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(GetUsedBarcode(barcode, storageName)));
-            recordCount += hPIHandle.RecordDBCount();
+            recordCount += hPIHandle.getTableInstance().RecordDBCount();
         }
         return recordCount > 0?false:true;
     }
@@ -386,18 +420,18 @@ public class PageParentClass
     public String GetProductInfoByBarcode(String barcode, String keyWord)
     {
         String rtnRst = null;
-        Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+        DBTableParent hPIHandle = new DatabaseStore("Product_Info");
         hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-        if(hPIHandle.RecordDBCount() > 0)
+        if(hPIHandle.getTableInstance().RecordDBCount() > 0)
             rtnRst = hPIHandle.getDBRecordList(keyWord).get(0);
         return rtnRst;
     }
     
     public boolean IsCustomerPoClose(String poname)
     {
-        Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-        hCPHandle.QueryRecordByPoNameAndMoreThanStatus(poname, "0");
-        if (hCPHandle.RecordDBCount() > 0||"Material_Supply" == poname)
+        DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
+        hCPHandle.QueryRecordByFilterKeyListAndMoreThanStatus(Arrays.asList("po_name"), Arrays.asList(poname), "status", "0");
+        if (hCPHandle.getTableInstance().RecordDBCount() > 0||"Material_Supply" == poname)
             return true;
         return false;
     }
@@ -405,7 +439,7 @@ public class PageParentClass
     public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
         IRecordsQueryUtil hQueryHandle = new CRecordsQueryUtil();
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
         if(getKeyWord.contains("name"))
             rtnRst.remove("root");

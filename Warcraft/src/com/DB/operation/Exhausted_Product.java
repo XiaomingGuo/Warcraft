@@ -20,11 +20,14 @@ public class Exhausted_Product implements ITableInterface, IStorageTableInterfac
 	private ExhaustedProduct aWriteRecord = null;
 	IEQManagement gEQMHandle;
 	
-	public Exhausted_Product(IEQManagement hEQMHandle)
-	{
-		gEQMHandle = hEQMHandle;
-	}
-	
+	public Exhausted_Product(){}
+    
+    @Override
+    public void setEQManagement(IEQManagement hEQHandle)
+    {
+        gEQMHandle = hEQHandle;
+    }
+    
 	@Override
 	public String GetTableName()
 	{

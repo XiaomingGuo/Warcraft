@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
 <%@ page import="com.DB.factory.DatabaseStore" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -18,13 +17,13 @@
 		String mess = "";
 		DatabaseStore hDBHandle = new DatabaseStore("User_Info");
 		hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(name));
-		List<String> tempList = hDBHandle.getTableInstance().getDBRecordList("password");
+		List<String> tempList = hDBHandle.getDBRecordList("password");
 		
 		if(tempList.size() > 0)
 		{
 			String KeyWord = tempList.get(0);
-			tempList = hDBHandle.getTableInstance().getDBRecordList("permission");
-			int userRight = Integer.parseInt( tempList.get(0));
+			tempList = hDBHandle.getDBRecordList("permission");
+			int userRight = Integer.parseInt(tempList.get(0));
 			
 			mylogon.setUsername(name);
 			mylogon.setUserpassword(KeyWord);

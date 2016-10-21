@@ -1,7 +1,6 @@
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.User_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	if(session.getAttribute("logonuser")==null)
@@ -17,14 +16,14 @@
 		String user_name = mylogon.getUsername();
 		if (!cur_PWD.isEmpty() && !new_PWD.isEmpty() && !confirm_PWD.isEmpty() && new_PWD.equals(confirm_PWD))
 		{
-			User_Info hUIHandle = new User_Info(new EarthquakeManagement());
-			hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
-			if(hUIHandle.RecordDBCount() == 1)
+			DatabaseStore hDBHandle = new DatabaseStore("User_Info");
+			hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(user_name));
+			if(hDBHandle.getTableInstance().RecordDBCount() == 1)
 			{
-				String sql_PWD = hUIHandle.getDBRecordList("password").get(0);
+				String sql_PWD = hDBHandle.getDBRecordList("password").get(0);
 				if(sql_PWD.equals(cur_PWD))
 				{
-					hUIHandle.UpdateRecordByKeyList("password", new_PWD, Arrays.asList("name"), Arrays.asList(user_name));
+					hDBHandle.UpdateRecordByKeyList("password", new_PWD, Arrays.asList("name"), Arrays.asList(user_name));
 					session.setAttribute("error", "恭喜你,密码修改成功,重新登录后生效!");
 				}
 				else
