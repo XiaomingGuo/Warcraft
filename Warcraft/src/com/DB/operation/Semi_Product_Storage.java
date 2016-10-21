@@ -10,7 +10,6 @@ import com.DB.support.SemiProductStorage;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Semi_Product_Storage implements ITableInterface, IStorageTableInterface
 {

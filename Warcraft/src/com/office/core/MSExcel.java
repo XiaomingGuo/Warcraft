@@ -12,15 +12,15 @@ public class MSExcel
 		boolean rtnRst = true;
 	    try
 	    {
-	    	if (!(new File(filePath).isDirectory())) //如果文件夹不存在
+	    	if (!(new File(filePath).isDirectory()))
 	    	{
-	    		new File(filePath).mkdir();      //不存在 excel 文件夹，则建立此文件夹
+	    		new File(filePath).mkdir();
 	    	}
 	    }
 	    catch(Exception e)
 	    {
-	        e.printStackTrace();        //创建文件夹失败 
-	        String ErrName=java.net.URLEncoder.encode("文件夹不存在。创建文件夹出错!");
+	        e.printStackTrace();
+	        String ErrName=java.net.URLEncoder.encode("锟侥硷拷锟叫诧拷锟斤拷锟节★拷锟斤拷锟斤拷锟侥硷拷锟叫筹拷锟斤拷!");
 	        rtnRst = false;
 	    }
 	    return rtnRst;
@@ -30,12 +30,12 @@ public class MSExcel
 	{
 		try
 		{
-			HSSFWorkbook tempWorkbook = new HSSFWorkbook();//创建Excel工作簿对象	
-			tempWorkbook.createSheet();//在工作簿中创建工作表对象
-			tempWorkbook.setSheetName(0, "Sheet1");//设置工作表的名称
+			HSSFWorkbook tempWorkbook = new HSSFWorkbook();
+			tempWorkbook.createSheet();
+			tempWorkbook.setSheetName(0, "Sheet1");
 			File xlsFile = new File(filePath,fileName);
 			FileOutputStream fos = new FileOutputStream(xlsFile);
-			tempWorkbook.write(fos);//将文档对象写入文件输出流
+			tempWorkbook.write(fos);
 			fos.close();
 			tempWorkbook.close();
 		}

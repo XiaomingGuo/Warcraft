@@ -11,7 +11,6 @@ import com.DB.support.ExhaustedSemiProduct;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Exhausted_Semi_Product implements ITableInterface, IStorageTableInterface
 {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.*;
 
 public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
@@ -13,10 +13,10 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 	public int GetAllNotDepleteRepertory(String barcode)
 	{
 		int rtnRst = 0;
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		DBTableParent hHandle = GenStorageHandle(barcode);
 		((DBTableParent)hHandle).QueryRecordByFilterKeyListGroupByList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcode, "1"), Arrays.asList("po_name"));
 		List<String> loopList = hHandle.getDBRecordList("po_name");
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		for (String poName : loopList)
 		{
 			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
@@ -31,10 +31,10 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 	public List<List<String>> GetAllNotDepleteRecordList(String barcode)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		DBTableParent hHandle = GenStorageHandle(barcode);
 		((DBTableParent)hHandle).QueryRecordByFilterKeyListGroupByList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcode, "1"), Arrays.asList("po_name"));
 		List<String> loopList = hHandle.getDBRecordList("po_name");
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY", "Order_Name", "po_name"};
 		for (String poName : loopList)
 		{
@@ -58,7 +58,7 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 	{
 		int used_count = from_QTY;
 		String to_Batch_Lot = GenBatchLot(to_barcode);
-		Trans_Barcode_Record hTBRHandle = new Trans_Barcode_Record(new EarthquakeManagement());
+		DBTableParent hTBRHandle = new DatabaseStore("Trans_Barcode_Record");
 		for (int iCol = 0; iCol < recordList.get(0).size(); iCol++)
 		{
 			String batchLot = recordList.get(0).get(iCol);
@@ -69,26 +69,26 @@ public class TransferMFGMaterialBarcode_Ajax extends PageParentClass
 			{
 				String updateQty = Integer.toString(sql_in_count-used_count);
 				UpdateStorageInQty(updateQty, from_barcode, batchLot);
-				hTBRHandle.AddARecord(from_barcode, batchLot, Integer.toString(used_count), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
+				((Trans_Barcode_Record)hTBRHandle.getTableInstance()).AddARecord(from_barcode, batchLot, Integer.toString(used_count), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
 				break;
 			}
 			else
 			{
 				String updateQty = Integer.toString(sql_out_count);
 				UpdateStorageInQty(updateQty, from_barcode, batchLot);
-				hTBRHandle.AddARecord(from_barcode, batchLot, Integer.toString(recordCount), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
+				((Trans_Barcode_Record)hTBRHandle.getTableInstance()).AddARecord(from_barcode, batchLot, Integer.toString(recordCount), to_barcode, to_Batch_Lot, Integer.toString(to_QTY));
 				used_count -= recordCount;
 			}
 		}
-		IStorageTableInterface hHandle = GenStorageHandle(to_barcode);
-		hHandle.AddARecord(to_barcode, to_Batch_Lot, Integer.toString(to_QTY), "0", "0", "empty", "Material_Supply", "MB_Incise_Station", GenYearMonthDayString());
-		((ITableInterface)hHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(to_barcode, to_Batch_Lot));
+		DBTableParent hHandle = GenStorageHandle(to_barcode);
+		AddSingleOtherManuRecordToStorage(hHandle, to_barcode, to_Batch_Lot, Integer.toString(to_QTY), "0", "0", "empty", "Material_Supply", "MB_Incise_Station", GenYearMonthDayString());
+		hHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(to_barcode, to_Batch_Lot));
 	}
 	
 	public void UpdateStorageInQty(String inQty, String barcode, String batchLot)
 	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
-		((ITableInterface)hHandle).UpdateRecordByKeyList("IN_QTY", inQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		DBTableParent hHandle = GenStorageHandle(barcode);
+		hHandle.UpdateRecordByKeyList("IN_QTY", inQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
 }

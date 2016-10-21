@@ -8,7 +8,6 @@ import org.hibernate.Query;
 
 import com.DB.support.*;
 import com.Warcraft.Interface.*;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Trans_Barcode_Record implements ITableInterface
 {

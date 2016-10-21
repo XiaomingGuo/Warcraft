@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class QueryMaterial extends PageParentClass
 {
 	public List<List<String>> GetManufactureStorageRecord()
 	{
-		List<List<String>> rtnRst = GetAllRecordWithoutEnsure(new Manu_Storage_Record(new EarthquakeManagement()));
-		List<List<String>> tempList = GetAllRecordWithoutEnsure(new Product_Storage(new EarthquakeManagement()));
+		List<List<String>> rtnRst = GetAllRecordWithoutEnsure(new DatabaseStore("Manu_Storage_Record"));
+		List<List<String>> tempList = GetAllRecordWithoutEnsure(new DatabaseStore("Product_Storage"));
 		for(int idx = 0; idx < rtnRst.size(); idx++)
 			rtnRst.get(idx).addAll(tempList.get(idx));
-		tempList = GetAllRecordWithoutEnsure(new Material_Storage(new EarthquakeManagement()));
+		tempList = GetAllRecordWithoutEnsure(new DatabaseStore("Material_Storage"));
 		for(int idx = 0; idx < rtnRst.size(); idx++)
 			rtnRst.get(idx).addAll(tempList.get(idx));
-		tempList = GetAllRecordWithoutEnsure(new Semi_Product_Storage(new EarthquakeManagement()));
+		tempList = GetAllRecordWithoutEnsure(new DatabaseStore("Semi_Product_Storage"));
 		for(int idx = 0; idx < rtnRst.size(); idx++)
 			rtnRst.get(idx).addAll(tempList.get(idx));
 		return rtnRst;
 	}
 	
-	private List<List<String>> GetAllRecordWithoutEnsure(IStorageTableInterface hTableHandle)
+	private List<List<String>> GetAllRecordWithoutEnsure(DBTableParent hTableHandle)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "po_name", "IN_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};

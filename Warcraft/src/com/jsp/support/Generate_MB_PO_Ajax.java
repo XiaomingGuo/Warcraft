@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.factory.DatabaseStore;
-import com.DB.operation.*;
-import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Generate_MB_PO_Ajax extends PageParentClass

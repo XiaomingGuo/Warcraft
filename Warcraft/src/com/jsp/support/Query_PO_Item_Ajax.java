@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
-import com.Warcraft.Interface.*;
+import com.DB.factory.DatabaseStore;
 import com.Warcraft.SupportUnit.*;
 
 public class Query_PO_Item_Ajax extends PageParentClass
@@ -15,9 +14,9 @@ public class Query_PO_Item_Ajax extends PageParentClass
         String rtnRst = status;
         if(status != null)
         {
-            Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+        	DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
             hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
-            if (hCPHandle.RecordDBCount() > 0)
+            if (hCPHandle.getTableInstance().RecordDBCount() > 0)
             {
                 String tempPo = hCPHandle.getDBRecordList("status").get(0);
                 if (Integer.parseInt(tempPo) > Integer.parseInt(status))
@@ -32,9 +31,9 @@ public class Query_PO_Item_Ajax extends PageParentClass
     public List<List<String>> GetCustomerPoRecordList(String po_name)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+        DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
         hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(po_name));
-        if (hCPRHandle.RecordDBCount() > 0)
+        if (hCPRHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "vendor", "Bar_Code", "po_name", "delivery_date", "QTY", "percent", "isEnsure", "create_date"};
             for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -48,7 +47,7 @@ public class Query_PO_Item_Ajax extends PageParentClass
     public int GetSurplusPurchaseQty(String strBarcode, String po_name)
     {
         int rtnRst = 0;
-        Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+        DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
         rtnRst = hMMPHandle.GetIntSumOfValue("PO_QTY", Arrays.asList("Bar_Code", "po_name"), Arrays.asList(strBarcode, po_name));
         rtnRst -= GetHasFinishPurchaseNum(strBarcode, po_name);
         return rtnRst;
@@ -56,7 +55,7 @@ public class Query_PO_Item_Ajax extends PageParentClass
     
     public int GetInProcessQty(String barcode, String po_name)
     {
-        IStorageTableInterface hHandle = GenStorageHandle(barcode);
+    	DBTableParent hHandle = GenStorageHandle(barcode);
         return ((DBTableParent)hHandle).GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
     }
 }

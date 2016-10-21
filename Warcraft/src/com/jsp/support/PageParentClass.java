@@ -148,6 +148,14 @@ public class PageParentClass
             ((Other_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, storeQty, sPrice, tPrice, orderName, poName, vendor, addDate);
     }
     
+    public void AddSingleOtherManuRecordToStorage(DBTableParent hStorageHandle, String barcode, String batch_lot, String appProductQTY, String sPrice, String tPrice, 
+            String orderName, String poName, String vendor, String storeDate)
+	{
+		if(IsOtherBarcode(barcode))
+			((Other_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
+		else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
+			((Manu_Storage_Record)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
+	}
     public void AddSingleExRecordToStorage(DBTableParent hExStorageHandle, String id, String barcode, String batch_lot, String inQty, String outQty, String sPrice, String tPrice, 
                                                 String orderName, String poName, String vendor, String storeDate, String isEnsure, String createDate)
     {

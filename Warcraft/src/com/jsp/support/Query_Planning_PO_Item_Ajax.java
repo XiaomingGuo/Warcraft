@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.DB.operation.*;
-import com.Warcraft.Interface.*;
+import com.DB.factory.DatabaseStore;
 import com.Warcraft.SupportUnit.*;
 
 public class Query_Planning_PO_Item_Ajax extends PageParentClass
@@ -14,8 +13,8 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
     String[] m_sqlKeyList = {"Bar_Code", "po_name", "date_of_delivery", "vendor_name",  "QTY"};
     public List<List<String>> GetAllStorageRecord(String po_name)
     {
-        List<List<String>> rtnRst = GetStoragePlanningRecord(new Material_Storage(new EarthquakeManagement()), po_name);
-        List<List<String>> tempSemiRecord = GetStoragePlanningRecord(new Semi_Product_Storage(new EarthquakeManagement()), po_name);
+        List<List<String>> rtnRst = GetStoragePlanningRecord(new DatabaseStore("Material_Storage"), po_name);
+        List<List<String>> tempSemiRecord = GetStoragePlanningRecord(new DatabaseStore("Semi_Product_Storage"), po_name);
         if(!rtnRst.isEmpty() && !tempSemiRecord.isEmpty())
         {
             for(int idx=0; idx < m_sqlKeyList.length; idx++)
@@ -60,11 +59,11 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
         return rtnRst;
     }
     
-    private List<List<String>> GetStoragePlanningRecord(IStorageTableInterface hHandle, String po_name)
+    private List<List<String>> GetStoragePlanningRecord(DBTableParent hHandle, String po_name)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        ((DBTableParent)hHandle).QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name", "isEnsure"), Arrays.asList(po_name, "1"), Arrays.asList("Bar_Code"));
-        if (hHandle.RecordDBCount() > 0)
+        hHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("po_name", "isEnsure"), Arrays.asList(po_name, "1"), Arrays.asList("Bar_Code"));
+        if (hHandle.getTableInstance().RecordDBCount() > 0)
         {
             for(int idx=0; idx < m_sqlKeyList.length; idx++)
             {
@@ -98,7 +97,7 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
         List<String> rtnRst = new ArrayList<String>();
         for (String barcode : barcodeList)
         {
-            IStorageTableInterface hHandle = GenProcessStorageHandle(barcode);
+        	DBTableParent hHandle = GenProcessStorageHandle(barcode);
             int curQty = hHandle.GetIntSumOfValue(getKeyWord, Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
             rtnRst.add(Integer.toString(curQty));
         }
@@ -108,11 +107,11 @@ public class Query_Planning_PO_Item_Ajax extends PageParentClass
     private List<String> GetDeliveryDate(List<String> barcodeList, String po_name)
     {
         List<String> rtnRst = new ArrayList<String>();
-        Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+        DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
         for (String barcode : barcodeList)
         {
             hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(barcode, po_name));;
-            if(hCPRHandle.RecordDBCount() <= 0)
+            if(hCPRHandle.getTableInstance().RecordDBCount() <= 0)
                 hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(barcode, "Semi_Pro_Storage"), po_name));
             rtnRst.add(hCPRHandle.getDBRecordList("delivery_date").get(0));
         }

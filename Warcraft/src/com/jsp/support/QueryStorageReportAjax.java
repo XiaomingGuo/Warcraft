@@ -6,41 +6,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class QueryStorageReportAjax extends PageParentClass
 {
 	public List<String> QueryProTypeStorage(String storageName)
 	{
-		List<String> rtnRst = null;
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
 		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storageName));
-		rtnRst = hPTHandle.getDBRecordList("name");
-		return rtnRst;
+		return hPTHandle.getDBRecordList("name");
 	}
 	
 	public List<String> QueryProNameByProType(String proType)
 	{
-		List<String> rtnRst = null;
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("product_type"), Arrays.asList(proType));
-		rtnRst = hPIHandle.getDBRecordList("name");
-		return rtnRst;
+		return hPIHandle.getDBRecordList("name");
 	}
 	
 	public List<String> GetResultBySubmitDate(List<String> barcodeList, String supplier_name, String submitDate)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
+		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
 		int iRowNum = 1;
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
 			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
 			hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(hPIHandle.getDBRecordList("product_type").get(0)));
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
-			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
+			DBTableParent hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
 			submitDate = submitDate.replace("-", "");
 			if(supplier_name.indexOf("��ѡ��") >= 0)
@@ -56,7 +52,7 @@ public class QueryStorageReportAjax extends PageParentClass
 				
 			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
 			NumberFormat formatter = new DecimalFormat("#.###");
-			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			for(int recordIdx=0; recordIdx < hStorageHandle.getTableInstance().RecordDBCount(); recordIdx++)
 			{
 				rtnRst.add(Integer.toString(iRowNum));
 				rtnRst.add(strBarcode);
@@ -80,7 +76,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			}
 			hStorageHandle = GenExStorageHandle(strBarcode);
 			hStorageHandle.QueryRecordByFilterKeyList(keyList, valueList);
-			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			for(int recordIdx=0; recordIdx < hStorageHandle.getTableInstance().RecordDBCount(); recordIdx++)
 			{
 				rtnRst.add(Integer.toString(iRowNum));
 				rtnRst.add(strBarcode);
@@ -109,16 +105,15 @@ public class QueryStorageReportAjax extends PageParentClass
 	public List<String> GetResultByStartEndDate(List<String> barcodeList, String supplier_name, String beginDate, String endDate)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		//{"ID", "����", "���", "����", "���", "���", "�������", "�������", "ʣ������", "����", "����ܼ�", "����ܼ�", "ʣ���ܼ�", "��Ӧ��", "�����ʱ��"};
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
+		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
 		int iRowNum = 1;
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
 			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
 			hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(hPIHandle.getDBRecordList("product_type").get(0)));
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
-			IStorageTableInterface hStorageHandle = GenStorageHandle(strBarcode);
+			DBTableParent hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
 			if(supplier_name.indexOf("��ѡ��") >= 0)
 			{
@@ -132,7 +127,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			}
 			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, "create_date", beginDate, endDate);
 			NumberFormat formatter = new DecimalFormat("#.###");
-			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			for(int recordIdx=0; recordIdx < hStorageHandle.getTableInstance().RecordDBCount(); recordIdx++)
 			{
 				rtnRst.add(Integer.toString(iRowNum));
 				rtnRst.add(strBarcode);
@@ -156,7 +151,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			}
 			hStorageHandle = GenExStorageHandle(strBarcode);
 			hStorageHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(keyList, valueList, "create_date", beginDate, endDate);
-			for(int recordIdx=0; recordIdx < hStorageHandle.RecordDBCount(); recordIdx++)
+			for(int recordIdx=0; recordIdx < hStorageHandle.getTableInstance().RecordDBCount(); recordIdx++)
 			{
 				rtnRst.add(Integer.toString(iRowNum));
 				rtnRst.add(strBarcode);
@@ -184,19 +179,15 @@ public class QueryStorageReportAjax extends PageParentClass
 	
 	public String QueryBarCodeByProNameAndType(String proType, String proName)
 	{
-		String rtnRst = "";
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "product_type"), Arrays.asList(proName, proType));
-		rtnRst = hPIHandle.getDBRecordList("Bar_Code").get(0);
-		return rtnRst;
+		return hPIHandle.getDBRecordList("Bar_Code").get(0);
 	}
 		
 	public List<String> QueryAllBarcode()
 	{
-		List<String> rtnRst = null;
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryAllRecord();
-		rtnRst = hPIHandle.getDBRecordList("Bar_Code");
-		return rtnRst;
+		return hPIHandle.getDBRecordList("Bar_Code");
 	}
 }

@@ -3,8 +3,10 @@ package com.jsp.support.PersonalMenu;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
@@ -32,13 +34,13 @@ public class AddHoliday extends PageParentClass implements IPageInterface
     
     private String GetHolidayNameString()
     {
-        hQueryHandle.setTableHandle(new Holiday_Type(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Holiday_Type"));
         return GenSelectItemString(hQueryHandle.GetTableContentByKeyWord(null, "AllRecord", "holiday_name"));
     }
     
     private String GetUserNameString()
     {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         List<String> userName = hQueryHandle.GetTableContentByKeyWord(null, "AllRecord", "name");
         userName.remove("root");
         return GenSelectItemString(userName);
@@ -46,7 +48,7 @@ public class AddHoliday extends PageParentClass implements IPageInterface
     
     private String GetDepartmentName()
     {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         return GenSelectItemString(hQueryHandle.GetTableContentGroupByKeyWord(null, "AllRecord", "department", "department"));
     }
     
@@ -74,10 +76,10 @@ public class AddHoliday extends PageParentClass implements IPageInterface
     public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType)
     {
         String rtnRst = "";
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
-        if(hHMHandle.RecordDBCount() <= 0)
-            hHMHandle.AddARecord(strCheckInId, addDate, holidayType);
+        if(hHMHandle.getTableInstance().RecordDBCount() <= 0)
+            ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType);
         else
             rtnRst += "error:节假日或转班信息已经存在!";
         return rtnRst;

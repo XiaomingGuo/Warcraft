@@ -2,13 +2,9 @@ package com.jsp.support;
 
 import java.util.List;
 
-import com.DB.operation.EarthquakeManagement;
-import com.DB.operation.User_Info;
-import com.Warcraft.Interface.IPageAjaxUtil;
-import com.Warcraft.Interface.IPageInterface;
-import com.Warcraft.Interface.IRecordsQueryUtil;
-import com.page.utilities.CPageAjaxUtil;
-import com.page.utilities.CRecordsQueryUtil;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.Interface.*;
+import com.page.utilities.*;
 
 public class Query_AllUserInfo_Ajax extends PageParentClass implements IPageInterface
 {
@@ -41,14 +37,14 @@ public class Query_AllUserInfo_Ajax extends PageParentClass implements IPageInte
     public List<List<String>> GetAllUserRecord()
     {
         String[] sqlGetArray = {"id", "name", "check_in_id", "department", "isFixWorkGroup"};
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         return hQueryHandle.GetAllTableContent(sqlGetArray);
     }
     
     private List<List<String>> GetAllUserRecordByDepartment(String department)
     {
         String[] sqlGetArray = {"id", "name", "check_in_id", "department", "isFixWorkGroup"};
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         return hQueryHandle.GetAllTableContentByKeyWord(sqlGetArray, "department", department);
     }
     

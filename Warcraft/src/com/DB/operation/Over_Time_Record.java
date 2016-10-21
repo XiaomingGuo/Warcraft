@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.OverTimeRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Over_Time_Record implements ITableInterface
 {

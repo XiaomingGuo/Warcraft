@@ -10,7 +10,6 @@ import com.DB.support.MaterialStorage;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Material_Storage implements ITableInterface, IStorageTableInterface
 {

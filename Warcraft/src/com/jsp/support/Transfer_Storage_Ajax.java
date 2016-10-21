@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Transfer_Storage_Ajax extends PageParentClass
 {
 	public List<List<String>> GetCustomerPoRecordList(String POName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
-		if (hCPRHandle.RecordDBCount() > 0)
+		if (hCPRHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] colNames = {"Bar_Code", "QTY", "percent"};
 			for(int idx=0; idx < colNames.length; idx++)
@@ -27,14 +28,14 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	
 	private void UpdateARecordPoName(String barcode, String batchLot, String POName, int iQty)
 	{
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		DBTableParent hHandle = GenStorageHandle(barcode);
 		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
-		((ITableInterface)hHandle).UpdateRecordByKeyList("OUT_QTY", Integer.toString(iQty+Integer.parseInt(hHandle.getDBRecordList("OUT_QTY").get(0))), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
-		IStorageTableInterface hProcessHandle = GenProcessStorageHandle(barcode);
-		hProcessHandle.AddARecord(barcode, batchLot, Integer.toString(iQty), hHandle.getDBRecordList("Price_Per_Unit").get(0),
+		hHandle.UpdateRecordByKeyList("OUT_QTY", Integer.toString(iQty+Integer.parseInt(hHandle.getDBRecordList("OUT_QTY").get(0))), Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+		DBTableParent hProcessHandle = GenProcessStorageHandle(barcode);
+		AddSingleRecordToStorage(hProcessHandle, barcode, batchLot, Integer.toString(iQty), hHandle.getDBRecordList("Price_Per_Unit").get(0),
 				hHandle.getDBRecordList("Total_Price").get(0), hHandle.getDBRecordList("Order_Name").get(0), POName,
 				hHandle.getDBRecordList("vendor_name").get(0), hHandle.getDBRecordList("in_store_date").get(0));
-		((ITableInterface)hProcessHandle).UpdateRecordByKeyList("isEnsure", "1", 
+		hProcessHandle.UpdateRecordByKeyList("isEnsure", "1", 
 				Arrays.asList("Bar_Code", "Batch_Lot", "in_store_date"), 
 				Arrays.asList(barcode, batchLot, hHandle.getDBRecordList("in_store_date").get(0)));
 		CheckMoveToExhaustedTable(barcode, batchLot);
@@ -79,7 +80,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	private List<List<String>> GetStorageRecordList(String barcode, String storageName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		IStorageTableInterface hHandle = GenStorageHandle(barcode);
+		DBTableParent hHandle = GenStorageHandle(barcode);
 		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(hHandle.GetUsedBarcode(barcode, storageName), "1"));
 		List<String> tempPoName = hHandle.getDBRecordList("po_name");
 		String[] KeywordList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY"};
@@ -101,8 +102,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 		List<List<String>> recordList = GetAllCustomerPoRecord(POName);
 		if(recordList.size() > 0)
 		{
-			//{"Bar_Code", "vendor"};
-			Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+			DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 			for (int idx = 0; idx < recordList.get(0).size(); idx++)
 			{
 				String barcode = recordList.get(0).get(idx);
@@ -115,7 +115,7 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	private List<List<String>> GetAllCustomerPoRecord(String POName)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 		hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
 		String[] getKeyword = {"Bar_Code", "vendor"};
 		for (int idx=0; idx < getKeyword.length; idx++)
@@ -127,17 +127,17 @@ public class Transfer_Storage_Ajax extends PageParentClass
 	
 	public void AddCustomerPo(String POName)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
-		if(hCPHandle.RecordDBCount() <= 0)
-			hCPHandle.AddARecord(POName);
+		if(hCPHandle.getTableInstance().RecordDBCount() <= 0)
+			((Customer_Po)hCPHandle.getTableInstance()).AddARecord(POName);
 	}
 	
 	public boolean CheckSubmitPo(String POName)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(POName));
-		if (hCPHandle.RecordDBCount() > 0)
+		if (hCPHandle.getTableInstance().RecordDBCount() > 0)
 			return true;
 		return false;
 	}

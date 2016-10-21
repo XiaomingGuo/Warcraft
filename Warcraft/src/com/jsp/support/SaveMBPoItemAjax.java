@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.office.core.ExcelManagment;
 import com.office.operation.ExcelWrite;
-import com.DB.operation.*;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class SaveMBPoItemAjax extends PageParentClass
 {
@@ -22,7 +23,7 @@ public class SaveMBPoItemAjax extends PageParentClass
 	public void SaveToExcelByPoName(String poName, String vendor, String delivery_Date)
 	{
 		List<String> writeList = new ArrayList<String>();
-		Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+		DBTableParent hVIHandle = new DatabaseStore("Vendor_Info");
 		hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(vendor, "原材料库"));
 		writeList.add(vendor);
 		writeList.add(hVIHandle.getDBRecordList("vendor_fax").get(0));

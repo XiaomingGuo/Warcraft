@@ -6,32 +6,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class QueryStorageItemAjax extends PageParentClass
 {
 	public List<String> QueryProTypeStorage(String storageName)
 	{
-		List<String> rtnRst = null;
-		Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
 		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storageName));
-		rtnRst = hPTHandle.getDBRecordList("name");
-		return rtnRst;
+		return hPTHandle.getDBRecordList("name");
 	}
 	
 	public List<String> QueryProNameByProType(String proType)
 	{
-		List<String> rtnRst = null;
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("product_type"), Arrays.asList(proType));
-		rtnRst = hPIHandle.getDBRecordList("name");
-		return rtnRst;
+		return hPIHandle.getDBRecordList("name");
 	}
 	
 	public List<String> GetAllRecordByBarCodeList(List<String> barcodeList)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		for (int idx = 0; idx < barcodeList.size(); idx++)
 		{
 			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcodeList.get(idx)));
@@ -39,10 +36,10 @@ public class QueryStorageItemAjax extends PageParentClass
 			rtnRst.add(hPIHandle.getDBRecordList("name").get(0));
 			rtnRst.add(hPIHandle.getDBRecordList("Bar_Code").get(0));
 			rtnRst.add(hPIHandle.getDBRecordList("product_type").get(0));
-			Other_Storage hOSHandle = new Other_Storage(new EarthquakeManagement());
+			DBTableParent hOSHandle = new DatabaseStore("Other_Storage");
 			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
 			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
-			double totalPrice = hOSHandle.GetDblPriceOfStorage("Bar_Code", barcodeList.get(idx));
+			double totalPrice = hOSHandle.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));
 			rtnRst.add(Integer.toString(in_Qty-out_Qty));
@@ -54,18 +51,16 @@ public class QueryStorageItemAjax extends PageParentClass
 	
 	public String QueryBarCodeByProName(String proName)
 	{
-		String rtnRst = "";
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proName));
-		rtnRst = hPIHandle.getDBRecordList("Bar_Code").get(0);
-		return rtnRst;
+		return hPIHandle.getDBRecordList("Bar_Code").get(0);
 	}
 	
 	public String GenOrderName(String OrderHeader)
 	{
 		String orderName = "";
 		int iCount = 1;
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		DBTableParent hPOHandle = new DatabaseStore("Product_Order");
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);

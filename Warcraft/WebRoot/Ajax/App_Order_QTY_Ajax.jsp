@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent" %>
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.Product_Storage" %>
 <%@ page import="com.DB.operation.Semi_Product_Storage" %>
@@ -17,9 +18,9 @@
 	hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "product_type"), Arrays.asList(pro_name, pro_type));
 	String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
 	
-	Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-	Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
-	Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+	DBTableParent hPSHandle = new DatabaseStore("Product_Storage");
+	DBTableParent hSPSHandle = new DatabaseStore("Semi_Product_Storage");
+	DBTableParent hMSHandle = new DatabaseStore("Material_Storage");
 	
 	int iProRepertory = hPageHandle.GetAllRepertoryByPOName(hPageHandle.GetUsedBarcode(strBarcode, "Product_Storage"), po_name);
 	int iSemiProductRepertory = hSPSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(hSPSHandle.GetUsedBarcode(strBarcode, "semi_pro_storage"), "Material_Supply", "1"));

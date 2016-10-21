@@ -11,7 +11,6 @@ import java.sql.Time;
 import com.DB.support.WorkGroupInfo;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Work_Group_Info implements ITableInterface
 {

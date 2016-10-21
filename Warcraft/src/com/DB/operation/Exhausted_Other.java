@@ -7,13 +7,10 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-import com.DB.support.ExhaustedMaterial;
 import com.DB.support.ExhaustedOther;
-import com.DB.support.ExhaustedProduct;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Exhausted_Other implements ITableInterface, IStorageTableInterface
 {

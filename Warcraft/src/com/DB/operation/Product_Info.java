@@ -7,10 +7,8 @@ import java.util.List;
 import org.hibernate.Query;
 
 import com.DB.support.ProductInfo;
-import com.DB.support.StoreroomName;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Product_Info implements ITableInterface
 {

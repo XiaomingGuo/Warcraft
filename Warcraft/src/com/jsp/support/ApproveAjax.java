@@ -6,11 +6,23 @@ import java.util.List;
 
 import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.*;
 import com.Warcraft.SupportUnit.DBTableParent;
 
 public class ApproveAjax extends PageParentClass
 {
+	public void AddNewOtherRecord(String barcode, String proposerName, String recordCount, String userName, String mergeMark)
+	{
+		DBTableParent hORHandle = new DatabaseStore("Other_Record");
+		((Other_Record)hORHandle.getTableInstance()).AddARecord(barcode, proposerName, recordCount, userName, mergeMark);
+	}
+	
+	public void ApproveOtherRecord(List<String> updateKeyWords, List<String> updateKeyVals, List<String> keyLists, List<String> valueLists)
+	{
+		DBTableParent hORHandle = new DatabaseStore("Other_Record");
+		for(int idx = 0; idx < updateKeyWords.size(); idx++)
+			hORHandle.UpdateRecordByKeyList(updateKeyWords.get(idx), updateKeyVals.get(idx), keyLists, valueLists);
+	}
+	
 	public int GetStorageRepertory(String barcode)
 	{
 		return GetQTYByBarCode("IN_QTY", barcode, Arrays.asList("Bar_Code"), Arrays.asList(barcode)) -
@@ -23,7 +35,6 @@ public class ApproveAjax extends PageParentClass
 		DBTableParent hHandle = GenStorageHandle(barcode);
 
 		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code"), Arrays.asList(barcode));
-		//List<List<String>> material_info_List = new ArrayList<List<String>>();
 		for(int idx=0; idx < keyArray.length; idx++)
 		{
 			rtnRst.add(hHandle.getDBRecordList(keyArray[idx]));

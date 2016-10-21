@@ -7,10 +7,8 @@ import java.util.List;
 import org.hibernate.Query;
 
 import com.DB.support.DiscardMaterialRecord;
-import com.DB.support.ProductOrderRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Discard_Material_Record implements ITableInterface
 {

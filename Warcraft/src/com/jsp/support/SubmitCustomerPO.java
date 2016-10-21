@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
 public class SubmitCustomerPO extends PageParentClass
@@ -48,12 +47,6 @@ public class SubmitCustomerPO extends PageParentClass
 	{
 		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		((Product_Order_Record)hPORHandle.getTableInstance()).AddARecord(barCode, deliveryDate, qty, poName, orderName);
-	}
-	
-	public int GetInProcessQty(String strBarcode, String appPOName)
-	{
-		DBTableParent hHandle = new DatabaseStore("Product_Order_Record");
-		return hHandle.GetQtyByBarcodeAndPOName(strBarcode, appPOName, "QTY");
 	}
 	
 	public void UpdateCustomerPoStatus(String status, String poName)

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
 import com.Warcraft.Interface.IPageAjaxUtil;
 import com.Warcraft.Interface.IPageInterface;
 import com.Warcraft.Interface.IRecordsQueryUtil;
+import com.Warcraft.SupportUnit.DBTableParent;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
@@ -28,38 +30,38 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
     
     private List<String> GetAllWorkGroup()
     {
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
         hWGIHandle.QueryAllRecord();
         return hWGIHandle.getDBRecordList("group_name");
     }
     
     private List<String> GetAllUserName()
     {
-        User_Info hWGIHandle = new User_Info(new EarthquakeManagement());
-        hWGIHandle.QueryAllRecord();
-        return hWGIHandle.getDBRecordList("name");
+    	DBTableParent hUIHandle = new DatabaseStore("User_Info");
+    	hUIHandle.QueryAllRecord();
+        return hUIHandle.getDBRecordList("name");
     }
     
     public String GetUserNameByKeyWord(String keyWord, String keyVal, String getKeyWord)
     {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         return hQueryHandle.GetTableContentByKeyWord(keyWord, keyVal, getKeyWord).get(0);
     }
     
     private List<String> GetDepartmentName()
     {
-        User_Info hWGIHandle = new User_Info(new EarthquakeManagement());
-        hWGIHandle.QueryRecordGroupByList(Arrays.asList("department"));
-        return hWGIHandle.getDBRecordList("department");
+    	DBTableParent hUIHandle = new DatabaseStore("User_Info");
+    	hUIHandle.QueryRecordGroupByList(Arrays.asList("department"));
+        return hUIHandle.getDBRecordList("department");
     }
     
     private List<List<String>> GetAllDisplayInfo(String userName)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+        DBTableParent hUIHandle = new DatabaseStore("User_Info");
         hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(userName));
         String[] sqlKeyList = {"id", "name", "check_in_id", "department", "isFixWorkGroup"};
-        if (hUIHandle.RecordDBCount() > 0)
+        if (hUIHandle.getTableInstance().RecordDBCount() > 0)
         {
             for(int idx=0; idx < sqlKeyList.length; idx++)
                 rtnRst.add(hUIHandle.getDBRecordList(sqlKeyList[idx]));
@@ -179,11 +181,11 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
     public String SubmitArrangeCheckInData(String strCheckInId, String strWorkGroup, String beginDate, String endDate)
     {
         String rtnRst = "";
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
         hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("group_name"), Arrays.asList(strWorkGroup));
         
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        if(hWGIHandle.RecordDBCount() > 0)
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
+        if(hWGIHandle.getTableInstance().RecordDBCount() > 0)
         {
             String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
             //hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id"), Arrays.asList(strCheckInId),
@@ -211,7 +213,7 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
         String beginDate = submitDate+"01", endDate = submitDate+Integer.toString(DateAdapter.getMaxDaysByYearMonth(submitDate));
         String strCheckInId = GetUserNameByKeyWord("name", userName, "check_in_id");
         
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenAndIncludeDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(strCheckInId, "0"),
                                                                     "check_in_date", beginDate, endDate);
         List<String> updateIdList = hCIRDHandle.getDBRecordList("id");
@@ -226,20 +228,20 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
     public String SubmitAddCheckInData(String strCheckInId, String strWorkGroup, String addDate)
     {
         String rtnRst = "";
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
         hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("group_name"), Arrays.asList(strWorkGroup));
         
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
-        if(hWGIHandle.RecordDBCount() > 0)
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
+        if(hWGIHandle.getTableInstance().RecordDBCount() > 0)
         {
             String workGroupId = hWGIHandle.getDBRecordList("id").get(0);
             String checkInDate = addDate.split("#")[0];
             String checkInTime = addDate.split("#")[1];
             
             hCIRDHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "check_in_date", "check_in_time"), Arrays.asList(strCheckInId, checkInDate, checkInTime));
-            if(hCIRDHandle.RecordDBCount() <= 0)
+            if(hCIRDHandle.getTableInstance().RecordDBCount() <= 0)
             {
-                hCIRDHandle.AddARecord(strCheckInId, checkInDate, checkInTime, workGroupId);
+                ((Check_In_Raw_Data)hCIRDHandle.getTableInstance()).AddARecord(strCheckInId, checkInDate, checkInTime, workGroupId);
                 hCIRDHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("check_in_id", "check_in_date", "check_in_time", "work_group"), Arrays.asList(strCheckInId, checkInDate, checkInTime, workGroupId));
             }
         }
@@ -251,10 +253,10 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
     public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType)
     {
         String rtnRst = "";
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
-        if(hHMHandle.RecordDBCount() <= 0)
-            hHMHandle.AddARecord(strCheckInId, addDate, holidayType);
+        if(hHMHandle.getTableInstance().RecordDBCount() <= 0)
+            ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType);
         else
             rtnRst += "error:节假日或转班信息已经存在!";
         return rtnRst;

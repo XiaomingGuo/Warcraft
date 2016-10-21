@@ -2,7 +2,8 @@ package com.jsp.support;
 
 import java.util.Arrays;
 
-import com.DB.operation.*;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Generate_Order extends PageParentClass
 {
@@ -10,7 +11,7 @@ public class Generate_Order extends PageParentClass
 	{
 		String orderName = "";
 		int iCount = 1;
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		DBTableParent hPOHandle = new DatabaseStore("Product_Order");
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);

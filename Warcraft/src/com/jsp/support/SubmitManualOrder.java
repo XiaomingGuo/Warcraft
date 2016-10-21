@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class SubmitManualOrder extends PageParentClass
 {
@@ -13,7 +14,7 @@ public class SubmitManualOrder extends PageParentClass
 	{
 		String[] sqlKeyList = {"Bar_Code", "QTY", "delivery_date", "percent"};
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+		DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 		hCPRHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(PO_Name), Arrays.asList("id"));
 		for (int i = 0; i < sqlKeyList.length; i++)
 			rtnRst.add(hCPRHandle.getDBRecordList(sqlKeyList[i]));
@@ -24,7 +25,7 @@ public class SubmitManualOrder extends PageParentClass
 	{
 		String orderName = "";
 		int iCount = 1;
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+		DBTableParent hPOHandle = new DatabaseStore("Product_Order");
 		do
 		{
 			orderName = String.format("%s_%04d", OrderHeader, iCount);
@@ -38,34 +39,28 @@ public class SubmitManualOrder extends PageParentClass
 	
 	public void InsertProductOrder(String orderName)
 	{
-		Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
-		hPOHandle.AddARecord(orderName);
+		DBTableParent hPOHandle = new DatabaseStore("Product_Order");
+		((Product_Order)hPOHandle.getTableInstance()).AddARecord(orderName);
 	}
 	
 	public void InsertProductOrderRecord(String barCode, String deliveryDate, int qty, String poName, String orderName)
 	{
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
-		hPORHandle.AddARecord(barCode, deliveryDate, qty, poName, orderName);
-	}
-	
-	public int GetInProcessQty(String strBarcode, String appPOName)
-	{
-		Product_Order_Record hHandle = new Product_Order_Record(new EarthquakeManagement());
-		return hHandle.GetQtyByBarcodeAndPOName(strBarcode, appPOName, "QTY");
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
+		((Product_Order_Record)hPORHandle.getTableInstance()).AddARecord(barCode, deliveryDate, qty, poName, orderName);
 	}
 	
 	public void UpdateCustomerPoStatus(String status, String poName)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("status", "po_name"), Arrays.asList("1", poName));
 	}
 	
 	public void SubmitPoOrder(String appPOName)
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 		hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(appPOName));
-		if (hCPHandle.RecordDBCount() <= 0)
-			hCPHandle.AddARecord(appPOName);
+		if (hCPHandle.getTableInstance().RecordDBCount() <= 0)
+			((Customer_Po)hCPHandle.getTableInstance()).AddARecord(appPOName);
 	}
 	
 	public List<Integer> getCustomerPOTotalQty(List<List<String>> recordList)
@@ -80,9 +75,9 @@ public class SubmitManualOrder extends PageParentClass
 	
 	public void CheckAndInsertProductOrder(String poName, String pro_order)
 	{
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(poName));
-		if(hPORHandle.RecordDBCount() > 0)
+		if(hPORHandle.getTableInstance().RecordDBCount() > 0)
 			InsertProductOrder(pro_order);
 	}
 	

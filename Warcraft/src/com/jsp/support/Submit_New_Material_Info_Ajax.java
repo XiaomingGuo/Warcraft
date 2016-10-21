@@ -1,23 +1,25 @@
 package com.jsp.support;
 
+import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Submit_New_Material_Info_Ajax extends PageParentClass
 {
 	private void AddNewManufactoryMaterialInfo(String appBarcode, String appProductname, String appProduct_type, String productWeight, String appWeightUnit, String appDescription)
 	{
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		if(!IsOtherBarcode(appBarcode))
 		{
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
+			((Product_Info)hPIHandle.getTableInstance()).AddARecord(GetUsedBarcode(appBarcode, "product_storage"), appProductname, appProduct_type.replace("原锭", ""),
 					productWeight, "0", "NULL", "0", "0", appDescription);
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
+			((Product_Info)hPIHandle.getTableInstance()).AddARecord(GetUsedBarcode(appBarcode, "material_storage"), appProductname, appProduct_type,
 					appWeightUnit, "0", "NULL", "0", "0", appDescription);
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
+			((Product_Info)hPIHandle.getTableInstance()).AddARecord(GetUsedBarcode(appBarcode, "semi_pro_storage"), appProductname, appProduct_type.replace("原锭", "半成品"),
 					"0", "0", "NULL", "0", "0", appDescription);
 		}
 		else
-			hPIHandle.AddARecord(GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type,
+			((Product_Info)hPIHandle.getTableInstance()).AddARecord(GetUsedBarcode(appBarcode, "other_storage"), appProductname, appProduct_type,
 					"0", "0", "NULL", "0", "0", appDescription);
 	}
 	

@@ -11,7 +11,6 @@ import com.DB.support.ExhaustedManuStorageRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Exhausted_Manu_Storage_Record implements ITableInterface, IStorageTableInterface
 {

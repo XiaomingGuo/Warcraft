@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.MbMaterialPoRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Mb_Material_Po_Record implements ITableInterface
 {

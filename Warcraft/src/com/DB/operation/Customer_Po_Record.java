@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.CustomerPoRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Customer_Po_Record implements ITableInterface
 {

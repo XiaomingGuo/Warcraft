@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.DB.factory.DatabaseStore;
-import com.DB.operation.*;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.*;
@@ -27,9 +27,9 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     private List<List<String>> GetAllCheckInRawData(String user_name, String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date", queryDate + "00", queryDate + "32", Arrays.asList("check_in_date"));
-        if (hCIRDHandle.RecordDBCount() > 0)
+        if (hCIRDHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group", "isEnsure"};
             for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -108,9 +108,9 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     private String CheckPrecedingMonthData(String checkInId, String queryDate)
     {
         String preMonth = DateAdapter.getPrecedingMonth(queryDate);
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(checkInId, "0"), "check_in_date", preMonth + "00", preMonth + "32");
-        if(hCIRDHandle.RecordDBCount() > 0)
+        if(hCIRDHandle.getTableInstance().RecordDBCount() > 0)
             return "1";
         return "0";
     }
@@ -131,7 +131,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     {
         hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
         String workGroupId = hQueryHandle.GetTableContentByKeyWord("group_name", workGroup, "id").get(0);
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.UpdateRecordByKeyList("work_group", workGroupId, Arrays.asList("id"), Arrays.asList(id));
         return "";
     }

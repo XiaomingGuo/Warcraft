@@ -3,8 +3,9 @@ package com.jsp.support.PersonalMenu;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
+import com.DB.factory.DatabaseStore;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
@@ -25,7 +26,7 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
     private List<List<String>> GetAllHolidayData(String userID, String user_name, String queryDate, String holidayType)
     {
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         String beginDate = queryDate, endDate = queryDate;
         if(queryDate.length() == 4)
         {
@@ -41,10 +42,10 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
             hHMHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id"), Arrays.asList(userID), "holiday_date", beginDate, endDate);
         else
             hHMHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "holiday_info"), Arrays.asList(userID, holidayType), "holiday_date", beginDate, endDate);
-        if (hHMHandle.RecordDBCount() > 0)
+        if (hHMHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"check_in_id", "holiday_date", "holiday_info", "id"};
-            for(int iRecordIdx = 0; iRecordIdx < hHMHandle.RecordDBCount(); iRecordIdx++)
+            for(int iRecordIdx = 0; iRecordIdx < hHMHandle.getTableInstance().RecordDBCount(); iRecordIdx++)
             {
                 rtnRst.get(0).add(Integer.toString(iRecordIdx+1));
                 rtnRst.get(1).add(user_name);
@@ -70,13 +71,13 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
     
     public List<String> GetHolidayTypeName()
     {
-        hQueryHandle.setTableHandle(new Holiday_Type(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Holiday_Type"));
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "holiday_name");
     }
     
     public String UpdateHoldayMarkRecord(String id, String holidayType, String holidayDate)
     {
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         hHMHandle.UpdateRecordByKeyList("holiday_info", holidayType, Arrays.asList("id"), Arrays.asList(id));
         if(holidayDate.length() == 8)
             hHMHandle.UpdateRecordByKeyList("holiday_date", holidayDate, Arrays.asList("id"), Arrays.asList(id));

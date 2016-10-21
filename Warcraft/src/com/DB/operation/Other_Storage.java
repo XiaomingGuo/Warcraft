@@ -5,14 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
-
-import com.DB.support.MaterialStorage;
 import com.DB.support.OtherStorage;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class Other_Storage implements ITableInterface, IStorageTableInterface
 {
@@ -104,11 +100,6 @@ public class Other_Storage implements ITableInterface, IStorageTableInterface
 	{
 		return aWriteRecord;
 	}
-	
-	//public double GetDblPriceOfStorage(String keyword, String keyValue)
-	//{
-	//	return super.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", keyword, keyValue);
-	//}
 	
 	@Override
 	public String GetDatabaseKeyWord(String keyword)

@@ -2,7 +2,6 @@ package com.DB.operation;
 
 import static org.junit.Assert.*;
 import mockit.Injectable;
-import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Tested;
 import mockit.Verifications;

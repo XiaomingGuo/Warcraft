@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.DB.factory.DatabaseStore;
 import com.DB.operation.*;
-import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Query_Process_Detail_Info extends PageParentClass

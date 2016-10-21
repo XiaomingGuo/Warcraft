@@ -10,7 +10,6 @@ import org.hibernate.Query;
 import com.DB.support.CheckInRawData;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Check_In_Raw_Data implements ITableInterface
 {

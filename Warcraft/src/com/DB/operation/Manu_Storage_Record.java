@@ -10,7 +10,6 @@ import com.DB.support.ManuStorageRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.IStorageTableInterface;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Manu_Storage_Record implements ITableInterface, IStorageTableInterface
 {

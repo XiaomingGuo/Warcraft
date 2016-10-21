@@ -9,6 +9,7 @@ import org.junit.*;
 
 import com.jsp.support.PersonalMenu.SummarizeCheckInTime;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 /**
  * @author Wallace.Guo
@@ -43,7 +44,7 @@ public class TestSummarizeCheckInTime
 		IRecordsQueryUtil mockHandle = mock(IRecordsQueryUtil.class);
 		hTestHandle.setQueryHandle(mockHandle);
 		hTestHandle.GetAllUserRecordByName("AllRecord", "name");
-		verify(mockHandle).setTableHandle((ITableInterface) any());
+		verify(mockHandle).setDBHandle((DBTableParent) any());
 		verify(mockHandle).GetTableContentByKeyWord("name", "AllRecord", "name");
 	}
 	
@@ -53,7 +54,7 @@ public class TestSummarizeCheckInTime
 		IRecordsQueryUtil mockHandle = mock(IRecordsQueryUtil.class);
 		hTestHandle.setQueryHandle(mockHandle);
 		hTestHandle.GetAllUserRecordByCheckInId("12301", "name");
-		verify(mockHandle).setTableHandle((ITableInterface) any());
+		verify(mockHandle).setDBHandle((DBTableParent) any());
 		verify(mockHandle).GetTableContentByKeyWord("check_in_id", "12301", "name");
 	}
 	

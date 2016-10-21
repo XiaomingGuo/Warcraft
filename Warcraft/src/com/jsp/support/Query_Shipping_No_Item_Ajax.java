@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
-import com.Warcraft.Interface.*;
+import com.DB.factory.DatabaseStore;
+import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Query_Shipping_No_Item_Ajax extends PageParentClass
 {
 	public List<List<String>> GetShippingRecordByShippingNo(String shipNo)
 	{
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
-		Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+		DBTableParent hSRHandle = new DatabaseStore("Shipping_Record");
 		hSRHandle.QueryRecordByFilterKeyList(Arrays.asList("shipping_no"), Arrays.asList(shipNo));
-		if (hSRHandle.RecordDBCount() > 0)
+		if (hSRHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"id", "customer_po", "Bar_Code", "Batch_Lot", "Order_Name", "ship_QTY"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -28,9 +28,9 @@ public class Query_Shipping_No_Item_Ajax extends PageParentClass
 	public String GetShippingDate(String shipNo)
 	{
 		String rtnRst = "";
-		Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
+		DBTableParent hSNHandle = new DatabaseStore("Shipping_No");
 		hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("shipping_no"), Arrays.asList(shipNo));
-		if (hSNHandle.RecordDBCount() > 0)
+		if (hSNHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			rtnRst = hSNHandle.getDBRecordList("create_date").get(0);
 		}

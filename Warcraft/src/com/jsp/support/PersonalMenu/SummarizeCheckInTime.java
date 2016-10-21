@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.DB.operation.*;
+import com.DB.factory.DatabaseStore;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.DBTableParent;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
 import com.page.utilities.*;
@@ -42,13 +43,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
     {
-        hQueryHandle.setTableHandle(new User_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
     }
     
     public int GetWorkDayOfAWeekByWorkGroupId(String queryKeyVal)
     {
-        hQueryHandle.setTableHandle(new Work_Group_Info(new EarthquakeManagement()));
+        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
         return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
     }
     
@@ -96,7 +97,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetAllUserInfo()
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        User_Info hUIHandle = new User_Info(new EarthquakeManagement());
+        DBTableParent hUIHandle = new DatabaseStore("User_Info");
         hUIHandle.QueryAllRecord();
         String[] keywordList = new String[] {"name", "check_in_id"};
         for(int idx=0; idx < keywordList.length; idx++)
@@ -435,10 +436,10 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetAllWorkGroupRecord()
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Work_Group_Info hWGIHandle = new Work_Group_Info(new EarthquakeManagement());
+        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
         hWGIHandle.QueryAllRecord();
         String[] getKeyWord = {"id", "group_name", "check_in_time", "check_out_time"};
-        if(hWGIHandle.RecordDBCount() > 0)
+        if(hWGIHandle.getTableInstance().RecordDBCount() > 0)
         {
             for(int idx=0; idx < getKeyWord.length; idx++)
                 rtnRst.add(hWGIHandle.getDBRecordList(getKeyWord[idx]));
@@ -449,9 +450,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetAllOverTimeRecordByDate(String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Over_Time_Record hOTRHandle = new Over_Time_Record(new EarthquakeManagement());
+        DBTableParent hOTRHandle = new DatabaseStore("Over_Time_Record");
         hOTRHandle.QueryRecordBetweenDateSpanAndOrderByListASC("over_time_date", queryDate + "00", queryDate + "32", Arrays.asList("over_time_date"));
-        if(hOTRHandle.RecordDBCount() > 0)
+        if(hOTRHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] getKeyWord = {"check_in_id", "over_time_date", "over_time_hour"};
             for(int idx=0; idx < getKeyWord.length; idx++)
@@ -463,7 +464,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetAllHolidayMarkRecordByDate(String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Holiday_Mark hHMHandle = new Holiday_Mark(new EarthquakeManagement());
+        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         
         hHMHandle.QueryRecordBetweenDateSpanAndOrderByListASC("holiday_date", queryDate + "00", queryDate + "32", Arrays.asList("holiday_date"));
         String[] getKeyWord = {"check_in_id", "holiday_date", "holiday_info"};
@@ -475,7 +476,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetCheckInRawDataRecordByDate(String queryDate)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        Check_In_Raw_Data hCIRDHandle = new Check_In_Raw_Data(new EarthquakeManagement());
+        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordBetweenDateSpanAndOrderByListASC("check_in_date", queryDate+"00", queryDate+"32", Arrays.asList("check_in_time"));
         String[] getKeyWord = {"check_in_id", "check_in_date", "check_in_time", "work_group"};
         for(int idx=0; idx < getKeyWord.length; idx++)
@@ -608,7 +609,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     private String GetWorkGroupName(String id)
     {
-        Work_Group_Info hUIHandle = new Work_Group_Info(new EarthquakeManagement());
+        DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
         hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
         return hUIHandle.getDBRecordList("group_name").get(0);
     }

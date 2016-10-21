@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.ShippingRecord;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Shipping_Record implements ITableInterface
 {

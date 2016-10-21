@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.UserInfo;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class User_Info implements ITableInterface
 {

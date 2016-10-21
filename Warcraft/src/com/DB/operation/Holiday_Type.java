@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import com.DB.support.HolidayType;
 import com.Warcraft.Interface.IEQManagement;
 import com.Warcraft.Interface.ITableInterface;
-import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Holiday_Type implements ITableInterface
 {
