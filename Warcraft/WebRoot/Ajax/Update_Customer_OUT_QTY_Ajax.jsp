@@ -1,7 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@	page import="com.DB.operation.Shipping_Record"%>
-<%@	page import="com.DB.operation.Customer_Po_Record"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Update_Customer_OUT_QTY_Ajax" %>
 <%
 	String rtnRst = "remove$";

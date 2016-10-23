@@ -48,24 +48,24 @@
 				<title>系统登陆</title>
 				<link rel='stylesheet' type='text/css' href='css/style.css'>
 			</head>
-  
+
 			<body>
 				<div align="center">
 					<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 					<fieldset style='width: 500'>
-		  				<legend><font  SIZE="+2" style="font-weight:bold;">登陆失败</font></legend><br><br>
-		  				<table align="center" width="400">
-		  					<tr>
-		  						<td>
-		  							您的用户名或密码有错误！！！
-		  						</td>
-		  					</tr>
-		  					<tr>
-		  						<td>
-						  			<br><br><input type='button' onclick="history.go(-1);" value='返回' class="button">
-		  						</td>
-		  					</tr>
-		  				</table>
+						<legend><font size="+2" style="font-weight:bold;">登陆失败</font></legend><br><br>
+						<table align="center" width="400">
+							<tr>
+								<td>
+									您的用户名或密码有错误！！！
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<br><br><input type='button' onclick="history.go(-1);" value='返回' class="button">
+								</td>
+							</tr>
+						</table>
 					</fieldset>
 				</div>
 			</body>

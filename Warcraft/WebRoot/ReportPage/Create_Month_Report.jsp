@@ -1,9 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.factory.DatabaseStore" %>
 <%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
-<%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.PageParentClass" %>
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>

@@ -1,7 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.Get_ProductNameType_By_Order_Ajax" %>
-<%@ page import="com.DB.operation.Product_Type" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String proOrder = request.getParameter("ProductOrder").replace(" ", "");

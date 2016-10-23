@@ -6,7 +6,6 @@
 <%@ page import="com.DB.operation.Product_Info" %>
 <%@ page import="com.DB.operation.Product_Type" %>
 <%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String filePath = request.getParameter("filePath").replace(" ", "");
