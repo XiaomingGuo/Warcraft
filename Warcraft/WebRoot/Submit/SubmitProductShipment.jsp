@@ -1,9 +1,7 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.Product_Order" %>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	if(session.getAttribute("logonuser")==null)
@@ -18,9 +16,9 @@
 		//product_type Database query
 		if (appPONum!=null && appPONum!="")
 		{
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
+			DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
 			hCPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name"), Arrays.asList(appPONum));
-			if(hCPHandle.RecordDBCount() > 0)
+			if(hCPHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				hCPHandle.UpdateRecordByKeyList("status", "5", Arrays.asList("po_name"), Arrays.asList(appPONum));
 			}

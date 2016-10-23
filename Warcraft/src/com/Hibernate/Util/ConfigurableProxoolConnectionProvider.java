@@ -7,10 +7,9 @@ import org.hibernate.service.spi.Configurable;
 import org.hibernate.service.jdbc.connections.internal.ProxoolConnectionProvider;
 
 public class ConfigurableProxoolConnectionProvider extends
-		ProxoolConnectionProvider implements Configurable {
-
-	@Override
-	public void configure(final Map configurationValues) {
+        ProxoolConnectionProvider implements Configurable {
+    @Override
+    public void configure(final Map configurationValues) {
         final Map<?,?> configuration = (Map<?,?>) configurationValues;
         final Properties properties = new Properties( );
         for ( final Map.Entry entry : configuration.entrySet() ) {
@@ -19,7 +18,5 @@ public class ConfigurableProxoolConnectionProvider extends
                 String.valueOf( entry.getValue() ) );
         }       
         super.configure( properties );
-
-	}
-
+    }
 }

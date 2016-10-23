@@ -1,11 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.DB.factory.DatabaseStore" %>
 <%@ page import="com.Warcraft.SupportUnit.DBTableParent" %>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.Product_Storage" %>
-<%@ page import="com.DB.operation.Semi_Product_Storage" %>
-<%@ page import="com.DB.operation.Material_Storage" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.PageParentClass" %>
 <%
 	String rtnRst = "remove$";

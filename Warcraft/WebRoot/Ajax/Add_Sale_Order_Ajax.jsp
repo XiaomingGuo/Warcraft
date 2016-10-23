@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Shipping_Record" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@	page import="com.DB.operation.Shipping_No"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String po_name = (String)request.getParameter("POName").replace(" ", "");
@@ -9,15 +9,15 @@
 	{
 		Calendar mData = Calendar.getInstance();
 		String currentDate = String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-		Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+		DBTableParent hSRHandle = new DatabaseStore("Shipping_Record");
 		hSRHandle.QueryRecordByFilterKeyList(Arrays.asList("customer_po", "shipping_no"), Arrays.asList(po_name, "0"));
-		if (hSRHandle.RecordDBCount() > 0)
+		if (hSRHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			List<String> idList = hSRHandle.getDBRecordList("id");
-			Shipping_No hSNHandle = new Shipping_No(new EarthquakeManagement());
-			hSNHandle.QueryRecordMoreThanShipNo(currentDate + "0000");
-			String ship_no = String.format("%s%04d", currentDate, hSNHandle.RecordDBCount() + 1);
-			hSNHandle.AddARecord(po_name, ship_no);
+			DBTableParent hSNHandle = new DatabaseStore("Shipping_No");
+			hSNHandle.QueryRecordMoreThanKeyValue("shipping", currentDate + "0000");
+			String ship_no = String.format("%s%04d", currentDate, hSNHandle.getTableInstance().RecordDBCount() + 1);
+			((Shipping_No)hSNHandle.getTableInstance()).AddARecord(po_name, ship_no);
 			for (int index = 0; index < idList.size(); index++)
 			{
 				hSRHandle.UpdateRecordByKeyList("shipping_no", ship_no, Arrays.asList("id"), Arrays.asList(idList.get(index)));

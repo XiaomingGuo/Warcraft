@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%!
 	String displayName = null;
@@ -25,7 +25,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+			DBTableParent hPOHandle = new DatabaseStore("Product_Order");
 			hPOHandle.QueryRecordByFilterKeyList(Arrays.asList("status"), Arrays.asList("1"));
 			List<String> orderName = hPOHandle.getDBRecordList("Order_Name");
 %>

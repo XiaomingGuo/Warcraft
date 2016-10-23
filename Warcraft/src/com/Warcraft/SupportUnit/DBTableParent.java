@@ -223,19 +223,45 @@ public abstract class DBTableParent
         getEQMHandle().EQQuery(hql);
     }
     
-	public void QueryRecordByFilterKeyListAndMoreThanStatus(List<String> keyList, List<String> valueList, String moreThanKeyWord, String moreThanKeyValue)
-	{
-		String hql = String.format("from %s tbn where", getTableInstance().GetTableName()) + GenerateWhereString(keyList, valueList);
-		hql += String.format(" and tbn.%s>'%s'", getTableInstance().GetDatabaseKeyWord(moreThanKeyWord), moreThanKeyValue);
-		getEQMHandle().EQQuery(hql);
-	}
-	
-	public void GetRecordLessThanStatus(int istatus)
-	{
-		String hql = String.format("from CustomerPo cp where cp.status<='%d'", istatus);
-		getEQMHandle().EQQuery(hql);
-	}
-	
+    public void QueryRecordByFilterKeyListAndMoreThanKeyValue(List<String> keyList, List<String> valueList, String moreThanKeyWord, String moreThanKeyValue)
+    {
+        String hql = String.format("from %s tbn where", getTableInstance().GetTableName()) + GenerateWhereString(keyList, valueList);
+        hql += String.format(" and tbn.%s>'%s'", getTableInstance().GetDatabaseKeyWord(moreThanKeyWord), moreThanKeyValue);
+        getEQMHandle().EQQuery(hql);
+    }
+    
+    public void QueryRecordByFilterKeyListAndLessThanKeyValue(List<String> keyList, List<String> valueList, String moreThanKeyWord, String moreThanKeyValue)
+    {
+        String hql = String.format("from %s tbn where", getTableInstance().GetTableName()) + GenerateWhereString(keyList, valueList);
+        hql += String.format(" and tbn.%s<'%s'", getTableInstance().GetDatabaseKeyWord(moreThanKeyWord), moreThanKeyValue);
+        getEQMHandle().EQQuery(hql);
+    }
+    
+    public void QueryRecordMoreThanKeyValue(String moreThanKeyWord, String moreThanVal)
+    {
+        String hql = String.format("from %s tbn where", getTableInstance().GetTableName());
+        hql += String.format(" tbn.%s>'%s'", getTableInstance().GetDatabaseKeyWord(moreThanKeyWord), moreThanVal);
+        getEQMHandle().EQQuery(hql);
+    }
+    
+    public void QueryRecordByExceptFilterList(List<String> keyList, List<String> valueList)
+    {
+        String hql = String.format("from %s tbn where", getTableInstance().GetTableName());
+        for(int idx=0; idx<keyList.size()-1; idx++)
+        {
+            hql += String.format(" tbn.%s!='%s' and ", getTableInstance().GetDatabaseKeyWord(keyList.get(idx)), valueList.get(idx));
+        }
+        hql += String.format(" tbn.%s!='%s'", getTableInstance().GetDatabaseKeyWord(keyList.get(keyList.size()-1)), valueList.get(valueList.size()-1));
+        getEQMHandle().EQQuery(hql);
+    }
+    
+    public void QueryRecordByKeyValueAndLessThanAndEqual(String keyWord, String keyValue)
+    {
+        String hql = String.format("from %s tbn where", getTableInstance().GetTableName());
+        hql += String.format(" tbn.%s<='%s'", getTableInstance().GetDatabaseKeyWord(keyWord), keyValue);
+        getEQMHandle().EQQuery(hql);
+    }
+    
     public void QueryAllRecord()
     {
         String hql = String.format("from %s tbn", getTableInstance().GetTableName());

@@ -77,12 +77,6 @@ public class Product_Order implements ITableInterface
 		return aWriteRecord;
 	}
 	
-	public void GetRecordLessThanStatus(int iStatus)
-	{
-		String hql = String.format("from ProductOrder po where po.status<='%d'", iStatus);
-		gEQMHandle.EQQuery(hql);
-	}
-	
 	public void AddARecord(String orderName)
 	{
 		aWriteRecord = new ProductOrder();

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.jsp.support.QueryMaterial" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -16,7 +16,7 @@
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		QueryMaterial hPageHandle = new QueryMaterial();
 		List<List<String>> recordList = hPageHandle.GetManufactureStorageRecord();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "PO单", "总进货量", "单价", "总进货价", "供应商", "备注", "操作"};
 %>
 

@@ -1,9 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.Mb_Material_Po"%>
-<%@ page import="com.DB.operation.Material_Storage"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Customer_Po_Record"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "remove$";
 	String vendor = (String)request.getParameter("vendor_name").replace(" ", "");
@@ -15,22 +13,22 @@
 	
 	if (order_name != null&&!order_name.isEmpty())
 	{
-		Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-		hCPHandle.QueryRecordByPoNameAndMoreThanStatus(order_name, "0");
-		if (hCPHandle.RecordDBCount() <= 0)
+		DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
+		hCPHandle.QueryRecordByFilterKeyListAndMoreThanKeyValue(Arrays.asList("po_name"), Arrays.asList(order_name), "status", "0");
+		if (hCPHandle.getTableInstance().RecordDBCount() <= 0)
 		{
 			if (bar_code != null&&deliv_date != null&&pro_qty != null&&vendor != null)
 			{
-				Customer_Po_Record hCPRHandle = new Customer_Po_Record(new EarthquakeManagement());
+				DBTableParent hCPRHandle = new DatabaseStore("Customer_Po_Record");
 				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Product_Storage"), order_name));
-				int recordCount = hCPRHandle.RecordDBCount();
+				int recordCount = hCPRHandle.getTableInstance().RecordDBCount();
 				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Semi_Pro_Storage"), order_name));
-				recordCount += hCPRHandle.RecordDBCount();
+				recordCount += hCPRHandle.getTableInstance().RecordDBCount();
 				hCPRHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "po_name"), Arrays.asList(hCPRHandle.GetUsedBarcode(bar_code, "Material_Storage"), order_name));
-				recordCount += hCPRHandle.RecordDBCount();
+				recordCount += hCPRHandle.getTableInstance().RecordDBCount();
 				if (recordCount <= 0)
 				{
-					hCPRHandle.AddARecord(bar_code, order_name, deliv_date, pro_qty, vendor, percent);
+					((Customer_Po_Record)hCPRHandle.getTableInstance()).AddARecord(bar_code, order_name, deliv_date, pro_qty, vendor, percent);
 				}
 				else
 				{

@@ -1,14 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Vendor_Info" %>
-<%@ page import="com.DB.operation.Product_Type" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String storeroom=(String)request.getParameter("FilterKey1").replace(" ", "");
 	String rtnRst = "remove$";
-	Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+	DBTableParent hVIHandle = new DatabaseStore("Vendor_Info");
 	if (storeroom.contains("五金"))
 	{
-		hVIHandle.GetRecordExceptStoreroom(Arrays.asList("原材料库", "成品库", "半成品库"));
+		hVIHandle.QueryRecordByExceptFilterList(Arrays.asList("storeroom", "storeroom", "storeroom"), Arrays.asList("原材料库", "成品库", "半成品库"));
 	}
 	else
 	{
@@ -24,7 +23,7 @@
 	}
 	
 	rtnRst += "#remove$";
-	Product_Type hPTHandle = new Product_Type(new EarthquakeManagement());
+	DBTableParent hPTHandle = new DatabaseStore("Product_Type");
 	hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("storeroom"), Arrays.asList(storeroom));
 	List<String> pro_type = hPTHandle.getDBRecordList("name");
 	if (pro_type != null)

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Shipping_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -22,9 +22,9 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
+			DBTableParent hSRHandle = new DatabaseStore("Shipping_Record");
 			hSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("customer_po"), Arrays.asList(POName), Arrays.asList("shipping_no"));
-			if (hSRHandle.RecordDBCount() > 0)
+			if (hSRHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				shipping_no = hSRHandle.getDBRecordList("shipping_no");
 			}

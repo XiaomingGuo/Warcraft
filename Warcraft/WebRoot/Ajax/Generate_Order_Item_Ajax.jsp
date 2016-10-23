@@ -1,18 +1,18 @@
-<%@page import="com.DB.operation.Material_Storage"%>
-<%@page import="com.DB.operation.Product_Storage"%>
-<%@page import="com.DB.operation.Product_Info"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.jsp.support.Generate_Order_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
 	String po_name = request.getParameter("po_name").replace(" ", "");
 	String status = request.getParameter("status");
+	Generate_Order_Item_Ajax hPageHandle = new Generate_Order_Item_Ajax();
 	String po_status = null;
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "客户PO单名", "交货时间", "客户PO数量", "已交付数量", "加工总量", "已加工总量", "成品库存", "物料库存", "缺料数量", "操作"};
-	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+	DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 	hPORHandle.QueryRecordByFilterKeyListOrderbyListASC(Arrays.asList("po_name"), Arrays.asList(po_name), Arrays.asList("id"));
-	if (hPORHandle.RecordDBCount() > 0)
+	if (hPORHandle.getTableInstance().RecordDBCount() > 0)
 	{
 		String[] sqlKeyList = {"Bar_Code", "po_name", "delivery_date", "QTY", "OUT_QTY", "percent"};
 		List<List<String>> recordList = new ArrayList<List<String>>();
@@ -27,9 +27,9 @@
 		{
 			rtnRst += displayList[i] + "$";
 		}
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-		Product_Storage hPSHandle = new Product_Storage(new EarthquakeManagement());
-		Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
+		DBTableParent hPSHandle = new DatabaseStore("Product_Storage");
+		DBTableParent hMSHandle = new DatabaseStore("Material_Storage");
 		for(int iRow = 0; iRow < iRowCount; iRow++)
 		{
 			int iPro_storage = 0, iMat_storage = 0, iCPOQTY = 0, iDelivQTY = 0, iOrderQTY = 0, inProcess = 0;
@@ -89,7 +89,7 @@
 				else if ("物料库存" == displayList[iCol])
 				{
 					int tempQTY = hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(hMSHandle.GetUsedBarcode(strBarcode, "material_storage")))-
-							hPORHandle.GetUncompleteOrderRecord(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"));
+							hPageHandle.GetUncompleteOrderRecord(hPORHandle.GetUsedBarcode(strBarcode, "product_order_record"));
 					iMat_storage = (tempQTY > 0)?tempQTY:0;
 					rtnRst += Integer.toString(iMat_storage) + "$";
 				}

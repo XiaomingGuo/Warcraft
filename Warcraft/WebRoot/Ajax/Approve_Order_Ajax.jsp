@@ -1,17 +1,15 @@
-<%@page import="com.DB.operation.Product_Order"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String rtnRst = "remove$";
 	String order_name = request.getParameter("order_name").replace(" ", "");
 	
 	if (order_name != null||order_name.indexOf("生产单号") < 0)
 	{
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
-		if (hPORHandle.RecordDBCount() > 0)
+		if (hPORHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] keyList = {"id", "Bar_Code", "QTY"};
 			List<List<String>> recordList = new ArrayList<List<String>>();
@@ -23,7 +21,7 @@
 			if (recordList != null)
 			{
 				List<String> sqlList = new ArrayList<String>();
-				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+				DBTableParent hMSHandle = new DatabaseStore("Material_Storage");
 				for (int index = 0; index < recordList.get(0).size(); index++)
 				{
 					if (hMSHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code"), Arrays.asList(recordList.get(1).get(index))) >= Integer.parseInt(recordList.get(2).get(index)))
@@ -43,7 +41,7 @@
 					{
 						hPORHandle.UpdateRecordByKeyList("status", "1", Arrays.asList("id"), Arrays.asList(sqlList.get(idx)));
 					}
-					Product_Order hPOHandle = new Product_Order(new EarthquakeManagement());
+					DBTableParent hPOHandle = new DatabaseStore("Product_Order");
 					hPOHandle.UpdateRecordByKeyList("status", "1", Arrays.asList("Order_Name"), Arrays.asList(order_name));
 				}
 			}

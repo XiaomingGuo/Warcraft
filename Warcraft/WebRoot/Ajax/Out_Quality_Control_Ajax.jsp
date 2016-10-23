@@ -1,7 +1,6 @@
-<%@page import="com.DB.operation.Material_Storage"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.jsp.support.Out_Quality_Control_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -14,7 +13,7 @@
 		int used_count = Integer.parseInt(QTYOfStore);
 		String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "completeQTY", "OQC_QTY"};
 		Out_Quality_Control_Ajax hPageHandle = new Out_Quality_Control_Ajax();
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
 		List<List<String>> orderInfo = new ArrayList<List<String>>();
 		for(int idx=0; idx < orderRecordKey.length; idx++)
@@ -42,7 +41,7 @@
 				}
 				
 				String[] materialKey = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
-				Material_Storage hMSHandle = new Material_Storage(new EarthquakeManagement());
+				DBTableParent hMSHandle = new DatabaseStore("Material_Storage");
 				hMSHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
 				List<List<String>> material_info_List = new ArrayList<List<String>>();
 				for(int idx=0; idx < materialKey.length; idx++)

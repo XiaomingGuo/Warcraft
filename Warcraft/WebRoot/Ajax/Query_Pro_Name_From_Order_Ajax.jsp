@@ -1,18 +1,15 @@
-<%@page import="com.DB.operation.Product_Info"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String pro_order=(String)request.getParameter("product_order").replace(" ", "");
 	String rtnRst = "remove$";
-	//product_info Database query
-	Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+	DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 	hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(pro_order));
 	List<String> pro_info = hPORHandle.getDBRecordList("Bar_Code");
 	if (pro_info != null)
 	{
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		List<String> pro_type = new ArrayList<String>();
 		for(int i = 0; i < pro_info.size(); i++)
 		{

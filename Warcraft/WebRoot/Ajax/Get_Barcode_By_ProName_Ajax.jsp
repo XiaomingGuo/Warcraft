@@ -1,12 +1,12 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String rtnRst = "remove$";
 	String proName = request.getParameter("search_name").replace(" ", "");
 	if(proName.length() > 0)
 	{
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proName));
 		List<String> tempList = hPIHandle.getDBRecordList("Bar_Code");
 		for(int idx = 0; idx < tempList.size(); idx++)

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String rtnRst = "remove$";
 	String pro_id = request.getParameter("product_id").replace(" ", "");
@@ -9,9 +9,9 @@
 	if (pro_id != null && QTYOfStore != null)
 	{
 		int used_count = Integer.parseInt(QTYOfStore);
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(pro_id));
-		if (hPORHandle.RecordDBCount() > 0)
+		if (hPORHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] orderRecordKey = {"Bar_Code", "Order_Name", "QTY", "completeQTY"};
 			List<List<String>> orderInfo = new ArrayList<List<String>>();

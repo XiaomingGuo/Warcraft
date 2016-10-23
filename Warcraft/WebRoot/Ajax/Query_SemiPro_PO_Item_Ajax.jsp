@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.jsp.support.Query_SemiPro_PO_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -9,7 +9,7 @@
 	if(po_name.length() > 6)
 	{
 		Query_SemiPro_PO_Item_Ajax hPageHandle = new Query_SemiPro_PO_Item_Ajax();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		
 		List<List<String>> recordList = hPageHandle.GetAllStorageRecord(po_name);
 		if (recordList.size() > 0)

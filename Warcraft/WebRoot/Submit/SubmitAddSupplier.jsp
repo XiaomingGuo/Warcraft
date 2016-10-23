@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Vendor_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -23,11 +24,11 @@
 		//product_type Database query
 		if (!appStorename.isEmpty() && !appSupplier.isEmpty() && !appFaxinfo.isEmpty() && !appTelinfo.isEmpty() && !appMailaddress.isEmpty() && !appAddress.isEmpty() && !description.isEmpty())
 		{
-			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			DBTableParent hVIHandle = new DatabaseStore("Vendor_Info");
 			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name", "storeroom"), Arrays.asList(appSupplier, appStorename));
-			if (hVIHandle.RecordDBCount() <= 0)
+			if (hVIHandle.getTableInstance().RecordDBCount() <= 0)
 			{
-				hVIHandle.AddARecord(appSupplier, appStorename, appFaxinfo, appTelinfo, appMailaddress, appAddress, description);
+				((Vendor_Info)hVIHandle.getTableInstance()).AddARecord(appSupplier, appStorename, appFaxinfo, appTelinfo, appMailaddress, appAddress, description);
 				response.sendRedirect("../AddSupplier.jsp");
 			}
 			else

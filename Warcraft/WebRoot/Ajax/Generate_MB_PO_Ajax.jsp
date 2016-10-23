@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Mb_Material_Po"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.Generate_MB_PO_Ajax" %>
 <%
     String rtnRst = "remove$";
@@ -13,7 +14,7 @@
         List<List<String>> recordList = hPageHandle.GetCustomerPoRecordList(POName, appVendor);
         if (recordList.size() > 0)
         {
-            Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+            DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
             for (int iRow = 0; iRow < recordList.get(0).size(); iRow++)
             {
                 String strBarcode = recordList.get(0).get(iRow);
@@ -26,11 +27,11 @@
                 if (iRepertory < manufacture_QTY)
                 {
                     hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "vendor", "po_name"), Arrays.asList(strBarcode, strVendor, POName));
-                    if (hMMPHandle.RecordDBCount() <= 0)
+                    if (hMMPHandle.getTableInstance().RecordDBCount() <= 0)
                     {
                         if (appDelivDate != null&&!appDelivDate.isEmpty()&&appDelivDate.length() == 8)
                         {
-                            hMMPHandle.AddARecord(strBarcode, POName, appDelivDate, strVendor, manufacture_QTY-iRepertory);
+                            ((Mb_Material_Po)hMMPHandle.getTableInstance()).AddARecord(strBarcode, POName, appDelivDate, strVendor, manufacture_QTY-iRepertory);
                         }
                         else
                         {

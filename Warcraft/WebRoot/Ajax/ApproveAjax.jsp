@@ -1,7 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Other_Storage" %>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%@ page import="com.jsp.support.ApproveAjax" %>
 <%
 	String rtnRst = "";

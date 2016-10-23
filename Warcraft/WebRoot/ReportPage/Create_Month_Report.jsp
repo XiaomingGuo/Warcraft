@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Product_Info"%>
 <%@ page import="com.DB.operation.Other_Record" %>
 <%@ page import="com.DB.operation.EarthquakeManagement" %>
@@ -27,11 +29,10 @@
 		}
 		else
 		{
-			//product_info Database query
 			String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "价值", "申请日期"};
 			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
 			
-			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+			DBTableParent hORHandle = new DatabaseStore("Other_Record");
 			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), "create_date", beginDate, endDate);
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			for(int idx=0; idx<sqlKeyList.length;idx++)
@@ -48,7 +49,7 @@
 			writeList.add(headList);
 			if (null != recordList)
 			{
-				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+				DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 				for(int iRow = 0; iRow < recordList.get(0).size();iRow++)
 				{
 					List<String> tempList = new ArrayList<String>();

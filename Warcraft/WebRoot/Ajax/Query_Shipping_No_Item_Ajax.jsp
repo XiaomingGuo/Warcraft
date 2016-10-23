@@ -1,9 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Material_Storage"%>
-<%@ page import="com.DB.operation.Product_Storage"%>
-<%@ page import="com.DB.operation.Semi_Product_Storage"%>
-<%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.jsp.support.Query_Shipping_No_Item_Ajax" %>
 <%
 	String rtnRst = "remove$";
@@ -12,7 +9,7 @@
 	if(shipNo.length() > 6)
 	{
 		Query_Shipping_No_Item_Ajax hPageHandle = new Query_Shipping_No_Item_Ajax();
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		
 		List<List<String>> recordList = hPageHandle.GetShippingRecordByShippingNo(shipNo);
 		if (recordList.size() > 0)

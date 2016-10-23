@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Mb_Material_Po" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%
 	String rtnRst = "remove$";
 	String appOrderName = (String)request.getParameter("Order_Name").replace(" ", "");
@@ -8,9 +8,9 @@
 	String appDelivDate = (String)request.getParameter("Delivery_Date").replace(" ", "");
 	if (appOrderName != null && appDelivDate.length() == 8)
 	{
-		Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+		DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
 		hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(appOrderName, appVendor));
-		if (hMMPHandle.RecordDBCount() > 0)
+		if (hMMPHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			List<String> recordList = hMMPHandle.getDBRecordList("id");
 			if (recordList != null)

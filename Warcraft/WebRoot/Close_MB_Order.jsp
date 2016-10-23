@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -22,8 +22,8 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.GetRecordLessThanStatus(1);
+			DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
+			hCPHandle.QueryRecordByKeyValueAndLessThanAndEqual("status", "1");
 			List<String> temp_list = hCPHandle.getDBRecordList("po_name");
 			List<String> po_list = new ArrayList<String>();
 			for(int iRow = 0; iRow < temp_list.size(); iRow++)
@@ -51,47 +51,47 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/Close_MB_OrderJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/Close_MB_OrderJS.js"></script>
   <body>
     <jsp:include page="Menu/ManufactureMenu.jsp"/>
     <br><br>
     <table align="center">
     	<tr>
     		<td>
-		  		<form name="Create_Order" action = "Submit/SubmitCloseMBOrder.jsp" method = "post">
-			  		<table align="center">
-			  			<tr>
-			  				<td>
-				  				<h1>
-							  		<label>MB生产单:</label>
-								  	<select name="po_select" id="po_select" style="width:300px">
-									  	<option value = "--请选择--">--请选择--</option>
+				<form name="Create_Order" action = "Submit/SubmitCloseMBOrder.jsp" method = "post">
+					<table align="center">
+						<tr>
+							<td>
+								<h1>
+									<label>MB生产单:</label>
+									<select name="po_select" id="po_select" style="width:300px">
+										<option value = "--请选择--">--请选择--</option>
 <%
 							if (po_list != null)
 							{
 								for(int i = 0; i < po_list.size(); i++)
 								{
 %>
-									  	<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
+										<option value = <%= po_list.get(i) %>><%=po_list.get(i)%></option>
 <%
 								}
 							}
 %>
-								  	</select>
-						  		</h1>
-					  		</td>
-				  		</tr>
-			  		</table>
-		  		
+									</select>
+								</h1>
+							</td>
+						</tr>
+					</table>
+				
 			    	<br>
-		 		   	<table id="display_order" border="1" align="center"></table>
-		 		   	<br><br>
-		 		   	<table id="confirm_order" align="center"></table>
+					<table id="display_order" border="1" align="center"></table>
+					<br><br>
+					<table id="confirm_order" align="center"></table>
 				</form>
 			</td>
 		</tr>
-   	</table>
+	</table>
   </body>
 </html>
 <%

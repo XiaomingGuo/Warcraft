@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Customer_Po" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -22,8 +22,8 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			//product_type Database query
-			Customer_Po hCPHandle = new Customer_Po(new EarthquakeManagement());
-			hCPHandle.GetRecordLessThanStatus(1);
+			DatabaseStore hCPHandle = new DatabaseStore("Customer_Po");
+			hCPHandle.QueryRecordByKeyValueAndLessThanAndEqual("status", "1");
 			List<String> temp_list = hCPHandle.getDBRecordList("po_name");
 			List<String> po_list = new ArrayList<String>();
 			for(int iRow = 0; iRow < temp_list.size(); iRow++)

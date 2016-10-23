@@ -1,21 +1,22 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.DB.operation.Storeroom_Name" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%
 	String rtnRst = "";
 	String storeroom = (String)request.getParameter("storeroom").replace(" ", "");
 
 	if (!storeroom.isEmpty())
 	{	
-		Storeroom_Name hSNHandle = new Storeroom_Name(new EarthquakeManagement());
+		DBTableParent hSNHandle = new DatabaseStore("Storeroom_Name");
 		hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storeroom));
-		if(hSNHandle.RecordDBCount() > 0)
+		if(hSNHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			rtnRst = "库名已经存在!";
 		}
 		else
 		{
-			hSNHandle.AddARecord(storeroom);
+			((Storeroom_Name)hSNHandle.getTableInstance()).AddARecord(storeroom);
 		}
 	}
 	else

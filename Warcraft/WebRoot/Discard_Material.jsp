@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Semi_Product_Storage" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -23,7 +23,7 @@
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
 			//storeroom name Database query
-			Semi_Product_Storage hSPSHandle = new Semi_Product_Storage(new EarthquakeManagement());
+			DBTableParent hSPSHandle = new DatabaseStore("Semi_Product_Storage");
 			hSPSHandle.QueryRecordGroupByList(Arrays.asList("po_name"));
 			List<String> product_order = hSPSHandle.getDBRecordList("po_name");
 %>

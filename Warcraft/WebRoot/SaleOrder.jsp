@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Shipping_Record" %>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -26,11 +25,11 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Shipping_Record hSRHandle = new Shipping_Record(new EarthquakeManagement());
-			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			DBTableParent hSRHandle = new DatabaseStore("Shipping_Record");
+			DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 			hSRHandle.QueryRecordByFilterKeyListGroupByList(Arrays.asList("customer_po", "shipping_no"), Arrays.asList(POName, ship_no), Arrays.asList("Bar_Code"));
 			List<List<String>> recordList = new ArrayList<List<String>>();
-			if (hSRHandle.RecordDBCount() > 0)
+			if (hSRHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "ship_QTY"};
 				for(int idx = 0; idx < sqlKeyList.length; idx++)

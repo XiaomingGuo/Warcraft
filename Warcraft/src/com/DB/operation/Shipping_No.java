@@ -80,12 +80,6 @@ public class Shipping_No implements ITableInterface
 		return aWriteRecord;
 	}
 	
-	public void QueryRecordMoreThanShipNo(String shipNo)
-	{
-		String hql = String.format("from ShippingNo pi where pi.%s>%s", GetDatabaseKeyWord("shipping_no"), shipNo);
-		gEQMHandle.EQQuery(hql);
-	}
-	
 	public void AddARecord(String customerPo, String shippingNo)
 	{
 		aWriteRecord = new ShippingNo();

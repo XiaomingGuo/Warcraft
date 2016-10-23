@@ -1,9 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@page import="com.DB.operation.Material_Storage"%>
-<%@page import="com.DB.operation.Discard_Material_Record"%>
-<%@page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Product_Order_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%!
 	String[] displayList = {"ID", "产品类型", "产品名称", "八码", "交货时间", "数量", "完成数量", "报废数量", "未完成数", "检验合格数", "材料库存", "客户PO单名", "生产单名", "创建时间", "操作"};
 %>
@@ -14,7 +11,7 @@
 	
 	if (order_name.length() > 11)
 	{
-		Product_Order_Record hPORHandle = new Product_Order_Record(new EarthquakeManagement());
+		DBTableParent hPORHandle = new DatabaseStore("Product_Order_Record");
 		if (status == null)
 		{
 			hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name"), Arrays.asList(order_name));
@@ -23,7 +20,7 @@
 		{
 			hPORHandle.QueryRecordByFilterKeyList(Arrays.asList("Order_Name", "status"), Arrays.asList(order_name, status));
 		}
-		if (hPORHandle.RecordDBCount() > 0)
+		if (hPORHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"id", "Bar_Code", "delivery_date", "QTY", "completeQTY", "OQC_QTY", "po_name", "Order_Name", "create_date", "status"};
 			List<List<String>> recordList = new ArrayList<List<String>>();
@@ -38,9 +35,9 @@
 			{
 				rtnRst += displayList[i] + "$";
 			}
-			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
-			Discard_Material_Record hDMRHandle = new Discard_Material_Record(new EarthquakeManagement());
-			Material_Storage hMSHandle =new Material_Storage(new EarthquakeManagement());
+			DBTableParent hPIHandle = new DatabaseStore("Product_Info");
+			DBTableParent hDMRHandle = new DatabaseStore("Discard_Material_Record");
+			DBTableParent hMSHandle =new DatabaseStore("Material_Storage");
 			for(int iRow = 0; iRow < iRowCount; iRow++)
 			{
 				int iPro_storage = 0, iMat_storage = 0, iOrderQTY = 0, iCompleteQTY = 0;

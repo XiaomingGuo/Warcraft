@@ -86,18 +86,18 @@ public class PageParentClass
         return rtnRst;
     }
     
-	public int GetQTYByBarCode(String qtyType, String barcode, List<String> keyList, List<String> valueList)
-	{
-		DBTableParent hHandle = GenStorageHandle(barcode);
-		return hHandle.GetIntSumOfValue(qtyType, keyList, valueList);
-	}
-	
-	public int GetStorageRepertory(String barcode, List<String> keyList, List<String> valueList)
-	{
-		return GetQTYByBarCode("IN_QTY", barcode, keyList, valueList) -
-				GetQTYByBarCode("OUT_QTY", barcode, keyList, valueList);
-	}
-	
+    public int GetQTYByBarCode(String qtyType, String barcode, List<String> keyList, List<String> valueList)
+    {
+        DBTableParent hHandle = GenStorageHandle(barcode);
+        return hHandle.GetIntSumOfValue(qtyType, keyList, valueList);
+    }
+    
+    public int GetStorageRepertory(String barcode, List<String> keyList, List<String> valueList)
+    {
+        return GetQTYByBarCode("IN_QTY", barcode, keyList, valueList) -
+                GetQTYByBarCode("OUT_QTY", barcode, keyList, valueList);
+    }
+    
     public DBTableParent GenStorageHandleByStorageName(String storageName)
     {
         if(storageName.toLowerCase().contains("other"))
@@ -150,12 +150,13 @@ public class PageParentClass
     
     public void AddSingleOtherManuRecordToStorage(DBTableParent hStorageHandle, String barcode, String batch_lot, String appProductQTY, String sPrice, String tPrice, 
             String orderName, String poName, String vendor, String storeDate)
-	{
-		if(IsOtherBarcode(barcode))
-			((Other_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
-		else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
-			((Manu_Storage_Record)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
-	}
+    {
+        if(IsOtherBarcode(barcode))
+            ((Other_Storage)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
+        else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
+            ((Manu_Storage_Record)hStorageHandle.getTableInstance()).AddARecord(barcode, batch_lot, appProductQTY, sPrice, tPrice, orderName, poName, vendor, storeDate);
+    }
+    
     public void AddSingleExRecordToStorage(DBTableParent hExStorageHandle, String id, String barcode, String batch_lot, String inQty, String outQty, String sPrice, String tPrice, 
                                                 String orderName, String poName, String vendor, String storeDate, String isEnsure, String createDate)
     {
@@ -232,10 +233,8 @@ public class PageParentClass
     
     public int GetAStorageRepertoryByPOName(String barcode, String po_name)
     {
-        int rtnRst = 0;
         DBTableParent hHandle = GenStorageHandle(barcode);
-        rtnRst += hHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
-        return rtnRst;
+        return hHandle.GetRepertoryByKeyList(Arrays.asList("Bar_Code", "po_name", "isEnsure"), Arrays.asList(barcode, po_name, "1"));
     }
     
     public int GetRepertoryByBarcodePo(String strBarcode)
@@ -268,28 +267,24 @@ public class PageParentClass
     public String GenYearMonthDayString()
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
-        return rtnRst;
+        return String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
     }
 
     public String GenYearMonthDayString(String strSpan)
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d%s%02d%s%02d", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan, mData.get(Calendar.DAY_OF_MONTH));
-        return rtnRst;
+        return String.format("%04d%s%02d%s%02d", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan, mData.get(Calendar.DAY_OF_MONTH));
     }
     public String GenYearMonthString()
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
-        return rtnRst;
+        return String.format("%04d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1);
     }
 
     public String GenYearMonthString(String strSpan)
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d%s%02d%s", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan);
-        return rtnRst;
+        return String.format("%04d%s%02d%s", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan);
     }
     
     public String GetEndDayOfMonth(String yearMonth)
@@ -300,15 +295,13 @@ public class PageParentClass
     public String GenYearString()
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d", mData.get(Calendar.YEAR));
-        return rtnRst;
+        return String.format("%04d", mData.get(Calendar.YEAR));
     }
 
     public String GenYearString(String strSpan)
     {
         Calendar mData = Calendar.getInstance();
-        String rtnRst = String.format("%04d%s", mData.get(Calendar.YEAR), strSpan);
-        return rtnRst;
+        return String.format("%04d%s", mData.get(Calendar.YEAR), strSpan);
     }
     
     private int GetExAndStorageRecordCount(String strBarcode, String Batch_Lot)
@@ -438,7 +431,7 @@ public class PageParentClass
     public boolean IsCustomerPoClose(String poname)
     {
         DBTableParent hCPHandle = new DatabaseStore("Customer_Po");
-        hCPHandle.QueryRecordByFilterKeyListAndMoreThanStatus(Arrays.asList("po_name"), Arrays.asList(poname), "status", "0");
+        hCPHandle.QueryRecordByFilterKeyListAndMoreThanKeyValue(Arrays.asList("po_name"), Arrays.asList(poname), "status", "0");
         if (hCPHandle.getTableInstance().RecordDBCount() > 0||"Material_Supply" == poname)
             return true;
         return false;

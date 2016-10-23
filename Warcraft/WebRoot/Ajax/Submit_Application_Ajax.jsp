@@ -1,7 +1,8 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
 <%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">--%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
+<%@ page import="com.DB.operation.Other_Record" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String rtnRst = "remove$";
@@ -23,8 +24,8 @@
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 &&
 				!appUserName.isEmpty() && !appProduct_QTY.isEmpty() && !appProduct_QTY.isEmpty())
 		{
-			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-			hORHandle.AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName, "0");
+			DBTableParent hORHandle = new DatabaseStore("Other_Record");
+			((Other_Record)hORHandle.getTableInstance()).AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName, "0");
 		}
 		else
 		{

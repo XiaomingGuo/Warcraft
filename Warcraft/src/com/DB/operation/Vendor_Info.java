@@ -92,17 +92,6 @@ public class Vendor_Info implements ITableInterface
 		return aWriteRecord;
 	}
 	
-	public void GetRecordExceptStoreroom(List<String> keyList)
-	{
-		String hql = "from VendorInfo vi where ";
-		for(int idx=0; idx<keyList.size()-1; idx++)
-		{
-			hql += String.format("vi.storeroom!='%s' and ", keyList.get(idx));
-		}
-		hql+= String.format("vi.storeroom!='%s'", keyList.get(keyList.size()-1));
-		gEQMHandle.EQQuery(hql);
-	}
-	
 	public void AddARecord(String vendor_name, String storeroom, String vendor_fax, String vendor_tel, String vendor_e_mail, String vendor_address, String description)
 	{
 		aWriteRecord = new VendorInfo();

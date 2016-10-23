@@ -1,8 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Mb_Material_Po" %>
-<%@ page import="com.DB.operation.Product_Info"%>
-<%@ page import="com.DB.operation.Vendor_Info"%>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -27,10 +25,10 @@
 		{
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
 			hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(POName, vendor));
 			List<List<String>> recordList = new ArrayList<List<String>>();
-			if (hMMPHandle.RecordDBCount() > 0)
+			if (hMMPHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
 				for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -38,10 +36,10 @@
 					recordList.add(hMMPHandle.getDBRecordList(sqlKeyList[idx]));
 				}
 			}
-			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			DBTableParent hVIHandle = new DatabaseStore("Vendor_Info");
 			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name"), Arrays.asList(vendor));
 			List<List<String>> vendorInfo = new ArrayList<List<String>>();
-			if (hVIHandle.RecordDBCount() > 0)
+			if (hVIHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"vendor_fax", "vendor_tel", "vendor_e_mail", "vendor_address"};
 				for(int idx=0; idx<sqlKeyList.length; idx++)
@@ -128,7 +126,7 @@
 <%
 			if (!recordList.isEmpty())
 			{
-				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+				DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>
@@ -137,6 +135,7 @@
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
 						String strBarcode = recordList.get(0).get(iRow-1);
+		    			hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 						
 				    	if (displayKeyList[iCol-1] == "模具号" || displayKeyList[iCol-1] == "备注" )
 				    	{
@@ -158,14 +157,12 @@
 				    	}
 				    	else if(displayKeyList[iCol-1] == "名称")
 				    	{
-				    		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 %>
     			<td width="2%"><input type="text" value="<%=hPIHandle.getDBRecordList("product_type").get(0)%>" readonly></td>
 <%
 				    	}
 				    	else if(displayKeyList[iCol-1] == "型号")
 				    	{
-				    		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(strBarcode));
 %>
     			<td width="2%"><input type="text" value="<%=hPIHandle.getDBRecordList("name").get(0)%>" readonly></td>
 <%

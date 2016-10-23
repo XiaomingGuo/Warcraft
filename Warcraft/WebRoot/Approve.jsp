@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -27,13 +26,13 @@
 			String tempBP = request.getParameter("BeginPage");
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			
-			Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
+			DBTableParent hORHandle = new DatabaseStore("Other_Record");
 			hORHandle.QueryRecordByFilterKeyList(Arrays.asList("isApprove"), Arrays.asList("0"));
-			int recordCount = hORHandle.RecordDBCount();
+			int recordCount = hORHandle.getTableInstance().RecordDBCount();
 			
 			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
 			hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(Arrays.asList("isApprove"), Arrays.asList("0"), Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hORHandle.RecordDBCount() > 0)
+			if (hORHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
 				for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -80,7 +79,7 @@
 <%
 			if (!recordList.isEmpty())
 			{
-				Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+				DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>

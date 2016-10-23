@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Other_Record" %>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -17,15 +16,15 @@
 		int PageRecordCount = 20;
 		List<List<String>> recordList = new ArrayList<List<String>>();
 		String tempBP = request.getParameter("BeginPage");
-		Other_Record hORHandle = new Other_Record(new EarthquakeManagement());
-		Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+		DBTableParent hORHandle = new DatabaseStore("Other_Record");
+		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		String[] displayKeyList = {"ID", "name", "Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 		
 		hORHandle.QueryRecordByFilterKeyList(Arrays.asList("proposer"), Arrays.asList(mylogon.getUsername()));
-		int recordCount = hORHandle.RecordDBCount();
+		int recordCount = hORHandle.getTableInstance().RecordDBCount();
 		int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
 		hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(Arrays.asList("proposer"), Arrays.asList(mylogon.getUsername()), Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
-		if (hORHandle.RecordDBCount() > 0)
+		if (hORHandle.getTableInstance().RecordDBCount() > 0)
 		{
 			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "create_date", "isApprove"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)

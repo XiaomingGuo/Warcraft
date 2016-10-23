@@ -1,8 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Mb_Material_Po" %>
-<%@ page import="com.DB.operation.Vendor_Info" %>
-<%@ page import="com.DB.operation.Product_Info" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -28,10 +26,10 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			
-			Mb_Material_Po hMMPHandle = new Mb_Material_Po(new EarthquakeManagement());
+			DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");
 			hMMPHandle.QueryRecordByFilterKeyList(Arrays.asList("po_name", "vendor"), Arrays.asList(POName, vendor));
 			List<List<String>> recordList = new ArrayList<List<String>>();
-			if (hMMPHandle.RecordDBCount() > 0)
+			if (hMMPHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"Bar_Code", "PO_QTY", "date_of_delivery"};
 				for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -39,9 +37,9 @@
 			}
 			
 			List<List<String>> vendorInfo = new ArrayList<List<String>>();
-			Vendor_Info hVIHandle = new Vendor_Info(new EarthquakeManagement());
+			DBTableParent hVIHandle = new DatabaseStore("Vendor_Info");
 			hVIHandle.QueryRecordByFilterKeyList(Arrays.asList("vendor_name"), Arrays.asList(vendor));
-			if (hVIHandle.RecordDBCount() > 0)
+			if (hVIHandle.getTableInstance().RecordDBCount() > 0)
 			{
 				String[] sqlKeyList = {"vendor_fax", "vendor_tel", "vendor_e_mail", "vendor_address"};
 				for(int idx=0; idx < sqlKeyList.length; idx++)
@@ -49,7 +47,7 @@
 			}
 			Calendar mData = Calendar.getInstance();
 			String currentDate = String.format("%04d%02d%02d", mData.get(Calendar.YEAR), mData.get(Calendar.MONDAY)+1, mData.get(Calendar.DAY_OF_MONTH));
-			Product_Info hPIHandle = new Product_Info(new EarthquakeManagement());
+			DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

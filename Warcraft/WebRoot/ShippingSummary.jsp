@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.operation.Product_Order" %>
-<%@ page import="com.DB.operation.EarthquakeManagement" %>
+<%@ page import="com.DB.factory.DatabaseStore" %>
+<%@ page import="com.Warcraft.SupportUnit.DBTableParent"%>
 <%@ page import="com.jsp.support.ShippingSummary" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
@@ -30,7 +30,7 @@
 			beginDate = (null != beginDate)?beginDate:String.format("%s%s", currentDate, "01");
 			endDate = (null != endDate)?endDate:String.format("%s%s", currentDate, "31");
 			//product_type Database query
-			Product_Order hSNHandle = new Product_Order(new EarthquakeManagement());
+			DBTableParent hSNHandle = new DatabaseStore("Product_Order");
 			hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("status"), Arrays.asList("1"));
 			List<String> shipNoList = hPageHandle.GetShippingNoList(beginDate, endDate);
 %>
