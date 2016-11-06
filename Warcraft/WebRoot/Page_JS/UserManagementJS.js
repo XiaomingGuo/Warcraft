@@ -25,8 +25,19 @@ function ModifyUser(obj)
             $("input:checkbox[name='AddPermission']:checkbox").each(function(i)
             {
                 if(contains(perList, $(this).val()))
-                    $(this).attr("checked", true);
+                    $(this).prop("checked", true);
+                else
+                    $(this).removeAttr("checked");
             });
+            index = 0;
+            $("#Absense option").each(function()
+            {
+                if($(this).text()==data_list[7])
+                {
+                    Absense.options[index].selected = true;
+                }
+                index++;
+            }); 
         }
     });
 }
@@ -52,7 +63,7 @@ function AddUser(obj)
     });
     if(strPermission.length <= 0)
     {
-        alert("请选择只是一种用户权限!");
+        alert("请选择至少一种用户权限!");
         return;
     }
     if($('#check_in_id').val().length <= 0||$('#name').val().length <= 0||
@@ -62,7 +73,7 @@ function AddUser(obj)
         return;
     }
     $.post("Ajax/AddUserAjax.jsp", {"check_in_id":$('#check_in_id').val(), "work_group":GetSelectedContent('workGroup'), "name":$('#name').val(),
-                                        "department":$('#department').val(), "password":$('#password').val(), "Permission":strPermission}, function(data, textStatus)
+                                        "department":$('#department').val(), "password":$('#password').val(), "Permission":strPermission, "isAbsense":GetSelectedContent('Absense')}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
@@ -98,10 +109,17 @@ function DisplayUserTable(beginPage)
                     for (var iCol = 0; iCol < iColCount; iCol++)
                     {
                         var td = $("<td></td>");
-                        if(8 == iCol)
+                        if(9 == iCol)
                         {
                             td.append("<input type='button' value='修改' name='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='ModifyUser(this)'>");
                             td.append("<input type='button' value='删除' name='" + data_list[iRow*iColCount + iCol + 3] + "' onclick='DeleteUser(this)'>");
+                        }
+                        else if(8 == iCol)
+                        {
+                            if("1" == data_list[iRow*iColCount + iCol + 3])
+                                td.append("在岗");
+                            else
+                                td.append("离职");
                         }
                         else
                             td.append(data_list[iRow*iColCount + iCol + 3]);

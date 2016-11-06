@@ -13,7 +13,7 @@ import com.page.utilities.*;
 
 public class PersonalInfo extends PageParentClass implements IPageInterface
 {
-    private String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "班次", "操作"};
+    private String[] m_displayList = {"ID", "姓名", "工号", "打卡日期", "打卡时间", "申报加班(H)", "班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
@@ -28,7 +28,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
-        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date", queryDate + "00", queryDate + "32", Arrays.asList("check_in_date"));
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date", queryDate + "00", queryDate + "32", Arrays.asList("check_in_date", "check_in_time"));
         if (hCIRDHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group", "isEnsure"};
@@ -87,6 +87,10 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
                     else if("打卡时间" == m_displayList[iCol])
                     {
                         rtnRst += recordList.get(3).get(iRow) + "$";
+                    }
+                    else if("申报加班(H)" == m_displayList[iCol])
+                    {
+                        rtnRst += "0$";
                     }
                     else if("班次" == m_displayList[iCol])
                     {

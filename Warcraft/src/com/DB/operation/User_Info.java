@@ -73,6 +73,9 @@ public class User_Info implements ITableInterface
             case "permission":
                 rtnRst.add(tempRecord.getPermission().toString());
                 break;
+            case "isAbsense":
+                rtnRst.add(tempRecord.getIsAbsense().toString());
+                break;
             case "picture":
                 rtnRst.add(null);
                 break;
@@ -121,6 +124,9 @@ public class User_Info implements ITableInterface
         }
         else if(keyword.toLowerCase().indexOf("permission") >= 0) {
             rtnRst = "permission";
+        }
+        else if(keyword.toLowerCase().indexOf("isabsense") >= 0) {
+            rtnRst = "isAbsense";
         }
         else if(keyword.toLowerCase().indexOf("picture") >= 0) {
             rtnRst = "picture";

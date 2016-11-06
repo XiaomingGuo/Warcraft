@@ -74,6 +74,8 @@
     <br>
     <table align="center">
         <tr>
+            <td><input id="SelectFile1" name="SelectFile" type="file"></td>
+            <td><input name="commit" type="button" value="上传" style="width:100" onclick="BrowseFolder()"></td>
             <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitArrangeCheckIn()"></td>
         </tr>
     </table>

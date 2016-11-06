@@ -98,7 +98,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         DBTableParent hUIHandle = new DatabaseStore("User_Info");
-        hUIHandle.QueryAllRecord();
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
         String[] keywordList = new String[] {"name", "check_in_id"};
         for(int idx=0; idx < keywordList.length; idx++)
         {
@@ -360,8 +360,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         {
             List<String> workGroupTimeList = GetWorkGroupTime(rtnRst, g_WorkGroupRecord);
             if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
-                rtnRst = Integer.parseInt(workGroup.get(workGroup.size()-1));
-                //rtnRst = Integer.parseInt(tomWorkGroup);
+                //rtnRst = Integer.parseInt(workGroup.get(workGroup.size()-1));
+            {
+                if(!tomWorkGroup.equals(workGroup.get(workGroup.size()-1)))
+                    rtnRst = Integer.parseInt(tomWorkGroup);
+                else
+                    rtnRst = Integer.parseInt(workGroup.get(workGroup.size()-1));
+            }
         }
         return rtnRst;
     }

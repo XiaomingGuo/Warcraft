@@ -203,7 +203,7 @@ public class ExcelManagment extends MSExcel
 	public boolean execWriteExcelWithIgnoreList(List<List<String>> contentList, List<List<Integer>> ignoreList)
 	{
 		boolean rtnRst = true;
-		List<String> sheetNameList = Arrays.asList("½ø»õ±¨±í", "ÏûºÄ±¨±í", "¿â´æ±¨±í");
+		List<String> sheetNameList = Arrays.asList("æ€»è¿›è´§æŠ¥è¡¨", "æ€»æ¶ˆè€—æŠ¥è¡¨", "æ€»åº“å­˜æŠ¥è¡¨");
 	    try
 		{
 	    	for(int iSheetIdx = 0; iSheetIdx < ignoreList.size(); iSheetIdx++)
@@ -300,26 +300,26 @@ public class ExcelManagment extends MSExcel
 	{
 		try
 		{
-			HSSFWorkbook workbook = new HSSFWorkbook();//´´½¨Excel¹¤×÷²¾¶ÔÏó	
-			HSSFSheet sheet = workbook.createSheet();//ÔÚ¹¤×÷²¾ÖÐ´´½¨¹¤×÷±í¶ÔÏó
-			workbook.setSheetName(0, "²âÊÔ");//ÉèÖÃ¹¤×÷±íµÄÃû³Æ
-			HSSFRow row = sheet.createRow(0);//ÔÚ¹¤×÷±íÖÐ´´½¨µÚ1ÐÐ¶ÔÏó
-			HSSFCell label_num = row.createCell(0);//µÚ1ÐÐµÄµÚ1¸öµ¥Ôª¸ñ
-			label_num.setCellValue("Êý×ÖÀàÐÍ");//Ìí¼Ó×Ö·û´®
-			HSSFCell label_date = row.createCell(1);//µÚ1ÐÐµÄµÚ2¸öµ¥Ôª¸ñ
-			label_date.setCellValue("ÈÕÆÚÊ±¼äÀàÐÍ");//Ìí¼Ó×Ö·û´®
-			HSSFCell label_bool = row.createCell(2);//µÚ1ÐÐµÄµÚ3¸öµ¥Ôª¸ñ
-			label_bool.setCellValue("²¼¶ûÀàÐÍ");//Ìí¼Ó×Ö·û´®
-			HSSFRow row2 = sheet.createRow(1);//ÔÚ¹¤×÷±íÖÐ´´½¨µÚ2ÐÐ¶ÔÏó
-			HSSFCell num_cell = row2.createCell(0);//µÚ2ÐÐµÄµÚ1¸öµ¥Ôª¸ñ
-			num_cell.setCellValue(3.1415926);//Ìí¼ÓÊý×Ö
-			HSSFCell date_cell = row2.createCell(1);//µÚ2ÐÐµÄµÚ2¸öµ¥Ôª¸ñ
-			date_cell.setCellValue(Calendar.getInstance());//Ìí¼ÓÈÕÆÚÊ±¼ä
-			HSSFCell bool_cell = row2.createCell(2);//µÚ2ÐÐµÄµÚ3¸öµ¥Ôª¸ñ
-			bool_cell.setCellValue(false);//Ìí¼Ó²¼¶ûÖµ
+			HSSFWorkbook workbook = new HSSFWorkbook();
+			HSSFSheet sheet = workbook.createSheet();
+			workbook.setSheetName(0, "Sheet1");
+			HSSFRow row = sheet.createRow(0);
+			HSSFCell label_num = row.createCell(0);
+			label_num.setCellValue("åœ†å‘¨çŽ‡");
+			HSSFCell label_date = row.createCell(1);
+			label_date.setCellValue("å€¼");
+			HSSFCell label_bool = row.createCell(2);
+			label_bool.setCellValue("æ•°æ®");
+			HSSFRow row2 = sheet.createRow(1);
+			HSSFCell num_cell = row2.createCell(0);
+			num_cell.setCellValue(3.1415926);
+			HSSFCell date_cell = row2.createCell(1);
+			date_cell.setCellValue(Calendar.getInstance());
+			HSSFCell bool_cell = row2.createCell(2);
+			bool_cell.setCellValue(false);
 			File xlsFile = new File(filePath,fileName);
 			FileOutputStream fos = new FileOutputStream(xlsFile);
-			workbook.write(fos);//½«ÎÄµµ¶ÔÏóÐ´ÈëÎÄ¼þÊä³öÁ÷
+			workbook.write(fos);
 			fos.close();
 			workbook.close();
 			return true;

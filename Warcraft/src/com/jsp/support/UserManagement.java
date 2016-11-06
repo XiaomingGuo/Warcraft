@@ -11,7 +11,7 @@ import com.page.utilities.*;
 
 public class UserManagement extends PageParentClass implements IPageInterface
 {
-    private String[] m_displayArray = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "操作"};
+    private String[] m_displayArray = {"ID", "考勤工号", "考勤类型", "姓名", "创建时间", "部门", "密码", "用户权限", "是否在岗", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
@@ -49,7 +49,7 @@ public class UserManagement extends PageParentClass implements IPageInterface
         hDBHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
         if (hDBHandle.getTableInstance().RecordDBCount() > 0)
         {
-            String[] sqlkeyList = {"check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "id"};
+            String[] sqlkeyList = {"check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "isAbsense", "id"};
             List<String> idList = new ArrayList<String>();
             for(int item=0; item < hDBHandle.getDBRecordList(sqlkeyList[0]).size(); item++)
                 idList.add(Integer.toString(item+1));
@@ -112,10 +112,10 @@ public class UserManagement extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    public String DoUserInfoManagement(String checkInId, String groupName, String name, String department, String password, String permission)
+    public String DoUserInfoManagement(String checkInId, String groupName, String name, String department, String password, String permission, String isAbsense)
     {
-    	DatabaseStore hDBHandle = new DatabaseStore("User_Info");
-    	hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+        DatabaseStore hDBHandle = new DatabaseStore("User_Info");
+        hDBHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id"), Arrays.asList(checkInId));
         if(hDBHandle.getTableInstance().RecordDBCount() <= 0)
         {
             ((User_Info)hDBHandle.getTableInstance()).AddARecord(checkInId, GetWorkGroup(groupName), name, password, department, "0");
@@ -129,6 +129,7 @@ public class UserManagement extends PageParentClass implements IPageInterface
             hDBHandle.UpdateRecordByKeyList("name", name, Arrays.asList("check_in_id"), Arrays.asList(checkInId));
             hDBHandle.UpdateRecordByKeyList("department", department, Arrays.asList("check_in_id"), Arrays.asList(checkInId));
             hDBHandle.UpdateRecordByKeyList("password", password, Arrays.asList("check_in_id"), Arrays.asList(checkInId));
+            hDBHandle.UpdateRecordByKeyList("isAbsense", isAbsense.equals("在岗")?"1":"0", Arrays.asList("check_in_id"), Arrays.asList(checkInId));
         }
         AddOrUpdatePermission(checkInId, permission);
         return "";
@@ -177,7 +178,7 @@ public class UserManagement extends PageParentClass implements IPageInterface
     {
         String rtnRst = "remove$";
         
-        String[] getKeyWord = new String[]{"isFixWorkGroup", "check_in_id", "name", "department", "password"};
+        String[] getKeyWord = new String[]{"isFixWorkGroup", "check_in_id", "name", "department", "password", "isAbsense"};
         hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
         List<List<String>> queryUserInfoList = hQueryHandle.GetAllTableContentByKeyWord(getKeyWord, "id", userId);
         
@@ -194,8 +195,9 @@ public class UserManagement extends PageParentClass implements IPageInterface
         rtnRst += queryUserInfoList.get(2).get(0) + "$";
         rtnRst += queryUserInfoList.get(3).get(0) + "$";
         rtnRst += queryUserInfoList.get(4).get(0) + "$";
-        rtnRst += GetUserPermission(checkInId);
-        return rtnRst;
+        rtnRst += GetUserPermission(checkInId) + "$";
+        rtnRst += queryUserInfoList.get(5).get(0).equals("1")?"在岗":"离职";
+        return rtnRst + "$";
     }
     
     private String GetUserPermission(String checkInId)

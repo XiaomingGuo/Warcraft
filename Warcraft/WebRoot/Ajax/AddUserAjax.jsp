@@ -8,9 +8,10 @@
     String department = (String)request.getParameter("department").replace(" ", "");
     String password = (String)request.getParameter("password").replace(" ", "");
     String permission = (String)request.getParameter("Permission").replace(" ", "");
+    String isAbsense = (String)request.getParameter("isAbsense").replace(" ", "");
     UserManagement hPageHandle = new UserManagement();
     if (checkInId != null&&workGroup != null&&name != null&&department != null&&password != null&&permission != null&&
-        !checkInId.isEmpty()&&!workGroup.isEmpty()&&!name.isEmpty()&&!department.isEmpty()&&!password.isEmpty()&&!permission.isEmpty())
-        rtnRst = hPageHandle.DoUserInfoManagement(checkInId, workGroup, name, department, password, permission);
+        !checkInId.isEmpty()&&!workGroup.isEmpty()&&!name.isEmpty()&&!department.isEmpty()&&!password.isEmpty()&&!permission.isEmpty()&&!isAbsense.isEmpty())
+        rtnRst = hPageHandle.DoUserInfoManagement(checkInId, workGroup, name, department, password, permission, isAbsense);
     out.write(rtnRst);
 %>

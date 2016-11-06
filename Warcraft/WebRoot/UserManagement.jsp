@@ -25,7 +25,7 @@
             int BeginPage = Integer.parseInt(request.getParameter("BeginPage"));
             
             String[] keyList = hPageHandle.GetDisplayArray();
-            String[] codeKeyList = {"ID", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "submit"};
+            String[] codeKeyList = {"ID", "check_in_id", "isFixWorkGroup", "name", "create_date", "department", "password", "permission", "isAbsense", "submit"};
             int recordCount = hPageHandle.GetUserCount();
             List<List<String>> recordList = hPageHandle.GetUserInfo(PageRecordCount, BeginPage);
             List<String> titleList = hPageHandle.GetTitleName();
@@ -106,6 +106,18 @@
 %>
         <td>
             <center><input type="button" value="确认" onclick="AddUser(this)"></center>
+        </td>
+<%
+                    }
+                    else if(keyList[iCol-1] == "是否在岗")
+                    {
+%>
+        <td>
+            <select name="Absense" id="Absense" style="width:120px">
+                <option value = "--请选择--">--请选择--</option>
+                <option value = "在岗">在岗</option>
+                <option value = "离职">离职</option>
+            </select>
         </td>
 <%
                     }

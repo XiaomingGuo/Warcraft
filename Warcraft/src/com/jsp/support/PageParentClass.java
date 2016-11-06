@@ -439,9 +439,12 @@ public class PageParentClass
     
     public List<String> GetAllUserRecordByName(String queryKeyVal, String getKeyWord)
     {
-        IRecordsQueryUtil hQueryHandle = new CRecordsQueryUtil();
-        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
-        List<String> rtnRst = hQueryHandle.GetTableContentByKeyWord("name", queryKeyVal, getKeyWord);
+        DBTableParent hUIHandle = new DatabaseStore("User_Info");
+        if(queryKeyVal.equals("AllRecord"))
+            hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
+        else
+            hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "isAbsense"), Arrays.asList(queryKeyVal, "1"));
+        List<String> rtnRst = hUIHandle.getDBRecordList(getKeyWord);
         if(getKeyWord.contains("name"))
             rtnRst.remove("root");
         else if(getKeyWord.contains("check_in_id"))
