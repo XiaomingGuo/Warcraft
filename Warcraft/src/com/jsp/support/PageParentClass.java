@@ -451,4 +451,12 @@ public class PageParentClass
             rtnRst.remove("99999");
         return rtnRst;
     }
+    
+    public List<String> GetApplicationUserList()
+    {
+        DBTableParent hORHandle = new DatabaseStore("Other_Record");
+        hORHandle.QueryRecordGroupByList(Arrays.asList("user_name"));
+        List<String> rtnRst = hORHandle.getDBRecordList("user_name");
+        return rtnRst;
+    }
 }

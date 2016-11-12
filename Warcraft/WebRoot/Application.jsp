@@ -17,7 +17,7 @@
         
         //storeroom name Database query
         List<String> store_name = hPageHandle.GetStoreName("TOOLS");
-        List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
+        List<String> UserList = hPageHandle.GetApplicationUserList();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -81,7 +81,8 @@
                 <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
             </td>
             <td align="right">
-                <select name="user_name" id="user_name" style="width:100px">
+                <input type="text" name="user_name" list="userName"/>
+                <datalist name="userName" id="userName" style="width:100px">
                     <option value = "--请选择--">--请选择--</option>
 <%
                     for(int i = 0; i < UserList.size(); i++)
@@ -91,7 +92,7 @@
 <%
                     }
 %>
-                </select>
+                </datalist>
             </td>
             <td align="right">
                 <input name="QTY" id="QTY" style="width:80px" onblur="CheckQTY(this)">

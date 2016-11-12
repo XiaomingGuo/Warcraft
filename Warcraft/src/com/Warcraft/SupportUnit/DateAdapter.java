@@ -11,7 +11,7 @@ public class DateAdapter
     public static int getMaxDaysByYearMonth(String yearMonth)
     {
         String strYear = yearMonth.substring(0, 4);
-        String strMonth = yearMonth.substring(4);
+        String strMonth = yearMonth.substring(4, 6);
         Calendar handle = Calendar.getInstance();
         handle.set(Calendar.YEAR, Integer.parseInt(strYear));
         handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
@@ -20,16 +20,27 @@ public class DateAdapter
         return handle.get(Calendar.DATE);
     }
     
+    public static String getNextDayDateString(String yearMonth)
+    {
+        String strYear = yearMonth.substring(0, 4);
+        String strMonth = yearMonth.substring(4, 6);
+        String strDay = yearMonth.substring(6, 8);
+        Calendar handle = Calendar.getInstance();
+        handle.set(Calendar.YEAR, Integer.parseInt(strYear));
+        handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
+        handle.set(Calendar.DATE, Integer.parseInt(strDay));
+        handle.roll(Calendar.DATE, 1);
+        return String.format("%d%02d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1, handle.get(Calendar.DATE));
+    }
+    
     public static String getPrecedingMonth(String yearMonth)
     {
-        String rtnRst = null;
-        int Year = Integer.parseInt(yearMonth.substring(0, 4));
-        int Month = Integer.parseInt(yearMonth.substring(4));
-        if(Month > 1)
-            rtnRst = Integer.toString(Year) + String.format("%02d", Month-1);
-        else
-            rtnRst = Integer.toString(Year-1) + "12";
-        return rtnRst;
+        String strYear = yearMonth.substring(0, 4);
+        String strMonth = yearMonth.substring(4, 6);
+        Calendar handle = Calendar.getInstance();
+        handle.set(Calendar.YEAR, Integer.parseInt(strYear));
+        handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 2);
+        return String.format("%d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1);
     }
     
     public static int getDayOfAWeek(String yearMonthDay)
@@ -120,7 +131,7 @@ public class DateAdapter
         SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss"); 
         try
         {
-            Date dateAfter=df.parse(EndTime);   
+            Date dateAfter=df.parse(EndTime);
             Date dateBefore=df.parse(BeginTime);
             Date time=df.parse(strTime);
             if(time.before(dateAfter) && time.after(dateBefore))

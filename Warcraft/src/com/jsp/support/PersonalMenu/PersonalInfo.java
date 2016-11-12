@@ -90,7 +90,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
                     }
                     else if("申报加班(H)" == m_displayList[iCol])
                     {
-                        rtnRst += "0$";
+                        rtnRst += GetCurOverTimeHour(recordList.get(1).get(iRow), recordList.get(2).get(iRow), recordList.get(4).get(iRow)) + "$";
                     }
                     else if("班次" == m_displayList[iCol])
                     {
@@ -107,6 +107,37 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
             rtnRst += CheckPrecedingMonthData(recordList.get(1).get(0), queryDate) + "$";
         }
         return rtnRst;
+    }
+    
+    private String GetCurOverTimeHour(String checkInId, String overTimeDate, String workGroup)
+    {
+        DBTableParent hOTRHandle = new DatabaseStore("Over_Time_Record");
+        hOTRHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "over_time_date"), Arrays.asList(checkInId, GetCheckInDateByWorkGroup(overTimeDate, workGroup)));
+        if (hOTRHandle.getTableInstance().RecordDBCount() > 0)
+            return hOTRHandle.getDBRecordList("over_time_hour").get(0);
+        return "0";
+    }
+    
+    private List<String> GetWorkGroupTime(String workGroup)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
+        hWGIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(workGroup));
+        String[] getKeyWord = {"check_in_time", "check_out_time"};
+        if(hWGIHandle.getTableInstance().RecordDBCount() > 0)
+        {
+            for(int idx=0; idx < getKeyWord.length; idx++)
+                rtnRst.add(hWGIHandle.getDBRecordList(getKeyWord[idx]).get(0));
+        }
+        return rtnRst;
+    }
+    
+    private String GetCheckInDateByWorkGroup(String overTimeDate, String workGroup)
+    {
+        List<String> workGroupTimeList = GetWorkGroupTime(workGroup);
+        if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+            return DateAdapter.getNextDayDateString(overTimeDate);
+        return overTimeDate;
     }
     
     private String CheckPrecedingMonthData(String checkInId, String queryDate)

@@ -286,12 +286,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     private List<String> GetTomorrowCheckOutDate(String checkInId, int checkInDate)
     {
-        String usedDay = Integer.toString(checkInDate).substring(0, 6) + "00";
-        int maxDay = DateAdapter.getMaxDaysByYearMonth(Integer.toString(checkInDate).substring(0, 6));
-        if(checkInDate == Integer.parseInt(usedDay) + maxDay)
-            usedDay = Integer.toString(Integer.parseInt(usedDay)+101);
-        else
-            usedDay = Integer.toString(checkInDate+1);
+        String usedDay = DateAdapter.getNextDayDateString(Integer.toString(checkInDate));
         List<List<String>> tempRecord = GetOneDayCheckRawData(g_recordList, checkInId, usedDay);
         List<String> rtnRst = new ArrayList<String>();
         for(int idx = 0; idx < tempRecord.get(2).size(); idx++)
