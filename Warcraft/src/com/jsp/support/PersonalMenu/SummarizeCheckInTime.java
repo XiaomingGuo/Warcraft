@@ -13,7 +13,7 @@ import com.page.utilities.*;
 
 public class SummarizeCheckInTime extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
+    public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "周末加班(天)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_recordList, g_HolidayMarkList, g_OverTimeRecord, g_WorkGroupRecord;
@@ -168,10 +168,30 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst.add(Integer.toString(delayTime));
         rtnRst.add(Integer.toString(overTime2Hour));
         rtnRst.add(Integer.toString(overTime4Hour));
+        rtnRst.add(Float.toString(GetWeekendOverTime(checkInId, queryDate)));
         rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
         rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getMaxDaysByYearMonth(queryDate)));
+        return rtnRst;
+    }
+    
+    private float GetWeekendOverTime(String checkInId, String queryDate)
+    {
+        float rtnRst = (float)0.0;
+        List<String> weekendDateList = DateAdapter.GetWeekendDate(queryDate);
+        for(int iDateIdx=0; iDateIdx < weekendDateList.size(); iDateIdx++)
+        {
+            List<List<String>> weekendCheckInRawData = GetOneDayCheckRawData(g_recordList, checkInId, weekendDateList.get(iDateIdx));
+            if(weekendCheckInRawData.get(0).size() > 0)
+            {
+                long overTimeMin = DateAdapter.TimeSpan(weekendCheckInRawData.get(2).get(weekendCheckInRawData.get(2).size() - 1), weekendCheckInRawData.get(2).get(0));
+                if(overTimeMin > 480)
+                    rtnRst += 1;
+                else if(overTimeMin > 240)
+                    rtnRst += 0.5;
+            }
+        }
         return rtnRst;
     }
     

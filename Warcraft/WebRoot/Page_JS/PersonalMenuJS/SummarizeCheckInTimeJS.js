@@ -1,7 +1,7 @@
 /**
  * 
  */
-function changeUserName()
+function QuerySummary()
 {
     var $displayOrder = $("#display_po");
     var $hiddenTable = $("#hidden_table");

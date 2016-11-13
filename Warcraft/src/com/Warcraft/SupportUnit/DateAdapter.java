@@ -3,8 +3,10 @@ package com.Warcraft.SupportUnit;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DateAdapter
 {
@@ -41,6 +43,18 @@ public class DateAdapter
         handle.set(Calendar.YEAR, Integer.parseInt(strYear));
         handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 2);
         return String.format("%d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1);
+    }
+    
+    public static List<String> GetWeekendDate(String yearMonthDay)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        for(int iDayIdx=0; iDayIdx < DateAdapter.getMaxDaysByYearMonth(yearMonthDay); iDayIdx++)
+        {
+            String curDateOfYear = String.format("%s%02d", yearMonthDay.substring(0, 6), iDayIdx + 1);
+            if(DateAdapter.getDayOfAWeek(curDateOfYear) == 1)
+                rtnRst.add(curDateOfYear);
+        }
+        return rtnRst;
     }
     
     public static int getDayOfAWeek(String yearMonthDay)

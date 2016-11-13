@@ -97,7 +97,7 @@
                             <div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyyMM" value="<%=currentDate %>"></div>
                             </h1>
                         </td>
-                        <td align="right"><h1><input name="query" type="button" value="查询" style="width:100" onclick="changeUserName()"></h1></td>
+                        <td align="right"><h1><input name="query" type="button" value="查询" style="width:100" onclick="QuerySummary()"></h1></td>
                     </tr>
                 </table>
                 <form action="ReportPage/Save_CheckIn_Summary_Report.jsp" method="post">
