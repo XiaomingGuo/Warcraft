@@ -56,13 +56,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private void GetAllGlobeRawDataFromDatabase(String queryDate)
     {
         String[] getKeyWord = new String[] {"check_in_id", "check_in_date", "check_in_time", "work_group"};
-        g_recordList = GetAllTableRecordByDateSpan("Check_In_Raw_Data", "check_in_date", queryDate, getKeyWord);
+        g_recordList = GetAllTableRecordByDateSpan("Check_In_Raw_Data", "check_in_date", queryDate, Arrays.asList("check_in_date", "check_in_time"), getKeyWord);
         getKeyWord = new String[] {"check_in_id", "holiday_date", "holiday_info"};
-        g_HolidayMarkList = GetAllTableRecordByDateSpan("Holiday_Mark", "holiday_date", queryDate, getKeyWord);
+        g_HolidayMarkList = GetAllTableRecordByDateSpan("Holiday_Mark", "holiday_date", queryDate, Arrays.asList("holiday_date"), getKeyWord);
         getKeyWord = new String[] {"check_in_id", "over_time_date", "over_time_hour"};
-        g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, getKeyWord);
+        g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, Arrays.asList("over_time_date"), getKeyWord);
         getKeyWord = new String[] {"id", "group_name", "check_in_time", "check_out_time"};
-        g_WorkGroupRecord = GetAllTableRecord("Work_Group_Info", getKeyWord);
+        g_WorkGroupRecord = GetAllTableRecord("Work_Group_Info", null, getKeyWord);
     }
     
     private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
@@ -76,17 +76,17 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<List<String>> GetAllTableRecord(String tableName, String[] getKeyWord)
+    private List<List<String>> GetAllTableRecord(String tableName, List<String> orderList, String[] getKeyWord)
     {
         DBTableParent hTBHandle = new DatabaseStore(tableName);
         hTBHandle.QueryAllRecord();
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
-    private List<List<String>> GetAllTableRecordByDateSpan(String tableName, String queryKeyword, String queryDate, String[] getKeyWord)
+    private List<List<String>> GetAllTableRecordByDateSpan(String tableName, String queryKeyword, String queryDate, List<String> orderList, String[] getKeyWord)
     {
         DBTableParent hTBHandle = new DatabaseStore(tableName);
-        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", Arrays.asList(queryKeyword));
+        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", orderList);
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
