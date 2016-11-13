@@ -36,6 +36,14 @@
             String Barcode = res.get(iRow).get(3);
             String weight = res.get(iRow).get(4);
             String description = res.get(iRow).get(5);
+            hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
+            if (hSNHandle.getTableInstance().RecordDBCount() == 0)
+                ((Storeroom_Name)hSNHandle.getTableInstance()).AddARecord(storename);
+            
+            hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
+            if (hPTHandle.getTableInstance().RecordDBCount() == 0)
+                ((Product_Type)hPTHandle.getTableInstance()).AddARecord(product_type, storename);
+            
             hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
             if(hPIHandle.getTableInstance().RecordDBCount() > 0)
             {
@@ -46,14 +54,6 @@
             }
             else
             {
-                hSNHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(storename));
-                if (hSNHandle.getTableInstance().RecordDBCount() == 0)
-                    ((Storeroom_Name)hSNHandle.getTableInstance()).AddARecord(storename);
-                
-                hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "storeroom"), Arrays.asList(product_type, storename));
-                if (hPTHandle.getTableInstance().RecordDBCount() == 0)
-                    ((Product_Type)hPTHandle.getTableInstance()).AddARecord(product_type, storename);
-                
                 hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
                 if(hPIHandle.getTableInstance().RecordDBCount() == 0)
                     ((Product_Info)hPIHandle.getTableInstance()).AddARecord(Barcode, product_name, product_type, weight, "","","", "", description);

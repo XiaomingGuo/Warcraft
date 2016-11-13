@@ -53,6 +53,43 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
     }
     
+    private void GetAllGlobeRawDataFromDatabase(String queryDate)
+    {
+        String[] getKeyWord = new String[] {"check_in_id", "check_in_date", "check_in_time", "work_group"};
+        g_recordList = GetAllTableRecordByDateSpan("Check_In_Raw_Data", "check_in_date", queryDate, getKeyWord);
+        getKeyWord = new String[] {"check_in_id", "holiday_date", "holiday_info"};
+        g_HolidayMarkList = GetAllTableRecordByDateSpan("Holiday_Mark", "holiday_date", queryDate, getKeyWord);
+        getKeyWord = new String[] {"check_in_id", "over_time_date", "over_time_hour"};
+        g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, getKeyWord);
+        getKeyWord = new String[] {"id", "group_name", "check_in_time", "check_out_time"};
+        g_WorkGroupRecord = GetAllTableRecord("Work_Group_Info", getKeyWord);
+    }
+    
+    private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        if(hTBHandle.getTableInstance().RecordDBCount() > 0)
+        {
+            for(int idx=0; idx < getKeyWord.length; idx++)
+                rtnRst.add(hTBHandle.getDBRecordList(getKeyWord[idx]));
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetAllTableRecord(String tableName, String[] getKeyWord)
+    {
+        DBTableParent hTBHandle = new DatabaseStore(tableName);
+        hTBHandle.QueryAllRecord();
+        return GetRecordByKeylist(hTBHandle, getKeyWord);
+    }
+    
+    private List<List<String>> GetAllTableRecordByDateSpan(String tableName, String queryKeyword, String queryDate, String[] getKeyWord)
+    {
+        DBTableParent hTBHandle = new DatabaseStore(tableName);
+        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", Arrays.asList(queryKeyword));
+        return GetRecordByKeylist(hTBHandle, getKeyWord);
+    }
+    
     private List<String> GetAllCheckInDate(String queryDate, String checkInId)
     {
         List<String> rtnRst = new ArrayList<String>();
@@ -442,65 +479,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         if(recordList.size() == 0)
             return "error:无刷卡记录!";
         String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
-        return rtnRst;
-    }
-    
-    private void GetAllGlobeRawDataFromDatabase(String queryDate)
-    {
-        g_recordList = GetCheckInRawDataRecordByDate(queryDate);
-        g_HolidayMarkList = GetAllHolidayMarkRecordByDate(queryDate);
-        g_OverTimeRecord = GetAllOverTimeRecordByDate(queryDate);
-        g_WorkGroupRecord = GetAllWorkGroupRecord();
-    }
-    
-    private List<List<String>> GetAllWorkGroupRecord()
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");
-        hWGIHandle.QueryAllRecord();
-        String[] getKeyWord = {"id", "group_name", "check_in_time", "check_out_time"};
-        if(hWGIHandle.getTableInstance().RecordDBCount() > 0)
-        {
-            for(int idx=0; idx < getKeyWord.length; idx++)
-                rtnRst.add(hWGIHandle.getDBRecordList(getKeyWord[idx]));
-        }
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetAllOverTimeRecordByDate(String queryDate)
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        DBTableParent hOTRHandle = new DatabaseStore("Over_Time_Record");
-        hOTRHandle.QueryRecordBetweenDateSpanAndOrderByListASC("over_time_date", queryDate + "00", queryDate + "32", Arrays.asList("over_time_date"));
-        if(hOTRHandle.getTableInstance().RecordDBCount() > 0)
-        {
-            String[] getKeyWord = {"check_in_id", "over_time_date", "over_time_hour"};
-            for(int idx=0; idx < getKeyWord.length; idx++)
-                rtnRst.add(hOTRHandle.getDBRecordList(getKeyWord[idx]));
-        }
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetAllHolidayMarkRecordByDate(String queryDate)
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
-        
-        hHMHandle.QueryRecordBetweenDateSpanAndOrderByListASC("holiday_date", queryDate + "00", queryDate + "32", Arrays.asList("holiday_date"));
-        String[] getKeyWord = {"check_in_id", "holiday_date", "holiday_info"};
-        for(int idx=0; idx < getKeyWord.length; idx++)
-            rtnRst.add(hHMHandle.getDBRecordList(getKeyWord[idx]));
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetCheckInRawDataRecordByDate(String queryDate)
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
-        hCIRDHandle.QueryRecordBetweenDateSpanAndOrderByListASC("check_in_date", queryDate+"00", queryDate+"32", Arrays.asList("check_in_time"));
-        String[] getKeyWord = {"check_in_id", "check_in_date", "check_in_time", "work_group"};
-        for(int idx=0; idx < getKeyWord.length; idx++)
-            rtnRst.add(hCIRDHandle.getDBRecordList(getKeyWord[idx]));
         return rtnRst;
     }
     
