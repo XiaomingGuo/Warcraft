@@ -528,6 +528,18 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
+    public String GenerateWeekendCheckInDataReturnString(String user_id, String userName, String queryDate)
+    {
+        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
+            return "";
+        GetAllGlobeRawDataFromDatabase(queryDate);
+        List<List<String>> recordList = GetWeekendCheckInDataDisplayData(user_id, userName, queryDate);
+        if(recordList.size() == 0)
+            return "";
+        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
+        return rtnRst;
+    }
+    
     private List<List<String>> GetBeLateAndLeaveEarlyDisplayData(
             String user_id, String userName, String queryDate)
     {
@@ -595,6 +607,27 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return true;
     }
     
+    private List<List<String>> GetWeekendCheckInDataDisplayData(String user_id, String userName, String queryDate)
+    {
+        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
+        
+        List<String> checkInDateList = DateAdapter.GetWeekendDate(queryDate);
+        List<List<String>> missCheckInResult = GetAPersonWeekendCheckInSummary(user_id, queryDate, checkInDateList);
+        
+        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
+        {
+            rtnRst.get(0).add(Integer.toString(idx + 1));
+            rtnRst.get(1).add(userName);
+            rtnRst.get(2).add(user_id);
+            int item = 3;
+            for(; item < m_displayArray.length-1; item++)
+                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
+            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
+        }
+        return rtnRst;
+    }
+    
     private List<List<String>> GetMissCheckInDataDisplayData(String user_id,
             String userName, String queryDate)
     {
@@ -632,6 +665,26 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
         hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
         return hUIHandle.getDBRecordList("group_name").get(0);
+    }
+    
+    private List<List<String>> GetAPersonWeekendCheckInSummary(String user_id, String queryDate, List<String> checkInDateList)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        //"check_in_date", "check_in_time", "work_group"
+        GetAllGlobeRawDataFromDatabase(queryDate);
+        for(int iCount=0; iCount < 4; iCount++)
+            rtnRst.add(new ArrayList<String>());
+        
+        for(int idx = 0; idx < checkInDateList.size(); idx++)
+        {
+            List<List<String>> dayCheckInRecord = GetOneDayCheckRawData(g_recordList, user_id, checkInDateList.get(idx));
+            if(dayCheckInRecord.get(0).size() > 0)
+            {
+                for(int iCol=0; iCol < dayCheckInRecord.size(); iCol++)
+                    rtnRst.get(iCol).addAll(dayCheckInRecord.get(iCol));
+            }
+        }
+        return rtnRst;
     }
     
     private List<List<String>> GetAPersonMissCheckInSummary(String user_id,

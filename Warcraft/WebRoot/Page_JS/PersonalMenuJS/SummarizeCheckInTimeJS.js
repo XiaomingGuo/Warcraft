@@ -27,6 +27,8 @@ function QuerySummary()
                             td.append("<a name='" + data_list[iRow*iColCount + 3] + "' href='javascript:void(0);' onclick='DisplayMissCheckIn(this)'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");//
                         else if(5 == iCol)
                             td.append("<a name='" + data_list[iRow*iColCount + 3] + "' href='javascript:void(0);' onclick='DisplayBeLateAndLeaveEarly(this)'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");//
+                        else if(8 == iCol)
+                            td.append("<a name='" + data_list[iRow*iColCount + 3] + "' href='javascript:void(0);' onclick='DisplayWeekendOverTime(this)'>"+data_list[iRow*iColCount + iCol + 2]+"</a>");//
                         else
                             td.append(data_list[iRow*iColCount + iCol + 2]);
                         tr.append(td);
@@ -83,6 +85,11 @@ function DisplayBeLateAndLeaveEarly(obj)
 function DisplayMissCheckIn(obj)
 {
     DisplayQueryCheckInData(parseInt(obj.name), "Query_Miss_Check_In_Data_Ajax");
+}
+
+function DisplayWeekendOverTime(obj)
+{
+    DisplayQueryCheckInData(parseInt(obj.name), "Query_Weekend_Check_In_Data_Ajax");
 }
 
 function outExcel()
