@@ -289,7 +289,7 @@ public class PageParentClass
     
     public String GetEndDayOfMonth(String yearMonth)
     {
-        return Integer.toString(DateAdapter.getMaxDaysByYearMonth(yearMonth));
+        return Integer.toString(DateAdapter.getDayCountOfAMonth(yearMonth));
     }
     
     public String GenYearString()

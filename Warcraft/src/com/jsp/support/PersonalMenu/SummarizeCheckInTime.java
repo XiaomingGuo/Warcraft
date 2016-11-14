@@ -94,7 +94,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<String> rtnRst = new ArrayList<String>();
         int beginDate = Integer.parseInt(queryDate + "01");
-        int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+        int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
         
         for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
         {
@@ -116,7 +116,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         if(recordList != null&&recordList.size() > 0)
         {
             int beginDate = Integer.parseInt(queryDate + "01");
-            int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+            int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
             
             for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
             {
@@ -209,14 +209,14 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
-        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getMaxDaysByYearMonth(queryDate)));
+        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getDayCountOfAMonth(queryDate)));
         return rtnRst;
     }
     
     private float GetWeekendOverTime(String checkInId, String queryDate)
     {
         float rtnRst = (float)0.0;
-        List<String> weekendDateList = DateAdapter.GetWeekendDate(queryDate);
+        List<String> weekendDateList = DateAdapter.GetWeekendOfAMonth(queryDate);
         for(int iDateIdx=0; iDateIdx < weekendDateList.size(); iDateIdx++)
         {
             List<List<String>> weekendCheckInRawData = GetOneDayCheckRawData(g_recordList, checkInId, weekendDateList.get(iDateIdx));
@@ -289,7 +289,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         if(recordList != null&&recordList.size() > 0)
         {
             int beginDate = Integer.parseInt(queryDate + "01");
-            int maxDays = DateAdapter.getMaxDaysByYearMonth(queryDate);
+            int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
             
             for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
             {
@@ -343,7 +343,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     private List<String> GetTomorrowCheckOutDate(String checkInId, int checkInDate)
     {
-        String usedDay = DateAdapter.getNextDayDateString(Integer.toString(checkInDate));
+        String usedDay = DateAdapter.getTomorrowDateString(Integer.toString(checkInDate));
         List<List<String>> tempRecord = GetOneDayCheckRawData(g_recordList, checkInId, usedDay);
         List<String> rtnRst = new ArrayList<String>();
         for(int idx = 0; idx < tempRecord.get(2).size(); idx++)
@@ -375,19 +375,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         String midTime = DateAdapter.GetMiddleTimeBetweenTimes(workGroupTimeList.get(0), workGroupTimeList.get(1));
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime)&&
-                    DateAdapter.TimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
+            if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime)&&
+                    DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
             {
                 rtnRst.add(checkInTimeList.get(0));
                 rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
             }
             else
             {
-                if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime))
+                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime))
                     rtnRst.add(checkInTimeList.get(0));
                 else
                     rtnRst.add(null);
-                if(DateAdapter.TimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
+                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
                     rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
                 else
                     rtnRst.add(null);
@@ -590,7 +590,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         
-        List<String> checkInDateList = DateAdapter.GetWeekendDate(queryDate);
+        List<String> checkInDateList = DateAdapter.GetWeekendOfAMonth(queryDate);
         List<List<String>> missCheckInResult = GetAPersonWeekendCheckInSummary(user_id, queryDate, checkInDateList);
         
         for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)

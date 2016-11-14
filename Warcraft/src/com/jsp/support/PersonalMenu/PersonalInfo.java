@@ -136,13 +136,13 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     {
         List<String> workGroupTimeList = GetWorkGroupTime(workGroup);
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
-            return DateAdapter.getNextDayDateString(overTimeDate);
+            return DateAdapter.getTomorrowDateString(overTimeDate);
         return overTimeDate;
     }
     
     private String CheckPrecedingMonthData(String checkInId, String queryDate)
     {
-        String preMonth = DateAdapter.getPrecedingMonth(queryDate);
+        String preMonth = DateAdapter.getPrecedingMonthString(queryDate);
         DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(checkInId, "0"), "check_in_date", preMonth + "00", preMonth + "32");
         if(hCIRDHandle.getTableInstance().RecordDBCount() > 0)

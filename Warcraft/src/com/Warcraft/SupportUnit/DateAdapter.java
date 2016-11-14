@@ -10,32 +10,41 @@ import java.util.List;
 
 public class DateAdapter
 {
-    public static int getMaxDaysByYearMonth(String yearMonth)
+    public static int getDayCountOfAMonth(String yearMonth)
     {
-        String strYear = yearMonth.substring(0, 4);
-        String strMonth = yearMonth.substring(4, 6);
+        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyyMMdd");
         Calendar handle = Calendar.getInstance();
-        handle.set(Calendar.YEAR, Integer.parseInt(strYear));
-        handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-        handle.set(Calendar.DATE, 1);
-        handle.roll(Calendar.DATE, -1);
+        try
+        {
+            Date myDate = myFormatter.parse(yearMonth.length()>6?yearMonth:yearMonth+"01");
+            handle.setTime(myDate);
+            handle.roll(Calendar.DATE, -1);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
         return handle.get(Calendar.DATE);
     }
     
-    public static String getNextDayDateString(String yearMonth)
+    public static String getTomorrowDateString(String yearMonth)
     {
-        String strYear = yearMonth.substring(0, 4);
-        String strMonth = yearMonth.substring(4, 6);
-        String strDay = yearMonth.substring(6, 8);
+        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyyMMdd");
         Calendar handle = Calendar.getInstance();
-        handle.set(Calendar.YEAR, Integer.parseInt(strYear));
-        handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 1);
-        handle.set(Calendar.DATE, Integer.parseInt(strDay));
-        handle.roll(Calendar.DATE, 1);
+        try
+        {
+            Date myDate = myFormatter.parse(yearMonth);
+            handle.setTime(myDate);
+            handle.roll(Calendar.DATE, 1);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
         return String.format("%d%02d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1, handle.get(Calendar.DATE));
     }
     
-    public static String getPrecedingMonth(String yearMonth)
+    public static String getPrecedingMonthString(String yearMonth)
     {
         String strYear = yearMonth.substring(0, 4);
         String strMonth = yearMonth.substring(4, 6);
@@ -45,10 +54,10 @@ public class DateAdapter
         return String.format("%d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1);
     }
     
-    public static List<String> GetWeekendDate(String yearMonthDay)
+    public static List<String> GetWeekendOfAMonth(String yearMonthDay)
     {
         List<String> rtnRst = new ArrayList<String>();
-        for(int iDayIdx=0; iDayIdx < DateAdapter.getMaxDaysByYearMonth(yearMonthDay); iDayIdx++)
+        for(int iDayIdx=0; iDayIdx < DateAdapter.getDayCountOfAMonth(yearMonthDay); iDayIdx++)
         {
             String curDateOfYear = String.format("%s%02d", yearMonthDay.substring(0, 6), iDayIdx + 1);
             if(DateAdapter.getDayOfAWeek(curDateOfYear) == 1)
@@ -81,9 +90,7 @@ public class DateAdapter
         if(DateAdapter.TimeSpan(beginTime, endTime) <= 0)
             rtnRst = DateAdapter.TimeSpan(endTime, beginTime);
         else
-        {
             rtnRst = DateAdapter.TimeSpan("24:00:00", beginTime) + DateAdapter.TimeSpan(endTime, "00:00:00") ;
-        }
         return rtnRst;
     }
     
@@ -95,7 +102,6 @@ public class DateAdapter
         try
         {
             Date beginTime = format.parse(checkInTime);
-            //Date endTime = format.parse(checkOutTime);
             cal.setTime(beginTime);
             cal.add(Calendar.HOUR, (int)timeSpan/60);
             cal.add(Calendar.MINUTE, (int)timeSpan%60);
@@ -125,22 +131,7 @@ public class DateAdapter
         return 0;
     }
     
-    public static Date parseToTime(String convertTime)
-    {
-        Date rtnRst = null;
-        DateFormat df = new SimpleDateFormat("HH:mm:ss");
-        try
-        {
-            rtnRst = df.parse(convertTime);
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        return rtnRst;
-    }
-    
-    public static boolean TimeBetweenTimespan(String strTime, String BeginTime, String EndTime)
+    public static boolean isTimeBetweenTimespan(String strTime, String BeginTime, String EndTime)
     {
         SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss"); 
         try

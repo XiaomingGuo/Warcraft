@@ -210,7 +210,7 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
     public String EnsureAllArrangeCheckInData(String userName, String submitDate)
     {
         String rtnRst = "";
-        String beginDate = submitDate+"01", endDate = submitDate+Integer.toString(DateAdapter.getMaxDaysByYearMonth(submitDate));
+        String beginDate = submitDate+"01", endDate = submitDate+Integer.toString(DateAdapter.getDayCountOfAMonth(submitDate));
         String strCheckInId = GetUserNameByKeyWord("name", userName, "check_in_id");
         
         DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
