@@ -65,7 +65,6 @@ public class TestSummarizeCheckInTime
 	public void testGenerateReturnString()
 	{
 		SummarizeCheckInTime mockHandle = mock(SummarizeCheckInTime.class);
-		mockHandle.GenerateReturnString("AllRecord", "", "20161102");
 	}
 
 }

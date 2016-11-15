@@ -2,6 +2,7 @@ package com.jsp.support.PersonalMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import com.DB.factory.DatabaseStore;
@@ -68,10 +69,13 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
-        if(hTBHandle.getTableInstance().RecordDBCount() > 0)
+        if(null != hTBHandle&&getKeyWord.length>0)
         {
-            for(int idx=0; idx < getKeyWord.length; idx++)
-                rtnRst.add(hTBHandle.getDBRecordList(getKeyWord[idx]));
+            if(hTBHandle.getTableInstance().RecordDBCount() > 0)
+            {
+                for(int idx=0; idx < getKeyWord.length; idx++)
+                    rtnRst.add(hTBHandle.getDBRecordList(getKeyWord[idx]));
+            }
         }
         return rtnRst;
     }
@@ -90,17 +94,21 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
+    private List<List<String>> GetAllUserInfo()
+    {
+        DBTableParent hUIHandle = new DatabaseStore("User_Info");
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
+        List<List<String>> rtnRst = GetRecordByKeylist(hUIHandle, new String[] {"name", "check_in_id"});
+        if(rtnRst.get(0).contains("root"))
+            rtnRst.get(0).remove("root");
+        if(rtnRst.get(1).contains("99999"))
+            rtnRst.get(1).remove("99999");
+        return rtnRst;
+    }
+    
     private List<String> GetAllCheckInDate(String queryDate, String checkInId)
     {
-        List<String> rtnRst = new ArrayList<String>();
-        int beginDate = Integer.parseInt(queryDate + "01");
-        int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
-        
-        for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
-        {
-            int curDate = beginDate + dateOffset;
-            rtnRst.add(Integer.toString(curDate));
-        }
+        List<String> rtnRst = DateAdapter.getAllDayStringOfAMonth(queryDate);
         List<String> tempList = GetPersonHolidayMarkPerMonth(checkInId, queryDate, g_HolidayMarkList);
         for(int idx=0; idx < tempList.size(); idx++)
         {
@@ -131,24 +139,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<List<String>> GetAllUserInfo()
-    {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        DBTableParent hUIHandle = new DatabaseStore("User_Info");
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
-        String[] keywordList = new String[] {"name", "check_in_id"};
-        for(int idx=0; idx < keywordList.length; idx++)
-        {
-            List<String> tempList = hUIHandle.getDBRecordList(keywordList[idx]);
-            if(hUIHandle.getDBRecordList(keywordList[idx]).contains("root"))
-                tempList.remove("root");
-            else if(hUIHandle.getDBRecordList(keywordList[idx]).contains("99999"))
-                tempList.remove("99999");
-            rtnRst.add(tempList);
-        }
-        return rtnRst;
-    }
-    
     private List<List<String>> GetAllDisplayData(String user_id, String userName, String queryDate)
     {
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
@@ -169,6 +159,69 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             {
                 rtnRst.get(item).add(checkInResult.get(item-3));
             }
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetMissCheckInDataDisplayData(String user_id,
+            String userName, String queryDate)
+    {
+        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
+        
+        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
+        List<List<String>> missCheckInResult = GetAPersonMissCheckInSummary(user_id, queryDate, checkInDateList);
+        
+        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
+        {
+            rtnRst.get(0).add(Integer.toString(idx + 1));
+            rtnRst.get(1).add(userName);
+            rtnRst.get(2).add(user_id);
+            int item = 3;
+            for(; item < m_displayArray.length-1; item++)
+                rtnRst.get(item).add(missCheckInResult.get(item-3).get(idx));
+            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-3).get(idx)));
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetWeekendCheckInDataDisplayData(String user_id, String userName, String queryDate)
+    {
+        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
+        
+        List<String> checkInDateList = DateAdapter.GetWeekDayOfAMonth(queryDate, Calendar.SUNDAY);
+        List<List<String>> missCheckInResult = GetAPersonWeekendCheckInSummary(user_id, queryDate, checkInDateList);
+        
+        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
+        {
+            rtnRst.get(0).add(Integer.toString(idx + 1));
+            rtnRst.get(1).add(userName);
+            rtnRst.get(2).add(user_id);
+            int item = 3;
+            for(; item < m_displayArray.length-1; item++)
+                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
+            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
+        }
+        return rtnRst;
+    }
+    
+    private List<List<String>> GetBeLateAndLeaveEarlyDisplayData(String user_id, String userName, String queryDate)
+    {
+        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
+        
+        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
+        List<List<String>> missCheckInResult = GetAPersonBeLateAndLeaveEarlySummary(user_id, queryDate, checkInDateList);
+        
+        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
+        {
+            rtnRst.get(0).add(Integer.toString(idx + 1));
+            rtnRst.get(1).add(userName);
+            int item = 2;
+            for(; item < m_displayArray.length-1; item++)
+                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
+            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
         }
         return rtnRst;
     }
@@ -216,7 +269,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private float GetWeekendOverTime(String checkInId, String queryDate)
     {
         float rtnRst = (float)0.0;
-        List<String> weekendDateList = DateAdapter.GetWeekendOfAMonth(queryDate);
+        List<String> weekendDateList = DateAdapter.GetWeekDayOfAMonth(queryDate, Calendar.SUNDAY);
         for(int iDateIdx=0; iDateIdx < weekendDateList.size(); iDateIdx++)
         {
             List<List<String>> weekendCheckInRawData = GetOneDayCheckRawData(g_recordList, checkInId, weekendDateList.get(iDateIdx));
@@ -305,6 +358,23 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return Integer.toString(rtnRst);
     }
     
+    private List<List<String>> GetOneDayCheckRawData(List<List<String>> recordList, String checkInId, String checkInDate)
+    {
+        //"check_in_date", "check_in_time", "work_group"
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        for(int idx=0; idx < recordList.size(); idx++)
+        {
+            List<String> tempList = new ArrayList<String>();
+            for(int item=0; item < recordList.get(0).size(); item++)
+            {
+                if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
+                    tempList.add(recordList.get(idx).get(item));
+            }
+            rtnRst.add(tempList);
+        }
+        return rtnRst;
+    }
+    
     private List<String> GetWorkGroupTime(int workGroupId, List<List<String>> recordList)
     {
         List<String> rtnRst = new ArrayList<String>();
@@ -321,23 +391,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         }
         if(rtnRst.size() <= 0)
             rtnRst = Arrays.asList("00:00:00", "00:00:00");
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetOneDayCheckRawData(List<List<String>> recordList, String checkInId, String checkInDate)
-    {
-        //"check_in_date", "check_in_time", "work_group"
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        for(int idx=0; idx < recordList.size(); idx++)
-        {
-            List<String> tempList = new ArrayList<String>();
-            for(int item=0; item < recordList.get(0).size(); item++)
-            {
-                if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
-                    tempList.add(recordList.get(idx).get(item));
-            }
-            rtnRst.add(tempList);
-        }
         return rtnRst;
     }
     
@@ -470,73 +523,40 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     }
     
     // Finish End
-    public String GenerateReturnString(String user_id, String userName, String queryDate)
+    public String GenerateResponseString(String responseFlag, String user_id, String userName, String queryDate)
+    {
+        if(CheckInputValue(responseFlag, user_id, userName, queryDate))
+        {
+            GetAllGlobeRawDataFromDatabase(queryDate);
+            List<List<String>> recordList = GetResultStringList(responseFlag, user_id, userName, queryDate);
+            if(recordList.size() > 0)
+                return hAjaxHandle.GenerateAjaxString(recordList);
+        }
+        return "";
+    }
+    
+    private List<List<String>> GetResultStringList(String responseFlag, String user_id, String userName, String queryDate)
+    {
+        if(responseFlag.toLowerCase().contains("pageresponse"))
+            return GetAllDisplayData(user_id, userName, queryDate);
+        else if(responseFlag.toLowerCase().contains("miss"))
+            return GetMissCheckInDataDisplayData(user_id, userName, queryDate);
+        else if(responseFlag.toLowerCase().contains("weekend"))
+            return GetWeekendCheckInDataDisplayData(user_id, userName, queryDate);
+        else
+            return GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
+    }
+    
+    private boolean CheckInputValue(String responseFlag, String user_id, String userName, String queryDate)
     {
         if(queryDate.length() != 6)
-            return "error:日期输入错误 !";
-        GetAllGlobeRawDataFromDatabase(queryDate);
-        List<List<String>> recordList = GetAllDisplayData(user_id, userName, queryDate);
-        if(recordList.size() == 0)
-            return "error:无刷卡记录!";
-        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
-        return rtnRst;
-    }
-    
-    public String GenerateBeLateAndLeaveEarlyReturnString(String user_id, String userName, String queryDate)
-    {
-        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
-            return "";
-        GetAllGlobeRawDataFromDatabase(queryDate);
-        List<List<String>> recordList = GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
-        if(recordList.size() == 0)
-            return "";
-        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
-        return rtnRst;
-    }
-    
-    public String GenerateMissCheckInDataReturnString(String user_id, String userName, String queryDate)
-    {
-        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
-            return "";
-        GetAllGlobeRawDataFromDatabase(queryDate);
-        List<List<String>> recordList = GetMissCheckInDataDisplayData(user_id, userName, queryDate);
-        if(recordList.size() == 0)
-            return "";
-        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
-        return rtnRst;
-    }
-    
-    public String GenerateWeekendCheckInDataReturnString(String user_id, String userName, String queryDate)
-    {
-        if(queryDate.length() != 6||user_id.length() <= 0||userName.length() <= 0)
-            return "";
-        GetAllGlobeRawDataFromDatabase(queryDate);
-        List<List<String>> recordList = GetWeekendCheckInDataDisplayData(user_id, userName, queryDate);
-        if(recordList.size() == 0)
-            return "";
-        String rtnRst = hAjaxHandle.GenerateAjaxString(recordList);
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetBeLateAndLeaveEarlyDisplayData(
-            String user_id, String userName, String queryDate)
-    {
-        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
-        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        
-        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
-        List<List<String>> missCheckInResult = GetAPersonBeLateAndLeaveEarlySummary(user_id, queryDate, checkInDateList);
-        
-        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
+            return false;
+        if(!responseFlag.toLowerCase().contains("pageresponse"))
         {
-            rtnRst.get(0).add(Integer.toString(idx + 1));
-            rtnRst.get(1).add(userName);
-            int item = 2;
-            for(; item < m_displayArray.length-1; item++)
-                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
-            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
+            if(user_id.length() <= 0||userName.length() <= 0)
+                return false;
         }
-        return rtnRst;
+        return true;
     }
     
     private List<List<String>> GetAPersonBeLateAndLeaveEarlySummary(String user_id, String queryDate, List<String> checkInDateList)
@@ -583,49 +603,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             }
         }
         return true;
-    }
-    
-    private List<List<String>> GetWeekendCheckInDataDisplayData(String user_id, String userName, String queryDate)
-    {
-        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
-        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        
-        List<String> checkInDateList = DateAdapter.GetWeekendOfAMonth(queryDate);
-        List<List<String>> missCheckInResult = GetAPersonWeekendCheckInSummary(user_id, queryDate, checkInDateList);
-        
-        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
-        {
-            rtnRst.get(0).add(Integer.toString(idx + 1));
-            rtnRst.get(1).add(userName);
-            rtnRst.get(2).add(user_id);
-            int item = 3;
-            for(; item < m_displayArray.length-1; item++)
-                rtnRst.get(item).add(missCheckInResult.get(item-2).get(idx));
-            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-2).get(idx)));
-        }
-        return rtnRst;
-    }
-    
-    private List<List<String>> GetMissCheckInDataDisplayData(String user_id,
-            String userName, String queryDate)
-    {
-        m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
-        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-        
-        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
-        List<List<String>> missCheckInResult = GetAPersonMissCheckInSummary(user_id, queryDate, checkInDateList);
-        
-        for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
-        {
-            rtnRst.get(0).add(Integer.toString(idx + 1));
-            rtnRst.get(1).add(userName);
-            rtnRst.get(2).add(user_id);
-            int item = 3;
-            for(; item < m_displayArray.length-1; item++)
-                rtnRst.get(item).add(missCheckInResult.get(item-3).get(idx));
-            rtnRst.get(item).add(CurWorkGroupDescription(missCheckInResult.get(item-3).get(idx)));
-        }
-        return rtnRst;
     }
     
     private String CurWorkGroupDescription(String wordGroupId)

@@ -9,7 +9,7 @@
     if(queryDate.length() > 0)
     {
         SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
-        rtnRst += hPageHandle.GenerateWeekendCheckInDataReturnString(userID, userName, queryDate);
+        rtnRst += hPageHandle.GenerateResponseString("WeekendOverTime", userID, userName, queryDate);
     }
     else
     {

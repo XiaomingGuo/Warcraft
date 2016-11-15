@@ -9,11 +9,9 @@
     if(queryDate.length() > 0)
     {
         SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
-        rtnRst += hPageHandle.GenerateReturnString(userID, userName, queryDate);
+        rtnRst += hPageHandle.GenerateResponseString("PageResponse", userID, userName, queryDate);
     }
     else
-    {
         rtnRst += "remove$error:名字能靠谱点不?";
-    }
     out.write(rtnRst);
 %>

@@ -9,7 +9,7 @@
     if(queryDate.length() > 0)
     {
         SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
-        rtnRst += hPageHandle.GenerateBeLateAndLeaveEarlyReturnString(userID, userName, queryDate);
+        rtnRst += hPageHandle.GenerateResponseString("LateOrLeaveEarly", userID, userName, queryDate);
     }
     else
     {

@@ -9,7 +9,7 @@
     if(queryDate.length() > 0)
     {
         SummarizeCheckInTime hPageHandle = new SummarizeCheckInTime();
-        rtnRst += hPageHandle.GenerateMissCheckInDataReturnString(userID, userName, queryDate);
+        rtnRst += hPageHandle.GenerateResponseString("MissCheckIn", userID, userName, queryDate);
     }
     else
     {

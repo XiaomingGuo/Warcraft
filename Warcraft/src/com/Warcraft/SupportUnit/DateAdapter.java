@@ -54,14 +54,28 @@ public class DateAdapter
         return String.format("%d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1);
     }
     
-    public static List<String> GetWeekendOfAMonth(String yearMonthDay)
+    public static List<String> GetWeekDayOfAMonth(String yearMonthDay, int getWeedday)
     {
         List<String> rtnRst = new ArrayList<String>();
         for(int iDayIdx=0; iDayIdx < DateAdapter.getDayCountOfAMonth(yearMonthDay); iDayIdx++)
         {
             String curDateOfYear = String.format("%s%02d", yearMonthDay.substring(0, 6), iDayIdx + 1);
-            if(DateAdapter.getDayOfAWeek(curDateOfYear) == 1)
+            if(DateAdapter.getDayOfAWeek(curDateOfYear) == getWeedday)
                 rtnRst.add(curDateOfYear);
+        }
+        return rtnRst;
+    }
+    
+    public static List<String> getAllDayStringOfAMonth(String yearMonthDay)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        int beginDate = Integer.parseInt(yearMonthDay.length()>6?yearMonthDay.substring(0,6):yearMonthDay + "01");
+        int maxDays = DateAdapter.getDayCountOfAMonth(yearMonthDay);
+        
+        for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+        {
+            int curDate = beginDate + dateOffset;
+            rtnRst.add(Integer.toString(curDate));
         }
         return rtnRst;
     }
