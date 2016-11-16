@@ -64,6 +64,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, Arrays.asList("over_time_date"), getKeyWord);
         getKeyWord = new String[] {"id", "group_name", "check_in_time", "check_out_time"};
         g_WorkGroupRecord = GetAllTableRecord("Work_Group_Info", null, getKeyWord);
+        if(g_recordList.size() <= 0)
+            g_recordList.add(new ArrayList<String>());
     }
     
     private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
@@ -563,7 +565,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        GetAllGlobeRawDataFromDatabase(queryDate);
         for(int iCount=0; iCount < 4; iCount++)
             rtnRst.add(new ArrayList<String>());
         
@@ -626,7 +627,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        GetAllGlobeRawDataFromDatabase(queryDate);
         for(int iCount=0; iCount < 4; iCount++)
             rtnRst.add(new ArrayList<String>());
         
@@ -647,7 +647,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         //"check_in_date", "check_in_time", "work_group"
-        GetAllGlobeRawDataFromDatabase(queryDate);
         for(int iCount=0; iCount < 3; iCount++)
             rtnRst.add(new ArrayList<String>());
         
