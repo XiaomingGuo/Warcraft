@@ -11,8 +11,6 @@
         rtnRst += hPageHandle.GenerateReturnString(username, queryDate);
     }
     else
-    {
         rtnRst += "remove$error:名字能靠谱点不?";
-    }
     out.write(rtnRst);
 %>

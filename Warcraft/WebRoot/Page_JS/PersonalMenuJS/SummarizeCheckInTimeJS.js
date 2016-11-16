@@ -6,7 +6,8 @@ function QuerySummary()
     var $displayOrder = $("#display_po");
     var $hiddenTable = $("#hidden_table");
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-    $.post("Ajax/PersonalMenu/Query_Summarize_Check_In_Data_Ajax.jsp", {"User_ID":$.trim($("#UserID").val()), "User_Name":GetSelectedContent("UserName"), "queryDate": addDate}, function(data, textStatus)
+    $.post("Ajax/PersonalMenu/SummarizeCheckInTime_Ajax.jsp", {"User_ID":$.trim($("#UserID").val()), "User_Name":GetSelectedContent("UserName"),
+                                                "queryDate": addDate, "QueryContent":"MainPageResponse"}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
@@ -49,13 +50,13 @@ function QuerySummary()
     });
 }
 
-function DisplayQueryCheckInData(iRowId, ajaxName)
+function DisplayQueryCheckInData(iRowId, ajaxName, queryContent)
 {
     var tab = document.getElementById('display_po');
     var $displayDetail = $("#detail_display");
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
-    $.post("Ajax/PersonalMenu/" + ajaxName + ".jsp", {"User_ID":tab.rows[iRowId].cells[2].innerText,
-                                    "User_Name":tab.rows[iRowId].cells[1].innerText, "queryDate": addDate}, function(data, textStatus)
+    $.post("Ajax/PersonalMenu/" + ajaxName + ".jsp", {"User_ID":tab.rows[iRowId].cells[2].innerText, "User_Name":tab.rows[iRowId].cells[1].innerText,
+                                    "queryDate": addDate, "QueryContent":queryContent}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
@@ -79,17 +80,17 @@ function DisplayQueryCheckInData(iRowId, ajaxName)
 
 function DisplayBeLateAndLeaveEarly(obj)
 {
-    DisplayQueryCheckInData(parseInt(obj.name), "Query_BeLate_LeaveEarly_Data_Ajax");
+    DisplayQueryCheckInData(parseInt(obj.name), "SummarizeCheckInTime_Ajax", "LateOrLeaveEarly");
 }
 
 function DisplayMissCheckIn(obj)
 {
-    DisplayQueryCheckInData(parseInt(obj.name), "Query_Miss_Check_In_Data_Ajax");
+    DisplayQueryCheckInData(parseInt(obj.name), "SummarizeCheckInTime_Ajax", "MissCheckIn");
 }
 
 function DisplayWeekendOverTime(obj)
 {
-    DisplayQueryCheckInData(parseInt(obj.name), "Query_Weekend_Check_In_Data_Ajax");
+    DisplayQueryCheckInData(parseInt(obj.name), "SummarizeCheckInTime_Ajax", "WeekendOverTime");
 }
 
 function outExcel()
