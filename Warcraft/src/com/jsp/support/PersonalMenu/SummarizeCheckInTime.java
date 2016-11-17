@@ -484,7 +484,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = GetWorkGroupID(checkInId, checkInDate, recordList);
-            //int workGroupId = Integer.parseInt(recordList.get(3).get(recordList.get(0).size()-1));
             if(workGroupId == 0)
                 return Arrays.asList(2L, 0L, 0L);
             

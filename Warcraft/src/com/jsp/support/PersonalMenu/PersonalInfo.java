@@ -90,7 +90,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
                     }
                     else if("申报加班(H)" == m_displayList[iCol])
                     {
-                        rtnRst += GetCurOverTimeHour(recordList.get(1).get(iRow), recordList.get(2).get(iRow), recordList.get(4).get(iRow)) + "$";
+                        rtnRst += GetCurOverTimeHour(recordList.get(1).get(iRow), recordList.get(2).get(iRow), recordList.get(3).get(iRow), recordList.get(4).get(iRow)) + "$";
                     }
                     else if("班次" == m_displayList[iCol])
                     {
@@ -109,10 +109,10 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    private String GetCurOverTimeHour(String checkInId, String overTimeDate, String workGroup)
+    private String GetCurOverTimeHour(String checkInId, String overTimeDate, String checkInTime, String workGroup)
     {
         DBTableParent hOTRHandle = new DatabaseStore("Over_Time_Record");
-        hOTRHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "over_time_date"), Arrays.asList(checkInId, GetCheckInDateByWorkGroup(overTimeDate, workGroup)));
+        hOTRHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "over_time_date"), Arrays.asList(checkInId, GetCheckInDateByWorkGroup(overTimeDate, checkInTime, workGroup)));
         if (hOTRHandle.getTableInstance().RecordDBCount() > 0)
             return hOTRHandle.getDBRecordList("over_time_hour").get(0);
         return "0";
@@ -132,11 +132,14 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    private String GetCheckInDateByWorkGroup(String overTimeDate, String workGroup)
+    private String GetCheckInDateByWorkGroup(String overTimeDate, String checkInTime, String workGroup)
     {
         List<String> workGroupTimeList = GetWorkGroupTime(workGroup);
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
-            return DateAdapter.getTomorrowDateString(overTimeDate);
+        {
+            if(DateAdapter.TimeSpan(checkInTime, "11:30:00") < 0)
+                return DateAdapter.getYesterdayDateString(overTimeDate);
+        }
         return overTimeDate;
     }
     

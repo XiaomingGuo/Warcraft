@@ -44,6 +44,23 @@ public class DateAdapter
         return String.format("%d%02d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1, handle.get(Calendar.DATE));
     }
     
+    public static String getYesterdayDateString(String yearMonth)
+    {
+        SimpleDateFormat myFormatter = new SimpleDateFormat("yyyyMMdd");
+        Calendar handle = Calendar.getInstance();
+        try
+        {
+            Date myDate = myFormatter.parse(yearMonth);
+            handle.setTime(myDate);
+            handle.roll(Calendar.DATE, -1);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return String.format("%d%02d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1, handle.get(Calendar.DATE));
+    }
+    
     public static String getPrecedingMonthString(String yearMonth)
     {
         String strYear = yearMonth.substring(0, 4);

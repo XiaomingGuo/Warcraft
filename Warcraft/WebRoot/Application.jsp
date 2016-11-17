@@ -81,7 +81,7 @@
                 <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
             </td>
             <td align="right">
-                <input type="text" name="user_name" list="userName"/>
+                <input type="text" id="user_name" name="user_name" list="userName"/>
                 <datalist name="userName" id="userName" style="width:100px">
                     <option value = "--请选择--">--请选择--</option>
 <%
