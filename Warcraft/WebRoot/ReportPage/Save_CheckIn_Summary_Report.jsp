@@ -39,7 +39,7 @@
 				recordList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "CheckInSummary.xls"));
-			excelUtil.execWriteExcelBlock(recordList, 10);
+			excelUtil.execWriteExcelBlock(recordList, 11);
 			String fileFullPath = "d:\\tempFolder\\CheckInSummary.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	

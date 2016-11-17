@@ -489,41 +489,63 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(2));
-            String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
             
-            long absenceTime = 0, timeSpan = 0, overTime = 0;
-            if(null == checkInTime)
-            {
-                absenceTime += 1L;
-                timeSpan += 0L;
-            }
-            else
-            {
-                if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
-                    timeSpan += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
-            }
-            if(null == checkOutTime)
-            {
-                absenceTime += 1L;
-                timeSpan += 0L;
-            }
-            else
-            {
-                if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
-                    timeSpan += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
-                else
-                    overTime += DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(1));
-            }
-            rtnRst.add(absenceTime);
-            rtnRst.add(timeSpan);
-            rtnRst.add(overTime);
+            rtnRst.add(GetAbsenceDayTime(checkINAndOutTime));
+            rtnRst.add(GetOneDaysLateAndLeaveEarly(workGroupId, checkINAndOutTime));
+            rtnRst.add(GetOneDaysOverTime(workGroupId, checkINAndOutTime));
         }
         else
             return Arrays.asList(2L, 0L, 0L);
         return rtnRst;
     }
     
-    // Finish End
+    private long GetOneDaysOverTime(int workGroupId, List<String> checkINAndOutTime)
+    {
+        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
+        String checkOutTime = checkINAndOutTime.get(1);
+        
+        long rtnRst = 0;
+        if(null != checkOutTime)
+        {
+            if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) <= 0)
+                rtnRst += DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(1));
+        }
+        return rtnRst;
+	}
+
+	private long GetOneDaysLateAndLeaveEarly(int workGroupId, List<String> checkINAndOutTime)
+    {
+        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
+        String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
+        
+        long rtnRst = 0;
+        if(null == checkInTime)
+            rtnRst += 0L;
+        else
+        {
+            if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
+                rtnRst += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
+        }
+        if(null == checkOutTime)
+            rtnRst += 0L;
+        else
+        {
+            if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
+                rtnRst += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
+        }
+        return rtnRst;
+	}
+
+	private long GetAbsenceDayTime(List<String> checkINAndOutTime)
+    {
+        long rtnRst = 0;
+        String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
+        rtnRst += null == checkInTime?1L:0L;
+        rtnRst += null == checkOutTime?1L:0L;
+        return rtnRst;
+	}
+
+	// Finish End
     public String GenerateResponseString(String responseFlag, String user_id, String userName, String queryDate)
     {
         if(CheckInputValue(responseFlag, user_id, userName, queryDate))
