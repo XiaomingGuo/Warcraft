@@ -21,8 +21,7 @@
             message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-            String currentDate = hPageHandle.GenYearMonthString("-");
-            String endDayOfMonth = currentDate+hPageHandle.GetEndDayOfMonth(currentDate.replaceAll("-", ""));
+            String currentDate = hPageHandle.GetDisplayMonth();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -58,7 +57,7 @@
                 <h2><label>补卡日期:</label></h2>
             </td>
             <td align="left" width="60%">
-                <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate+"01"%>"></div>
+                <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate.substring(0,8)+"01"%>"></div>
                 <input type="text" value="12:00:00" name="AddTime" id="AddTime" style="width:100px" onblur="CheckInputTime()">
             </td>
         </tr>

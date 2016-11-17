@@ -25,7 +25,7 @@
             if(null == curUserName)
                 curUserName = "";
             List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
-            String currentDate = hPageHandle.GenYearMonthDayString("-");
+            String currentDate = hPageHandle.GetDisplayMonth();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

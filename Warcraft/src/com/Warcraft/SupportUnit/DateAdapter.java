@@ -68,7 +68,7 @@ public class DateAdapter
         Calendar handle = Calendar.getInstance();
         handle.set(Calendar.YEAR, Integer.parseInt(strYear));
         handle.set(Calendar.MONTH, Integer.parseInt(strMonth) - 2);
-        return String.format("%d%02d", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1);
+        return String.format("%d%02d%s", handle.get(Calendar.YEAR), handle.get(Calendar.MONTH)+1, yearMonth.subSequence(6, 8));
     }
     
     public static List<String> GetWeekDayOfAMonth(String yearMonthDay, int getWeedday)

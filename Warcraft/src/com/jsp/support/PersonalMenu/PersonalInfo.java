@@ -145,7 +145,7 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     
     private String CheckPrecedingMonthData(String checkInId, String queryDate)
     {
-        String preMonth = DateAdapter.getPrecedingMonthString(queryDate);
+        String preMonth = DateAdapter.getPrecedingMonthString(queryDate+"00").substring(0, 6);
         DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
         hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "isEnsure"), Arrays.asList(checkInId, "0"), "check_in_date", preMonth + "00", preMonth + "32");
         if(hCIRDHandle.getTableInstance().RecordDBCount() > 0)

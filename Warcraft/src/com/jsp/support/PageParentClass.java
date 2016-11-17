@@ -275,6 +275,7 @@ public class PageParentClass
         Calendar mData = Calendar.getInstance();
         return String.format("%04d%s%02d%s%02d", mData.get(Calendar.YEAR), strSpan, mData.get(Calendar.MONDAY)+1, strSpan, mData.get(Calendar.DAY_OF_MONTH));
     }
+    
     public String GenYearMonthString()
     {
         Calendar mData = Calendar.getInstance();
@@ -458,5 +459,11 @@ public class PageParentClass
         hORHandle.QueryRecordGroupByList(Arrays.asList("user_name"));
         List<String> rtnRst = hORHandle.getDBRecordList("user_name");
         return rtnRst;
+    }
+    
+    public String GetDisplayMonth()
+    {
+        String tempDate = DateAdapter.getPrecedingMonthString(GenYearMonthDayString(""));
+        return String.format("%s-%s-%s", tempDate.substring(0, 4), tempDate.substring(4, 6), tempDate.substring(6, 8));
     }
 }
