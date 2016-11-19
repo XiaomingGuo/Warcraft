@@ -15,7 +15,7 @@
     if (fileName.contains("Summary-other"))
     {
         startCell = new int[] {2,1};
-        endCell = new int[] {261,6};
+        endCell = new int[] {357,6};
     }
     else
     {
@@ -56,7 +56,7 @@
             {
                 hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "name", "product_type"), Arrays.asList(Barcode, product_name, product_type));
                 if(hPIHandle.getTableInstance().RecordDBCount() == 0)
-                    ((Product_Info)hPIHandle.getTableInstance()).AddARecord(Barcode, product_name, product_type, weight, "","","", "", description);
+                    ((Product_Info)hPIHandle.getTableInstance()).AddARecord(Barcode, product_name, product_type, weight, "0","","", "0", description);
             }
         }
     }

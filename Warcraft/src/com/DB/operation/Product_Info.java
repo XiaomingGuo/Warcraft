@@ -149,8 +149,6 @@ public class Product_Info implements ITableInterface
         aWriteRecord.setProductType(productType);
         aWriteRecord.setWeight(Float.parseFloat(weight));
         aWriteRecord.setSamplePrice(Float.parseFloat(samplePrice));
-        aWriteRecord.setSampleVendor(sampleVendor);
-        aWriteRecord.setProcessName(processName);
         aWriteRecord.setCapacity(Integer.parseInt(capacity));
         if(null == description)
             aWriteRecord.setDescription("无备注");

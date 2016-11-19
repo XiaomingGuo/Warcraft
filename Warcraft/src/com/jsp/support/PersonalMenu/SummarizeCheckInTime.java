@@ -96,6 +96,14 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
+    private String GetWorkGroupName(String id)
+    {
+        DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
+        return GetRecordByKeylist(hUIHandle, new String[] {"group_name"}).get(0).get(0);
+        //return hUIHandle.getDBRecordList("group_name").get(0);
+    }
+    
     private List<List<String>> GetAllUserInfo()
     {
         DBTableParent hUIHandle = new DatabaseStore("User_Info");
@@ -490,7 +498,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
             List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(2));
             
-            rtnRst.add(GetAbsenceDayTime(checkINAndOutTime));
+            rtnRst.add(GetOneDaysAbsence(checkINAndOutTime));
             rtnRst.add(GetOneDaysLateAndLeaveEarly(workGroupId, checkINAndOutTime));
             rtnRst.add(GetOneDaysOverTime(workGroupId, checkINAndOutTime));
         }
@@ -519,16 +527,12 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
         
         long rtnRst = 0;
-        if(null == checkInTime)
-            rtnRst += 0L;
-        else
+        if(null != checkInTime)
         {
             if(DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0)) > 0)
                 rtnRst += DateAdapter.TimeSpan(checkInTime, workGroupTimeList.get(0));
         }
-        if(null == checkOutTime)
-            rtnRst += 0L;
-        else
+        if(null != checkOutTime)
         {
             if(DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime) > 0)
                 rtnRst += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
@@ -536,7 +540,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
 	}
 
-	private long GetAbsenceDayTime(List<String> checkINAndOutTime)
+	private long GetOneDaysAbsence(List<String> checkINAndOutTime)
     {
         long rtnRst = 0;
         String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
@@ -635,13 +639,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         else
             rtnRst += GetWorkGroupName(wordGroupId);
         return rtnRst;
-    }
-    
-    private String GetWorkGroupName(String id)
-    {
-        DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
-        return hUIHandle.getDBRecordList("group_name").get(0);
     }
     
     private List<List<String>> GetAPersonWeekendCheckInSummary(String user_id, String queryDate, List<String> checkInDateList)
