@@ -58,6 +58,9 @@ public class Holiday_Mark implements ITableInterface
             case "holiday_date":
                 rtnRst.add(tempRecord.getHolidayDate());
                 break;
+            case "holiday_time":
+                rtnRst.add(tempRecord.getHolidayTime().toString());
+                break;
             case "holiday_info":
                 rtnRst.add(tempRecord.getHolidayInfo());
                 break;
@@ -80,11 +83,12 @@ public class Holiday_Mark implements ITableInterface
         return aWriteRecord;
     }
     
-    public void AddARecord(String checkInId, String holidayDate, String holidayInfo)
+    public void AddARecord(String checkInId, String holidayDate, String holidayInfo, String holidayTime)
     {
         aWriteRecord = new HolidayMark();
         aWriteRecord.setCheckInId(checkInId);
         aWriteRecord.setHolidayDate(holidayDate);
+        aWriteRecord.setHolidayTime(Integer.parseInt(holidayTime));
         aWriteRecord.setHolidayInfo(holidayInfo);
         gEQMHandle.addANewRecord();
     }
@@ -100,6 +104,9 @@ public class Holiday_Mark implements ITableInterface
         }
         else if(keyword.toLowerCase().indexOf("holiday_date") >= 0) {
             rtnRst = "holidayDate";
+        }
+        else if(keyword.toLowerCase().indexOf("holiday_time") >= 0) {
+            rtnRst = "holidayTime";
         }
         else if(keyword.toLowerCase().indexOf("holiday_info") >= 0) {
             rtnRst = "holidayInfo";

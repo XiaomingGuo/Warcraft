@@ -250,13 +250,13 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
         return rtnRst;
     }
     
-    public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType)
+    public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType, String holidayTime)
     {
         String rtnRst = "";
         DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
         if(hHMHandle.getTableInstance().RecordDBCount() <= 0)
-            ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType);
+            ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType, holidayTime);
         else
             rtnRst += "error:节假日或转班信息已经存在!";
         return rtnRst;
@@ -268,7 +268,7 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
         if(beginDate.substring(0, 6).equals(endDate.substring(0, 6)))
         {
             for(int idate = Integer.parseInt(beginDate); idate <= Integer.parseInt(endDate); idate++)
-                SubmitAddHolidaysDate(strCheckInId, Integer.toString(idate), holidayType);
+                SubmitAddHolidaysDate(strCheckInId, Integer.toString(idate), holidayType, "8");
         }
         else
             rtnRst = "error:假期不能跨月提交!";

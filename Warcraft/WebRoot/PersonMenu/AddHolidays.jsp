@@ -53,11 +53,28 @@
     <br><br>
     <table align="center" width="40%">
         <tr>
-            <td align="right" width="40%">
+            <td align="right" width="25%">
                 <h2><label>日期:</label></h2>
             </td>
-            <td align="left" width="60%">
+            <td align="left" width="20%">
                 <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate.substring(0,8)+"01"%>"></div>
+            </td>
+            <td align="right" width="15%">
+                <h2><label>请假时间:</label></h2>
+            </td>
+            <td align="left" width="60%">
+				<select name="HolidayTime" id="HolidayTime" style="width:120px">
+					<option value = "--请选择--">--请选择--</option>
+<%
+				for(int i = 1; i < 9; i++)
+				{
+%>
+					<option value = <%=Integer.toString(i)%>><%=Integer.toString(i)%></option>
+<%
+				}
+%>
+				</select>
+            
             </td>
         </tr>
     </table>

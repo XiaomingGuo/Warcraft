@@ -11,10 +11,13 @@
             <generator class="identity" />
         </id>
         <property name="checkInId" type="java.lang.String">
-            <column name="check_in_id" length="10" not-null="true" />
+            <column name="check_in_id" length="6" not-null="true" />
         </property>
         <property name="holidayDate" type="java.lang.String">
             <column name="holiday_date" length="10" not-null="true" />
+        </property>
+        <property name="holidayTime" type="java.lang.Integer">
+            <column name="holiday_time" not-null="true" />
         </property>
         <property name="holidayInfo" type="java.lang.String">
             <column name="holiday_info" length="10" not-null="true" />
