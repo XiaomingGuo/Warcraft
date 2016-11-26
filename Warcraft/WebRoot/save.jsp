@@ -15,7 +15,7 @@
     if (fileName.contains("Summary-other"))
     {
         startCell = new int[] {2,1};
-        endCell = new int[] {357,6};
+        endCell = new int[] {359,6};
     }
     else
     {

@@ -5,7 +5,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%!
 	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] displayList = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "总价值"};
+	String[] displayList = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "单价", "总价值"};
 %>
 <%
 	String rtnRst = "remove$";

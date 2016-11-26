@@ -118,7 +118,7 @@
 							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()">
 						</td>
 						<td align="right">
-							<input type="text" name="productname" id="productname" style='width:120px'>
+							<input type="text" name="productname" id="productname" style='width:200px'>
 						</td>
 						<td align="right">
 							<input type="text" name="QTY" id="QTY" style='width:70px'>

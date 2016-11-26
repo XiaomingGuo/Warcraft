@@ -39,11 +39,13 @@ public class QueryStorageItemAjax extends PageParentClass
 			DBTableParent hOSHandle = new DatabaseStore("Other_Storage");
 			int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
 			int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
+			double perProPrice = Double.parseDouble(hPIHandle.getDBRecordList("sample_price").get(0));
 			double totalPrice = hOSHandle.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));
 			rtnRst.add(Integer.toString(in_Qty-out_Qty));
 			NumberFormat formatter = new DecimalFormat("#.####");
+			rtnRst.add(formatter.format(perProPrice));
 			rtnRst.add(formatter.format(totalPrice));
 		}
 		return rtnRst;
