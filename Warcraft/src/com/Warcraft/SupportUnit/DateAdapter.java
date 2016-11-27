@@ -180,7 +180,7 @@ public class DateAdapter
         return false;
     }
     
-    public static String AddTimeHour(String checkTime, String holidayInTime)
+    public static String AddTimeHour(String checkTime, int holidayTime)
     {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss"); 
         Calendar cal = Calendar.getInstance();
@@ -188,24 +188,7 @@ public class DateAdapter
         {
             Date beginTime = format.parse(checkTime);
             cal.setTime(beginTime);
-            cal.add(Calendar.HOUR, Integer.parseInt(holidayInTime));
-        }
-        catch(Exception e)
-        {
-            System.out.println("错误!");
-        }
-        return String.format("%02d:%02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-    }
-    
-    public static String SubTimeHour(String checkTime, String holidayOutTime)
-    {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss"); 
-        Calendar cal = Calendar.getInstance();
-        try
-        {
-            Date beginTime = format.parse(checkTime);
-            cal.setTime(beginTime);
-            cal.add(Calendar.HOUR, -Integer.parseInt(holidayOutTime));
+            cal.add(Calendar.HOUR, holidayTime);
         }
         catch(Exception e)
         {

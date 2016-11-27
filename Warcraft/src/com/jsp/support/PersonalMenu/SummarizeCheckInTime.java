@@ -438,22 +438,21 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<String> GenCheckInAndOutTime(String checkInId, String checkInDate, List<String> workGroupTimeList, List<String> checkInTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        String midTime = DateAdapter.GetMiddleTimeBetweenTimes(workGroupTimeList.get(0), workGroupTimeList.get(1));
         if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) < 0)
         {
-            if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime)&&
-                    DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
+            if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", "12:15:00")&&
+                    DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), "11:15:00", "23:59:59"))
             {
                 rtnRst.add(checkInTimeList.get(0));
                 rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
             }
             else
             {
-                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", midTime))
+                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(0), "00:00:00", "12:15:00"))
                     rtnRst.add(checkInTimeList.get(0));
                 else
                     rtnRst.add(null);
-                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), midTime, "23:59:59"))
+                if(DateAdapter.isTimeBetweenTimespan(checkInTimeList.get(checkInTimeList.size()-1), "11:15:00", "23:59:59"))
                     rtnRst.add(checkInTimeList.get(checkInTimeList.size()-1));
                 else
                     rtnRst.add(null);
@@ -513,17 +512,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        String holidayInTime = GetHolidayMarkTime(checkInId, checkInDate, "上午假");
-        if(null != holidayInTime)
+        String holidayTime = GetHolidayMarkTime(checkInId, checkInDate, "上午假");
+        if(null != holidayTime)
         {
-            rtnRst.add(DateAdapter.AddTimeHour(workGroupTimeList.get(0), holidayInTime));
+            int tempTime = Integer.parseInt(holidayTime);
+            rtnRst.add(DateAdapter.AddTimeHour(workGroupTimeList.get(0), tempTime >= 4?tempTime+1:tempTime));
         }
         else
             rtnRst.add(workGroupTimeList.get(0));
-        String holidayOutTime = GetHolidayMarkTime(checkInId, checkInDate, "下午假");
-        if(null != holidayOutTime)
+        holidayTime = GetHolidayMarkTime(checkInId, checkInDate, "下午假");
+        if(null != holidayTime)
         {
-            rtnRst.add(DateAdapter.SubTimeHour(workGroupTimeList.get(1), holidayOutTime));
+            int tempTime = Integer.parseInt(holidayTime);
+            rtnRst.add(DateAdapter.AddTimeHour(workGroupTimeList.get(1), tempTime >= 4?-(tempTime+1):-tempTime));
         }
         else
             rtnRst.add(workGroupTimeList.get(1));

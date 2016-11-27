@@ -66,7 +66,7 @@
 				<select name="HolidayTime" id="HolidayTime" style="width:120px">
 					<option value = "--请选择--">--请选择--</option>
 <%
-				for(int i = 1; i < 9; i++)
+				for(int i = 1; i < 5; i++)
 				{
 %>
 					<option value = <%=Integer.toString(i)%>><%=Integer.toString(i)%></option>
