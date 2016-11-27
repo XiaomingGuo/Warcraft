@@ -39,6 +39,11 @@ function EnsureCheckInData(obj)
         alert("请选择排班班次!");
         return;
     }
+    if(workGroup.indexOf("上午假") >= 0||workGroup.indexOf("下午假") >= 0)
+    {
+        alert("不能批量录入上午/下午假!");
+        return;
+    }
     var tab = document.getElementById('check_in_list');
     if(1 > tab.rows.length)
         tab.appendChild(GenDisplayHeadRowContent(displayHead));

@@ -117,7 +117,7 @@ function SubmitAddHolidaysDate()
         {
             if (!CheckAjaxResult(textStatus, data))
             {
-                alert(data);
+                return;
             }
         });
     }

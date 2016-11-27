@@ -258,7 +258,7 @@ public class ArrangeCheckInTime extends PageParentClass implements IPageInterfac
         if(hHMHandle.getTableInstance().RecordDBCount() <= 0)
             ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType, holidayTime);
         else
-            rtnRst += "error:节假日或转班信息已经存在!";
+            rtnRst += "remove$error:节假日或转班信息已经存在!";
         return rtnRst;
     }
     
