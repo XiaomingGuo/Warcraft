@@ -110,7 +110,14 @@
         </td>
 <%
                 }
-                
+                else if("请假时间(H)" == keyList[iCol-1])
+                {
+%>
+        <td>
+            <center><input id="ModifyTime" name="ModifyTime" type="text" style="width:100px"></center>
+        </td>
+<%
+                }
                 else
                 {
 %>

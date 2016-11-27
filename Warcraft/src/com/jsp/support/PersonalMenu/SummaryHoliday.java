@@ -12,7 +12,7 @@ import com.page.utilities.CRecordsQueryUtil;
 
 public class SummaryHoliday extends PageParentClass implements IPageInterface
 {
-    private String[] m_displayList = {"ID", "姓名", "工号", "日期", "假期类型", "操作"};
+    private String[] m_displayList = {"ID", "姓名", "工号", "日期", "请假时间(H)", "假期类型", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
@@ -44,15 +44,15 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
             hHMHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("check_in_id", "holiday_info"), Arrays.asList(userID, holidayType), "holiday_date", beginDate, endDate);
         if (hHMHandle.getTableInstance().RecordDBCount() > 0)
         {
-            String[] sqlKeyList = {"check_in_id", "holiday_date", "holiday_info", "id"};
+            String[] sqlKeyList = {"check_in_id", "holiday_date", "holiday_time", "holiday_info", "id"};
             for(int iRecordIdx = 0; iRecordIdx < hHMHandle.getTableInstance().RecordDBCount(); iRecordIdx++)
             {
                 rtnRst.get(0).add(Integer.toString(iRecordIdx+1));
                 rtnRst.get(1).add(user_name);
             }
-            for(int idx=2; idx < sqlKeyList.length + 2; idx++)
+            for(int idx=0; idx < sqlKeyList.length; idx++)
             {
-                rtnRst.get(idx).addAll(hHMHandle.getDBRecordList(sqlKeyList[idx-2]));
+                rtnRst.get(idx+2).addAll(hHMHandle.getDBRecordList(sqlKeyList[idx]));
             }
         }
         return rtnRst;
@@ -75,12 +75,14 @@ public class SummaryHoliday extends PageParentClass implements IPageInterface
         return hQueryHandle.GetTableContentByKeyWord("", "AllRecord", "holiday_name");
     }
     
-    public String UpdateHoldayMarkRecord(String id, String holidayType, String holidayDate)
+    public String UpdateHoldayMarkRecord(String id, String holidayType, String holidayDate, String holidayTime)
     {
         DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
         hHMHandle.UpdateRecordByKeyList("holiday_info", holidayType, Arrays.asList("id"), Arrays.asList(id));
         if(holidayDate.length() == 8)
             hHMHandle.UpdateRecordByKeyList("holiday_date", holidayDate, Arrays.asList("id"), Arrays.asList(id));
+        if(holidayTime.length() == 1)
+            hHMHandle.UpdateRecordByKeyList("holiday_time", holidayTime, Arrays.asList("id"), Arrays.asList(id));
         return "";
     }
     

@@ -1,8 +1,6 @@
 /**
  * 
  */
-var displayHead = ["ID", "姓名", "工号", "部门", "假期类型", "日期", "操作"];
-
 function changeUserName()
 {
     var userName = GetSelectedContent("UserName");
@@ -50,10 +48,11 @@ function ModifyRecord(obj)
     modifytab.rows[1].cells[1].innerText=displaytab.rows[iRow].cells[1].innerText;
     modifytab.rows[1].cells[2].innerText=displaytab.rows[iRow].cells[2].innerText;
     $("#ModifyDate").val(displaytab.rows[iRow].cells[3].innerText);
+    $("#ModifyTime").val(displaytab.rows[iRow].cells[4].innerText);
     var index = 0;
     $("#HolidayType option").each(function()
     {
-        if($(this).text()==displaytab.rows[iRow].cells[4].innerText)
+        if($(this).text()==displaytab.rows[iRow].cells[5].innerText)
         {
             HolidayType.options[index].selected = true;
         }
@@ -64,7 +63,7 @@ function ModifyRecord(obj)
 function ExecModify()
 {
     var modifytab = document.getElementById('modify_info');
-    $.post("Ajax/PersonalMenu/Update_SummaryHoliday_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "holidayType": GetSelectedContent('HolidayType'), "holidayDate": $("#ModifyDate").val()}, function(data, textStatus)
+    $.post("Ajax/PersonalMenu/Update_SummaryHoliday_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "holidayType": GetSelectedContent('HolidayType'), "holidayDate": $("#ModifyDate").val(), "holidayTime": $("#ModifyTime").val()}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
         {

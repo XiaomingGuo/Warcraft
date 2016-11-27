@@ -58,7 +58,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     {
         String[] getKeyWord = new String[] {"check_in_id", "check_in_date", "check_in_time", "work_group"};
         g_recordList = GetAllTableRecordByDateSpan("Check_In_Raw_Data", "check_in_date", queryDate, Arrays.asList("check_in_date", "check_in_time"), getKeyWord);
-        getKeyWord = new String[] {"check_in_id", "holiday_date", "holiday_info"};
+        getKeyWord = new String[] {"check_in_id", "holiday_date", "holiday_info", "holiday_time"};
         g_HolidayMarkList = GetAllTableRecordByDateSpan("Holiday_Mark", "holiday_date", queryDate, Arrays.asList("holiday_date"), getKeyWord);
         getKeyWord = new String[] {"check_in_id", "over_time_date", "over_time_hour"};
         g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, Arrays.asList("over_time_date"), getKeyWord);
@@ -123,7 +123,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         for(int idx=0; idx < tempList.size(); idx++)
         {
             if(rtnRst.contains(tempList.get(idx)))
+            {
                 rtnRst.remove(tempList.get(idx));
+            }
         }
         return rtnRst;
     }
@@ -141,7 +143,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                 String checkInDate = Integer.toString(beginDate+dateOffset);
                 for(int item=0; item < recordList.get(0).size(); item++)
                 {
-                    if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate))
+                    if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate)&&
+                            !(recordList.get(2).get(item).equals("上午假")||recordList.get(2).get(item).equals("下午假")))
                         rtnRst.add(recordList.get(1).get(item));
                 }
             }
@@ -499,11 +502,49 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             List<String> checkINAndOutTime = GenCheckInAndOutTime(checkInId, checkInDate, workGroupTimeList, recordList.get(2));
             
             rtnRst.add(GetOneDaysAbsence(checkINAndOutTime));
-            rtnRst.add(GetOneDaysLateAndLeaveEarly(workGroupId, checkINAndOutTime));
+            rtnRst.add(GetOneDaysLateAndLeaveEarly(GetCurWorkGroupList(checkInId, checkInDate, workGroupTimeList), checkINAndOutTime));
             rtnRst.add(GetOneDaysOverTime(workGroupId, checkINAndOutTime));
         }
         else
             return Arrays.asList(2L, 0L, 0L);
+        return rtnRst;
+    }
+    
+    private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
+    {
+        List<String> rtnRst = new ArrayList<String>();
+        String holidayInTime = GetHolidayMarkTime(checkInId, checkInDate, "上午假");
+        if(null != holidayInTime)
+        {
+            rtnRst.add(DateAdapter.AddTimeHour(workGroupTimeList.get(0), holidayInTime));
+        }
+        else
+            rtnRst.add(workGroupTimeList.get(0));
+        String holidayOutTime = GetHolidayMarkTime(checkInId, checkInDate, "下午假");
+        if(null != holidayOutTime)
+        {
+            rtnRst.add(DateAdapter.SubTimeHour(workGroupTimeList.get(1), holidayOutTime));
+        }
+        else
+            rtnRst.add(workGroupTimeList.get(1));
+        return rtnRst;
+    }
+    
+    private String GetHolidayMarkTime(String checkInId, String queryDate, String holidayType)
+    {
+        String rtnRst = null;
+        if(g_HolidayMarkList != null&&g_HolidayMarkList.size() > 0)
+        {
+            for(int item=0; item < g_HolidayMarkList.get(0).size(); item++)
+            {
+                if(g_HolidayMarkList.get(0).get(item).equals(checkInId)&&g_HolidayMarkList.get(1).get(item).equals(queryDate)&&
+                        g_HolidayMarkList.get(2).get(item).equals(holidayType))
+                {
+                    rtnRst = g_HolidayMarkList.get(3).get(item);
+                    break;
+                }
+            }
+        }
         return rtnRst;
     }
     
@@ -519,11 +560,10 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                 rtnRst += DateAdapter.TimeSpan(checkOutTime, workGroupTimeList.get(1));
         }
         return rtnRst;
-	}
+    }
 
-	private long GetOneDaysLateAndLeaveEarly(int workGroupId, List<String> checkINAndOutTime)
+    private long GetOneDaysLateAndLeaveEarly(List<String> workGroupTimeList, List<String> checkINAndOutTime)
     {
-        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
         String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
         
         long rtnRst = 0;
@@ -538,18 +578,18 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
                 rtnRst += DateAdapter.TimeSpan(workGroupTimeList.get(1), checkOutTime);
         }
         return rtnRst;
-	}
-
-	private long GetOneDaysAbsence(List<String> checkINAndOutTime)
+    }
+    
+    private long GetOneDaysAbsence(List<String> checkINAndOutTime)
     {
         long rtnRst = 0;
         String checkInTime = checkINAndOutTime.get(0), checkOutTime = checkINAndOutTime.get(1);
         rtnRst += null == checkInTime?1L:0L;
         rtnRst += null == checkOutTime?1L:0L;
         return rtnRst;
-	}
-
-	// Finish End
+    }
+    
+    // Finish End
     public String GenerateResponseString(String responseFlag, String user_id, String userName, String queryDate)
     {
         if(CheckInputValue(responseFlag, user_id, userName, queryDate))

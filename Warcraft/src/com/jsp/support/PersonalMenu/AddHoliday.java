@@ -73,18 +73,6 @@ public class AddHoliday extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    public String SubmitAddHolidaysDate(String strCheckInId, String addDate, String holidayType)
-    {
-        String rtnRst = "";
-        DBTableParent hHMHandle = new DatabaseStore("Holiday_Mark");
-        hHMHandle.QueryRecordByFilterKeyList(Arrays.asList("check_in_id", "holiday_date"), Arrays.asList(strCheckInId, addDate));
-        if(hHMHandle.getTableInstance().RecordDBCount() <= 0)
-            ((Holiday_Mark)hHMHandle.getTableInstance()).AddARecord(strCheckInId, addDate, holidayType);
-        else
-            rtnRst += "error:节假日或转班信息已经存在!";
-        return rtnRst;
-    }
-    
     @Override
     public String[] GetDisplayArray()
     {
