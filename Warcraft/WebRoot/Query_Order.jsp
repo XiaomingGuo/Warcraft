@@ -39,7 +39,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <table width="61.8%" height="80%" align="center">
     	<tr>
     		<td height="3%"></td>

@@ -49,7 +49,7 @@
     <script language="javascript" src="Page_JS/Customer_POAndGenerate_OrderJS.js"></script>
     <script language="javascript" src="Page_JS/Customer_POJS.js"></script>
   <body>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br><br>
     <table align="center">
         <tr>

@@ -53,7 +53,7 @@
   </head>
   
   <body>
-    <jsp:include page="Menu/MFGToolsMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <center>
     	<table border="1">
     		<tr>

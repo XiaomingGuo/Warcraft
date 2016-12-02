@@ -48,7 +48,7 @@
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/ProductOrderCloseJS.js"></script>
   <body>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br><br>
     <table align="center">
     	<tr>

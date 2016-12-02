@@ -45,7 +45,7 @@
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/OtherSummaryJS.js"></script>
   <body>
-    <jsp:include page="Menu/MFGReportMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <form action="ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>生产库存</caption>

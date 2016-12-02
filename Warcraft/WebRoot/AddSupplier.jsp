@@ -45,7 +45,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-    <jsp:include page="Menu/InputInfoOfTableMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br><br>
     <table width="55%" align="center">
     	<tr>

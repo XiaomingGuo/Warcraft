@@ -53,7 +53,7 @@
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MFGToolsMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br>
     <table width="65%" align="center">
     	<tr>

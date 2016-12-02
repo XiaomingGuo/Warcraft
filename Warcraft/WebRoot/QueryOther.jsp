@@ -44,7 +44,7 @@
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
       <script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
   <body>
-    <jsp:include page="Menu/MFGToolsMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br>
         <table id="modify_info" border="1" align="center">
         <tr>

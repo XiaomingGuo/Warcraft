@@ -76,7 +76,7 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
   <body>
-	<jsp:include page="Menu/ManufactureMenu.jsp"/>
+	<jsp:include page="Menu/MainMenu.jsp"/>
 	<br><br><br>
 	<table align="center">
 <%

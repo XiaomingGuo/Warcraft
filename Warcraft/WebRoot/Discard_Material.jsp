@@ -47,7 +47,7 @@
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   	<script language="javascript" src="Page_JS/DiscardMaterialJS.js"></script>
   <body>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
   	<br><br><br>
    	<form name="AppContent" action = "Submit/SubmitDiscardMaterial.jsp" method = "post">
   	<table align="center" border="1">

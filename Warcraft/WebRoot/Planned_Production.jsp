@@ -51,7 +51,7 @@
     <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/ManufactureMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br>
     <table align="center">
         <tr>

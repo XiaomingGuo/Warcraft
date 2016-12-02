@@ -57,7 +57,7 @@
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MFGToolsReportMenu.jsp"/>
+    <jsp:include page="Menu/MainMenu.jsp"/>
     <br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
     <table align="center" border="1">
