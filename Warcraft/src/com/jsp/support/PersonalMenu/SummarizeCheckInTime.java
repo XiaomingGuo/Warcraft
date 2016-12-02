@@ -123,9 +123,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         for(int idx=0; idx < tempList.size(); idx++)
         {
             if(rtnRst.contains(tempList.get(idx)))
-            {
                 rtnRst.remove(tempList.get(idx));
-            }
         }
         return rtnRst;
     }

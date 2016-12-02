@@ -136,13 +136,4 @@ public class UserInfo  implements java.io.Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-   
-
-
-
-
-
-
-
-
 }
