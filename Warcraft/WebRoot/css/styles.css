@@ -1,4 +1,47 @@
 /* Unessential CSS - Just here to make this sample page prettier */
+.header{
+	width: 100%;
+	height:80px;
+	background: #333333;
+	min-width: 1200px;
+	font-size: 14px;
+}
+.headerinner{
+	width: 1200px;
+	height: 100%;
+	padding:0 50px;
+	margin:0 auto;
+	box-sizing:border-box;
+	position: relative;
+}
+.header:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+.headernav{
+	width: 100%;
+	overflow: hidden;
+}
+.headernav .list{
+	height: 50px;
+}
+.headernav .list a{
+	width:18px;
+	height:18px;
+	margin:0 30px 0;
+	transition: 0.6s;
+	-webkit-transition: 0.6s;
+	-o-transition: 0.6s;
+	-ms-transition: 0.6s;
+	-moz-transition: 0.6s;
+}
+.headernav .list a{
+	background: url(../IMAGE/list.png) no-repeat;
+}
+.headernav .list a:hover{
+	background: url(../IMAGE/list1.png) no-repeat;
+}
 .member{
 	display: none;
 	width: 200px;
@@ -38,38 +81,13 @@
 .member ul li a:hover{
 	text-decoration: underline;
 }
-.headernav{
-	width: 100%;
-	overflow: hidden;
-}
-.headernav .list{
-	height: 50px;
-}
-.headernav .list a{
-	width:18px;
-	height:18px;
-	margin:0;
-	top:30px;
-	transition: 0.6s;
-	-webkit-transition: 0.6s;
-	-o-transition: 0.6s;
-	-ms-transition: 0.6s;
-	-moz-transition: 0.6s;
-}
-.headernav .list a{
-	background: url(../IMAGE/list.png) no-repeat;
-}
-.headernav .list a:hover{
-	background: url(../IMAGE/list1.png) no-repeat;
-}
-
 html, body {
     height: 100%;
 }
 body {
     margin: 0;
     font-size: 16px;
-    font-family: 'Roboto', sans-serif;
+    font-family: '微软雅黑', sans-serif;
     line-height: 1.5;
     background-color: #CCDDFF;
 }
@@ -78,27 +96,6 @@ body {
     max-width: 1060px;
     padding: 1px 3em;
     height: 100%;
-}
-/*公共头部样式*/
-.header{
-	width: 100%;
-	height:80px;
-	background: #333333;
-	min-width: 1200px;
-	font-size: 14px;
-}
-.headerinner{
-	width: 1200px;
-	height: 100%;
-	padding:0 50px;
-	margin:0 auto;
-	box-sizing:border-box;
-	position: relative;
-}
-.header:after {
-    content: " ";
-    display: table;
-    clear: both;
 }
 .brand, h1, h2, h3 {
      font-family: 'Roboto Condensed', sans-serif;
@@ -111,7 +108,6 @@ h4, h5, h6 {
 h1 {
     font-size: 28px;
 }
-
 .main .dev-output pre {
     overflow: auto;
     max-height: 500px;
@@ -122,28 +118,11 @@ h1 {
     height: 60px;
 }
 .brand p {
-    margin: 10;
+    margin: 20;
 }
 .rm-nav {
     letter-spacing: 1px;
 }
-.logo {
-    font-size: 1.4em;
-    line-height: 40px;
-    margin: 20px 0 0;
-    width: 100px;
-    height: 40px;
-    background-color: #3C97D5;
-    text-align: center;
-    font-weight: bold;
-    letter-spacing: 2px;
-    display: block;
-    float: left;
-    text-decoration: none;
-    color: #fff;
-    padding: 0;
-}
-
 .rm-toggle.rm-button {
     margin-top: 25px;
 }
