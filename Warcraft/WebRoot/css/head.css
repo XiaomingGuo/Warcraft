@@ -12,7 +12,7 @@ a{
 input{
 	border:none;
 	outline:none;
-	font-family: "寰蒋闆呴粦";
+	font-family: "微软雅黑";
 	font-weight: 100;
 }
 img{
@@ -22,10 +22,10 @@ img{
 body{
 	width: 100%;
 	min-width: 1200px;
-	font-family: "寰蒋闆呴粦";
+	font-family: "微软雅黑";
 }
 
-/*鍏叡澶撮儴鏍峰紡*/
+/*公共头部样式*/
 .header{
 	width: 100%;
 	height:50px;
@@ -43,7 +43,7 @@ body{
 
 
 }
-/* 瀵艰埅閮ㄥ垎 */
+/* 导航部分 */
 .headernav{
 	width: 100%;
 	overflow: hidden;
@@ -118,7 +118,7 @@ body{
 .headernav .list a:hover{
 	background: url(../IMAGE/list1.png) no-repeat;
 }
-/* 鎼滅礌妗�*/
+/* 搜素框 */
 .search_main{
 	position: absolute;
 	left:15%;
@@ -161,7 +161,7 @@ body{
 .search_main .close_btn:hover{
 	background: url(../IMAGE/close1.png) no-repeat center center;
 }
-/*浼氬憳鐧诲綍 */
+/*会员登录 */
 .member{
 	display: none;
 	width: 200px;

@@ -20,6 +20,7 @@ to work with the chosen theme.
 .rm-nav ul,
 .rm-menu {
     background-color: #333333;
+	font-family: "微软雅黑";
     margin-top: 0;
 }
 
