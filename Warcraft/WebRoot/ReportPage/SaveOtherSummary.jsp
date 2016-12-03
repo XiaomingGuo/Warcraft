@@ -78,6 +78,6 @@
 			out.clear();
 			out=pageContext.pushBody();
 		}
-		out.println("<script>alert('下载成功！');window.location.href = '../OtherSummary.jsp';</script>");	
+		out.println("<script>alert('下载成功！');window.location.href = '../OtherStoreMenu/OtherSummary.jsp';</script>");	
 	}
 %>

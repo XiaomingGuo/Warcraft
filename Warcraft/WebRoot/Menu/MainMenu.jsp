@@ -59,7 +59,7 @@
 			<nav class="rm-nav rm-nojs rm-lighten">
 				<ul class="headernav">
 					<li><a href="MainPage.jsp">Home</a></li>
-					<li><a href="OtherSummary.jsp">五金库管理</a>
+					<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库管理</a>
 						<ul>
 							<li><a href="Application.jsp">申请</a></li>
 							<li><a href="Query.jsp">查询</a></li>
@@ -69,7 +69,7 @@
 							<li><a href="#">五金库报表</a>
 								<ul>
 									<li><a href="MFGToolsMonthReport.jsp">五金消耗报表</a></li>
-									<li><a href="OtherSummary.jsp">五金库库存</a></li>
+									<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库库存</a></li>
 									<li><a href="OtherStorageReport.jsp">库房报表</a></li>
 								</ul></li>
 						</ul></li>

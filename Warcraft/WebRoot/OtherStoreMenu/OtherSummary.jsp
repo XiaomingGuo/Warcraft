@@ -41,12 +41,12 @@
 	-->
 
   </head>
-  	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+  	<script language="javascript" src="JS/jquery-1.12.4.min.js"></script>
   	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/OtherSummaryJS.js"></script>
+  	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherSummaryJS.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
-    <form action="ReportPage/SaveOtherSummary.jsp" method="post">
+    <jsp:include page="../Menu/MainMenu.jsp"/>
+    <form action="../ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>其他库存筛选</caption>
 	  	<tr>
