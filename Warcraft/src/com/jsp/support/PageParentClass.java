@@ -461,6 +461,14 @@ public class PageParentClass
         return rtnRst;
     }
     
+    public List<String> GetAllProductNameList()
+    {
+        DBTableParent hPIHandle = new DatabaseStore("Product_Info");
+        hPIHandle.QueryAllRecord();
+        List<String> rtnRst = hPIHandle.getDBRecordList("name");
+        return rtnRst;
+    }
+    
     public String GetDisplayMonth()
     {
         String tempDate = DateAdapter.getPrecedingMonthString(GenYearMonthDayString(""));

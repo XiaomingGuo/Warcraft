@@ -59,14 +59,14 @@
             <td align="left" width="20%">
                 <div dojoType="dropdowndatepicker" name="AddDate" id="AddDate" displayFormat="yyyyMMdd" value="<%=currentDate.substring(0,8)+"01"%>"></div>
             </td>
-            <td align="right" width="15%">
+            <td align="right" width="25%">
                 <h2><label>请假时间:</label></h2>
             </td>
             <td align="left" width="60%">
 				<select name="HolidayTime" id="HolidayTime" style="width:120px">
 					<option value = "--请选择--">--请选择--</option>
 <%
-				for(int i = 1; i < 5; i++)
+				for(int i = 1; i < 9; i++)
 				{
 %>
 					<option value = <%=Integer.toString(i)%>><%=Integer.toString(i)%></option>

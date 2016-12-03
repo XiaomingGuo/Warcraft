@@ -1,7 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.jsp.support.PageParentClass" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
     String message="";
+    PageParentClass hPageHandle = new PageParentClass();
     if(session.getAttribute("logonuser")==null)
     {
         response.sendRedirect("tishi.jsp");
@@ -11,6 +13,7 @@
         message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        List<String> productList = hPageHandle.GetAllProductNameList();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -38,8 +41,6 @@
                 minWidth: '900px',
             });
         });
-    </script>
-    <script>
 		$(function(){
 			/*登录*/
 			$(".list a").click(function(){
@@ -52,11 +53,9 @@
 		<div class="header">
 		<div class="headerinner">
 		<div class="brand">
-		    <p><img src="IMAGE/A-7.jpg" align="middle"></p>
+		    <p><img src="IMAGE/A-5.jpg" align="middle"></p>
 		</div>
-		
 		<div class="rm-container">
-			<a class="rm-toggle rm-button rm-nojs" href="http://sc.chinaz.com/jiaoben/">导航菜单</a>
 			<nav class="rm-nav rm-nojs rm-lighten">
 				<ul class="headernav">
 					<li><a href="MainPage.jsp">Home</a></li>
@@ -116,9 +115,6 @@
 							<li><a href="PersonMenu/ArrangeCheckInTime.jsp">人员排班</a></li>
 						</ul></li>
 					<li><a href="Quit.jsp">退出</a></li>
-					<li class="list">
-						<a></a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -167,7 +163,18 @@
                     <tr>
                         <td>
                             <label>八码查询:&nbsp;</label>
-                            <input type="text" name="search_name" id="search_name" style="width:100px" onblur="findBarcode(this)">
+                            <input type="text" name="search_name" id="search_name" list="productName" style="width:100px" onblur="findBarcode(this)"/>
+                            <datalist name="productName" id="productName" style="width:100px">
+                                <option value = "--请选择--">--请选择--</option>
+<%
+                                for(int i = 0; i < productList.size(); i++)
+                                {
+%>
+                                <option value = <%=productList.get(i) %>><%=productList.get(i)%></option>
+<%
+                                }
+%>
+                            </datalist>
                             <input type="text" name="disBarcode" id="disBarcode" style="width:180px" readonly>
                         </td>
                     </tr>
