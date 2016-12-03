@@ -53,7 +53,7 @@
 		<div class="header">
 		<div class="headerinner">
 		<div class="brand">
-		    <p><img src="IMAGE/A-5.jpg" align="middle"></p>
+		    <p><img src="IMAGE/A-5.png" align="middle"></p>
 		</div>
 		<div class="rm-container">
 			<nav class="rm-nav rm-nojs rm-lighten">
