@@ -59,7 +59,7 @@
 			<nav class="rm-nav rm-nojs rm-lighten">
 				<ul class="headernav">
 					<li><a href="MainPage.jsp">Home</a></li>
-					<li><a href="#">五金库管理</a>
+					<li><a href="OtherSummary.jsp">五金库管理</a>
 						<ul>
 							<li><a href="Application.jsp">申请</a></li>
 							<li><a href="Query.jsp">查询</a></li>
@@ -73,7 +73,7 @@
 									<li><a href="OtherStorageReport.jsp">库房报表</a></li>
 								</ul></li>
 						</ul></li>
-					<li><a href="#">生产过程控制</a>
+					<li><a href="MainPage.jsp">生产过程控制</a>
 						<ul>
 							<li><a href="Customer_PO.jsp">客户PO生成</a></li>
 							<li><a href="Generate_Order.jsp">生产单生成</a></li>
@@ -84,27 +84,27 @@
 							<li><a href="Close_MB_Order.jsp">关闭生产单</a></li>
 							<li><a href="Product_Shipment.jsp">成品出货</a></li>
 						</ul></li>
-					<li><a href="#">生产物料录入</a>
+					<li><a href="MainPage.jsp">生产物料录入</a>
 						<ul>
 							<li><a href="TransferMFGBarcode.jsp">生产物料八码转换</a></li>
 							<li><a href="AddMFGMaterial.jsp">生产物料入库</a></li>
 							<li><a href="AddMFGMaterial_ReferTo_PO.jsp">PO物料入库</a></li>
 							<li><a href="QueryMaterial.jsp">原材料状态</a></li>
 						</ul></li>
-					<li><a href="#">生产报表</a>
+					<li><a href="MainPage.jsp">生产报表</a>
 						<ul>
 							<li><a href="ManufactorySummary.jsp">生产库存</a></li>
 							<li><a href="ShippingSummary.jsp">出货报表</a></li>
 							<li><a href="ManufactorySummary.jsp">半成品库存</a></li>
 						</ul></li>
-					<li><a href="#">物料信息录入</a>
+					<li><a href="MainPage.jsp">物料信息录入</a>
 						<ul>
 							<li><a href="AddStoreroom.jsp">添加库房</a></li>
 							<li><a href="AddProductType.jsp">添加类型</a></li>
 							<li><a href="NewMaterialInfo.jsp">添加新物料</a></li>
 							<li><a href="AddSupplier.jsp">添加供应商</a></li>
 						</ul></li>
-					<li><a href="#">人事信息统计</a>
+					<li><a href="PersonMenu/SummarizeCheckInTime.jsp">人事信息统计</a>
 						<ul>
 							<li><a href="PersonMenu/PersonalInfo.jsp">人员考勤查询</a></li>
 							<li><a href="PersonMenu/SummarizeCheckInTime.jsp">考勤汇总</a></li>
@@ -163,7 +163,7 @@
                     <tr>
                         <td>
                             <label>八码查询:&nbsp;</label>
-                            <input type="text" name="search_name" id="search_name" list="productName" style="width:100px" onblur="findBarcode(this)"/>
+                            <input type="text" name="search_name" id="search_name" list="productName" style="width:280px" onblur="findBarcode(this)"/>
                             <datalist name="productName" id="productName" style="width:100px">
                                 <option value = "--请选择--">--请选择--</option>
 <%
