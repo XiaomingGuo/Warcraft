@@ -41,56 +41,56 @@
 	-->
 
   </head>
-  	<script language="javascript" src="JS/jquery-1.12.4.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherSummaryJS.js"></script>
+	<script language="javascript" src="JS/jquery-1.12.4.min.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherSummaryJS.js"></script>
   <body>
     <jsp:include page="../Menu/MainMenu.jsp"/>
-    <form action="../ReportPage/SaveOtherSummary.jsp" method="post">
+    <form action="ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>其他库存筛选</caption>
-	  	<tr>
-	  		<td align="right">
-		  		<label>库名:</label>
-			  	<select name="store_name" id="store_name" style="width:120px">
-				  	<option value = "--请选择--">--请选择--</option>
+		<tr>
+			<td align="right">
+				<label>库名:</label>
+				<select name="store_name" id="store_name" style="width:120px">
+					<option value = "--请选择--">--请选择--</option>
 <%
 					for(int i = 0; i < store_name.size(); i++)
 					{
 %>
-				  	<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
+					<option value = <%=store_name.get(i) %>><%=store_name.get(i)%></option>
 <%
 					}
 %>
-			  	</select>
-		  	</td>
-	  		<td align="right">
-		  		<label>类别:</label>
-			  	<select name="product_type" id="product_type" style="width:120px">
-				  	<option value = "--请选择--">--请选择--</option>
-			  	</select>
-		  	</td>
-			<td align="right">
-				<label>名称:</label>
-				<select name="product_name" id="product_name" style="width:150px">
-				  	<option value = "--请选择--">--请选择--</option>
 				</select>
 			</td>
 			<td align="right">
-	   			<label id=label_barcode>Bar Code:</label>
+				<label>类别:</label>
+				<select name="product_type" id="product_type" style="width:120px">
+					<option value = "--请选择--">--请选择--</option>
+				</select>
+			</td>
+			<td align="right">
+				<label>名称:</label>
+				<select name="product_name" id="product_name" style="width:150px">
+					<option value = "--请选择--">--请选择--</option>
+				</select>
+			</td>
+			<td align="right">
+				<label id=label_barcode>Bar Code:</label>
 				<input type="text" name="bar_code" id="bar_code" style='width:100px' onblur="InputBarcode()">
 			</td>
 			<td align="center">
 				<input align="middle" type="button" value="查询" onclick="DisplayStorageList()">
 			</td>
-	  	</tr>
-   	</table>
-   	<br>
-   	<table id="display_storage" border='1' align="center"></table>
-   	<br>
+		</tr>
+	</table>
+	<br>
+	<table id="display_storage" border='1' align="center"></table>
+	<br>
 	<table align="center"><tr><td><input align="middle" type="submit" value="下载" style='width:80px'/></td></tr></table>
-   	</form>
-   	<br><br>
+	</form>
+	<br><br>
   </body>
 </html>
 <%

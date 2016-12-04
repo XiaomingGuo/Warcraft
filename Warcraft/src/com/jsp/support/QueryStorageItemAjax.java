@@ -58,16 +58,16 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 				inSum += Integer.parseInt(recordList.get(idx));
 		}
 		
-		for(int idx = 0; idx < m_displayArray.length-6; idx++)
+		for(int idx = 0; idx < m_displayArray.length-7; idx++)
 		{
-			rtnRst += "$";
+			rtnRst += "-$";
 		}
 		
 		NumberFormat formatter = new DecimalFormat("#.###");
-		rtnRst += "汇总$"+Integer.toString(inSum)+"$";
+		rtnRst += "汇总$"+proType+"$"+Integer.toString(inSum)+"$";
 		rtnRst += Integer.toString(outSum)+"$";
 		rtnRst += Integer.toString(repertorySum)+"$";
-		rtnRst += "$";
+		rtnRst += "-$";
 		rtnRst += formatter.format(totalPrice)+"$";
 		return rtnRst;
 	}
@@ -92,7 +92,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 		return rtnRst;
 	}
 	
-	private List<String> GetAllRecordByBarCodeList(List<String> barcodeList)
+	public List<String> GetAllRecordByBarCodeList(List<String> barcodeList)
 	{
 		List<String> rtnRst = new ArrayList<String>();
 		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
@@ -106,11 +106,8 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 			
 			int in_Qty = GetSumOfValue(barcodeList.get(idx), 1);
 			int out_Qty = GetSumOfValue(barcodeList.get(idx), 2);;
-			//int in_Qty = hOSHandle.GetIntSumOfValue("IN_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
-			//int out_Qty = hOSHandle.GetIntSumOfValue("OUT_QTY", Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcodeList.get(idx), "1"));
 			double perProPrice = Double.parseDouble(hPIHandle.getDBRecordList("sample_price").get(0));
 			double totalPrice = GetTotalPriceOfStorage(barcodeList.get(idx));
-			//double totalPrice = hOSHandle.GetDblPriceOfStorage("OtherStorage", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Bar_Code", barcodeList.get(idx));
 			rtnRst.add(Integer.toString(in_Qty));
 			rtnRst.add(Integer.toString(out_Qty));
 			rtnRst.add(Integer.toString(in_Qty-out_Qty));
@@ -145,7 +142,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 		return rtnRst;
 	}
 	
-	private List<String> GetProductBarCodeList(String storeName, String proType, String proName, String barCode)
+	public List<String> GetProductBarCodeList(String storeName, String proType, String proName, String barCode)
 	{
 		List<String> rtnRst = new ArrayList<String>(), tempBarCodeList = new ArrayList<String>();
 		if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") < 0&&proName.indexOf("请选择") >= 0)
