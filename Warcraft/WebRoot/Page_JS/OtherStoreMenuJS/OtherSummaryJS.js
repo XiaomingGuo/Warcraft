@@ -65,7 +65,7 @@ function DisplayStorageList()
 		alert("啥都不输入难道你要我给你查空气?");
 		return;
 	}
-	$.post("Ajax/Query_Storage_Item_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name, "bar_code":bar_code}, function(data, textStatus)
+	$.post("Ajax/OtherStoreMenu/Query_Storage_Item_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name, "bar_code":bar_code}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
