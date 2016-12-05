@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.PersonalMenu.SummarizeCheckInTime" %>
 <%
-    String rtnRst = "remove$";
+    String rtnRst = "";
     String userID = request.getParameter("User_ID").replace(" ", "");
     String userName = request.getParameter("User_Name").replace(" ", "");
     String queryDate = request.getParameter("queryDate").replace(" ", "");
@@ -13,6 +13,6 @@
         rtnRst += hPageHandle.GenerateResponseString(queryFlagString, userID, userName, queryDate);
     }
     else
-        rtnRst += "error:名字能靠谱点不?";
+        rtnRst += "remove$error:名字能靠谱点不?";
     out.write(rtnRst);
 %>
