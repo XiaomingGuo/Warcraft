@@ -59,7 +59,7 @@
 			<nav class="rm-nav rm-nojs rm-lighten">
 				<ul class="headernav">
 					<li><a href="MainPage.jsp">Home</a></li>
-					<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库管理</a>
+					<li><a href="OtherStoreMenu/OtherSummary_New.jsp">五金库管理</a>
 						<ul>
 							<li><a href="Application.jsp">申请</a></li>
 							<li><a href="Query.jsp">查询</a></li>

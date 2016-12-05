@@ -53,11 +53,11 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/ShippingSummaryJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/ShippingSummaryJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
-   	<script type="text/javascript">
+	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="Menu/MainMenu.jsp"/>
@@ -66,27 +66,27 @@
     		<td height="3%"></td>
     		<td height="3%" bgcolor="grey"></td>
     		<td height="3%" align="center">
-   		  	  	<table align="center">
-				  	<tr>
-				  		<td align="center">
-					  		<b><font  size="3">查询起止时间:</font></b>
+				<table align="center">
+					<tr>
+						<td align="center">
+							<b><font  size="3">查询起止时间:</font></b>
 						</td>
-					  	<td>
-						  	<table border="1" align="center">
-							  	<tr>
-							  		<td>
+						<td>
+							<table border="1" align="center">
+								<tr>
+									<td>
 						    			<label>开始日期:</label>
 						    			<div dojoType="dropdowndatepicker" id="BeginDate" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
 					    			</td>
 					    			<td>
 						    			<label>截止日期:</label>
 						    			<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
-							  		</td>
-							  		<td><input name="commit" type="button" value="查询" style="width:100" onclick="commitShippingDate()"></td>
-							  	</tr>
-						  	</table>
-					  	</td>
-				  	</tr>
+									</td>
+									<td><input name="commit" type="button" value="查询" style="width:100" onclick="commitShippingDate()"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
 				</table>
 			</td>
     	</tr>
@@ -95,6 +95,7 @@
 				<table align="center" border="1" width="100%">
 					<tr><th>生产单号:</th></tr>
 				</table>
+				<div>
 				<h3>
 					<ul>
 <%
@@ -109,23 +110,24 @@
 						}
 					}
 %>
-	   				</ul>
-	   			</h3>
-   			</td>
+					</ul>
+				</h3>
+				</div>
+			</td>
 			<td width="0.5%" height="80%" bgcolor="grey"></td>
-   			<td width="80.5%" valign="top" align="center">
-   				<table width="100%" border="1">
-   					<tr><th>生产单内容：</th></tr>
-	   			</table>
-	   			<table>
-   			    	<tr>
-			    		<td height="3%" align="center"><b><font size="5"><label id="TitleName">销售单号</label></font></b></td>
+			<td width="80.5%" valign="top" align="center">
+				<table width="100%" border="1">
+					<tr><th>生产单内容：</th></tr>
+				</table>
+				<table>
+			 	<tr>
+			 		<td height="3%" align="center"><b><font size="5"><label id="TitleName">销售单号</label></font></b></td>
     				</tr>
-	   			</table>
-	   			<table id="OrderBlock" border="1"></table>
-   			</td>
+				</table>
+				<table id="OrderBlock" border="1"></table>
+			</td>
 		</tr>
-   	</table>
+	</table>
   </body>
 </html>
 <%
