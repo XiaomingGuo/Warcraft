@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PageParentClass" %>
+<%@ page import="com.jsp.support.QueryStorageItemAjax" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
-	PageParentClass hPageHandle = new PageParentClass();
+	QueryStorageItemAjax hPageHandle = new QueryStorageItemAjax();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("../tishi.jsp");
@@ -22,8 +22,8 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
+			List<List<String>> productType = hPageHandle.GetProductTypeList(store_name);
 %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -64,7 +64,7 @@
 			min-height: 90%;
 			width: 300px;
 			z-index: 810;
-			background-color: #333333;
+			background-color: #CCDDFF;
 		}
 	</style>
   </head>
@@ -81,23 +81,21 @@
 					<ul id="demo-list">
 						<li class="active"><a><i class="fa fa-home"></i>Home </a></li>
 <%
-					for(int i = 0; i < store_name.size(); i++)
+					for(int iStore = 0; iStore < store_name.size(); iStore++)
 					{
 %>
-						<li><a href="#"><i class="fa fa-cog"></i><%=store_name.get(i)%></a>
+						<li><a href="javascript:void(0)"><i class="fa fa-cog"></i><%=store_name.get(iStore)%></a>
 						<ul class="submenu">
-								<li><a href="#">Web Design </a></li>
-								<li><a href="#">Hosting </a></li>
-								<li><a href="#">Design </a>
-									<ul class="submenu">
-										<li><a href="#">Graphics </a></li>
-										<li><a href="#">Vectors </a></li>
-										<li><a href="#">Photoshop </a></li>
-										<li><a href="#">Fonts </a></li>
-									</ul>
-								</li>
-								<li><a href="#">Consulting </a></li>
-							</ul>
+<%
+						for(int iType = 0; iType < productType.get(iStore).size(); iType++)
+						{
+							String passVal = store_name.get(iStore)+"#"+productType.get(iStore).get(iType);
+%>
+								<li><a href="javascript:void(0)" name=<%=passVal %> onclick="QueryAllRepertory(this)"><%=productType.get(iStore).get(iType) %></a></li>
+<%
+						}
+%>
+						</ul>
 						</li>
 <%
 					}
@@ -111,7 +109,7 @@
 		</div>
 		</aside>
 		<br><br>
-		<table id="display_storage" border='1' align="center"><tr><td>123123123</td></tr></table>
+		<table id="display_storage" border='1' align="center"></table>
 	<script src="JS/jquery-accordion-menu.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function () {

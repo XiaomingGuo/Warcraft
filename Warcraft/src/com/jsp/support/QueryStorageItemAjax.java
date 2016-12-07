@@ -19,7 +19,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 	String[] m_displayArray = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存", "单价", "总价值"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
-    private List<List<String>> g_recordList;
+    private List<List<String>> g_recordList, g_productType;
     
     public QueryStorageItemAjax()
     {
@@ -201,4 +201,33 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
 		}while(true);
 		return orderName;
 	}
+	
+	private List<List<String>> GetAllProductType()
+	{
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
+		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
+		hPTHandle.QueryAllRecord();
+		String[] getKeyWord = new String[] {"name", "storeroom"};
+		for(int idx = 0; idx < getKeyWord.length; idx++)
+			rtnRst.add(hPTHandle.getDBRecordList(getKeyWord[idx]));
+		return rtnRst;
+	}
+	
+	public List<List<String>> GetProductTypeList(List<String> storeName)
+	{
+		g_productType = GetAllProductType();
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
+		for(int storeIdx = 0; storeIdx < storeName.size(); storeIdx++)
+		{
+			List<String> tempList = new ArrayList<String>();
+			for(int idx = 0; idx < g_productType.get(0).size(); idx++)
+			{
+				if(g_productType.get(1).get(idx).contains(storeName.get(storeIdx)))
+					tempList.add(g_productType.get(0).get(idx));
+			}
+			rtnRst.add(tempList);
+		}
+		return rtnRst;
+	}
+	
 }
