@@ -56,54 +56,17 @@ $(function()
 
 function DisplayStorageList()
 {
-	var storage_name = $.trim($("#store_name").val());
-	var product_type = $.trim($("#product_type").val());
-	var product_name = $.trim($("#product_name").val());
-	var bar_code = $.trim($("#bar_code").val());
-	if (storage_name.indexOf("请选择") >= 0&&product_type.indexOf("请选择") >= 0&&product_name.indexOf("请选择") >= 0&&bar_code == "")
-	{
-		alert("啥都不输入难道你要我给你查空气?");
-		return;
-	}
-	$.post("Ajax/OtherStoreMenu/Query_Storage_Item_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name, "bar_code":bar_code}, function(data, textStatus)
-	{
-		if (CheckAjaxResult(textStatus, data))
-		{
-			$("#display_storage").empty();
-			var data_list = data.split("$");
-			var iColCount = data_list[1], iRowCount = data_list[2];
-			if (iColCount > 0&&iRowCount > 0)
-			{
-				var tr = $("<tr></tr>");
-				for (var iHead = 1; iHead <= iColCount; iHead++)
-				{
-					var th = $("<th>" + data_list[iHead + 2] + "</th>");
-					tr.append(th);
-				}
-				$("#display_storage").append(tr);
-				for(var iRow = 1; iRow <= iRowCount; iRow++)
-				{
-					var tr = $("<tr></tr>");
-					for (var iCol = 1; iCol <= iColCount; iCol++)
-					{
-						var td = $("<td></td>");
-						td.append(data_list[iRow*iColCount + iCol + 2]);
-						tr.append(td);
-					}
-					$("#display_storage").append(tr);
-				}
-			}
-		}
-	});
+	QueryAllRepertory($.trim($("#store_name").val()), $.trim($("#product_type").val()), $.trim($("#product_name").val()), $.trim($("#bar_code").val()));
 }
 
-function QueryAllRepertory(obj)
+function DisplayStorageList_New(obj)
 {
 	var valueList = obj.name.split('#');
-	var storage_name = $.trim(valueList[0]);
-	var product_type = $.trim(valueList[1]);
-	var product_name = "--请选择--";
-	var bar_code = "10011001";
+	QueryAllRepertory($.trim(valueList[0]), $.trim(valueList[1]), "--请选择--", "10011001");
+}
+
+function QueryAllRepertory(storage_name, product_type, product_name, bar_code)
+{
 	if (storage_name.indexOf("请选择") >= 0&&product_type.indexOf("请选择") >= 0&&product_name.indexOf("请选择") >= 0&&bar_code == "")
 	{
 		alert("啥都不输入难道你要我给你查空气?");

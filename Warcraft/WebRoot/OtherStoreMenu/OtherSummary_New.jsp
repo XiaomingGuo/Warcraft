@@ -91,7 +91,7 @@
 						{
 							String passVal = store_name.get(iStore)+"#"+productType.get(iStore).get(iType);
 %>
-								<li><a href="javascript:void(0)" name=<%=passVal %> onclick="QueryAllRepertory(this)"><%=productType.get(iStore).get(iType) %></a></li>
+								<li><a href="javascript:void(0)" name=<%=passVal %> onclick="DisplayStorageList_New(this)"><%=productType.get(iStore).get(iType) %></a></li>
 <%
 						}
 %>

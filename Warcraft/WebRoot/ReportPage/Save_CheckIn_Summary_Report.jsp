@@ -2,7 +2,6 @@
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
-<%@ page import="com.jsp.support.QueryStorageItemAjax" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
