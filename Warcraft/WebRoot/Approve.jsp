@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.DB.factory.DatabaseStore" %>
-<%@ page import="com.Warcraft.SupportUnit.DBTableParent" %>
+<%@ page import="com.jsp.support.ApprovePage" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
+	ApprovePage hPageHandle = new ApprovePage();
 	if(session.getAttribute("logonuser")==null)
 	{
 		response.sendRedirect("tishi.jsp");
@@ -24,22 +24,11 @@
 			int PageRecordCount = 20;
 			String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "领取"};
 			String tempBP = request.getParameter("BeginPage");
-			List<List<String>> recordList = new ArrayList<List<String>>();
 			
-			DBTableParent hORHandle = new DatabaseStore("Other_Record");
-			hORHandle.QueryRecordByFilterKeyList(Arrays.asList("isApprove"), Arrays.asList("0"));
-			int recordCount = hORHandle.getTableInstance().RecordDBCount();
+			int recordCount = hPageHandle.GetOtherRecordCount();
 			
 			int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-			hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(Arrays.asList("isApprove"), Arrays.asList("0"), Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
-			if (hORHandle.getTableInstance().RecordDBCount() > 0)
-			{
-				String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-				for(int idx=0; idx < sqlKeyList.length; idx++)
-				{
-					recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
-				}
-			}
+			List<List<String>> recordList = hPageHandle.GetDisplayRecordList(BeginPage, PageRecordCount);
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -79,14 +68,12 @@
 <%
 			if (!recordList.isEmpty())
 			{
-				DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 				for(int iRow = 1; iRow <= recordList.get(0).size(); iRow++)
 				{
 %>
   			<tr>
 <%
 					String Barcode = recordList.get(1).get(iRow-1);
-					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(Barcode));
 					for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
 					{
 						if(displayKeyList[iCol-1] == "领取")
@@ -103,7 +90,7 @@
 				    	else if(displayKeyList[iCol-1] == "物料名称")
 				    	{
 %>
-    			<td><%= hPIHandle.getDBRecordList("name").get(0) %></td>
+    			<td><%= hPageHandle.GetNameByBarCode(Barcode) %></td>
 <%
 				    	}
 				    	else if (displayKeyList[iCol-1] == "ID")
