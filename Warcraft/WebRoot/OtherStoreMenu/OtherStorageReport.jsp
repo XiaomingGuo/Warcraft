@@ -7,7 +7,7 @@
 
 	if(session.getAttribute("logonuser")==null)
 	{
-		response.sendRedirect("tishi.jsp");
+		response.sendRedirect("../tishi.jsp");
 	}
 	else
 	{
@@ -23,7 +23,6 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			request.setCharacterEncoding("UTF-8");
-			String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "单价", "进货总价", "供应商", "进货单时间"};
 			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期", "操作"};
 			String currentDate = hPageHandle.GenYearMonthString("-");
 			String beginDate = String.format("%s%s", currentDate, "01");
@@ -54,7 +53,7 @@
 	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherStorageReportJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
-   	<script type="text/javascript">
+	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
@@ -80,7 +79,7 @@
 				for(int i = 0; i < store_nameList.size(); i++)
 				{
 %>
-						<option value = <%=store_nameList.get(i) %>><%=store_nameList.get(i)%></option>
+					<option value = <%=store_nameList.get(i) %>><%=store_nameList.get(i)%></option>
 <%
 				}
 %>
@@ -93,7 +92,7 @@
 				</td>
 				<td align="right">
 					<select name="product_name" id="product_name" style="width:150px">
-					  	<option value = "--请选择--">--请选择--</option>
+						<option value = "--请选择--">--请选择--</option>
 					</select>
 				</td>
 				<td align="right">
@@ -103,7 +102,7 @@
 				</td>
 				<td align="center">
 					<label>交货时间:</label>
-	    			<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>">
+					<input dojoType="dropdowndatepicker" id="SubmitDate" name="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=hPageHandle.GenYearMonthDayString("-") %>">
 				</td>
 				<td align="center">
 					<input align="middle" id="confirm_button" type="button" value="查询" onclick="SubmitDateChange()">
@@ -121,12 +120,12 @@
 					<table border="1" align="center">
 						<tr>
 							<td>
-				    			<label>开始日期:</label>
-				    			<div dojoType="dropdowndatepicker" id="BeginDate" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
-			    			</td>
-			    			<td>
-				    			<label>截止日期:</label>
-				    			<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
+								<label>开始日期:</label>
+								<div dojoType="dropdowndatepicker" id="BeginDate" name="BeginDate" displayFormat="yyyy-MM-dd" value="<%=beginDate %>"></div>
+							</td>
+							<td>
+								<label>截止日期:</label>
+								<div dojoType="dropdowndatepicker" id="EndDate" name="EndDate" displayFormat="yyyy-MM-dd" value="<%=endDate %>"></div>
 							</td>
 						</tr>
 					</table>
