@@ -80,7 +80,7 @@ public class Update_Customer_OUT_QTY_Ajax extends PageParentClass
 		}
 	}
 	
-	public void UpdateStorageOutQty(String outQty, String barcode, String batchLot)
+	private void UpdateStorageOutQty(String outQty, String barcode, String batchLot)
 	{
 		DBTableParent hHandle = GenStorageHandle(barcode);
 		hHandle.UpdateRecordByKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));

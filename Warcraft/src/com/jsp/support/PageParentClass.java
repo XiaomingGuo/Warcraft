@@ -474,4 +474,13 @@ public class PageParentClass
         String tempDate = DateAdapter.getPrecedingMonthString(GenYearMonthDayString(""));
         return String.format("%s-%s-%s", tempDate.substring(0, 4), tempDate.substring(4, 6), tempDate.substring(6, 8));
     }
+    
+    public boolean CheckUserName(String userName)
+    {
+        DBTableParent hUIHandle = new DatabaseStore("User_Info");
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(userName));
+        if(hUIHandle.getTableInstance().RecordDBCount() > 0)
+        	return true;
+        return false;
+    }
 }

@@ -1,11 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.QueryStorageReportAjax" %>
+<%@ page import="com.jsp.support.QueryOtherStorageReport" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%!
 	String[] sqlKeyList = {"name", "Bar_Code", "product_type"};
-	String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};
-%>
+	String[] displayKeyList = {"ID", "八码", "名称", "库名", "规格", "批号", "进货数量", "消耗数量", "剩余数量", "单价", "进货总价", "消耗总价", "剩余总价", "供应商", "进货单时间"};%>
 <%
 	String rtnRst = "remove$";
 	String storage_name = request.getParameter("storage_name");
@@ -16,7 +15,7 @@
 	String endDate = request.getParameter("endDate");
 	String submitDate = request.getParameter("submitDate");
 	
-	QueryStorageReportAjax hPageHandle = new QueryStorageReportAjax();
+	QueryOtherStorageReport hPageHandle = new QueryOtherStorageReport();
 	List<String> bar_code_List = new ArrayList<String>();
 	if (storage_name.indexOf("请选择") < 0 && product_type.indexOf("请选择") >= 0 &&product_name.indexOf("请选择") >= 0 )
 	{

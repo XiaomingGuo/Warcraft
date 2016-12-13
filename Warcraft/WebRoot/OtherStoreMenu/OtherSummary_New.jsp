@@ -79,7 +79,7 @@
 				<div id="jquery-accordion-menu" class="jquery-accordion-menu black">
 					<div class="jquery-accordion-menu-header" id="form"></div>
 					<ul id="demo-list">
-						<li class="active"><a><i class="fa fa-home"></i>Home </a></li>
+						<li class="active"><a href="OtherStoreMenu/OtherSummary_New.jsp"><i class="fa fa-home"></i>Home </a></li>
 <%
 					for(int iStore = 0; iStore < store_name.size(); iStore++)
 					{

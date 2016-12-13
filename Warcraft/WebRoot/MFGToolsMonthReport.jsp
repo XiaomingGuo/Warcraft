@@ -140,7 +140,6 @@
         <br>
         <table id="display_add" border='1' align="center"></table>
         <br>
-        <table id="hidden_table" style="visibility:hidden"></table>
         <table align="center">
         <tr>
             <td align="right">
@@ -162,6 +161,7 @@
             </td>
         </tr>
         </table>
+        <table id="hidden_table" style="visibility:hidden"></table>
     </form>
   </body>
 </html>

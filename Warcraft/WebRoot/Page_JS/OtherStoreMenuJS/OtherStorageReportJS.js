@@ -70,7 +70,7 @@ function DisplayAddList()
 	var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
 	var endDate = dojo.widget.byId("EndDate").inputNode.value;
 	var submitDate = dojo.widget.byId("SubmitDate").inputNode.value;
-	$.post("Ajax/Query_Storage_Report_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name,
+	$.post("Ajax/OtherStoreMenu/Query_Other_Storage_Report_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name,
 		"supplier_name":supplier_name, "beginDate":beginDate, "endDate":endDate, "submitDate":submitDate}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))

@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PageParentClass" %>
+<%@ page import="com.jsp.support.QueryOtherStorageReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
-	PageParentClass hPageHandle = new PageParentClass();
+	QueryOtherStorageReport hPageHandle = new QueryOtherStorageReport();
 
 	if(session.getAttribute("logonuser")==null)
 	{
@@ -51,13 +51,13 @@
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
 	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-	<script language="javascript" src="Page_JS/StorageReportJS.js"></script>
+	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherStorageReportJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
    	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
     <table align="center" border="1">
@@ -136,7 +136,6 @@
 		<br>
 		<table id="display_add" border='1' align="center"></table>
 		<br>
-		<table id="hidden_table" style="visibility:hidden"></table>
 		<table align="center">
 		<tr>
 			<td align="center">
@@ -144,6 +143,7 @@
 			</td>
 		</tr>
 		</table>
+		<table id="hidden_table" style="visibility:hidden"></table>
 	</form>
   </body>
 </html>

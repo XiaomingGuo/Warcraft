@@ -12,7 +12,7 @@ public class QueryMonthReportAjax extends PageParentClass
 	public List<String> QueryProTypeStorage(String storageName)
 	{
 		List<String> rtnRst = new ArrayList<String>();
-		DBTableParent hHandle = GenStorageHandleByStorageName(storageName);
+		DBTableParent hHandle = GenStorageHandleByStorageName("Other_Storage");
 		hHandle.QueryRecordGroupByList(Arrays.asList("Bar_Code"));
 		List<String> barcodeList = hHandle.getDBRecordList("Bar_Code");
 		DBTableParent hPIHandle = new DatabaseStore("Product_Info");

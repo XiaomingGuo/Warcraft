@@ -116,56 +116,62 @@ function addappitem(obj)
         alert("申领数量超出库存数量或申领信息填写不完整!");
         return;
     }
-    var tab = document.getElementById('display_app');
-    var inputTab = document.getElementById('inputTab');
-    var sampleCount = inputTab.rows[0].cells.length;
-    if(1 > tab.rows.length)
+    $.post("Ajax/Check_User_Ajax.jsp", {"userName":$("#user_name").val()}, function(data, textStatus)
     {
-        var myHeadRow = document.createElement("tr");
-        myHeadRow.setAttribute("align", "center");
-        myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
-        for(var iCol=0; iCol < sampleCount-2; iCol++)
+        if (CheckAjaxResult(textStatus, data))
         {
-            myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[iCol].innerText));
-        }
-        myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[sampleCount-1].innerText));
-        tab.appendChild(myHeadRow);
-    }
+            var tab = document.getElementById('display_app');
+            var inputTab = document.getElementById('inputTab');
+            var sampleCount = inputTab.rows[0].cells.length;
+            if(1 > tab.rows.length)
+            {
+                var myHeadRow = document.createElement("tr");
+                myHeadRow.setAttribute("align", "center");
+                myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
+                for(var iCol=0; iCol < sampleCount-2; iCol++)
+                {
+                    myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[iCol].innerText));
+                }
+                myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[sampleCount-1].innerText));
+                tab.appendChild(myHeadRow);
+            }
 
-    var myCurrentRow = document.createElement("tr");
-    var index = tab.rows.length;
-    myCurrentRow.appendChild(CreateTabCellContext("td", index));
-    for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
-    {
-        var val = "";
-        if("库名" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = GetSelectedContent("store_name");
+            var myCurrentRow = document.createElement("tr");
+            var index = tab.rows.length;
+            myCurrentRow.appendChild(CreateTabCellContext("td", index));
+            for(var iCol=1; iCol < tab.rows[0].cells.length-1; iCol++)
+            {
+                var val = "";
+                if("库名" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = GetSelectedContent("store_name");
+                }
+                else if("类别" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = GetSelectedContent("product_type");
+                }
+                else if("名称" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = GetSelectedContent("product_name");
+                }
+                else if("八码" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = $("#bar_code").val();
+                }
+                else if("使用者" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = $("#user_name").val();
+                }
+                else if("数量" == tab.rows[0].cells[iCol].innerText)
+                {
+                    val = $("#QTY").val();
+                }
+                myCurrentRow.appendChild(CreateTabCellContext("td", val));
+            }
+            myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='delappitem(this)'>"));
+            tab.appendChild(myCurrentRow);
         }
-        else if("类别" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = GetSelectedContent("product_type");
-        }
-        else if("名称" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = GetSelectedContent("product_name");
-        }
-        else if("八码" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = $("#bar_code").val();
-        }
-        else if("使用者" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = $("#user_name").val();
-        }
-        else if("数量" == tab.rows[0].cells[iCol].innerText)
-        {
-            val = $("#QTY").val();
-        }
-        myCurrentRow.appendChild(CreateTabCellContext("td", val));
-    }
-    myCurrentRow.appendChild(CreateTabCellContext("td", "<input align='middle' type='button' name='"+ index +"' value='删除' onclick='delappitem(this)'>"));
-    tab.appendChild(myCurrentRow);
+    });
 }
 
 function delappitem(obj)

@@ -70,7 +70,7 @@
 								<ul>
 									<li><a href="MFGToolsMonthReport.jsp">五金消耗报表</a></li>
 									<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库库存</a></li>
-									<li><a href="OtherStorageReport.jsp">库房报表</a></li>
+									<li><a href="OtherStoreMenu/OtherStorageReport.jsp">库房报表</a></li>
 								</ul></li>
 						</ul></li>
 					<li><a href="MainPage.jsp">生产过程控制</a>

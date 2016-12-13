@@ -9,7 +9,7 @@ import java.util.List;
 import com.DB.factory.DatabaseStore;
 import com.Warcraft.SupportUnit.DBTableParent;
 
-public class QueryStorageReportAjax extends PageParentClass
+public class QueryOtherStorageReport extends PageParentClass
 {
 	public List<String> QueryProTypeStorage(String storageName)
 	{
@@ -39,7 +39,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			DBTableParent hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
 			submitDate = submitDate.replace("-", "");
-			if(supplier_name.indexOf("��ѡ��") >= 0)
+			if(supplier_name.indexOf("请选择") >= 0)
 			{
 				keyList = Arrays.asList("Bar_Code", "in_store_date");
 				valueList = Arrays.asList(strBarcode, submitDate);
@@ -115,7 +115,7 @@ public class QueryStorageReportAjax extends PageParentClass
 			String strBarcode = hPIHandle.getDBRecordList("Bar_Code").get(0);
 			DBTableParent hStorageHandle = GenStorageHandle(strBarcode);
 			List<String> keyList = null, valueList = null;
-			if(supplier_name.indexOf("��ѡ��") >= 0)
+			if(supplier_name.indexOf("请选择") >= 0)
 			{
 				keyList = Arrays.asList("Bar_Code");
 				valueList = Arrays.asList(strBarcode);

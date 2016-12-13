@@ -64,6 +64,6 @@
 			out.clear();
 			out=pageContext.pushBody();
 		}
-		out.println("<script>alert('下载成功！');window.location.href = '../OtherStorageReport.jsp';</script>");
+		out.println("<script>alert('下载成功！');window.location.href = '../OtherStoreMenu/OtherStorageReport.jsp';</script>");
 	}
 %>
