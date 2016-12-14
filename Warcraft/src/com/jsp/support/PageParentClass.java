@@ -98,29 +98,42 @@ public class PageParentClass
                 GetQTYByBarCode("OUT_QTY", barcode, keyList, valueList);
     }
     
+    public String GetStoreNameBySelectName(String selectName)
+    {
+        if(selectName.contains("五金库"))
+        	return "Other";
+        else if(selectName.contains("原材料库"))
+        	return "Material";
+        else if(selectName.equals("半成品库"))
+        	return "Manu";
+        else if(selectName.equals("成品库"))
+        	return "Product";
+        return "Other";
+    }
+    
     public DBTableParent GenStorageHandleByStorageName(String storageName)
     {
-        if(storageName.toLowerCase().contains("other"))
+        if(storageName.toLowerCase().equals("other"))
             return new DatabaseStore("Other_Storage");
-        else if(storageName.toLowerCase().contains("product"))
+        else if(storageName.toLowerCase().equals("product"))
             return new DatabaseStore("Product_Storage");
-        else if(storageName.toLowerCase().contains("semi")||storageName.toLowerCase().contains("material"))
-            return new DatabaseStore("Manu_Storage_Record");
-        else if(storageName.toLowerCase().contains("exother"))
+        else if(storageName.toLowerCase().equals("semi")||storageName.toLowerCase().equals("material"))
+            return new DatabaseStore("Manu_Storage");
+        else if(storageName.toLowerCase().equals("exother"))
             return new DatabaseStore("Exhausted_Other");
-        else if(storageName.toLowerCase().contains("exproduct"))
+        else if(storageName.toLowerCase().equals("exproduct"))
             return new DatabaseStore("Exhausted_Product");
-        else if(storageName.toLowerCase().contains("exsemi")||storageName.toLowerCase().contains("exmaterial"))
-            return new DatabaseStore("Exhausted_Manu_Storage_Record");
+        else if(storageName.toLowerCase().equals("exsemi")||storageName.toLowerCase().equals("exmaterial"))
+            return new DatabaseStore("Exhausted_Manu");
         return null;    
     }
-
+    
     public DBTableParent GenStorageHandle(String barcode)
     {
         if(IsOtherBarcode(barcode))
             return new DatabaseStore("Other_Storage");
         else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
-            return new DatabaseStore("Manu_Storage_Record");
+            return new DatabaseStore("Manu_Storage");
         return null;
     }
     
@@ -171,7 +184,7 @@ public class PageParentClass
         if(IsOtherBarcode(barcode))
             return new DatabaseStore("Exhausted_Other");
         else if(IsSemiProBarcode(barcode)||IsMaterialBarcode(barcode)||IsProductBarcode(barcode))
-            return new DatabaseStore("Exhausted_Manu_Storage_Record");
+            return new DatabaseStore("Exhausted_Manu");
         return null;
     }
     
