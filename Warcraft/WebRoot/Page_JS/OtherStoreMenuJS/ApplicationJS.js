@@ -116,7 +116,7 @@ function addappitem(obj)
         alert("申领数量超出库存数量或申领信息填写不完整!");
         return;
     }
-    $.post("Ajax/Check_User_Ajax.jsp", {"userName":$("#user_name").val()}, function(data, textStatus)
+    $.post("Ajax/OtherStoreMenu/Check_User_Ajax.jsp", {"userName":$("#user_name").val()}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
         {
@@ -210,7 +210,7 @@ function submitOtherApp()
     }
     for(var iRow=1; iRow < tab.rows.length; iRow++)
     {
-        $.post("Ajax/Submit_Application_Ajax.jsp", {"product_type":tab.rows[iRow].cells[2].innerText, "product_name":tab.rows[iRow].cells[3].innerText,
+        $.post("Ajax/OtherStoreMenu/Submit_Application_Ajax.jsp", {"product_type":tab.rows[iRow].cells[2].innerText, "product_name":tab.rows[iRow].cells[3].innerText,
             "bar_code":tab.rows[iRow].cells[4].innerText, "user_name":tab.rows[iRow].cells[5].innerText, "QTY":tab.rows[iRow].cells[6].innerText},
             function(data, textStatus)
         {

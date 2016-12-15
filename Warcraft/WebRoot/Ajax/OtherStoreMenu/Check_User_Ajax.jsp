@@ -10,9 +10,9 @@
 		if(hPageHandle.CheckUserName(userName))
 			rtnRst += "1$";
 		else
-			rtnRst += "error:请填写完成使用者信息!";
+			rtnRst += "error:请填写正确使用者信息!";
 	}
 	else
-		rtnRst += "error:请填写完成使用者信息!";
+		rtnRst += "error:请填写正确使用者信息!";
 	out.write(rtnRst);
 %>

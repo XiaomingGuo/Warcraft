@@ -6,7 +6,7 @@
     PageParentClass hPageHandle = new PageParentClass();
     if(session.getAttribute("logonuser")==null)
     {
-        response.sendRedirect("tishi.jsp");
+        response.sendRedirect("../tishi.jsp");
     }
     else
     {
@@ -37,9 +37,9 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-      <script language="javascript" src="Page_JS/ApplicationJS.js"></script>
+      <script language="javascript" src="Page_JS/OtherStoreMenuJS/ApplicationJS.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
       <br><br>
       <table id="inputTab" align="center" border="1">
       <caption><b>申领物品</b></caption>

@@ -61,7 +61,7 @@
 					<li><a href="MainPage.jsp">Home</a></li>
 					<li><a href="OtherStoreMenu/OtherSummary_New.jsp">五金库管理</a>
 						<ul>
-							<li><a href="Application.jsp">申请</a></li>
+							<li><a href="OtherStoreMenu/Application.jsp">申请</a></li>
 							<li><a href="Query.jsp">查询</a></li>
 							<li><a href="Approve.jsp">批准</a></li>
 							<li><a href="AddMFGToolsMaterial.jsp">五金录入</a></li>
