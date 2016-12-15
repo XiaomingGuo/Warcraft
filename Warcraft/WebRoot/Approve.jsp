@@ -22,7 +22,7 @@
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             int PageRecordCount = 20;
-            String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "领取"};
+            String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "操作"};
             String tempBP = request.getParameter("BeginPage");
             
             int recordCount = hPageHandle.GetOtherRecordCount();
@@ -75,13 +75,14 @@
                     String Barcode = recordList.get(1).get(iRow-1);
                     for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
                     {
-                        if(displayKeyList[iCol-1] == "领取")
+                        if(displayKeyList[iCol-1] == "操作")
                         {
                             if(!recordList.get(iCol-2).get(iRow-1).equalsIgnoreCase("1"))
                             {
 %>
                 <td>
-                        <center><input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)%> onclick="change(this)"></center>
+                    <input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_App"%> onclick="changeRecord(this)">
+                    <input type="button" value="删除" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_Del"%> onclick="deleteRecord(this)">
                 </td>
 <%
                             }
@@ -120,11 +121,25 @@
                <jsp:param value="Approve.jsp" name="PageName"/>
            </jsp:include>
         <script type="text/javascript">
-            function change(obj)
+            function changeRecord(obj)
             {
                 var tempList = obj.name.split("$");
                 DisableButton(tempList[0]);
-                $.post("Ajax/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
+                $.post("Ajax/OtherStoreMenu/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
+                {
+                    if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
+                    {
+                        alert(data);
+                    }
+                    location.reload();
+                });
+            }
+            
+            function deleteRecord(obj)
+            {
+                var tempList = obj.name.split("$");
+                DisableButton(tempList[0]);
+                $.post("Ajax/OtherStoreMenu/DeleteApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
                 {
                     if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
                     {

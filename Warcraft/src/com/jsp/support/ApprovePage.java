@@ -133,4 +133,14 @@ public class ApprovePage extends PageParentClass
 		hHandle.UpdateRecordByKeyList("OUT_QTY", outQty, Arrays.asList("Bar_code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		CheckMoveToExhaustedTable(barcode, batchLot);
 	}
+	
+	public String DeleteOtherApplyRecord(String applyRecordId)
+	{
+		DBTableParent hHandle = new DatabaseStore("Other_Record");;
+		hHandle.DeleteRecordByKeyList(Arrays.asList("id"), Arrays.asList(applyRecordId));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(applyRecordId));
+		if(hHandle.getTableInstance().RecordDBCount() > 0)
+			return "error:Delete Record Fault, please try again!";
+		return "";
+	}
 }
