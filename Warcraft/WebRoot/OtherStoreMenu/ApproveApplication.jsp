@@ -51,7 +51,8 @@
       <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
+    <br>
         <table align="center" border="1">
             <tr>
 <%
@@ -114,11 +115,11 @@
 %>
         </table>
         <br><br>
-           <jsp:include page="PageNum.jsp">
+           <jsp:include page="../PageNum.jsp">
                <jsp:param value="<%=recordCount %>" name="recordCount"/>
                <jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
                <jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-               <jsp:param value="Approve.jsp" name="PageName"/>
+               <jsp:param value="OtherStoreMenu/ApproveApplication.jsp" name="PageName"/>
            </jsp:include>
         <script type="text/javascript">
             function changeRecord(obj)

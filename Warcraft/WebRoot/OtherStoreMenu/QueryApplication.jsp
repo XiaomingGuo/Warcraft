@@ -6,7 +6,7 @@
 	String message="";
 	if(session.getAttribute("logonuser")==null)
 	{
-		response.sendRedirect("tishi.jsp");
+		response.sendRedirect("../tishi.jsp");
 	}
 	else
 	{
@@ -53,9 +53,9 @@
   </head>
   
   <body>
-    <jsp:include page="Menu/MainMenu.jsp"/>
-    <center>
-    	<table border="1">
+    <jsp:include page="../Menu/MainMenu.jsp"/>
+    <br>
+    	<table border="1" align="center">
     		<tr>
 <%
 			for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
@@ -112,12 +112,13 @@
 %>
     	</table>
     	<br><br>
-   	    <jsp:include page="PageNum.jsp">
-   	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
-   	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
-   	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-   	    	<jsp:param value="Query.jsp" name="PageName"/>
-   	    </jsp:include>
+    <center>
+	    <jsp:include page="../PageNum.jsp">
+	    	<jsp:param value="<%=recordCount %>" name="recordCount"/>
+	    	<jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
+	    	<jsp:param value="<%=BeginPage %>" name="BeginPage"/>
+	    	<jsp:param value="OtherStoreMenu/QueryApplication.jsp" name="PageName"/>
+	    </jsp:include>
     </center>
   </body>
 </html>
