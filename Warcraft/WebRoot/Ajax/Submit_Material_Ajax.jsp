@@ -14,6 +14,7 @@
 		String appBarcode = request.getParameter("barcode").replace(" ", "");
 		String appProductQTY = request.getParameter("QTY").replace(" ", "");
 		String appPriceUnit = request.getParameter("PriceUnit").replace(" ", "");
+		String appDescription = request.getParameter("Description").replace(" ", "");
 		String appSupplier_name = request.getParameter("supplier_name").replace(" ", "");
 		String appInStoreDate = request.getParameter("SubmitDate").replace("-", "");
 		Submit_Material_Ajax hPageHandle = new Submit_Material_Ajax();
@@ -24,7 +25,7 @@
 			{
 				String appTotalPrice = String.format("%.4f", Float.parseFloat(appPriceUnit)*Float.parseFloat(appProductQTY));
 				String batch_lot = hPageHandle.GenBatchLot(appBarcode);
-				hPageHandle.AddARecordToStorage(appBarcode, batch_lot, appProductQTY, appPriceUnit, appTotalPrice, appSupplier_name, appInStoreDate);
+				hPageHandle.AddARecordToStorage(appBarcode, batch_lot, appProductQTY, appPriceUnit, appTotalPrice, appSupplier_name, appInStoreDate, appDescription);
 			}
 		}
 		else

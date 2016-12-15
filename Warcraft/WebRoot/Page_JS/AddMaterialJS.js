@@ -84,7 +84,7 @@ $(function()
 					$("#WeightUnit").val(code_list[2]);
 					$("#WeightUnit").attr("readonly", "readonly");
 					$("#Description").val(code_list[3]);
-					$("#Description").attr("readonly", "readonly");
+					//$("#Description").attr("readonly", "readonly");
 					$("#ProductWeight").val(code_list[4]);
 					$("#ProductWeight").attr("readonly", "readonly");
 					$("#PriceUnit").val(code_list[5]);

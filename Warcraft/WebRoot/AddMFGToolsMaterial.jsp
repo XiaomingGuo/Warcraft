@@ -130,7 +130,7 @@
 							<input type="text" name="PriceUnit" id="PriceUnit" style='width:70px'>
 						</td>
 						<td align="right">
-							<input type="text" name="Description" id="Description" value="无备注" style='width:120px'>
+							<input type="text" name="Description" id="Description" value="无备注" style='width:180px'>
 						</td>
 						<td align="right">
 							<select name="supplier_name" id="supplier_name" style="width:120px">
