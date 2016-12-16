@@ -104,6 +104,43 @@ function QueryAllRepertory(storage_name, product_type, product_name, bar_code)
 	});
 }
 
+function DisplayInformation(obj)
+{
+	var valueList = obj.name.split('#');
+	var storage_name = $.trim(valueList[0]);
+	var product_type = $.trim(valueList[1]);
+	$.post("Ajax/OtherStoreMenu/Query_Storage_Info_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			$("#display_storage").empty();
+			var data_list = data.split("$");
+			var iColCount = data_list[1], iRowCount = data_list[2];
+			if (iColCount > 0&&iRowCount > 0)
+			{
+				var tr = $("<tr></tr>");
+				for (var iHead = 1; iHead <= iColCount; iHead++)
+				{
+					var th = $("<th>" + data_list[iHead + 2] + "</th>");
+					tr.append(th);
+				}
+				$("#display_storage").append(tr);
+				for(var iRow = 1; iRow <= iRowCount; iRow++)
+				{
+					var tr = $("<tr></tr>");
+					for (var iCol = 1; iCol <= iColCount; iCol++)
+					{
+						var td = $("<td></td>");
+						td.append(data_list[iRow*iColCount + iCol + 2]);
+						tr.append(td);
+					}
+					$("#display_storage").append(tr);
+				}
+			}
+		}
+	});
+}
+
 function InputBarcode()
 {
 	if(!CheckBarcode())

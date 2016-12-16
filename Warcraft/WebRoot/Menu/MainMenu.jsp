@@ -66,7 +66,7 @@
 							<li><a href="OtherStoreMenu/ApproveApplication.jsp">批准</a></li>
 							<li><a href="AddMFGToolsMaterial.jsp">五金录入</a></li>
 							<li><a href="QueryOther.jsp">五金录入状态</a></li>
-							<li><a href="javascript:void(0)">五金库报表</a>
+							<li><a href="OtherStoreMenu/OtherInformation.jsp">五金库报表</a>
 								<ul>
 									<li><a href="MFGToolsMonthReport.jsp">五金消耗报表</a></li>
 									<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库库存</a></li>

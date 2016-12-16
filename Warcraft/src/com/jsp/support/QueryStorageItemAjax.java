@@ -30,7 +30,64 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         return m_displayArray;
     }
     
-    public String GenerateResponseString(String storeName, String proType, String proName, String barCode)
+    public String GenerateStorageInfoString(String storeName, String proType)
+    {
+        String rtnRst = "";
+        g_productInfo = GetAllProductInfo();
+        m_displayArray = new String[] {"ID", "产品名称", "八码", "库名", "产品类型", "单重", "单价", "供应商", "生产能力", "备注"};
+        List<String> barCode_List = GetInformationBarCodeList(storeName, proType);
+        rtnRst += GenResponseHeadString(barCode_List);
+        
+        rtnRst += GetDisplayInformation(storeName, barCode_List);
+        return rtnRst;
+    }
+    
+    private String GetDisplayInformation(String storeName, List<String> barCode_List)
+    {
+        String rtnRst = "";
+        List<String> recordList = GetAllInformationByBarCodeList(storeName, barCode_List);
+        
+        for(int idx = 0; idx < recordList.size(); idx++)
+            rtnRst += recordList.get(idx) + "$";
+        
+        return rtnRst;
+    }
+    
+	private List<String> GetAllInformationByBarCodeList(String storeName, List<String> barCode_List)
+	{
+        List<String> rtnRst = new ArrayList<String>();
+        for (int idx = 0; idx < barCode_List.size(); idx++)
+        {
+            //{"ID", "产品名称", "八码", "库名", "产品类型", "单重", "单价", "供应商", "生产能力", "备注"};
+            //{"name", "Bar_Code", "product_type", "sample_price", "weight", "sample_vendor", "capacity", "description"};
+            String curBarcode = barCode_List.get(idx);
+            rtnRst.add(Integer.toString(idx+1));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 0));
+            rtnRst.add(curBarcode);
+            rtnRst.add(storeName);
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 2));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 4));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 3));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 5));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 6));
+            rtnRst.add(GetProductInfoByBarCode(curBarcode, 7));
+        }
+        return rtnRst;
+	}
+
+	private List<String> GetInformationBarCodeList(String storeName, String proType)
+    {
+        List<String> rtnRst = new ArrayList<String>(), tempBarCodeList = new ArrayList<String>();
+        if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") < 0)
+        {
+            List<String> tempList = QueryProNameByProType(proType);
+            for(int iRecordIdx = 0; iRecordIdx < tempList.size(); iRecordIdx++)
+            	rtnRst.add(QueryBarCodeByProName(tempList.get(iRecordIdx)));
+        }
+        return rtnRst;
+	}
+
+	public String GenerateResponseString(String storeName, String proType, String proName, String barCode)
     {
         String rtnRst = "";
         g_recordList = GetAllOtherStorageRecord();
@@ -76,7 +133,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         rtnRst += formatter.format(totalPrice)+"$";
         return rtnRst;
     }
-
+    
     private String GenResponseHeadString(List<String> barCode_List)
     {
         String rtnRst = m_displayArray.length + "$";
@@ -102,7 +159,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         DBTableParent hPIHandle = new DatabaseStore("Product_Info");
         hPIHandle.QueryAllRecord();
-        String[] getKeyWord = new String[] {"name", "Bar_Code", "product_type", "sample_price"};
+        String[] getKeyWord = new String[] {"name", "Bar_Code", "product_type", "sample_price", "weight", "sample_vendor", "capacity", "description"};
         for(int idx = 0; idx < getKeyWord.length; idx++)
             rtnRst.add(hPIHandle.getDBRecordList(getKeyWord[idx]));
         return rtnRst;
