@@ -17,7 +17,7 @@
         
         //storeroom name Database query
         List<String> store_name = hPageHandle.GetStoreName("TOOLS");
-        List<String> UserList = hPageHandle.GetApplicationUserList();
+        List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

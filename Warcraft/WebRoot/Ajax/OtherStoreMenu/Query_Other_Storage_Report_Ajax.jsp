@@ -1,7 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.QueryOtherStorageReport" %>
-<%@ page import="java.text.NumberFormat" %>
-<%@ page import="java.text.DecimalFormat" %>
 <%
 	String rtnRst = "remove$";
 	String storage_name = request.getParameter("storage_name");

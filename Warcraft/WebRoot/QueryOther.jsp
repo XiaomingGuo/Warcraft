@@ -13,13 +13,9 @@
         message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-        String[] displayKeyList = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
-        String tempBP = request.getParameter("BeginPage");
-        int PageRecordCount = 20;
-        int BeginPage = tempBP!=null?Integer.parseInt(tempBP):1;
-        int recordCount = hPageHandle.GetAllRecordCount();
-        Thread.sleep(500);
-        List<List<String>> recordList = hPageHandle.GetOtherStorageRecordDisplay(BeginPage, PageRecordCount);
+        String[] displayKeyList = hPageHandle.GetDisplayArray();
+        String curDate = hPageHandle.GenYearMonthDayString("-");
+        List<List<String>> recordList = hPageHandle.GetOtherStorageRecordDisplay(curDate);
         List<String> vendorList = hPageHandle.GetAllVendorName();
 %>
 
@@ -43,8 +39,23 @@
       <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
       <script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
+	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
+	<script type="text/javascript">
+		dojo.require("dojo.widget.*");
+	</script>
     <jsp:include page="Menu/MainMenu.jsp"/>
+	<table align="center">
+		<tr>
+			<td align="center">
+				<label>交货时间:</label>
+    			<div dojoType="dropdowndatepicker" name="SubmitDate" id="SubmitDate" displayFormat="yyyy-MM-dd" value="<%=curDate %>"></div>
+			</td>
+			<td align="center">
+				<input type="button" value="查询" style='width:100px' onclick="QueryOtherStoreRecord()">
+			</td>
+		</tr>
+   	</table>
     <br>
         <table id="modify_info" border="1" align="center">
         <tr>
@@ -131,7 +142,7 @@
                     if (displayKeyList[iCol-1] == "ID")
                     {
 %>
-            <td><%=PageRecordCount*(BeginPage-1)+iRow %></td>
+            <td><%=iRow %></td>
 <%
                     }
                     else if (displayKeyList[iCol-1] == "产品名称")
@@ -222,12 +233,6 @@
 %>
     </table>
     <br><br>
-       <jsp:include page="PageNum.jsp">
-           <jsp:param value="<%=recordCount %>" name="recordCount"/>
-           <jsp:param value="<%=PageRecordCount %>" name="PageRecordCount"/>
-           <jsp:param value="<%=BeginPage %>" name="BeginPage"/>
-           <jsp:param value="QueryOther.jsp" name="PageName"/>
-       </jsp:include>
   </body>
 </html>
 <%

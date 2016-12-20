@@ -1,6 +1,57 @@
 /**
  * 
  */
+function QueryOtherStoreRecord()
+{
+    var $displayOrder = $("#display_info");
+    var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
+    $.post("Ajax/OtherStoreMenu/QueryOtherApproveAjax.jsp", {"submitDate": addDate}, function(data, textStatus)
+    {
+        if (CheckAjaxResult(textStatus, data))
+        {
+            $displayOrder.empty();
+            var data_list = data.split("$");
+            var iColCount = parseInt(data_list[1]), iRowCount = parseInt(data_list[2]);
+            if (iColCount > 0&&iRowCount > 0)
+            {
+                var tr = $("<tr></tr>");
+                for (var iHead = 1; iHead <= iColCount; iHead++)
+                {
+                    var th = $("<th>" + data_list[iHead + 2] + "</th>");
+                    tr.append(th);
+                }
+                $displayOrder.append(tr);
+                for(var iRow = 1; iRow <= iRowCount; iRow++)
+                {
+                    var tr = $("<tr></tr>");
+                    for (var iCol = 1; iCol <= iColCount; iCol++)
+                    {
+                    	var Barcode = data_list[iRow*iColCount + 5];
+                        var td = $("<td></td>");
+                        alert(data_list[iRow*iColCount + 5]);
+                        if (12 == iCol)
+                        {
+                            if(data_list[iRow*iColCount + iCol + 2] == "0")
+                            {
+                                td.append("<input type='button' value='确认' id='" + data_list[iRow*iColCount + iCol + 2] + "Sure' name='" + data_list[iRow*iColCount + iCol + 2] + "$" + Barcode +"' onclick='SubmitQty(this)'>&nbsp;");//
+                                td.append("<input type='button' value='删除' id='" + data_list[iRow*iColCount + iCol + 2] + "Rej' name='" + data_list[iRow*iColCount + iCol + 2] + "$" + Barcode +"' onclick='RejectQty(this)'>");//
+                            }
+                            else
+                            {
+                                td.append("<input type='button' value='修改' id='" + data_list[iRow*iColCount + iCol + 2] + "Rej' name='" + data_list[iRow*iColCount + iCol + 2] + "#" + iRow +"' onclick='ModifyRecord(this)'>");//
+                            }
+                        }
+                        else
+                        	td.append(data_list[iRow*iColCount + iCol + 2]);
+                        tr.append(td);
+                    }
+                    $displayOrder.append(tr);
+                }
+            }
+        }
+    });
+}
+
 function SubmitQty(obj)
 {
     var valueList = obj.name.split("$");

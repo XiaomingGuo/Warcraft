@@ -3,13 +3,13 @@
 	width: 100%;
 	height:80px;
 	background: #333333;
-	min-width: 1200px;
+	min-width: 1300px;
 	font-size: 14px;
 }
 .headerinner{
-	width: 1200px;
+	width: 1300px;
 	height: 100%;
-	padding:0 50px;
+	padding:0 40px;
 	margin:0 auto;
 	box-sizing:border-box;
 	position: relative;

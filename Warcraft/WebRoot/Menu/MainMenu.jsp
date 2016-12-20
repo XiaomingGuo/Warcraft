@@ -66,12 +66,13 @@
 							<li><a href="OtherStoreMenu/ApproveApplication.jsp">批准</a></li>
 							<li><a href="AddMFGToolsMaterial.jsp">五金录入</a></li>
 							<li><a href="QueryOther.jsp">五金录入状态</a></li>
-							<li><a href="OtherStoreMenu/OtherInformation.jsp">五金库报表</a>
+							<li><a href="javascript:void(0)">五金库报表</a>
 								<ul>
 									<li><a href="MFGToolsMonthReport.jsp">五金消耗报表</a></li>
 									<li><a href="OtherStoreMenu/OtherSummary.jsp">五金库库存</a></li>
 									<li><a href="OtherStoreMenu/OtherStorageReport.jsp">库房报表</a></li>
 								</ul></li>
+							<li><a href="OtherStoreMenu/OtherInformation.jsp">五金信息</a></li>
 						</ul></li>
 					<li><a href="MainPage.jsp">生产过程控制</a>
 						<ul>
@@ -113,6 +114,10 @@
 							<li><a href="PersonMenu/AddHolidays.jsp">节假日及转班</a></li>
 							<li><a href="PersonMenu/SummaryHoliday.jsp">节假日查询</a></li>
 							<li><a href="PersonMenu/ArrangeCheckInTime.jsp">人员排班</a></li>
+						</ul></li>
+					<li><a href="javascript:void(0)">财务及报表</a>
+						<ul>
+							<li><a href="OtherStoreMenu/OtherStorageReport.jsp">五金库对账</a></li>
 						</ul></li>
 					<li><a href="Quit.jsp">退出</a></li>
 				</ul>

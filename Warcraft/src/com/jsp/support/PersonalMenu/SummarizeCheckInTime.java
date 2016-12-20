@@ -460,7 +460,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         {
             rtnRst.add(GetCurrentCheckInDate(checkInTimeList));
             List<String> tempRecord = GetTomorrowCheckOutDate(checkInId, Integer.parseInt(checkInDate));
-            rtnRst.add(tempRecord.size() > 0?tempRecord.get(2):null);
+            rtnRst.add(tempRecord.size() > 0?tempRecord.get(tempRecord.size()-2):null);
         }
         return rtnRst;
     }
