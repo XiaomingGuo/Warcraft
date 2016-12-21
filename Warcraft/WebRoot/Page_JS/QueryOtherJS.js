@@ -1,10 +1,21 @@
 /**
  * 
  */
+function OnloadDisplay(obj)
+{
+    DisplayTableContent(obj);
+}
+
 function QueryOtherStoreRecord()
 {
-    var $displayOrder = $("#display_info");
     var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
+    DisplayTableContent(addDate);
+}
+
+function DisplayTableContent(addDate)
+{
+    alert(addDate);
+    var $displayOrder = $("#display_info");
     $.post("Ajax/OtherStoreMenu/QueryOtherApproveAjax.jsp", {"submitDate": addDate}, function(data, textStatus)
     {
         if (CheckAjaxResult(textStatus, data))
@@ -26,9 +37,8 @@ function QueryOtherStoreRecord()
                     var tr = $("<tr></tr>");
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
-                    	var Barcode = data_list[iRow*iColCount + 5];
+                        var Barcode = data_list[iRow*iColCount + 5];
                         var td = $("<td></td>");
-                        alert(data_list[iRow*iColCount + 5]);
                         if (12 == iCol)
                         {
                             if(data_list[iRow*iColCount + iCol + 2] == "0")
@@ -42,7 +52,7 @@ function QueryOtherStoreRecord()
                             }
                         }
                         else
-                        	td.append(data_list[iRow*iColCount + iCol + 2]);
+                            td.append(data_list[iRow*iColCount + iCol + 2]);
                         tr.append(td);
                     }
                     $displayOrder.append(tr);
@@ -156,7 +166,7 @@ function ExecModify()
     var barCode = $("#barcode").val();
     var modifytab = document.getElementById('modify_info');
     if(modifytab.rows[1].cells[0].innerText == "..."||modifytab.rows[1].cells[1].innerText == "..."||
-    		barCode == ""||modifytab.rows[1].cells[3].innerText == "..."||
+            barCode == ""||modifytab.rows[1].cells[3].innerText == "..."||
             modifytab.rows[1].cells[4].innerText == "..."||modifytab.rows[1].cells[5].innerText == "..."||
             modifytab.rows[1].cells[6].innerText == "..."||modifytab.rows[1].cells[7].innerText == "..."||
             modifytab.rows[1].cells[8].innerText == "..."||vendorName.indexOf("请选择") >= 0||
