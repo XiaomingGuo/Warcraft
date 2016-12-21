@@ -8,7 +8,7 @@ import com.page.utilities.*;
 
 public class Query_AllUserInfo_Ajax extends PageParentClass implements IPageInterface
 {
-    public String[] m_displayArray = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
+    private String[] m_displayArray = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     

@@ -5,7 +5,7 @@
     String message="";
     if(session.getAttribute("logonuser")==null)
     {
-        response.sendRedirect("tishi.jsp");
+        response.sendRedirect("../tishi.jsp");
     }
     else
     {
@@ -21,15 +21,15 @@
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             request.setCharacterEncoding("UTF-8");
-            String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
-            String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
             MonthReport hPageHandle = new MonthReport();
+            String[] displayKeyList = hPageHandle.GetDisplayArray();
+            String[] selectKeyList = {"库名", "类别", "名称", "使用人", "操作"};
             String currentDate = hPageHandle.GenYearMonthString("-");
             String beginDate = String.format("%s%s", currentDate, "01");
             String endDate = String.format("%s%s", currentDate, "31");
             
             List<String> store_nameList = hPageHandle.GetStoreName("TOOLS");
-            List<String> userNameList = hPageHandle.GetUserName(Arrays.asList("user_name"));
+            List<String> userNameList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -51,15 +51,15 @@
   </head>
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-    <script language="javascript" src="Page_JS/MonthReportJS.js"></script>
+    <script language="javascript" src="Page_JS/OtherStoreMenuJS/MonthReportJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body>
        <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
-    <form action="ReportPage/Create_Month_Report.jsp" method="post">
+    <form action="../ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
         <caption><b>五金消耗报表</b></caption>
             <tr>

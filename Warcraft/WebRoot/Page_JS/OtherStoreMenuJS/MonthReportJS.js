@@ -51,7 +51,7 @@ function DisplayAddList()
 	var user_name = $.trim($("#user_name").val());
 	var beginDate = dojo.widget.byId("BeginDate").inputNode.value;
 	var endDate = dojo.widget.byId("EndDate").inputNode.value;
-	$.post("Ajax/Query_Month_Report_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name,
+	$.post("Ajax/OtherStoreMenu/Query_Month_Report_Ajax.jsp", {"storage_name":storage_name, "product_type":product_type, "product_name":product_name,
 		"user_name":user_name, "beginDate":beginDate, "endDate":endDate}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
