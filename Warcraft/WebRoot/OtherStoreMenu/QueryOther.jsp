@@ -33,7 +33,6 @@
     <!--
     <link rel="stylesheet" type="text/css" href="styles.css">
     -->
-
   </head>
       <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
@@ -44,6 +43,7 @@
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
+    <br>
 	<table align="center">
 		<tr>
 			<td align="center">
@@ -114,7 +114,6 @@
 %>
         </tr>
     </table>
-    <br>
     <table id="display_info" align="center" border="1"></table>
     <br><br>
   </body>

@@ -45,7 +45,7 @@
 		dojo.require("dojo.widget.*");
 	</script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
-      <br><br>
+      <br>
       <table id="inputTab" align="center" border="1">
       <caption><b>申领物品</b></caption>
         <tr>

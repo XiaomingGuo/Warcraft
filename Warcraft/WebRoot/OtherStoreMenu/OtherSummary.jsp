@@ -39,13 +39,13 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
   </head>
 	<script language="javascript" src="JS/jquery-1.12.4.min.js"></script>
 	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
 	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherSummaryJS.js"></script>
   <body>
     <jsp:include page="../Menu/MainMenu.jsp"/>
+    <br>
     <form action="ReportPage/SaveOtherSummary.jsp" method="post">
     <table align="center" border="1">
 		<caption>其他库存筛选</caption>

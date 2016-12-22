@@ -27,10 +27,10 @@
 		else
 		{
 			String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "价值", "申请日期"};
-			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "apply_date", "isApprove"};
 			
 			DBTableParent hORHandle = new DatabaseStore("Other_Record");
-			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), "create_date", beginDate, endDate);
+			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), "apply_date", beginDate, endDate);
 			List<List<String>> recordList = new ArrayList<List<String>>();
 			for(int idx=0; idx<sqlKeyList.length;idx++)
 			{
