@@ -8,7 +8,6 @@ import com.DB.factory.DatabaseStore;
 import com.Warcraft.Interface.IPageAjaxUtil;
 import com.Warcraft.Interface.IPageInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
-import com.jsp.support.QueryOtherStorageReport.PRODUCT_INFO;
 import com.page.utilities.CPageAjaxUtil;
 
 import java.text.NumberFormat;

@@ -6,7 +6,7 @@
 	PageParentClass hPageHandle = new PageParentClass();
 	if(session.getAttribute("logonuser")==null)
 	{
-		response.sendRedirect("../tishi.jsp");
+		response.sendRedirect("tishi.jsp");
 	}
 	else
 	{

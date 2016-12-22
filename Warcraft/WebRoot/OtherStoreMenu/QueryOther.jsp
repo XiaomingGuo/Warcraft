@@ -6,7 +6,7 @@
     QueryOther hPageHandle = new QueryOther();
     if(session.getAttribute("logonuser")==null)
     {
-        response.sendRedirect("tishi.jsp");
+        response.sendRedirect("../tishi.jsp");
     }
     else
     {
@@ -37,13 +37,13 @@
   </head>
       <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-      <script language="javascript" src="Page_JS/QueryOtherJS.js"></script>
+      <script language="javascript" src="Page_JS/OtherStoreMenuJS/QueryOtherJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="OnloadDisplay(<%=curDate%>)">
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
 	<table align="center">
 		<tr>
 			<td align="center">

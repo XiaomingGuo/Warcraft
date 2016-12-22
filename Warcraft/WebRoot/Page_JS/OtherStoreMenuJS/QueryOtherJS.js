@@ -184,5 +184,5 @@ function ExecModify()
             alert("Update Error!");
         }
     });
-    location.href ="QueryOther.jsp";
+    location.href ="OtherStoreMenu/QueryOther.jsp";
 }

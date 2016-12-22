@@ -14,7 +14,7 @@
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("../tishi.jsp");
 		}
 		else
 		{
