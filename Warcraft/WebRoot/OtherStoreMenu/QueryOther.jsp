@@ -39,7 +39,7 @@
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
       <script language="javascript" src="Page_JS/OtherStoreMenuJS/QueryOtherJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
-  <body onload="OnloadDisplay(<%=curDate%>)">
+  <body onload="OnloadDisplay('<%=curDate%>')">
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>

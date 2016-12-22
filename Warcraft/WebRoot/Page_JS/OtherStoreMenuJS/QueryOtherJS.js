@@ -14,7 +14,6 @@ function QueryOtherStoreRecord()
 
 function DisplayTableContent(addDate)
 {
-    alert(addDate);
     var $displayOrder = $("#display_info");
     $.post("Ajax/OtherStoreMenu/QueryOtherApproveAjax.jsp", {"submitDate": addDate}, function(data, textStatus)
     {

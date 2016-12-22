@@ -22,12 +22,12 @@ public class QueryOther extends PageParentClass implements IPageInterface
         hAjaxHandle.setTableHandle(this);
     }
     
-	@Override
-	public String[] GetDisplayArray()
-	{
-		return m_displayArray;
-	}
-	
+    @Override
+    public String[] GetDisplayArray()
+    {
+        return m_displayArray;
+    }
+    
     private List<List<String>> GetAllProductInfo()
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
@@ -54,44 +54,47 @@ public class QueryOther extends PageParentClass implements IPageInterface
     
     private String GetProductInfoByIdx(String curBarCode, int findIdx)
     {
-    	String rtnRst = "";
-		for(int idx = 0; idx < g_productInfo.get(0).size(); idx++)
-		{
-			if(g_productInfo.get(1).get(idx).equals(curBarCode))
-			{
-				rtnRst = g_productInfo.get(findIdx).get(idx);
-				break;
-			}
-		}
-		return rtnRst;
-	}
-    
-    public List<List<String>> GetOtherStorageRecord(String curDate)
-    {
-    	List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
-    	List<List<String>> recordList = GetOtherStorageRecordDisplay(curDate);
-        for(int idx = 0; idx < recordList.get(0).size(); idx++)
+        String rtnRst = "";
+        for(int idx = 0; idx < g_productInfo.get(0).size(); idx++)
         {
-        	String curBarCode = recordList.get(0).get(idx);
-            rtnRst.get(0).add(Integer.toString(idx + 1));
-            rtnRst.get(1).add(GetProductInfoByIdx(curBarCode, 0));
-            rtnRst.get(2).add(curBarCode);
-            rtnRst.get(3).add(recordList.get(1).get(idx));
-            int in_QTY = Integer.parseInt(recordList.get(2).get(idx));
-            rtnRst.get(4).add(recordList.get(2).get(idx));
-            int out_QTY = Integer.parseInt(recordList.get(3).get(idx));
-            rtnRst.get(5).add(recordList.get(3).get(idx));
-            rtnRst.get(6).add(Integer.toString(in_QTY-out_QTY));
-            rtnRst.get(7).add(recordList.get(4).get(idx));
-            rtnRst.get(8).add(recordList.get(5).get(idx));
-            rtnRst.get(9).add(recordList.get(6).get(idx));
-            rtnRst.get(10).add(GetProductInfoByIdx(curBarCode, 7));
-            rtnRst.get(11).add(recordList.get(7).get(idx));
+            if(g_productInfo.get(1).get(idx).equals(curBarCode))
+            {
+                rtnRst = g_productInfo.get(findIdx).get(idx);
+                break;
+            }
         }
         return rtnRst;
     }
     
-	public List<String> GetAllVendorName()
+    public List<List<String>> GetOtherStorageRecord(String curDate)
+    {
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
+        List<List<String>> recordList = GetOtherStorageRecordDisplay(curDate);
+        if(recordList.size() > 0)
+        {
+            for(int idx = 0; idx < recordList.get(0).size(); idx++)
+            {
+                String curBarCode = recordList.get(0).get(idx);
+                rtnRst.get(0).add(Integer.toString(idx + 1));
+                rtnRst.get(1).add(GetProductInfoByIdx(curBarCode, 0));
+                rtnRst.get(2).add(curBarCode);
+                rtnRst.get(3).add(recordList.get(1).get(idx));
+                int in_QTY = Integer.parseInt(recordList.get(2).get(idx));
+                rtnRst.get(4).add(recordList.get(2).get(idx));
+                int out_QTY = Integer.parseInt(recordList.get(3).get(idx));
+                rtnRst.get(5).add(recordList.get(3).get(idx));
+                rtnRst.get(6).add(Integer.toString(in_QTY-out_QTY));
+                rtnRst.get(7).add(recordList.get(4).get(idx));
+                rtnRst.get(8).add(recordList.get(5).get(idx));
+                rtnRst.get(9).add(recordList.get(6).get(idx));
+                rtnRst.get(10).add(GetProductInfoByIdx(curBarCode, 7));
+                rtnRst.get(11).add(recordList.get(7).get(idx));
+            }
+        }
+        return rtnRst;
+    }
+    
+    public List<String> GetAllVendorName()
     {
         DBTableParent hOSHandle = new DatabaseStore("Vendor_Info");
         hOSHandle.QueryRecordGroupByList(Arrays.asList("vendor_name"));
