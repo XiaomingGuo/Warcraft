@@ -76,19 +76,18 @@ function DisplayAddList()
 					for (var iCol = 1; iCol <= iColCount; iCol++)
 					{
 						var td = $("<td></td>");
-						var iColNum = iRow*iColCount+iCol;//
 						if(1 == iCol||6 == iCol)
-							td.append("<input style='width:35px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						else if(7 == iCol||8 == iCol||9 == iCol)
-							td.append("<input style='width:60px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						else if(2 == iCol||10 == iCol)
-							td.append("<input style='width:140px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						else if(5 == iCol)
-							td.append("<input style='width:70px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						else if(3 == iCol)
-							td.append("<input style='width:65px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						else
-							td.append("<input style='width:80px' value='"+data_list[iRow*iColCount + iCol + 2]+"' name='"+iColNum+"'/>");
+							td.append(data_list[iRow*iColCount + iCol + 2]);
 						tr.append(td);
 					}
 					$("#display_add").append(tr);

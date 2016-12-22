@@ -13,11 +13,12 @@
         message="您好！"+mylogon.getUsername()+"</b> [女士/先生]！欢迎登录！";
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-        String[] displayKeyList = {"库名", "类别", "名称", "八码", "使用者", "数量", "库存数量", "操作"};
+        String[] displayKeyList = {"库名", "类别", "名称", "八码", "使用者", "数量", "库存数量", "申请时间", "操作"};
         
         //storeroom name Database query
         List<String> store_name = hPageHandle.GetStoreName("TOOLS");
         List<String> UserList = hPageHandle.GetAllUserRecordByName("AllRecord", "name");
+        String curDate = hPageHandle.GenYearMonthDayString("-");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -38,7 +39,11 @@
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
       <script language="javascript" src="Page_JS/OtherStoreMenuJS/ApplicationJS.js"></script>
-  <body>
+      <script language="javascript" src="dojojs/dojo.js"></script>
+	<body>
+	<script type="text/javascript">
+		dojo.require("dojo.widget.*");
+	</script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
       <br><br>
       <table id="inputTab" align="center" border="1">
@@ -73,7 +78,7 @@
                   </select>
               </td>
             <td align="right">
-                <select name="product_name" id="product_name" style="width:200px">
+                <select name="product_name" id="product_name" style="width:260px">
                       <option value = "--请选择--">--请选择--</option>
                 </select>
             </td>
@@ -81,9 +86,8 @@
                 <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
             </td>
             <td align="right">
-                <input type="text" id="user_name" name="user_name" list="userName"/>
-                <datalist name="userName" id="userName" style="width:100px">
-                    <option value = "--请选择--">--请选择--</option>
+                <input type="text" id="user_name" name="user_name" list="userName" style="width:100px"/>
+                <datalist name="userName" id="userName">
 <%
                     for(int i = 0; i < UserList.size(); i++)
                     {
@@ -95,11 +99,14 @@
                 </datalist>
             </td>
             <td align="right">
-                <input name="QTY" id="QTY" style="width:80px" onblur="CheckQTY(this)">
+                <input name="QTY" id="QTY" style="width:60px" onblur="CheckQTY(this)">
             </td>
             <td align="right">
-                <input name="Total_QTY" id="Total_QTY" style="width:80px" readonly>
+                <input name="Total_QTY" id="Total_QTY" style="width:70px" readonly>
             </td>
+			<td align="center">
+    			<div dojoType="dropdowndatepicker" name="ApplyDate" id="ApplyDate" displayFormat="yyyy-MM-dd" value="<%=curDate %>"></div>
+			</td>
             <td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addappitem(this)"></td>
           </tr>
     </table>

@@ -6,7 +6,7 @@
     ApprovePage hPageHandle = new ApprovePage();
     if(session.getAttribute("logonuser")==null)
     {
-        response.sendRedirect("tishi.jsp");
+        response.sendRedirect("../tishi.jsp");
     }
     else
     {
@@ -14,7 +14,7 @@
         if(temp == 0)
         {
             session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-            response.sendRedirect("tishi.jsp");
+            response.sendRedirect("../tishi.jsp");
         }
         else
         {
@@ -22,7 +22,7 @@
             String path = request.getContextPath();
             String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
             int PageRecordCount = 20;
-            String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "操作"};
+            String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "录入时间", "操作"};
             String tempBP = request.getParameter("BeginPage");
             
             int recordCount = hPageHandle.GetOtherRecordCount();
@@ -53,7 +53,7 @@
   <body>
     <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
-        <table align="center" border="1">
+        <table id="display_info" align="center" border="1">
             <tr>
 <%
             for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
@@ -82,8 +82,12 @@
                             {
 %>
                 <td>
+                    <input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+iRow%> id=<%=iRow+"_App"%> onclick="changeRecord(this)">
+                    <input type="button" value="删除" name=<%=recordList.get(0).get(iRow-1)+"$"+iRow%> id=<%=iRow+"_Del"%> onclick="deleteRecord(this)">
+                    <!--
                     <input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_App"%> onclick="changeRecord(this)">
                     <input type="button" value="删除" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_Del"%> onclick="deleteRecord(this)">
+                    -->
                 </td>
 <%
                             }
@@ -124,11 +128,14 @@
         <script type="text/javascript">
             function changeRecord(obj)
             {
+                var displayOrder = document.getElementById("display_info");
                 var tempList = obj.name.split("$");
                 DisableButton(tempList[0]);
-                $.post("Ajax/OtherStoreMenu/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
+                var Barcode = displayOrder.rows[tempList[1]].cells[2].innerText;
+                $.post("Ajax/OtherStoreMenu/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":Barcode,"OUT_QTY":displayOrder.rows[tempList[1]].cells[5].innerText, 
+                                                        "Apply_Date":displayOrder.rows[tempList[1]].cells[7].innerText}, function(data, textStatus)
                 {
-                    if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
+                    if (!(textStatus == "success" && data.indexOf(Barcode) < 0))
                     {
                         alert(data);
                     }
@@ -139,10 +146,12 @@
             function deleteRecord(obj)
             {
                 var tempList = obj.name.split("$");
-                DisableButton(tempList[0]);
-                $.post("Ajax/OtherStoreMenu/DeleteApproveAjax.jsp", {"material_id":tempList[0], "Barcode":tempList[1], "OUT_QTY":tempList[2]}, function(data, textStatus)
+                DisableButton(tempList[1]);
+                var Barcode = displayOrder.rows[tempList[1]].cells[2].innerText;
+                $.post("Ajax/OtherStoreMenu/DeleteApproveAjax.jsp", {"material_id":tempList[0], "Barcode":Barcode,
+                                                            "OUT_QTY":displayOrder.rows[tempList[1]].cells[7].innerText}, function(data, textStatus)
                 {
-                    if (!(textStatus == "success" && data.indexOf(tempList[1]) < 0))
+                    if (!(textStatus == "success" && data.indexOf(Barcode) < 0))
                     {
                         alert(data);
                     }

@@ -19,13 +19,14 @@
 		String appBarcode = (String)request.getParameter("bar_code").replace(" ", "");
 		String appUserName = (String)request.getParameter("user_name").replace(" ", "");
 		String appProduct_QTY = (String)request.getParameter("QTY").replace(" ", "");
+		String appApplyDate = (String)request.getParameter("Apply_Date").replace(" ", "");
 		
 		//product_type Database query
 		if (appProduct_type.indexOf("请选择") < 0 && appProduct_name.indexOf("请选择") < 0 &&
 				!appUserName.isEmpty() && !appProduct_QTY.isEmpty() && !appProduct_QTY.isEmpty())
 		{
 			DBTableParent hORHandle = new DatabaseStore("Other_Record");
-			((Other_Record)hORHandle.getTableInstance()).AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName, "0");
+			((Other_Record)hORHandle.getTableInstance()).AddARecord(hORHandle.GetUsedBarcode(appBarcode, "other_record"), proposerName, appProduct_QTY, appUserName, appApplyDate, "0");
 		}
 		else
 		{

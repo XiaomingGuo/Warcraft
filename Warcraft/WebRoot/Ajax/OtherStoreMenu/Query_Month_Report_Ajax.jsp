@@ -11,6 +11,6 @@
 	
 	MonthReport hPageHandle = new MonthReport();
 	String[] displayKeyList = hPageHandle.GetDisplayArray();
-	rtnRst += hPageHandle.GenerateResponseString(storage_name, product_type, product_name, user_name, beginDate, endDate);
+	rtnRst += hPageHandle.GenerateResponseString(storage_name, product_type, product_name, user_name, beginDate.replace("-", ""), endDate.replace("-", ""));
 	out.write(rtnRst);
 %>

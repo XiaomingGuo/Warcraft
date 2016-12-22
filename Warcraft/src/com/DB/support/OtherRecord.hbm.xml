@@ -26,17 +26,19 @@
   <property generated="never" lazy="false" name="userName" type="java.lang.String">
    <column length="10" name="user_name" not-null="true"/>
   </property>
+  <property generated="never" lazy="false" name="applyDate" type="java.lang.String">
+   <column length="8" name="apply_date" not-null="true"/>
+  </property>
   <property generated="never" insert="false" lazy="false"
    name="createDate" type="java.sql.Timestamp">
-   <column default="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
-    length="19" name="create_date" not-null="true"/>
+   <column length="19" name="create_date" not-null="true"/>
   </property>
   <property generated="never" insert="false" lazy="false"
    name="isApprove" type="java.lang.Integer">
-   <column default="0" name="isApprove" not-null="true"/>
+   <column name="isApprove" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="mergeMark" type="java.lang.Integer">
-   <column default="0" name="Merge_Mark" not-null="true"/>
+   <column name="Merge_Mark" not-null="true"/>
   </property>
  </class>
 </hibernate-mapping>

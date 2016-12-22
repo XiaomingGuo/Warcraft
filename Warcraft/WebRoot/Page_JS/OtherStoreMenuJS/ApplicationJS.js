@@ -128,14 +128,15 @@ function addappitem(obj)
                 var myHeadRow = document.createElement("tr");
                 myHeadRow.setAttribute("align", "center");
                 myHeadRow.appendChild(CreateTabCellContext("th", "ID"));
-                for(var iCol=0; iCol < sampleCount-2; iCol++)
+                for(var iCol=0; iCol < sampleCount-3; iCol++)
                 {
                     myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[iCol].innerText));
                 }
+                myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[sampleCount-2].innerText));
                 myHeadRow.appendChild(CreateTabCellContext("th", inputTab.rows[0].cells[sampleCount-1].innerText));
                 tab.appendChild(myHeadRow);
             }
-
+            
             var myCurrentRow = document.createElement("tr");
             var index = tab.rows.length;
             myCurrentRow.appendChild(CreateTabCellContext("td", index));
@@ -165,6 +166,10 @@ function addappitem(obj)
                 else if("数量" == tab.rows[0].cells[iCol].innerText)
                 {
                     val = $("#QTY").val();
+                }
+                else if("申请时间" == tab.rows[0].cells[iCol].innerText)
+                {
+                	val = dojo.widget.byId("ApplyDate").inputNode.value.replace(/-/g, "");
                 }
                 myCurrentRow.appendChild(CreateTabCellContext("td", val));
             }
@@ -211,7 +216,7 @@ function submitOtherApp()
     for(var iRow=1; iRow < tab.rows.length; iRow++)
     {
         $.post("Ajax/OtherStoreMenu/Submit_Application_Ajax.jsp", {"product_type":tab.rows[iRow].cells[2].innerText, "product_name":tab.rows[iRow].cells[3].innerText,
-            "bar_code":tab.rows[iRow].cells[4].innerText, "user_name":tab.rows[iRow].cells[5].innerText, "QTY":tab.rows[iRow].cells[6].innerText},
+            "bar_code":tab.rows[iRow].cells[4].innerText, "user_name":tab.rows[iRow].cells[5].innerText, "QTY":tab.rows[iRow].cells[6].innerText, "Apply_Date":tab.rows[iRow].cells[7].innerText},
             function(data, textStatus)
         {
             if (!CheckAjaxResult(textStatus, data))

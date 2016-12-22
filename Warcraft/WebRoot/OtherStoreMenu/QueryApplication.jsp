@@ -18,7 +18,7 @@
 		List<List<String>> recordList = new ArrayList<List<String>>();
 		DBTableParent hORHandle = new DatabaseStore("Other_Record");
 		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
-		String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "是否领取"};
+		String[] displayKeyList = {"ID", "物料名称", "八码", "批号", "申请人", "数量", "使用人", "申请时间", "录入时间", "是否领取"};
 		
 		hORHandle.QueryAllRecord();
 		int recordCount = hORHandle.getTableInstance().RecordDBCount();
@@ -26,7 +26,7 @@
 		hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(null, null, Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
 		if (hORHandle.getTableInstance().RecordDBCount() > 0)
 		{
-			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "apply_date", "create_date", "isApprove"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
 			{
 				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));

@@ -67,6 +67,9 @@ public class Other_Record implements ITableInterface
 			case "user_name":
 				rtnRst.add(tempRecord.getUserName());
 				break;
+			case "apply_date":
+				rtnRst.add(tempRecord.getApplyDate());
+				break;
 			case "create_date":
 				rtnRst.add(tempRecord.getCreateDate().toString());
 				break;
@@ -95,13 +98,14 @@ public class Other_Record implements ITableInterface
 		return aWriteRecord;
 	}
 
-	public void AddARecord(String appBarcode, String proposerName, String appProduct_QTY, String appUserName, String mergeMark)
+	public void AddARecord(String appBarcode, String proposerName, String appProduct_QTY, String appUserName, String applyDate, String mergeMark)
 	{
 		aWriteRecord = new OtherRecord();
 		aWriteRecord.setBarCode(appBarcode);
 		aWriteRecord.setProposer(proposerName);
 		aWriteRecord.setQty(Integer.parseInt(appProduct_QTY));
 		aWriteRecord.setUserName(appUserName);
+		aWriteRecord.setApplyDate(applyDate);
 		aWriteRecord.setMergeMark(Integer.parseInt(mergeMark));
 		gEQMHandle.addANewRecord();
 	}
@@ -126,6 +130,9 @@ public class Other_Record implements ITableInterface
 		}
 		else if(keyword.toLowerCase().indexOf("user_name") >= 0) {
 			rtnRst = "userName";
+		}
+		else if(keyword.toLowerCase().indexOf("apply_date") >= 0) {
+			rtnRst = "applyDate";
 		}
 		else if(keyword.toLowerCase().indexOf("create_date") >= 0) {
 			rtnRst = "createDate";

@@ -10,7 +10,7 @@ import com.Warcraft.SupportUnit.DBTableParent;
 
 public class ApprovePage extends PageParentClass
 {
-	public boolean ApproveApplication(String barcode, String recordID, String usedCount)
+	public boolean ApproveApplication(String barcode, String recordID, String usedCount, String applyDate)
 	{
 		int used_count = Integer.parseInt(usedCount);
 		int repertory_count = GetStorageRepertory(barcode, Arrays.asList("Bar_Code"), Arrays.asList(barcode));
@@ -39,7 +39,7 @@ public class ApprovePage extends PageParentClass
 					List<List<String>> tempList = GetOtherRecordList(recordID);
 					List<String> keyList = Arrays.asList("Bar_Code", "proposer", "QTY", "user_name", "isApprove", "Merge_Mark");
 					List<String> valList = Arrays.asList(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), "0", recordID);
-					AddNewOtherRecord(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0), recordID);
+					AddNewOtherRecord(barcode, tempList.get(0).get(0), Integer.toString(recordCount), tempList.get(1).get(0),applyDate, recordID);
 					ApproveOtherRecord(Arrays.asList("Batch_Lot", "QTY", "isApprove", "Merge_Mark"),
 													Arrays.asList(batchLot, Integer.toString(recordCount), "1", recordID),
 													keyList, valList);
@@ -73,7 +73,7 @@ public class ApprovePage extends PageParentClass
 		hORHandle.QueryRecordByFilterKeyListWithOrderAndLimit(Arrays.asList("isApprove"), Arrays.asList("0"), Arrays.asList("id"), PageRecordCount*(BeginPage-1), PageRecordCount);
 		if (hORHandle.getTableInstance().RecordDBCount() > 0)
 		{
-			String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
+			String[] sqlKeyList = {"id", "Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "apply_date", "create_date", "isApprove"};
 			for(int idx=0; idx < sqlKeyList.length; idx++)
 			{
 				rtnRst.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
@@ -82,10 +82,10 @@ public class ApprovePage extends PageParentClass
 		return rtnRst;
 	}
 	
-	public void AddNewOtherRecord(String barcode, String proposerName, String recordCount, String userName, String mergeMark)
+	public void AddNewOtherRecord(String barcode, String proposerName, String recordCount, String userName, String applyDate, String mergeMark)
 	{
 		DBTableParent hORHandle = new DatabaseStore("Other_Record");
-		((Other_Record)hORHandle.getTableInstance()).AddARecord(barcode, proposerName, recordCount, userName, mergeMark);
+		((Other_Record)hORHandle.getTableInstance()).AddARecord(barcode, proposerName, recordCount, userName, applyDate, mergeMark);
 	}
 	
 	public void ApproveOtherRecord(List<String> updateKeyWords, List<String> updateKeyVals, List<String> keyLists, List<String> valueLists)
