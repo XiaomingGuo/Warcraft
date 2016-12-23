@@ -114,6 +114,7 @@
 %>
         </tr>
     </table>
+    <br>
     <table id="display_info" align="center" border="1"></table>
     <br><br>
   </body>

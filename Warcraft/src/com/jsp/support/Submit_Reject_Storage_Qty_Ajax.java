@@ -33,7 +33,7 @@ public class Submit_Reject_Storage_Qty_Ajax extends PageParentClass
 		hProcessDBHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 		if(hProcessDBHandle.getTableInstance().RecordDBCount() > 0)
 		{
-			((DBTableParent)hProcessDBHandle).UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
+			hProcessDBHandle.UpdateRecordByKeyList("isEnsure", "1", Arrays.asList("Bar_Code", "Batch_Lot"), Arrays.asList(barcode, batchLot));
 			if(!new PageParentClass().IsOtherBarcode(barcode))
 			{
 				DBTableParent hMMPHandle = new DatabaseStore("Mb_Material_Po");

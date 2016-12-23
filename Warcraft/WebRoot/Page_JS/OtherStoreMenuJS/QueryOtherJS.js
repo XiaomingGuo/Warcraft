@@ -37,17 +37,19 @@ function DisplayTableContent(addDate)
                     for (var iCol = 1; iCol <= iColCount; iCol++)
                     {
                         var Barcode = data_list[iRow*iColCount + 5];
+                        var BatchLot = data_list[iRow*iColCount + 6];
                         var td = $("<td></td>");
                         if (12 == iCol)
                         {
-                            if(data_list[iRow*iColCount + iCol + 2] == "0")
+                            var tempSplit = data_list[iRow*iColCount + iCol + 2].split("#");
+                            if(tempSplit[1] == "0")
                             {
-                                td.append("<input type='button' value='确认' id='" + data_list[iRow*iColCount + iCol + 2] + "Sure' name='" + data_list[iRow*iColCount + iCol + 2] + "$" + Barcode +"' onclick='SubmitQty(this)'>&nbsp;");//
-                                td.append("<input type='button' value='删除' id='" + data_list[iRow*iColCount + iCol + 2] + "Rej' name='" + data_list[iRow*iColCount + iCol + 2] + "$" + Barcode +"' onclick='RejectQty(this)'>");//
+                                td.append("<input type='button' value='确认' id='" + tempSplit[0] + "Sure' name='" + BatchLot + "$" + Barcode + "$" + tempSplit[0] + "' onclick='SubmitQty(this)'>&nbsp;");//
+                                td.append("<input type='button' value='删除' id='" + tempSplit[0] + "Rej' name='" + BatchLot + "$" + Barcode + "$" + tempSplit[0] + "' onclick='RejectQty(this)'>");//
                             }
                             else
                             {
-                                td.append("<input type='button' value='修改' id='" + data_list[iRow*iColCount + iCol + 2] + "Rej' name='" + data_list[iRow*iColCount + iCol + 2] + "#" + iRow +"' onclick='ModifyRecord(this)'>");//
+                                td.append("<input type='button' value='修改' id='" + tempSplit[0] + "Rej' name='" + tempSplit[0] + "$" + iRow + "' onclick='ModifyRecord(this)'>");//
                             }
                         }
                         else
@@ -95,7 +97,7 @@ function RejectQty(obj)
 
 function ModifyRecord(obj)
 {
-    var tempVal = obj.name.split("#");
+    var tempVal = obj.name.split("$");
     var iRow = parseInt(tempVal[1]);
     var modifytab = document.getElementById('modify_info');
     var displaytab = document.getElementById('display_info');

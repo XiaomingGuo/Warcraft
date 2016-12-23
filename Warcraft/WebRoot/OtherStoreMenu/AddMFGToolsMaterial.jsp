@@ -6,7 +6,7 @@
 	PageParentClass hPageHandle = new PageParentClass();
 	if(session.getAttribute("logonuser")==null)
 	{
-		response.sendRedirect("tishi.jsp");
+		response.sendRedirect("../tishi.jsp");
 	}
 	else
 	{
@@ -14,7 +14,7 @@
 		if(temp == 0)
 		{
 			session.setAttribute("error", "管理员未赋予您进入权限,请联系管理员开通权限后重新登录!");
-			response.sendRedirect("tishi.jsp");
+			response.sendRedirect("../tishi.jsp");
 		}
 		else
 		{
@@ -47,13 +47,13 @@
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
 	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
 	<script language="javascript" src="Page_JS/AddMaterialJS.js"></script>
-	<script language="javascript" src="Page_JS/AddMFGToolsMaterialJS.js"></script>
+	<script language="javascript" src="Page_JS/OtherStoreMenuJS/AddMFGToolsMaterialJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="Menu/MainMenu.jsp"/>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
     <table width="65%" align="center">
     	<tr>

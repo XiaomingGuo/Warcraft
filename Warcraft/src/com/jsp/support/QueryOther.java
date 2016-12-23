@@ -88,7 +88,7 @@ public class QueryOther extends PageParentClass implements IPageInterface
                 rtnRst.get(8).add(recordList.get(5).get(idx));
                 rtnRst.get(9).add(recordList.get(6).get(idx));
                 rtnRst.get(10).add(GetProductInfoByIdx(curBarCode, 7));
-                rtnRst.get(11).add(recordList.get(7).get(idx));
+                rtnRst.get(11).add(recordList.get(7).get(idx)+"#"+recordList.get(8).get(idx));
             }
         }
         return rtnRst;
