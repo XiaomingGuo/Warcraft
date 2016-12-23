@@ -68,7 +68,7 @@ function SubmitQty(obj)
     var valueList = obj.name.split("$");
     DisableButton(valueList[0]+"Rej");
     DisableButton(valueList[0]+"Sure");
-    $.post("Ajax/Submit_Other_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
+    $.post("Ajax/OtherStoreMenu/Submit_Other_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
         {
@@ -84,7 +84,7 @@ function RejectQty(obj)
     var valueList = obj.name.split("$");
     DisableButton(valueList[0]+"Rej");
     DisableButton(valueList[0]+"Sure");
-    $.post("Ajax/Reject_Storage_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
+    $.post("Ajax/OtherStoreMenu/Reject_Storage_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
         {
@@ -176,7 +176,7 @@ function ExecModify()
         $("#barcode").val("");
         return;
     }
-    $.post("Ajax/Update_OtherStorage_Record_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "Barcode":$("#barcode").val(),
+    $.post("Ajax/OtherStoreMenu/Update_OtherStorage_Record_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "Barcode":$("#barcode").val(),
                                                             "SinglePrice": modifytab.rows[1].cells[7].innerText, "TotalPrice": modifytab.rows[1].cells[8].innerText,
                                                             "VendorName":GetSelectedContent("Vendor")}, function(data, textStatus)
     {
