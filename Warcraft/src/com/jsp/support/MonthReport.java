@@ -177,8 +177,11 @@ public class MonthReport extends PageParentClass implements IPageInterface
                 int in_Qty = Integer.parseInt(g_recordList.get(3).get(iRecordIdx));
                 rtnRst.add(Integer.toString(in_Qty));
                 rtnRst.add(g_recordList.get(4).get(iRecordIdx));
-                rtnRst.add(curProductInfo.get(PRODUCT_INFO.sample_price.getIndex()));
-                rtnRst.add(Double.toString(Double.parseDouble(curProductInfo.get(PRODUCT_INFO.sample_price.getIndex()))*in_Qty));
+                String samplePrice = curProductInfo.get(PRODUCT_INFO.sample_price.getIndex());
+                double totalPrice = Double.parseDouble(samplePrice)*in_Qty;
+                rtnRst.add(samplePrice);
+        		NumberFormat formatter = new DecimalFormat("#.###");
+                rtnRst.add(formatter.format(totalPrice));
                 rtnRst.add(g_recordList.get(5).get(iRecordIdx));
                 rtnRst.add("已领取");
                 iRowNum++;
