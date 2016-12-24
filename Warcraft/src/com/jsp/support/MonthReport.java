@@ -216,16 +216,16 @@ public class MonthReport extends PageParentClass implements IPageInterface
         
         for(int idx = 0; idx < m_displayArray.length-7; idx++)
         {
-            rtnRst += "$";
+            rtnRst += "-$";
         }
         
         //{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
         NumberFormat formatter = new DecimalFormat("#.###");
         rtnRst += "汇总$"+Integer.toString(inSum)+"$";
-        rtnRst += "$";
+        rtnRst += "-$";
         rtnRst += "总价值$";
         rtnRst += formatter.format(totalRepertoryPrice)+"$";
-        rtnRst += "$";
+        rtnRst += "-$-$";
         return rtnRst;
     }
     

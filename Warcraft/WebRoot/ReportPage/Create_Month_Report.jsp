@@ -5,6 +5,7 @@
 <%@ page import="com.jspsmart.upload.*"  %>
 <%@ page import="com.office.core.ExcelManagment"  %>
 <%@ page import="com.office.operation.ExcelCreate"  %>
+<%@ page import="com.jsp.support.MonthReport" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
@@ -14,10 +15,17 @@
 	}
 	else
 	{
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		request.setCharacterEncoding("UTF-8");
 		String splitFlag=(String)request.getParameter("OrderItemSelect").replace(" ", "");
+		String storage_name=(String)request.getParameter("store_name").replace(" ", "");
+		String product_type=(String)request.getParameter("product_type").replace(" ", "");
+		String product_name=(String)request.getParameter("product_name").replace(" ", "");
+		String user_name=(String)request.getParameter("user_name").replace(" ", "");
 		String beginDate=(String)request.getParameter("BeginDate").replace(" ", "");
 		String endDate=(String)request.getParameter("EndDate").replace(" ", "");
-
+		
 		int temp = mylogon.getUserRight()&64;
 		if(temp == 0)
 		{
@@ -26,76 +34,21 @@
 		}
 		else
 		{
-			String[] displayKeyList = {"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "价值", "申请日期"};
-			String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "apply_date", "isApprove"};
+			MonthReport hPageHandle = new MonthReport();
+			String rtnRst = hPageHandle.GenerateResponseString(storage_name, product_type, product_name, user_name, beginDate.replace("-", ""), endDate.replace("-", ""));
 			
-			DBTableParent hORHandle = new DatabaseStore("Other_Record");
-			hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpan(Arrays.asList("isApprove"), Arrays.asList("1"), "apply_date", beginDate, endDate);
-			List<List<String>> recordList = new ArrayList<List<String>>();
-			for(int idx=0; idx<sqlKeyList.length;idx++)
-			{
-				recordList.add(hORHandle.getDBRecordList(sqlKeyList[idx]));
-			}
+			String[] tempArray = rtnRst.split("\\$");
+			int iColCount = Integer.parseInt(tempArray[0]), iRowCount = Integer.parseInt(tempArray[1]) - 1;
 			
 			List<List<String>> writeList = new ArrayList<List<String>>();
-			List<String> headList = new ArrayList<String>();
-			for (int iHead=0; iHead < displayKeyList.length; iHead++)
+			for(int iRow = 0; iRow < iRowCount + 1; iRow++)
 			{
-				headList.add(displayKeyList[iHead]);
-			}
-			writeList.add(headList);
-			if (null != recordList)
-			{
-				DBTableParent hPIHandle = new DatabaseStore("Product_Info");
-				for(int iRow = 0; iRow < recordList.get(0).size();iRow++)
+				List<String> tempList = new ArrayList<String>();
+				for(int iCol = 2; iCol < iColCount + 2; iCol++)
 				{
-					List<String> tempList = new ArrayList<String>();
-					hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(recordList.get(0).get(iRow)));
-					for(int iCol = 0; iCol < displayKeyList.length; iCol++)
-					{
-						//{"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "create_date", "isApprove"};
-						//{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "申请日期", "价值"};
-						if("ID" == displayKeyList[iCol])
-						{
-							tempList.add(Integer.toString(iRow+1));
-						}
-						else if("名称" == displayKeyList[iCol])
-						{
-							tempList.add(hPIHandle.getDBRecordList("name").get(0));
-						}
-						else if("八码" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(0).get(iRow));
-						}
-						else if("批号" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(1).get(iRow));
-						}
-						else if("申请人" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(2).get(iRow));
-						}
-						else if("数量" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(3).get(iRow));
-						}
-						else if("使用者" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(4).get(iRow));
-						}
-						else if("申请日期" == displayKeyList[iCol])
-						{
-							tempList.add(recordList.get(5).get(iRow));
-						}
-						else if("价值" == displayKeyList[iCol])
-						{
-							double perPrice = Double.parseDouble(hPIHandle.getDBRecordList("sample_price").get(0));
-							double totalPrice = perPrice * Integer.parseInt(recordList.get(3).get(iRow));
-							tempList.add(Double.toString(totalPrice));
-						}
-					}
-					writeList.add(tempList);
+					tempList.add(tempArray[iRow*iColCount + iCol]);
 				}
+				writeList.add(tempList);
 			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "MonthReport.xls"));
 			excelUtil.execWriteExcelBlock(writeList, Integer.parseInt(splitFlag));

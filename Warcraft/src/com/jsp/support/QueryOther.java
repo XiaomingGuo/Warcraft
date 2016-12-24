@@ -12,7 +12,7 @@ import com.page.utilities.CPageAjaxUtil;
 
 public class QueryOther extends PageParentClass implements IPageInterface
 {
-    private String[] m_displayArray = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存", "单价", "总进货价", "供应商", "备注", "操作"};
+    private String[] m_displayArray = {"ID", "产品名称", "八码", "批号", "总进货量", "已消耗", "库存(QTY)", "单价(QTY)", "总进货价", "供应商", "备注", "操作"};
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_productInfo;
     
