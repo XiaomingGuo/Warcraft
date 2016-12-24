@@ -61,6 +61,12 @@ public class ExcelCreate implements IExcelExecute
 	{
 		if (null != hWorkBook)
 		{
+			sheet = sheet.replace("*", "x");
+			sheet = sheet.replace("-", "_");
+			sheet = sheet.replace("——", "_");
+			sheet = sheet.replace("（", "(");
+			sheet = sheet.replace("）", ")");
+			sheet = sheet.replace("/", "_");
 			hWorkSheet = hWorkBook.getSheet(sheet);
 			if(null == hWorkSheet)
 			{
