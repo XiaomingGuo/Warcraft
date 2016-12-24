@@ -83,10 +83,6 @@
                 <td>
                     <input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+iRow%> id=<%=iRow+"_App"%> onclick="changeRecord(this)">
                     <input type="button" value="删除" name=<%=recordList.get(0).get(iRow-1)+"$"+iRow%> id=<%=iRow+"_Del"%> onclick="deleteRecord(this)">
-                    <!--
-                    <input type="button" value="领取" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_App"%> onclick="changeRecord(this)">
-                    <input type="button" value="删除" name=<%=recordList.get(0).get(iRow-1)+"$"+Barcode+"$"+recordList.get(4).get(iRow-1)%> id=<%=recordList.get(0).get(iRow-1)+"_Del"%> onclick="deleteRecord(this)">
-                    -->
                 </td>
 <%
                             }
@@ -129,7 +125,7 @@
             {
                 var displayOrder = document.getElementById("display_info");
                 var tempList = obj.name.split("$");
-                DisableButton(tempList[0]);
+                DisableButton(tempList[1]+"_App");
                 var Barcode = displayOrder.rows[tempList[1]].cells[2].innerText;
                 $.post("Ajax/OtherStoreMenu/ApproveAjax.jsp", {"material_id":tempList[0], "Barcode":Barcode,"OUT_QTY":displayOrder.rows[tempList[1]].cells[5].innerText, 
                                                         "Apply_Date":displayOrder.rows[tempList[1]].cells[7].innerText}, function(data, textStatus)
@@ -145,12 +141,11 @@
             function deleteRecord(obj)
             {
                 var tempList = obj.name.split("$");
-                DisableButton(tempList[1]);
-                var Barcode = displayOrder.rows[tempList[1]].cells[2].innerText;
-                $.post("Ajax/OtherStoreMenu/DeleteApproveAjax.jsp", {"material_id":tempList[0], "Barcode":Barcode,
-                                                            "OUT_QTY":displayOrder.rows[tempList[1]].cells[7].innerText}, function(data, textStatus)
+                DisableButton(tempList[1]+"_Del");
+                alert(tempList[0]);
+                $.post("Ajax/OtherStoreMenu/DeleteApproveAjax.jsp", {"material_id":tempList[0]}, function(data, textStatus)
                 {
-                    if (!(textStatus == "success" && data.indexOf(Barcode) < 0))
+                    if (!CheckAjaxResult(textStatus, data))
                     {
                         alert(data);
                     }

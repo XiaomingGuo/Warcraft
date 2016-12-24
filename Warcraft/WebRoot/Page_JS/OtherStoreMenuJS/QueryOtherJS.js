@@ -66,8 +66,8 @@ function DisplayTableContent(addDate)
 function SubmitQty(obj)
 {
     var valueList = obj.name.split("$");
-    DisableButton(valueList[0]+"Rej");
-    DisableButton(valueList[0]+"Sure");
+    DisableButton(valueList[2]+"Rej");
+    DisableButton(valueList[2]+"Sure");
     $.post("Ajax/OtherStoreMenu/Submit_Other_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
@@ -81,9 +81,10 @@ function SubmitQty(obj)
 
 function RejectQty(obj)
 {
+	alert(obj.name);
     var valueList = obj.name.split("$");
-    DisableButton(valueList[0]+"Rej");
-    DisableButton(valueList[0]+"Sure");
+    DisableButton(valueList[2]+"Rej");
+    DisableButton(valueList[2]+"Sure");
     $.post("Ajax/OtherStoreMenu/Reject_Storage_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
     {
         if (!CheckAjaxResult(textStatus, data))
@@ -166,6 +167,7 @@ function ExecModify()
     var vendorName = GetSelectedContent("Vendor");
     var barCode = $("#barcode").val();
     var modifytab = document.getElementById('modify_info');
+    var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
     if(modifytab.rows[1].cells[0].innerText == "..."||modifytab.rows[1].cells[1].innerText == "..."||
             barCode == ""||modifytab.rows[1].cells[3].innerText == "..."||
             modifytab.rows[1].cells[4].innerText == "..."||modifytab.rows[1].cells[5].innerText == "..."||
@@ -176,7 +178,7 @@ function ExecModify()
         $("#barcode").val("");
         return;
     }
-    $.post("Ajax/OtherStoreMenu/Update_OtherStorage_Record_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "Barcode":$("#barcode").val(),
+    $.post("Ajax/OtherStoreMenu/Update_OtherStorage_Record_Ajax.jsp", {"ID":modifytab.rows[1].cells[0].innerText, "Barcode":barCode,
                                                             "SinglePrice": modifytab.rows[1].cells[7].innerText, "TotalPrice": modifytab.rows[1].cells[8].innerText,
                                                             "VendorName":GetSelectedContent("Vendor")}, function(data, textStatus)
     {
@@ -185,5 +187,5 @@ function ExecModify()
             alert("Update Error!");
         }
     });
-    location.href ="OtherStoreMenu/QueryOther.jsp";
+    location.href ="OtherStoreMenu/QueryOther.jsp?SubmitDate="+addDate;
 }

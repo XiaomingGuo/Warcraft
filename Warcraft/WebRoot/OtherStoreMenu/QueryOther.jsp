@@ -14,7 +14,8 @@
         String path = request.getContextPath();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
         String[] displayKeyList = hPageHandle.GetDisplayArray();
-        String curDate = hPageHandle.GenYearMonthDayString("-");
+		String submitDate = request.getParameter("SubmitDate");
+        String curDate = submitDate==null?hPageHandle.GenYearMonthDayString("-"):submitDate;
         List<String> vendorList = hPageHandle.GetAllVendorName();
 %>
 
