@@ -59,6 +59,7 @@
     </script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
+    <!-- <form action="ReportPage/Create_Month_Report.jsp" method="post"> -->
     <form action="ReportPage/Create_Month_Report.jsp" method="post">
     <table align="center" border="1">
         <caption><b>五金消耗报表</b></caption>
@@ -92,7 +93,7 @@
                     </select>
                 </td>
                 <td align="right">
-                    <select name="product_name" id="product_name" style="width:150px">
+                    <select name="product_name" id="product_name" style="width:250px">
                           <option value = "--请选择--">--请选择--</option>
                     </select>
                 </td>
@@ -142,7 +143,7 @@
         <br>
         <table align="center">
         <tr>
-            <td align="right">
+<%--             <td align="right">
                  <label>分页列:</label>
                  <select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
                      <option value = "--请选择--">--请选择--</option>
@@ -155,9 +156,9 @@
                     }
 %>
                 </select>
-            </td>
+            </td> --%>
             <td align="center">
-                <input type="submit" value="下载报表" style='width:80px'/>
+                <input type="submit" value="下载汇总" style='width:80px'/>
             </td>
         </tr>
         </table>

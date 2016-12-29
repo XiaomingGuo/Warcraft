@@ -40,6 +40,7 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   <body>
     <jsp:include page="Menu/MainMenu.jsp"/>
     <br><br>
@@ -53,8 +54,8 @@
 			   		<tr>
 			   			<td align="right">
 				    		<label>请输入库房名:</label>
-				    		<input type="text" name="storename" id="storename" style='width:140px'>
-				    		<input type="button" value="Add" onclick="changeAddStore(this)" style='width:50px'>
+				    		<input type="text" name="storename" id="storename" onblur="checkStoreName()" style='width:140px'>
+				    		<input type="button" name="EnsureAdd" id="EnsureAdd" value="Add" onclick="changeAddStore()" style='width:50px' disabled="disabled">
 			    		</td>
 			    	</tr>
 		    	</table>
@@ -62,16 +63,19 @@
 		</tr>
    	</table>
   	<script type="text/javascript">
-		function changeAddStore(obj)
+		function checkStoreName()
 		{
-			if ($('#storename').val() == "")
-			{
-				alert("库房名不能为空!");
+			CheckInputValue("Storeroom_Name", "name", "storename", "EnsureAdd");
+		}
+		
+		function changeAddStore()
+		{
+			var storeName = $("#storename").val();
+			if(storeName ==null||storeName == "")
 				return;
-			}
-			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$('#storename').val()}, function(data, textStatus)
+			$.post("Ajax/AddStoreNameAjax.jsp", {"storeroom":$("#storename").val()}, function(data, textStatus)
 			{
-				if (!(textStatus == "success" && data.indexOf("库名") < 0))
+				if (!CheckAjaxResult(textStatus, data))
 				{
 					alert(data);
 				}

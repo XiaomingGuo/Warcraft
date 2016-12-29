@@ -10,24 +10,6 @@ import com.Warcraft.SupportUnit.DBTableParent;
 
 public class Query_Process_Detail_Info extends PageParentClass
 {
-	public boolean IsProductTypeExist(String proType)
-	{
-		DBTableParent hPTHandle = new DatabaseStore("Product_Type");
-		hPTHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proType));
-		if(hPTHandle.getTableInstance().RecordDBCount() > 0)
-			return true;
-		return false;
-	}
-	
-	public boolean IsProductInfoExist(String barcode)
-	{
-		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
-		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_Code"), Arrays.asList(barcode));
-		if (hPIHandle.getTableInstance().RecordDBCount() > 0)
-			return true;
-		return false;
-	}
-	
 	public void AddProductTypeToDatabase(String proType, String storeName)
 	{
 		DBTableParent hPTHandle = new DatabaseStore("Product_Type");

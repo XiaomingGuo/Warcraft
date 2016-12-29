@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.jsp.support.MonthReport" %>
 <%
-	String rtnRst = "remove$";
+	String rtnRst = "";
 	String storage_name = request.getParameter("storage_name");
 	String product_type = request.getParameter("product_type");
 	String product_name = request.getParameter("product_name");

@@ -1,6 +1,31 @@
 /**
  * 
  */
+function CheckInputValue(tableName, keyWord, inputVal, buttonName)
+{
+	var KeyVal = $("#"+inputVal).val();
+	if (KeyVal != null&&KeyVal == "")
+	{
+		alert(keyWord+"不能为空!");
+		$("#"+inputVal).val("");
+		return;
+	}
+	$.post("Ajax/Check_Input_Ajax.jsp", {"TableName":tableName, "KeyWord":keyWord, "KeyVal":KeyVal}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			if (parseInt(data.split('$')[1]) > 0)
+			{
+				alert(keyWord+"已经存在或查询数据库异常!");
+				$("#"+inputVal).val("");
+				DisableButton(buttonName);
+				return;
+			}
+			EnableButton(buttonName);
+		}
+	});
+}
+
 function CheckAjaxResult(textStatus, data)
 {
 	if (textStatus == "success" && data.indexOf("error") < 0)

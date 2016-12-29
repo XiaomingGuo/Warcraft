@@ -14,7 +14,7 @@ import com.page.utilities.CPageAjaxUtil;
 
 public class QueryStorageItemAjax extends PageParentClass implements IPageInterface
 {
-    String[] m_displayArray = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存(QTY)", "库存(QTY)", "总价值"};
+    String[] m_displayArray = {"ID", "产品名称", "八码", "产品类型", "进货数量", "出库数量", "库存(QTY)", "单价(￥)", "总价值(￥)"};
     private IPageAjaxUtil hAjaxHandle;
     private List<List<String>> g_recordList, g_productInfo, g_productType;
     

@@ -46,8 +46,8 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
-  	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-  	<script language="javascript" src="Page_JS/NewMaterialInfoJS.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
+	<script language="javascript" src="Page_JS/NewMaterialInfoJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
   	<script type="text/javascript">
@@ -108,18 +108,18 @@
 							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="checkBarcode()">
 						</td>
 			   			<td align="right">
-							<input type="text" name="productname" id="productname" style='width:120px'>
+							<input type="text" name="productname" id="productname" style='width:120px' onblur="checkProductName()">
 						</td>
 			   			<td align="right">
-							<input type="text" name="WeightUnit" id="WeightUnit" style='width:90px'>
+							<input type="text" name="WeightUnit" id="WeightUnit" value="0" style='width:90px'>
 						</td>
 			   			<td align="right">
-							<input type="text" name="ProductWeight" id="ProductWeight" style='width:70px'>
+							<input type="text" name="ProductWeight" id="ProductWeight" value="0" style='width:70px'>
 						</td>
 			   			<td align="right">
 							<input type="text" name="Description" id="Description" value="无备注" style='width:120px'>
 						</td>
-						<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="additem(this)"></td>
+						<td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="additem(this)" disabled="disabled"></td>
 				  	</tr>
 			  	</table>
 			  	<br><br>

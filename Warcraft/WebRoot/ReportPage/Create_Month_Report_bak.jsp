@@ -18,6 +18,7 @@
 		String path = request.getContextPath();
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		request.setCharacterEncoding("UTF-8");
+		String splitFlag=(String)request.getParameter("OrderItemSelect").replace(" ", "");
 		String storage_name=(String)request.getParameter("store_name").replace(" ", "");
 		String product_type=(String)request.getParameter("product_type").replace(" ", "");
 		String product_name=(String)request.getParameter("product_name").replace(" ", "");
@@ -34,18 +35,28 @@
 		else
 		{
 			MonthReport hPageHandle = new MonthReport();
-			//String rtnRst = hPageHandle.GenerateResponseString(storage_name, product_type, product_name, user_name, beginDate.replace("-", ""), endDate.replace("-", ""));
-			List<List<String>> recordList = hPageHandle.GenDisplayRecordList(storage_name, product_type, product_name, user_name, beginDate.replace("-", ""), endDate.replace("-", ""));
+			String rtnRst = hPageHandle.GenerateResponseString(storage_name, product_type, product_name, user_name, beginDate.replace("-", ""), endDate.replace("-", ""));
 			
-			List<List<String>> writeList = hPageHandle.GetSaveSummaryList(recordList, (beginDate + " ~ " + endDate).replace("-", ""));
-			writeList.add(0, Arrays.asList("ID", "库名", "类型", "名称", "八码", "消耗数量", "单价", "供应商", "查询范围"));
+			String[] tempArray = rtnRst.split("\\$");
+			int iColCount = Integer.parseInt(tempArray[0]), iRowCount = Integer.parseInt(tempArray[1]) - 1;
+			
+			List<List<String>> writeList = new ArrayList<List<String>>();
+			for(int iRow = 0; iRow < iRowCount + 1; iRow++)
+			{
+				List<String> tempList = new ArrayList<String>();
+				for(int iCol = 2; iCol < iColCount + 2; iCol++)
+				{
+					tempList.add(tempArray[iRow*iColCount + iCol]);
+				}
+				writeList.add(tempList);
+			}
 			ExcelManagment excelUtil = new ExcelManagment(new ExcelCreate("d:\\tempFolder", "MonthReport.xls"));
-			excelUtil.execWriteExcelBlock(writeList, 8);
+			excelUtil.execWriteExcelBlock(writeList, Integer.parseInt(splitFlag));
 			String fileFullPath = "d:\\tempFolder\\MonthReport.xls";
 			fileFullPath = new String(fileFullPath.getBytes("iso-8859-1"));
 			SmartUpload su = new SmartUpload(); // 新建一个smartupload对象 	
 			su.initialize(pageContext); 		// 初始化准备操作  
-			
+		
 			// 设定contentdisposition为null以禁止浏览器自动打开文件， 
 			//保证点击链接后是下载文件。若不设定，则下载的文件扩展名为 
 			//doc时，浏览器将自动用word打开它。扩展名为pdf时， 

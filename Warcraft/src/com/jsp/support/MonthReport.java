@@ -77,7 +77,7 @@ public class MonthReport extends PageParentClass implements IPageInterface
 		return rtnRst;
 	}
     
-    private List<String> GetProductBarCodeList(String storage_name, String product_type, String product_name)
+    public List<String> GetProductBarCodeList(String storage_name, String product_type, String product_name)
     {
         List<String> rtnRst = new ArrayList<String>();
         for(int iRecord = 0; iRecord < g_productInfo.get(PRODUCT_INFO.name.getIndex()).size(); iRecord++)
@@ -159,9 +159,9 @@ public class MonthReport extends PageParentClass implements IPageInterface
 		return rtnRst;
 	}
 	
-    public List<String> GetResultByStartEndDate(List<String> barcodeList, String user_name)
+    private List<List<String>> GetResultByStartEndDate(List<String> barcodeList, String user_name)
     {
-        List<String> rtnRst = new ArrayList<String>();
+        List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         int iRowNum = 1;
     	for(int iRecordIdx = 0; iRecordIdx < g_recordList.get(0).size(); iRecordIdx++)
     	{
@@ -169,64 +169,60 @@ public class MonthReport extends PageParentClass implements IPageInterface
     		String curUser = user_name.contains("请选择")?user_name:g_recordList.get(4).get(iRecordIdx);
     		if(barcodeList.contains(g_recordList.get(0).get(iRecordIdx))&&curUser.equals(user_name))
     		{
-                rtnRst.add(Integer.toString(iRowNum));
-                rtnRst.add(curProductInfo.get(PRODUCT_INFO.name.getIndex()));
-                rtnRst.add(g_recordList.get(0).get(iRecordIdx));
-                rtnRst.add(g_recordList.get(1).get(iRecordIdx));
-                rtnRst.add(g_recordList.get(2).get(iRecordIdx));
+    			rtnRst.get(0).add(Integer.toString(iRowNum));
+    			rtnRst.get(1).add(curProductInfo.get(PRODUCT_INFO.name.getIndex()));
+    			rtnRst.get(2).add(g_recordList.get(0).get(iRecordIdx));
+    			rtnRst.get(3).add(g_recordList.get(1).get(iRecordIdx));
+    			rtnRst.get(4).add(g_recordList.get(2).get(iRecordIdx));
                 int in_Qty = Integer.parseInt(g_recordList.get(3).get(iRecordIdx));
-                rtnRst.add(Integer.toString(in_Qty));
-                rtnRst.add(g_recordList.get(4).get(iRecordIdx));
+                rtnRst.get(5).add(Integer.toString(in_Qty));
+                rtnRst.get(6).add(g_recordList.get(4).get(iRecordIdx));
                 String samplePrice = curProductInfo.get(PRODUCT_INFO.sample_price.getIndex());
                 double totalPrice = Double.parseDouble(samplePrice)*in_Qty;
-                rtnRst.add(samplePrice);
+                rtnRst.get(7).add(samplePrice);
         		NumberFormat formatter = new DecimalFormat("#.###");
-                rtnRst.add(formatter.format(totalPrice));
-                rtnRst.add(g_recordList.get(5).get(iRecordIdx));
-                rtnRst.add("已领取");
+        		rtnRst.get(8).add(formatter.format(totalPrice));
+        		rtnRst.get(9).add(g_recordList.get(5).get(iRecordIdx));
+        		rtnRst.get(10).add("已领取");
                 iRowNum++;
     		}
     	}
         return rtnRst;
     }
     
-    public String GenerateResponseString(String storage_name, String product_type, String product_name, String user_name, String beginDate, String endDate)
+    public List<List<String>> GenDisplayRecordList(String storage_name, String product_type, String product_name, String user_name, String beginDate, String endDate)
     {
-        String rtnRst = "";
         InitGlobelRecord(beginDate, endDate);
         List<String> bar_code_List = GetProductBarCodeList(storage_name, product_type, product_name);
-        
-        List<String> recordList = GetResultByStartEndDate(bar_code_List, user_name);
-        
-        rtnRst += m_displayArray.length + "$";
-        rtnRst += recordList.size()/m_displayArray.length+1 + "$";
-        for(int idx = 0; idx < m_displayArray.length; idx++)
-            rtnRst += m_displayArray[idx] + "$";
+        List<List<String>> recordList = GetResultByStartEndDate(bar_code_List, user_name);
         
         double totalRepertoryPrice = 0.0;
         int inSum=0;
-        for(int idx = 0; idx < recordList.size(); idx++)
+        for(int idx = 0; idx < recordList.get(0).size(); idx++)
         {
-            rtnRst += recordList.get(idx) + "$";
-            if(idx%m_displayArray.length == 5)
-                inSum += Integer.parseInt(recordList.get(idx));
-            else if(idx%m_displayArray.length == 8)
-                totalRepertoryPrice += Double.parseDouble(recordList.get(idx));
+            inSum += Integer.parseInt(recordList.get(5).get(idx));
+            totalRepertoryPrice += Double.parseDouble(recordList.get(8).get(idx));
         }
         
         for(int idx = 0; idx < m_displayArray.length-7; idx++)
         {
-            rtnRst += "-$";
+        	recordList.get(idx).add("-");
         }
-        
-        //{"ID", "名称", "八码", "批号", "申请人", "数量", "使用者", "单价", "总价", "申请日期", "领取确认"};
         NumberFormat formatter = new DecimalFormat("#.###");
-        rtnRst += "汇总$"+Integer.toString(inSum)+"$";
-        rtnRst += "-$";
-        rtnRst += "总价值$";
-        rtnRst += formatter.format(totalRepertoryPrice)+"$";
-        rtnRst += "-$-$";
-        return rtnRst;
+        recordList.get(4).add("汇总");
+        recordList.get(5).add(Integer.toString(inSum));
+        recordList.get(6).add("-");
+        recordList.get(7).add("总价值");
+        recordList.get(8).add(formatter.format(totalRepertoryPrice));
+        recordList.get(9).add("-");
+        recordList.get(10).add("-");
+        return recordList;
+    }
+    
+    public String GenerateResponseString(String storage_name, String product_type, String product_name, String user_name, String beginDate, String endDate)
+    {
+        List<List<String>> recordList = GenDisplayRecordList(storage_name, product_type, product_name, user_name, beginDate, endDate);
+        return hAjaxHandle.GenerateAjaxString(recordList);
     }
     
     public List<String> QueryProTypeStorage(String storageName)
@@ -265,5 +261,49 @@ public class MonthReport extends PageParentClass implements IPageInterface
         DBTableParent hORHandle = new DatabaseStore("Other_Record");
         hORHandle.QueryRecordGroupByList(Arrays.asList("Bar_Code"));
         return hORHandle.getDBRecordList("Bar_Code");
+    }
+    
+    private List<String> GetDisplayBarCodeGroup(List<List<String>> recordList)
+    {
+    	List<String> rtnRst = new ArrayList<String>();
+    	for(int idx = 0; idx < recordList.get(2).size(); idx++)
+    	{
+    		if(!rtnRst.contains(recordList.get(2).get(idx)))
+    			rtnRst.add(recordList.get(2).get(idx));
+    	}
+    	return rtnRst;
+    }
+    
+    private String GetDisplayQtyByBarCode(String sampleBarCode, List<List<String>> recordList)
+    {
+    	int totalQty = 0;
+    	for(int idx = 0; idx < recordList.get(2).size(); idx++)
+    	{
+    		if(sampleBarCode.equals(recordList.get(2).get(idx)))
+    			totalQty += Integer.parseInt(recordList.get(5).get(idx));
+    	}
+    	return Integer.toString(totalQty);
+    }
+    
+    public List<List<String>> GetSaveSummaryList(List<List<String>> recordList, String strDateRange)
+    {
+    	List<List<String>> rtnRst = new ArrayList<List<String>>();
+		List<String> displayBarCodeList = GetDisplayBarCodeGroup(recordList);
+		for(int iBarCodeIdx = 0; iBarCodeIdx < displayBarCodeList.size()-1; iBarCodeIdx++)
+		{
+    		List<String> curProductInfo = GetCurrentProductInfoByBarcode(displayBarCodeList.get(iBarCodeIdx));
+			List<String> tempList = new ArrayList<String>();
+			tempList.add(Integer.toString(iBarCodeIdx+1));
+			tempList.add(curProductInfo.get(PRODUCT_INFO.storeroom.getIndex()));
+			tempList.add(curProductInfo.get(PRODUCT_INFO.product_type.getIndex()));
+			tempList.add(curProductInfo.get(PRODUCT_INFO.name.getIndex()));
+			tempList.add(displayBarCodeList.get(iBarCodeIdx));
+			tempList.add(GetDisplayQtyByBarCode(displayBarCodeList.get(iBarCodeIdx), recordList));
+			tempList.add(curProductInfo.get(PRODUCT_INFO.sample_price.getIndex()));
+			tempList.add(curProductInfo.get(PRODUCT_INFO.sample_vendor.getIndex()));
+			tempList.add(strDateRange);
+			rtnRst.add(tempList);
+		}
+		return rtnRst;
     }
 }

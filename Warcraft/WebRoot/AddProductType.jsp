@@ -44,6 +44,7 @@
 
   </head>
 	<script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
+	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
   <body>
     <jsp:include page="Menu/MainMenu.jsp"/>
     <br><br>
@@ -55,43 +56,50 @@
 			   			<th align="center">添加产品类型</th>
 			   		</tr>
 					<tr>
-				  		<td align="right">
-					  		<label>库名:</label>
-						  	<select name="store_name_addtype" id="store_name_addtype" style="width:193px">
-							  	<option value = "--请选择--">--请选择--</option>
+						<td align="right">
+							<label>库名:</label>
+							<select name="store_name_addtype" id="store_name_addtype" style="width:193px">
+								<option value = "--请选择--">--请选择--</option>
 <%
 								for(int i = 0; i < store_name.size(); i++)
 								{
 %>
-							  	<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
+								<option value = <%= i + 1 %>><%=store_name.get(i)%></option>
 <%
 								}
 %>
-						  	</select>
-					  	</td>
-				  	</tr>
-			   		<tr>
-			   			<td align="right">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
 				    		<label>请输入产品类型:</label>
-				    		<input type="text" name="producttype" id="producttype" style='width:140px'>
-				    		<input type="button" value="Add" onclick="changeAddType(this)" style='width:50px'>
+				    		<input type="text" name="producttype" id="producttype" onblur="checkProductType()" style='width:140px'>
+				    		<input type="button" name="EnsureAdd" id="EnsureAdd" value="Add" onclick="changeAddType(this)" style='width:50px' disabled="disabled">
 			    		</td>
 			    	</tr>
-			   	</table>
+			    	</table>
 			</td>
 		</tr>
-   	</table>
-  	<script type="text/javascript">
+	</table>
+	<script type="text/javascript">
+		function checkProductType()
+		{
+			CheckInputValue("Product_Type", "name", "producttype", "EnsureAdd");
+		}
+		
 		function changeAddType(obj)
 		{
-			if ($("#store_name_addtype").find("option:selected").text().indexOf("请选择") >= 0 || $('#producttype').val() == "")
+			var storeName = GetSelectedContent("store_name_addtype");
+			var proType = $("#producttype").val();
+			if (storeName.indexOf("请选择") >= 0 || proType == "")
 			{
-				alert("未选择库房名或产品类型为空!");
+				alert("未选择库房名或未填写库名!");
 				return;
 			}
-			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":$("#store_name_addtype").find("option:selected").text(), "pro_type":$('#producttype').val()}, function(data, textStatus)
+			$.post("Ajax/AddProTypeAjax.jsp", {"storeroom":storeName, "pro_type":proType}, function(data, textStatus)
 			{
-				if (!(textStatus == "success" && data.indexOf("产品类型") < 0))
+				if (!CheckAjaxResult(textStatus, data))
 				{
 					alert(data);
 				}

@@ -12,8 +12,8 @@ $(function()
 		ClearSelectContent("product_type");
 		$("#productname").val("");
 		$("#barcode").val("");
-		$("#WeightUnit").val("");
-		$("#ProductWeight").val("");
+		$("#WeightUnit").val("0");
+		$("#ProductWeight").val("0");
 		$.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":GetSelectedContent("store_name_addproduct")}, function(data, textStatus)
 		{
 			if (CheckAjaxResult(textStatus, data))
@@ -35,9 +35,9 @@ $(function()
 		$("#productname").val("");
 		$("#barcode").val("");
 		$("#QTY").val("");
-		$("#WeightUnit").val("");
+		$("#WeightUnit").val("0");
 		$("#WeightUnit").removeAttr("readonly");
-		$("#ProductWeight").val("");
+		$("#ProductWeight").val("0");
 		$("#ProductWeight").removeAttr("readonly");
 		$("#PriceUnit").val("");
 		$.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":GetSelectedContent("product_type")}, function(data, textStatus)
@@ -54,26 +54,14 @@ $(function()
 	});
 });
 
+function checkProductName()
+{
+	CheckInputValue("Product_Info", "name", "productname", "confirm_button");
+}
+
 function checkBarcode(obj)
 {
-	var checkedBarcode = $("#barcode").val();
-	if(checkedBarcode == null||checkedBarcode == "" || checkedBarcode.length != 8)
-	{
-		alert("八码的内容和位数不符合要求");
-		$("#barcode").val("");
-		return;
-	}
-	$.post("Ajax/Check_Barcode_Ajax.jsp", {"Bar_Code":checkedBarcode}, function(data, textStatus)
-	{
-		if (CheckAjaxResult(textStatus, data))
-		{
-			if (parseInt(data.split('$')[1]) > 0)
-			{
-				alert("八码已存在!");
-				$("#barcode").val("");
-			}
-		}
-	});
+	CheckInputValue("Product_Info", "Bar_Code", "barcode", "confirm_button");
 }
 
 function changeProductName(obj)
@@ -83,8 +71,8 @@ function changeProductName(obj)
 
 function CheckSubmitInfo()
 {
-	if(GetSelectedContent("store_name_addproduct").indexOf("请选择")>0||GetSelectedContent("product_type").indexOf("请选择")>0||
-			$("#productname").val() == ""||$("#barcode").val() == ""||$("#Description").val() == "")
+	if(GetSelectedContent("store_name_addproduct").indexOf("请选择") > 0||GetSelectedContent("product_type").indexOf("请选择") > 0||
+			$("#productname").val() == ""||$("#barcode").val() == ""||$("#WeightUnit").val() == ""||$("#ProductWeight").val() == ""||$("#Description").val() == "")
 	{
 		return false;
 	}
