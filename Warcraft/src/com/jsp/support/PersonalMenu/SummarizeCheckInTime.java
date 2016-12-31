@@ -109,9 +109,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         DBTableParent hUIHandle = new DatabaseStore("User_Info");
         hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
         List<List<String>> rtnRst = GetRecordByKeylist(hUIHandle, new String[] {"name", "check_in_id"});
-        if(rtnRst.get(0).contains("root"))
+        if(rtnRst.get(0).equals("root"))
             rtnRst.get(0).remove("root");
-        if(rtnRst.get(1).contains("99999"))
+        if(rtnRst.get(1).equals("99999"))
             rtnRst.get(1).remove("99999");
         return rtnRst;
     }
@@ -122,7 +122,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<String> tempList = GetPersonHolidayMarkPerMonth(checkInId, queryDate, g_HolidayMarkList);
         for(int idx=0; idx < tempList.size(); idx++)
         {
-            if(rtnRst.contains(tempList.get(idx)))
+            if(rtnRst.equals(tempList.get(idx)))
                 rtnRst.remove(tempList.get(idx));
         }
         return rtnRst;

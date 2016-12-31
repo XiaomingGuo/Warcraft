@@ -245,7 +245,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         String rtnRst = "";
         for(int iQuery = 0; iQuery < g_productInfo.get(0).size(); iQuery++)
         {
-            if(g_productInfo.get(0).get(iQuery).contains(proName))
+            if(g_productInfo.get(0).get(iQuery).equals(proName))
             {
                 rtnRst = g_productInfo.get(1).get(iQuery);
                 break;
@@ -259,7 +259,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         String rtnRst = "";
         for(int iQuery = 0; iQuery < g_productInfo.get(0).size(); iQuery++)
         {
-            if(g_productInfo.get(1).get(iQuery).contains(barCode))
+            if(g_productInfo.get(1).get(iQuery).equals(barCode))
             {
                 rtnRst = g_productInfo.get(getKey).get(iQuery);
                 break;
@@ -273,7 +273,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         List<String> rtnRst = new ArrayList<String>();
         for(int iQuery = 0; iQuery < g_productInfo.get(0).size(); iQuery++)
         {
-            if(g_productInfo.get(2).get(iQuery).contains(proType))
+            if(g_productInfo.get(2).get(iQuery).equals(proType))
                 rtnRst.add(g_productInfo.get(0).get(iQuery));
         }
         return rtnRst;
@@ -315,7 +315,7 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
             List<String> tempList = new ArrayList<String>();
             for(int idx = 0; idx < g_productType.get(0).size(); idx++)
             {
-                if(g_productType.get(1).get(idx).contains(storeName.get(storeIdx)))
+                if(g_productType.get(1).get(idx).equals(storeName.get(storeIdx)))
                     tempList.add(g_productType.get(0).get(idx));
             }
             rtnRst.add(tempList);

@@ -459,9 +459,9 @@ public class PageParentClass
         else
             hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("name", "isAbsense"), Arrays.asList(queryKeyVal, "1"));
         List<String> rtnRst = hUIHandle.getDBRecordList(getKeyWord);
-        if(getKeyWord.contains("name"))
+        if(getKeyWord.equals("name"))
             rtnRst.remove("root");
-        else if(getKeyWord.contains("check_in_id"))
+        else if(getKeyWord.equals("check_in_id"))
             rtnRst.remove("99999");
         return rtnRst;
     }
