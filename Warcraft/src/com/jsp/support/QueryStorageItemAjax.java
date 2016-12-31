@@ -216,24 +216,27 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
     
     public List<String> GetProductBarCodeList(String storeName, String proType, String proName, String barCode)
     {
-        List<String> rtnRst = new ArrayList<String>(), tempBarCodeList = new ArrayList<String>();
-        if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") < 0&&proName.indexOf("请选择") >= 0)
+        List<String> rtnRst = new ArrayList<String>();
+        if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") >= 0&&proName.indexOf("请选择") >= 0)
+        {
+            List<String> tempTypeList = GetProductTypeList(Arrays.asList(storeName)).get(0);
+            for(int iTypeIdx = 0; iTypeIdx < tempTypeList.size(); iTypeIdx++)
+            {
+                List<String> tempList = QueryProNameByProType(tempTypeList.get(iTypeIdx));
+                for(int iRecordIdx = 0; iRecordIdx < tempList.size(); iRecordIdx++)
+                	rtnRst.add(QueryBarCodeByProName(tempList.get(iRecordIdx)));
+            }
+        }
+        else if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") < 0&&proName.indexOf("请选择") >= 0)
         {
             List<String> tempList = QueryProNameByProType(proType);
             for(int iRecordIdx = 0; iRecordIdx < tempList.size(); iRecordIdx++)
-                tempBarCodeList.add(QueryBarCodeByProName(tempList.get(iRecordIdx)));
+            	rtnRst.add(QueryBarCodeByProName(tempList.get(iRecordIdx)));
         }
         else if(storeName.indexOf("请选择") < 0&&proType.indexOf("请选择") < 0&&proName.indexOf("请选择") < 0)
         {
-            tempBarCodeList.add(barCode);
+            rtnRst.add(barCode);
         }
-        
-        for(int idx = 0; idx < tempBarCodeList.size(); idx++)
-        {
-            if(g_recordList.get(0).contains(tempBarCodeList.get(idx)))
-                rtnRst.add(tempBarCodeList.get(idx));
-        }
-        
         return rtnRst;
     }
     

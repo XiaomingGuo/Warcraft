@@ -66,6 +66,7 @@ function DisplayTableContent(addDate)
 function SubmitQty(obj)
 {
     var valueList = obj.name.split("$");
+    var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
     DisableButton(valueList[2]+"Rej");
     DisableButton(valueList[2]+"Sure");
     $.post("Ajax/OtherStoreMenu/Submit_Other_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
@@ -75,14 +76,14 @@ function SubmitQty(obj)
             alert("确认入库错误!");
             return;
         }
-        location.reload();
+        location.href ="OtherStoreMenu/QueryOther.jsp?SubmitDate="+addDate;
     });
 }
 
 function RejectQty(obj)
 {
-	alert(obj.name);
     var valueList = obj.name.split("$");
+    var addDate = dojo.widget.byId("SubmitDate").inputNode.value;
     DisableButton(valueList[2]+"Rej");
     DisableButton(valueList[2]+"Sure");
     $.post("Ajax/OtherStoreMenu/Reject_Storage_Qty_Ajax.jsp", {"Batch_Lot":valueList[0], "Bar_Code":valueList[1]}, function(data, textStatus)
@@ -92,7 +93,7 @@ function RejectQty(obj)
             alert("删除库存错误!");
             return;
         }
-        location.reload();
+        location.href ="OtherStoreMenu/QueryOther.jsp?SubmitDate="+addDate;
     });
 }
 
