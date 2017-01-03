@@ -489,6 +489,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<Long> GetAbsenceDayAndDelayTime(String checkInId, String checkInDate, List<List<String>> recordList)
     {
         List<Long> rtnRst = new ArrayList<Long>();
+        if(IsHolidayDate(checkInId, checkInDate))
+        	return Arrays.asList(0L, 0L, 0L);
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = GetWorkGroupID(checkInId, checkInDate, recordList);
@@ -503,11 +505,30 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             rtnRst.add(GetOneDaysOverTime(workGroupId, checkINAndOutTime));
         }
         else
-            return Arrays.asList(2L, 0L, 0L);
+        	rtnRst = Arrays.asList(2L, 0L, 0L);
         return rtnRst;
     }
     
-    private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
+    private boolean IsHolidayDate(String checkInId, String checkInDate)
+    {
+    	if(g_HolidayMarkList.size() <= 0)
+    		return false;
+    	int iHolidayIdx = 0;
+        for(iHolidayIdx = 0; iHolidayIdx < g_HolidayMarkList.get(0).size(); iHolidayIdx++)
+        {
+        	if(g_HolidayMarkList.get(0).get(iHolidayIdx).equals(checkInId)&&g_HolidayMarkList.get(1).get(iHolidayIdx).equals(checkInDate))
+        	{
+            	if(g_HolidayMarkList.get(2).get(iHolidayIdx).equals("上午假")||g_HolidayMarkList.get(2).get(iHolidayIdx).equals("下午假"))
+            		return false;
+        		break;
+        	}
+        }
+        if(iHolidayIdx == g_HolidayMarkList.get(0).size())
+        	return false;
+        return true;
+	}
+
+	private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
         String holidayTime = GetHolidayMarkTime(checkInId, checkInDate, "上午假");
@@ -724,6 +745,8 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private String IsAbsenceDay(String user_id, String checkInDate,
             List<List<String>> recordList)
     {
+    	if(IsHolidayDate(user_id, checkInDate))
+    		return "";
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = Integer.parseInt(recordList.get(3).get(0));
