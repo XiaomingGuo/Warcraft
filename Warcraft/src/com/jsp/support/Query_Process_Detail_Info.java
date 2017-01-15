@@ -34,11 +34,14 @@ public class Query_Process_Detail_Info extends PageParentClass
 		return rtnRst;
 	}
 	
-	public List<String> GetProductInfoByProType(String proType)
+	public List<List<String>> GetProductInfoByProType(String proType, List<String> getKeyList)
 	{
 		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("product_type"), Arrays.asList(proType));
-		return hPIHandle.getDBRecordList("name");
+		List<List<String>> rtnRst = new ArrayList<List<String>>();
+		for(int idx=0; idx < getKeyList.size(); idx++)
+			rtnRst.add(hPIHandle.getDBRecordList(getKeyList.get(idx)));
+		return rtnRst;
 	}
 	
 	public List<List<String>> GetProductInfoByProNameAndProType(String proName, String proType)

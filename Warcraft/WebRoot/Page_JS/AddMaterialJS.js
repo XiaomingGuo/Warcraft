@@ -51,7 +51,7 @@ $(function()
 			if (CheckAjaxResult(textStatus, data))
 			{
 				var pro_list = data.split("$");
-				for (var i = 1; i < pro_list.length - 1; i++)
+				for (var i = 1; i < pro_list.length/2; i++)
 				{
 					AddNewSelectItem("product_name", pro_list[i]);
 				}

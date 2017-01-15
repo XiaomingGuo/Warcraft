@@ -83,7 +83,10 @@
                 </select>
             </td>
             <td align="right">
-                <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
+                <select name="bar_code" id="bar_code" style="width:100px">
+                      <option value = "--请选择--">--请选择--</option>
+                </select>
+                <!-- <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px"> -->
             </td>
             <td align="right">
                 <input type="text" id="user_name" name="user_name" list="userName" style="width:100px"/>

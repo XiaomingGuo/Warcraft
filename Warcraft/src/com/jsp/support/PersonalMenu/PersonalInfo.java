@@ -135,10 +135,13 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     private String GetCheckInDateByWorkGroup(String overTimeDate, String checkInTime, String workGroup)
     {
         List<String> workGroupTimeList = GetWorkGroupTime(workGroup);
-        if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+        if(workGroupTimeList.size() > 0)
         {
-            if(DateAdapter.TimeSpan(checkInTime, "11:30:00") < 0)
-                return DateAdapter.getYesterdayDateString(overTimeDate);
+	        if(DateAdapter.TimeSpan(workGroupTimeList.get(0), workGroupTimeList.get(1)) > 0)
+	        {
+	            if(DateAdapter.TimeSpan(checkInTime, "11:30:00") < 0)
+	                return DateAdapter.getYesterdayDateString(overTimeDate);
+	        }
         }
         return overTimeDate;
     }

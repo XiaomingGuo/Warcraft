@@ -46,9 +46,7 @@
 		<html>
 			<head>    
 				<title>系统登陆</title>
-				<link rel='stylesheet' type='text/css' href='css/style.css'>
 			</head>
-
 			<body>
 				<div align="center">
 					<br><br><br><br><br><br><br><br><br><br><br><br><br><br>

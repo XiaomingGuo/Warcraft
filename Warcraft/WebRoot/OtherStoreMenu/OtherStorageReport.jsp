@@ -43,7 +43,6 @@
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<link href="css/style.css" rel="stylesheet" type="text/css">
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
@@ -53,10 +52,10 @@
 	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherStorageReportJS.js"></script>
 	<script language="javascript" src="dojojs/dojo.js"></script>
   <body>
+    <jsp:include page="../Menu/MainMenu.jsp"/>
 	<script type="text/javascript">
 		dojo.require("dojo.widget.*");
 	</script>
-    <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
     <form action="ReportPage/SaveStorageReport.jsp" method="post">
     <table align="center" border="1">

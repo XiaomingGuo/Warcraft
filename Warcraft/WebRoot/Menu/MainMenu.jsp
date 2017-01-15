@@ -117,7 +117,7 @@
 						</ul></li>
 					<li><a href="javascript:void(0)">财务及报表</a>
 						<ul>
-							<li><a href="OtherStoreMenu/OtherStorageReport.jsp">五金库对账</a></li>
+							<li><a href="FinancialCheckMenu/OtherStorageFinancialCheck.jsp">五金库核账</a></li>
 						</ul></li>
 					<li><a href="Quit.jsp">退出</a></li>
 				</ul>

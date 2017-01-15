@@ -22,14 +22,16 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
+			String[] displayKeyList = new String[] {"ID", "产品名称", "八码", "库名", "产品类型", "单重", "单价", "供应商", "生产能力", "备注"};
 			List<List<String>> productType = hPageHandle.GetProductTypeList(store_name);
+			List<String> vendorList = hPageHandle.GetAllVendorName();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <base href="<%=basePath%>">
     
-    <title>五金库库存</title>
+    <title>五金库财务核查</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -109,7 +111,65 @@
 		</div>
 		</aside>
 		<br><br>
-		<table id="display_storage" border='1' align="center"></table>
+		<table id="modify_info" border="1" align="center">
+        <tr>
+<%
+            for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+            {
+%>
+            <th><%= displayKeyList[iCol-1]%></th>
+<%
+            }
+%>
+        </tr>
+        <tr>
+<%
+            for(int iCol = 1; iCol <= displayKeyList.length; iCol++)
+            {
+                if("操作" == displayKeyList[iCol-1])
+                {
+%>
+        <td>
+            <center><input type="button" value="确认" onclick="ExecModify()"></center>
+        </td>
+<%
+                }
+                else if("八码" == displayKeyList[iCol-1])
+                {
+%>
+        <td><input name="barcode" id="barcode" type="text" style="width:100" onblur="InputBarcode()"></td>
+<%
+                }
+                else if("供应商" == displayKeyList[iCol-1])
+                {
+%>
+        <td>
+            <select name="Vendor" id="Vendor" style="width:120px">
+                <option value = "--请选择--">--请选择--</option>
+<%
+                    for(int i = 0; i < vendorList.size(); i++)
+                    {
+%>
+                <option value = <%=vendorList.get(i) %>><%=vendorList.get(i)%></option>
+<%
+                    }
+%>
+            </select>
+        </td>
+<%
+                }
+                else
+                {
+%>
+        <td>...</td>
+<%
+                }
+            }
+%>
+        </tr>
+    </table>
+    <br>
+	<table id="display_storage" border='1' align="center"></table>
 	<script src="JS/jquery-accordion-menu.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function () {

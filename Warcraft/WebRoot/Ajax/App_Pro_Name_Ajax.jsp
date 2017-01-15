@@ -5,12 +5,15 @@
 	String rtnRst = "remove$";
 	
 	Query_Process_Detail_Info hPageHandle = new Query_Process_Detail_Info();
-	List<String> proInfo = hPageHandle.GetProductInfoByProType(pro_type);
+	List<List<String>> proInfo = hPageHandle.GetProductInfoByProType(pro_type, Arrays.asList("name", "Bar_Code"));
 	
-	if (proInfo != null)
+	if (proInfo != null&&proInfo.get(0).size()>0)
 	{
 		for(int i = 0; i < proInfo.size(); i++)
-			rtnRst += proInfo.get(i) + '$';
+		{
+			for(int j = 0; j < proInfo.get(i).size(); j++)
+				rtnRst += proInfo.get(i).get(j) + '$';
+		}
 	}
 	out.write(rtnRst);
 %>

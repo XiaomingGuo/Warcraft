@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.DB.factory.DatabaseStore;
 import com.Warcraft.Interface.*;
+import com.Warcraft.SupportUnit.CQueryAllTableRecord;
 import com.Warcraft.SupportUnit.DBTableParent;
 import com.Warcraft.SupportUnit.DateAdapter;
 import com.jsp.support.PageParentClass;
@@ -17,6 +18,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     public String[] m_displayArray = {"ID", "姓名", "工号", "漏打卡次数", "迟到早退(分)", "2小时加班(小时)", "4小时加班(小时)", "周末加班(天)", "总加班(小时)", "年假(天)", "事假(天)", "查询时间范围"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
+    private IAllTableRecord hAllRecordHandle;
     private List<List<String>> g_recordList, g_HolidayMarkList, g_OverTimeRecord, g_WorkGroupRecord;
     
     public SummarizeCheckInTime()
@@ -24,6 +26,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         hQueryHandle = new CRecordsQueryUtil();
         hAjaxHandle = new CPageAjaxUtil();
         hAjaxHandle.setTableHandle(this);
+        hAllRecordHandle = new CQueryAllTableRecord();
     }
     
     @Override
@@ -42,111 +45,95 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return this.hQueryHandle;
     }
     
-    public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
+    private boolean CheckInputValue(String responseFlag, String user_id, String userName, String queryDate)
     {
-        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
-        return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
-    }
-    
-    public int GetWorkDayOfAWeekByWorkGroupId(String queryKeyVal)
-    {
-        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
-        return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
+        if(queryDate.length() != 6||responseFlag.isEmpty())
+            return false;
+        if(!responseFlag.toLowerCase().contains("pageresponse"))
+        {
+            if(user_id.isEmpty()||userName.isEmpty())
+                return false;
+        }
+        return true;
     }
     
     private void GetAllGlobeRawDataFromDatabase(String queryDate)
     {
         String[] getKeyWord = new String[] {"check_in_id", "check_in_date", "check_in_time", "work_group"};
-        g_recordList = GetAllTableRecordByDateSpan("Check_In_Raw_Data", "check_in_date", queryDate, Arrays.asList("check_in_date", "check_in_time"), getKeyWord);
+        g_recordList = hAllRecordHandle.Check_In_Raw_Data_AllByDateSpan("check_in_date", queryDate, Arrays.asList("check_in_date", "check_in_time"), getKeyWord);
         getKeyWord = new String[] {"check_in_id", "holiday_date", "holiday_info", "holiday_time"};
-        g_HolidayMarkList = GetAllTableRecordByDateSpan("Holiday_Mark", "holiday_date", queryDate, Arrays.asList("holiday_date"), getKeyWord);
+        g_HolidayMarkList = hAllRecordHandle.Holiday_Mark_AllByDateSpan("holiday_date", queryDate, Arrays.asList("holiday_date"), getKeyWord);
         getKeyWord = new String[] {"check_in_id", "over_time_date", "over_time_hour"};
-        g_OverTimeRecord = GetAllTableRecordByDateSpan("Over_Time_Record", "over_time_date", queryDate, Arrays.asList("over_time_date"), getKeyWord);
+        g_OverTimeRecord = hAllRecordHandle.Over_Time_Record_AllByDateSpan("over_time_date", queryDate, Arrays.asList("over_time_date"), getKeyWord);
         getKeyWord = new String[] {"id", "group_name", "check_in_time", "check_out_time"};
-        g_WorkGroupRecord = GetAllTableRecord("Work_Group_Info", null, getKeyWord);
-        if(g_recordList.size() <= 0)
-            g_recordList.add(new ArrayList<String>());
+        g_WorkGroupRecord = hAllRecordHandle.Work_Group_Info_All(getKeyWord);
     }
     
-    private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
+    //Class Enter
+    public String GenerateResponseString(String responseFlag, String user_id, String userName, String queryDate)
     {
-        List<List<String>> rtnRst = new ArrayList<List<String>>();
-        if(null != hTBHandle&&getKeyWord.length>0)
+        if(CheckInputValue(responseFlag, user_id, userName, queryDate))
         {
-            if(hTBHandle.getTableInstance().RecordDBCount() > 0)
+            GetAllGlobeRawDataFromDatabase(queryDate);
+            if(g_recordList != null&&g_recordList.size() > 0)
             {
-                for(int idx=0; idx < getKeyWord.length; idx++)
-                    rtnRst.add(hTBHandle.getDBRecordList(getKeyWord[idx]));
+	            List<List<String>> recordList = GetResultStringList(responseFlag, user_id, userName, queryDate);
+	            if(recordList != null&&recordList.size() > 0)
+	                return hAjaxHandle.GenerateAjaxString(recordList);
             }
         }
-        return rtnRst;
+        return "";
     }
     
-    private List<List<String>> GetAllTableRecord(String tableName, List<String> orderList, String[] getKeyWord)
+    private List<List<String>> GetResultStringList(String responseFlag, String user_id, String userName, String queryDate)
     {
-        DBTableParent hTBHandle = new DatabaseStore(tableName);
-        hTBHandle.QueryAllRecord();
-        return GetRecordByKeylist(hTBHandle, getKeyWord);
+        if(responseFlag.toLowerCase().contains("pageresponse"))
+            return GetAllDisplayData(user_id, userName, queryDate);
+        else if(responseFlag.toLowerCase().contains("miss"))
+            return GetMissCheckInDataDisplayData(user_id, userName, queryDate);
+        else if(responseFlag.toLowerCase().contains("weekend"))
+            return GetWeekendCheckInDataDisplayData(user_id, userName, queryDate);
+        else if(responseFlag.toLowerCase().contains("late"))
+            return GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
+        return null;
     }
     
-    private List<List<String>> GetAllTableRecordByDateSpan(String tableName, String queryKeyword, String queryDate, List<String> orderList, String[] getKeyWord)
-    {
-        DBTableParent hTBHandle = new DatabaseStore(tableName);
-        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", orderList);
-        return GetRecordByKeylist(hTBHandle, getKeyWord);
-    }
-    
-    private String GetWorkGroupName(String id)
-    {
-        DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
-        return GetRecordByKeylist(hUIHandle, new String[] {"group_name"}).get(0).get(0);
-        //return hUIHandle.getDBRecordList("group_name").get(0);
-    }
-    
-    private List<List<String>> GetAllUserInfo()
-    {
-        DBTableParent hUIHandle = new DatabaseStore("User_Info");
-        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("isAbsense"), Arrays.asList("1"));
-        List<List<String>> rtnRst = GetRecordByKeylist(hUIHandle, new String[] {"name", "check_in_id"});
-        if(rtnRst.get(0).contains("root"))
-            rtnRst.get(0).remove("root");
-        if(rtnRst.get(1).contains("99999"))
-            rtnRst.get(1).remove("99999");
-        return rtnRst;
-    }
-    
-    private List<String> GetAllCheckInDate(String queryDate, String checkInId)
+    private List<String> GetAllCheckInDateWithoutHoliday(String queryDate, String checkInId)
     {
         List<String> rtnRst = DateAdapter.getAllDayStringOfAMonth(queryDate);
-        List<String> tempList = GetPersonHolidayMarkPerMonth(checkInId, queryDate, g_HolidayMarkList);
+        List<String> tempList = GetPersonHolidayPerMonth(checkInId, queryDate);
         for(int idx=0; idx < tempList.size(); idx++)
         {
-            if(rtnRst.equals(tempList.get(idx)))
+            if(rtnRst.contains(tempList.get(idx)))
                 rtnRst.remove(tempList.get(idx));
         }
         return rtnRst;
     }
     
-    private List<String> GetPersonHolidayMarkPerMonth(String checkInId, String queryDate, List<List<String>> recordList)
+    private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
     {
         List<String> rtnRst = new ArrayList<String>();
-        if(recordList != null&&recordList.size() > 0)
+        int absenceDay = 0, delayTime = 0, overTime = 0, overTime2Hour = 0, overTime4Hour = 0;
+        
+        for(int idx = 0; idx < checkInDateList.size(); idx++)
         {
-            int beginDate = Integer.parseInt(queryDate + "01");
-            int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
-            
-            for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
-            {
-                String checkInDate = Integer.toString(beginDate+dateOffset);
-                for(int item=0; item < recordList.get(0).size(); item++)
-                {
-                    if(recordList.get(0).get(item).equals(checkInId)&&recordList.get(1).get(item).equals(checkInDate)&&
-                            !(recordList.get(2).get(item).equals("上午假")||recordList.get(2).get(item).equals("下午假")))
-                        rtnRst.add(recordList.get(1).get(item));
-                }
-            }
+            List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInId, checkInDateList.get(idx)));
+            List<Long> overTimeList = tempValueList.size() > 0?GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2)):Arrays.asList(0L,0L);
+            absenceDay += tempValueList.get(0);
+            delayTime += tempValueList.get(1);
+            overTime2Hour += overTimeList.get(0);
+            overTime4Hour += overTimeList.get(1);
+            overTime += tempValueList.get(2);
         }
+        rtnRst.add(Integer.toString(absenceDay));
+        rtnRst.add(Integer.toString(delayTime));
+        rtnRst.add(Integer.toString(overTime2Hour));
+        rtnRst.add(Integer.toString(overTime4Hour));
+        rtnRst.add(Float.toString(GetWeekendOverTime(checkInId, queryDate)));
+        rtnRst.add(Integer.toString(overTime/60));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
+        rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
+        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getDayCountOfAMonth(queryDate)));
         return rtnRst;
     }
     
@@ -155,21 +142,19 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         List<List<String>> userInfo = null;
         if(user_id.isEmpty())
-            userInfo = GetAllUserInfo();
+            userInfo = hAllRecordHandle.User_Info_AllWithoutRoot(new String[] {"name", "check_in_id"});
         List<String> checkInNameList = user_id.isEmpty()?userInfo.get(0):Arrays.asList(userName);
         List<String> checkInIdList = user_id.isEmpty()?userInfo.get(1):Arrays.asList(user_id);
         
         for(int idx = 0; idx < checkInIdList.size(); idx++)
         {
-            List<String> checkInDateList = GetAllCheckInDate(queryDate, checkInIdList.get(idx));
+            List<String> checkInDateList = GetAllCheckInDateWithoutHoliday(queryDate, checkInIdList.get(idx));
             rtnRst.get(0).add(Integer.toString(idx + 1));
             rtnRst.get(1).add(checkInNameList.get(idx));
             rtnRst.get(2).add(checkInIdList.get(idx));
             List<String> checkInResult = GetAPersonCheckInSummary(checkInIdList.get(idx), queryDate, checkInDateList);
             for(int item = 3; item < m_displayArray.length; item++)
-            {
                 rtnRst.get(item).add(checkInResult.get(item-3));
-            }
         }
         return rtnRst;
     }
@@ -180,7 +165,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         
-        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
+        List<String> checkInDateList = GetAllCheckInDateWithoutHoliday(queryDate, user_id);
         List<List<String>> missCheckInResult = GetAPersonMissCheckInSummary(user_id, queryDate, checkInDateList);
         
         for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
@@ -222,7 +207,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         m_displayArray = new String[]{"ID", "姓名", "工号", "打卡日期", "打卡时间(分)", "班次"};
         List<List<String>> rtnRst = hAjaxHandle.GenDisplayResultList();
         
-        List<String> checkInDateList = GetAllCheckInDate(queryDate, user_id);
+        List<String> checkInDateList = GetAllCheckInDateWithoutHoliday(queryDate, user_id);
         List<List<String>> missCheckInResult = GetAPersonBeLateAndLeaveEarlySummary(user_id, queryDate, checkInDateList);
         
         for(int idx=0; idx < missCheckInResult.get(0).size(); idx++)
@@ -237,44 +222,74 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private int GetADayWorkGroup(List<List<String>> recordList, String checkInId, String checkInDate)
+    public List<String> GetAllUserRecordByCheckInId(String queryKeyVal, String getKeyWord)
     {
-        int idx=0;
-        for(idx=0; idx < recordList.get(0).size(); idx++)
-        {
-            if(recordList.get(0).get(idx).equals(checkInId)&&recordList.get(1).get(idx).equals(checkInDate))
-                break;
-        }
-        if(recordList.get(0).size() == idx)
-            return 0;
-        return Integer.parseInt(recordList.get(3).get(idx));
+        hQueryHandle.setDBHandle(new DatabaseStore("User_Info"));
+        return hQueryHandle.GetTableContentByKeyWord("check_in_id", queryKeyVal, getKeyWord);
     }
     
-    private List<String> GetAPersonCheckInSummary(String checkInId, String queryDate, List<String> checkInDateList)
+    public int GetWorkDayOfAWeekByWorkGroupId(String queryKeyVal)
+    {
+        hQueryHandle.setDBHandle(new DatabaseStore("Work_Group_Info"));
+        return Integer.parseInt(hQueryHandle.GetTableContentByKeyWord("id", queryKeyVal, "work_days_aweek").get(0));
+    }
+    
+    private List<List<String>> GetRecordByKeylist(DBTableParent hTBHandle, String[] getKeyWord)
+    {
+        List<List<String>> rtnRst = new ArrayList<List<String>>();
+        if(null != hTBHandle&&getKeyWord.length>0)
+        {
+            if(hTBHandle.getTableInstance().RecordDBCount() > 0)
+            {
+                for(int idx=0; idx < getKeyWord.length; idx++)
+                    rtnRst.add(hTBHandle.getDBRecordList(getKeyWord[idx]));
+            }
+        }
+        return rtnRst;
+    }
+    
+    private String GetWorkGroupName(String id)
+    {
+        DBTableParent hUIHandle = new DatabaseStore("Work_Group_Info");
+        hUIHandle.QueryRecordByFilterKeyList(Arrays.asList("id"), Arrays.asList(id));
+        return GetRecordByKeylist(hUIHandle, new String[] {"group_name"}).get(0).get(0);
+        //return hUIHandle.getDBRecordList("group_name").get(0);
+    }
+    
+    private List<String> GetPersonHolidayPerMonth(String checkInId, String queryDate)
     {
         List<String> rtnRst = new ArrayList<String>();
-        int absenceDay = 0, delayTime = 0, overTime = 0, overTime2Hour = 0, overTime4Hour = 0;
-        
-        for(int idx = 0; idx < checkInDateList.size(); idx++)
+        if(g_HolidayMarkList != null&&g_HolidayMarkList.size() > 0)
         {
-            List<Long> tempValueList = GetAbsenceDayAndDelayTime(checkInId, checkInDateList.get(idx), GetOneDayCheckRawData(g_recordList, checkInId, checkInDateList.get(idx)));
-            List<Long> overTimeList = tempValueList.size() > 0?GetActiveOverTime(checkInId, checkInDateList.get(idx), tempValueList.get(2), GetADayWorkGroup(g_recordList, checkInId, checkInDateList.get(idx))):Arrays.asList(0L,0L);
-            absenceDay += tempValueList.get(0);
-            delayTime += tempValueList.get(1);
-            overTime2Hour += overTimeList.get(0);
-            overTime4Hour += overTimeList.get(1);
-            overTime += tempValueList.get(2);
+            int beginDate = Integer.parseInt(queryDate + "01");
+            int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
+            
+            for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+            {
+                String checkInDate = Integer.toString(beginDate+dateOffset);
+                for(int item=0; item < g_HolidayMarkList.get(0).size(); item++)
+                {
+                    if(g_HolidayMarkList.get(0).get(item).equals(checkInId)&&g_HolidayMarkList.get(1).get(item).equals(checkInDate)&&
+                            !(g_HolidayMarkList.get(2).get(item).equals("上午假")||g_HolidayMarkList.get(2).get(item).equals("下午假")))
+                        rtnRst.add(g_HolidayMarkList.get(1).get(item));
+                }
+            }
         }
-        rtnRst.add(Integer.toString(absenceDay));
-        rtnRst.add(Integer.toString(delayTime));
-        rtnRst.add(Integer.toString(overTime2Hour));
-        rtnRst.add(Integer.toString(overTime4Hour));
-        rtnRst.add(Float.toString(GetWeekendOverTime(checkInId, queryDate)));
-        rtnRst.add(Integer.toString(overTime/60));
-        rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
-        rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
-        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getDayCountOfAMonth(queryDate)));
         return rtnRst;
+    }
+    
+
+    private int GetADayWorkGroup(String checkInId, String checkInDate)
+    {
+        int idx=0;
+        for(idx=0; idx < g_recordList.get(0).size(); idx++)
+        {
+            if(g_recordList.get(0).get(idx).equals(checkInId)&&g_recordList.get(1).get(idx).equals(checkInDate))
+                break;
+        }
+        if(g_recordList.get(0).size() == idx)
+            return 0;
+        return Integer.parseInt(g_recordList.get(3).get(idx));
     }
     
     private float GetWeekendOverTime(String checkInId, String queryDate)
@@ -313,11 +328,11 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private List<Long> GetActiveOverTime(String checkInId, String checkInDate, Long overTime, int workGroupId)
+    private List<Long> GetActiveOverTime(String checkInId, String checkInDate, Long overTime)
     {
         List<Long> rtnRst = new ArrayList<Long>();
         String curOverTimeHour = GetOverTimeRecord(checkInId, checkInDate, g_OverTimeRecord);
-        List<String> workGroupTimeList = GetWorkGroupTime(workGroupId, g_WorkGroupRecord);
+        List<String> workGroupTimeList = GetWorkGroupTime(GetADayWorkGroup(checkInId, checkInDate), g_WorkGroupRecord);
         if(!curOverTimeHour.isEmpty())
         {
             long applyOverTime = Long.parseLong(curOverTimeHour);
@@ -489,8 +504,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private List<Long> GetAbsenceDayAndDelayTime(String checkInId, String checkInDate, List<List<String>> recordList)
     {
         List<Long> rtnRst = new ArrayList<Long>();
-        if(IsHolidayDate(checkInId, checkInDate))
-        	return Arrays.asList(0L, 0L, 0L);
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = GetWorkGroupID(checkInId, checkInDate, recordList);
@@ -509,25 +522,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-    private boolean IsHolidayDate(String checkInId, String checkInDate)
-    {
-    	if(g_HolidayMarkList.size() <= 0)
-    		return false;
-    	int iHolidayIdx = 0;
-        for(iHolidayIdx = 0; iHolidayIdx < g_HolidayMarkList.get(0).size(); iHolidayIdx++)
-        {
-        	if(g_HolidayMarkList.get(0).get(iHolidayIdx).equals(checkInId)&&g_HolidayMarkList.get(1).get(iHolidayIdx).equals(checkInDate))
-        	{
-            	if(g_HolidayMarkList.get(2).get(iHolidayIdx).equals("上午假")||g_HolidayMarkList.get(2).get(iHolidayIdx).equals("下午假"))
-            		return false;
-        		break;
-        	}
-        }
-        if(iHolidayIdx == g_HolidayMarkList.get(0).size())
-        	return false;
-        return true;
-	}
-
 	private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
@@ -607,43 +601,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst += null == checkInTime?1L:0L;
         rtnRst += null == checkOutTime?1L:0L;
         return rtnRst;
-    }
-    
-    // Finish End
-    public String GenerateResponseString(String responseFlag, String user_id, String userName, String queryDate)
-    {
-        if(CheckInputValue(responseFlag, user_id, userName, queryDate))
-        {
-            GetAllGlobeRawDataFromDatabase(queryDate);
-            List<List<String>> recordList = GetResultStringList(responseFlag, user_id, userName, queryDate);
-            if(recordList.size() > 0)
-                return hAjaxHandle.GenerateAjaxString(recordList);
-        }
-        return "";
-    }
-    
-    private List<List<String>> GetResultStringList(String responseFlag, String user_id, String userName, String queryDate)
-    {
-        if(responseFlag.toLowerCase().contains("pageresponse"))
-            return GetAllDisplayData(user_id, userName, queryDate);
-        else if(responseFlag.toLowerCase().contains("miss"))
-            return GetMissCheckInDataDisplayData(user_id, userName, queryDate);
-        else if(responseFlag.toLowerCase().contains("weekend"))
-            return GetWeekendCheckInDataDisplayData(user_id, userName, queryDate);
-        else
-            return GetBeLateAndLeaveEarlyDisplayData(user_id, userName, queryDate);
-    }
-    
-    private boolean CheckInputValue(String responseFlag, String user_id, String userName, String queryDate)
-    {
-        if(queryDate.length() != 6)
-            return false;
-        if(!responseFlag.toLowerCase().contains("pageresponse"))
-        {
-            if(user_id.length() <= 0||userName.length() <= 0)
-                return false;
-        }
-        return true;
     }
     
     private List<List<String>> GetAPersonBeLateAndLeaveEarlySummary(String user_id, String queryDate, List<String> checkInDateList)
@@ -745,8 +702,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     private String IsAbsenceDay(String user_id, String checkInDate,
             List<List<String>> recordList)
     {
-    	if(IsHolidayDate(user_id, checkInDate))
-    		return "";
         if(recordList.get(0).size() > 0)
         {
             int workGroupId = Integer.parseInt(recordList.get(3).get(0));

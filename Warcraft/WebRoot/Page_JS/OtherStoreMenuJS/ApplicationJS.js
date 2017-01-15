@@ -3,13 +3,11 @@
  */
 $(function()
 {
-    var $bar_code = $('#bar_code');
-    
     $('#store_name').change(function()
     {
         ClearSelectContent("product_type");
         ClearSelectContent("product_name");
-        $bar_code.val("");
+        ClearSelectContent("bar_code");
         $.post("Ajax/App_Pro_Type_Ajax.jsp", {"FilterKey1":GetSelectedContent("store_name")}, function(data, textStatus)
         {
             if (CheckAjaxResult(textStatus, data))
@@ -27,15 +25,16 @@ $(function()
     $('#product_type').change(function()
     {
         ClearSelectContent("product_name");
-        $bar_code.val("");
+        ClearSelectContent("bar_code");
         $.post("Ajax/App_Pro_Name_Ajax.jsp", {"FilterKey1":GetSelectedContent("product_type")}, function(data, textStatus)
         {
             if (CheckAjaxResult(textStatus, data))
             {
                 var pro_list = data.split("$");
-                for (var i = 1; i < pro_list.length - 1; i++)
+                for (var i = 1; i < pro_list.length/2; i++)
                 {
                     AddNewSelectItem("product_name", pro_list[i]);
+                    AddNewSelectItem("bar_code", pro_list[pro_list.length/2-1+i]);
                 }
             }
         });
@@ -43,57 +42,46 @@ $(function()
     
     $('#product_name').change(function()
     {
-        $bar_code.empty();
         $.post("Ajax/App_Pro_QTY_Ajax.jsp", {"product_name":GetSelectedContent("product_name"),"product_type":GetSelectedContent("product_type"), "storage":"other_storage"}, function(data, textStatus)
         {
             if (CheckAjaxResult(textStatus, data))
             {
                 var code_list = data.split("$");
-                $bar_code.val(code_list[1]);
+                var index = 0;
+                $("#bar_code option").each(function()
+                {
+                    if($(this).text()==code_list[1])
+                    {
+                        bar_code.options[index].selected = true;
+                    }
+                    index++;
+                });
                 $('#Total_QTY').attr("value", code_list[code_list.length-1]);
             }
         });
-    });                
-});
-
-function InputBarcode()
-{
-    if(!CheckBarcode())
-    {
-        return;
-    }
-    $.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#bar_code").val()}, function(data, textStatus)
-    {
-        if (CheckAjaxResult(textStatus, data))
-        {
-            var proInfoList = data.split("$");
-            $("#store_name").val(proInfoList[1]);
-            $("#product_type").empty();
-            AddNewSelectItem("product_type", proInfoList[2]);
-            $("#product_name").empty();
-            AddNewSelectItem("product_name", proInfoList[3]);
-            $("#product_name").change();
-        }
     });
-}
-
-function CheckBarcode()
-{
-    var Barcode = $("#bar_code").val();
-    if(Barcode == null||Barcode.length != 8)
+    
+    $('#bar_code').change(function()
     {
-        $("#barcode").val("");
-        return false;
-    }
-    if (IsProductionMaterial(Barcode))
-    {
-        ClearSelectContent("product_type");
-        ClearSelectContent("product_name");
-        alert("注意不能申请生产物料!");
-        return false;
-    }
-    return true;
-}
+        $.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":GetSelectedContent("bar_code")}, function(data, textStatus)
+        {
+            if (CheckAjaxResult(textStatus, data))
+            {
+                var proInfoList = data.split("$");
+                var index = 0;
+                $("#product_name option").each(function()
+                {
+                    if($(this).text()==proInfoList[3])
+                    {
+                        product_name.options[index].selected = true;
+                    }
+                    index++;
+                });
+                $("#product_name").change();
+            }
+        });
+    });
+});
 
 function CheckSubmitInfo()
 {
@@ -157,7 +145,7 @@ function addappitem(obj)
                 }
                 else if("八码" == tab.rows[0].cells[iCol].innerText)
                 {
-                    val = $("#bar_code").val();
+                    val = GetSelectedContent("bar_code");
                 }
                 else if("使用者" == tab.rows[0].cells[iCol].innerText)
                 {
@@ -169,7 +157,7 @@ function addappitem(obj)
                 }
                 else if("申请时间" == tab.rows[0].cells[iCol].innerText)
                 {
-                	val = dojo.widget.byId("ApplyDate").inputNode.value.replace(/-/g, "");
+                    val = dojo.widget.byId("ApplyDate").inputNode.value.replace(/-/g, "");
                 }
                 myCurrentRow.appendChild(CreateTabCellContext("td", val));
             }

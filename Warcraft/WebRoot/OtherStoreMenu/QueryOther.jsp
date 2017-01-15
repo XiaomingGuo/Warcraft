@@ -55,9 +55,9 @@
 				<input type="button" value="查询" style='width:100px' onclick="QueryOtherStoreRecord()">
 			</td>
 		</tr>
-   	</table>
+    </table>
     <br>
-        <table id="modify_info" border="1" align="center">
+    <table id="modify_info" border="1" align="center">
         <tr>
 <%
             for(int iCol = 1; iCol <= displayKeyList.length; iCol++)

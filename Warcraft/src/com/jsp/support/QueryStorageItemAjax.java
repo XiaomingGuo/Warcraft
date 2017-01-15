@@ -322,4 +322,12 @@ public class QueryStorageItemAjax extends PageParentClass implements IPageInterf
         }
         return rtnRst;
     }
+    
+    public List<String> GetAllVendorName()
+    {
+        DBTableParent hOSHandle = new DatabaseStore("Vendor_Info");
+        hOSHandle.QueryRecordGroupByList(Arrays.asList("vendor_name"));
+        return hOSHandle.getDBRecordList("vendor_name");
+    }
+
 }

@@ -44,7 +44,6 @@
     <meta http-equiv="expires" content="0">    
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
     <meta http-equiv="description" content="This is my page">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
     <!--
     <link rel="stylesheet" type="text/css" href="styles.css">
     -->
@@ -54,10 +53,10 @@
     <script language="javascript" src="Page_JS/OtherStoreMenuJS/MonthReportJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body>
-       <script type="text/javascript">
+    <jsp:include page="../Menu/MainMenu.jsp"/>
+    <script type="text/javascript">
         dojo.require("dojo.widget.*");
     </script>
-    <jsp:include page="../Menu/MainMenu.jsp"/>
     <br>
     <!-- <form action="ReportPage/Create_Month_Report.jsp" method="post"> -->
     <form action="ReportPage/Create_Month_Report.jsp" method="post">
@@ -143,20 +142,6 @@
         <br>
         <table align="center">
         <tr>
-<%--             <td align="right">
-                 <label>分页列:</label>
-                 <select name="OrderItemSelect" id="OrderItemSelect" style="width:100px">
-                     <option value = "--请选择--">--请选择--</option>
-<%
-                    for(int i = 0; i < displayKeyList.length; i++)
-                    {
-%>
-                      <option value=<%=i%>><%=displayKeyList[i]%></option>
-<%
-                    }
-%>
-                </select>
-            </td> --%>
             <td align="center">
                 <input type="submit" value="下载汇总" style='width:80px'/>
             </td>
