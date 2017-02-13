@@ -178,7 +178,7 @@ public class UploadCheckInTime extends PageParentClass implements IPageInterface
         return rtnRst;
     }
     
-    public String SubmitArrangeCheckInData(String strCheckInId, String strWorkGroup, String beginDate, String endDate)
+    public String SubmitUploadCheckInData(String strCheckInId, String strWorkGroup, String beginDate, String endDate)
     {
         String rtnRst = "";
         DBTableParent hWGIHandle = new DatabaseStore("Work_Group_Info");

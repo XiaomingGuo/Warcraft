@@ -9,7 +9,7 @@
     String endDate = request.getParameter("EndDate").replace(" ", "");
     
     if(userId.length() > 0&&workGroup.length() > 0)
-        rtnRst += hPageHandle.SubmitArrangeCheckInData(userId, workGroup, beginDate, endDate);
+        rtnRst += hPageHandle.SubmitUploadCheckInData(userId, workGroup, beginDate, endDate);
     
     out.write(rtnRst);
 %>
