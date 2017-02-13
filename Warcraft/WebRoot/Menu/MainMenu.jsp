@@ -113,7 +113,7 @@
 							<li><a href="PersonMenu/AddBatchHoliday.jsp">批量补录假期</a></li>
 							<li><a href="PersonMenu/AddHolidays.jsp">节假日及转班</a></li>
 							<li><a href="PersonMenu/SummaryHoliday.jsp">节假日查询</a></li>
-							<li><a href="PersonMenu/ArrangeCheckInTime.jsp">人员排班</a></li>
+							<li><a href="PersonMenu/UploadCheckInTime.jsp">考勤数据上传</a></li>
 						</ul></li>
 					<li><a href="javascript:void(0)">财务及报表</a>
 						<ul>

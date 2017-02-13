@@ -1,8 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonalMenu.ArrangeCheckInTime" %>
+<%@ page import="com.jsp.support.PersonalMenu.UploadCheckInTime" %>
 <%
-    String rtnRst = "error:添加假期信息失败！";
-    ArrangeCheckInTime hPageHandle = new ArrangeCheckInTime();
+	String rtnRst = "error:添加假期信息失败！";
+    UploadCheckInTime hPageHandle = new UploadCheckInTime();
     String userId = request.getParameter("userId").replace(" ", "");
     String HolidayType = request.getParameter("HolidayType").replace(" ", "");
     String beginDate = request.getParameter("BeginDate").replace(" ", "");

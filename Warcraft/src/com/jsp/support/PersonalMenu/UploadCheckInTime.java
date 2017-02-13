@@ -15,13 +15,13 @@ import com.jsp.support.PageParentClass;
 import com.page.utilities.CPageAjaxUtil;
 import com.page.utilities.CRecordsQueryUtil;
 
-public class ArrangeCheckInTime extends PageParentClass implements IPageInterface
+public class UploadCheckInTime extends PageParentClass implements IPageInterface
 {
     String[] m_displayList = {"ID", "姓名", "工号", "部门", "选择班次", "操作"};
     private IRecordsQueryUtil hQueryHandle;
     private IPageAjaxUtil hAjaxHandle;
     
-    public ArrangeCheckInTime()
+    public UploadCheckInTime()
     {
         hQueryHandle = new CRecordsQueryUtil();
         hAjaxHandle = new CPageAjaxUtil();

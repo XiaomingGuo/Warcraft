@@ -1,9 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.PersonalMenu.ArrangeCheckInTime" %>
+<%@ page import="com.jsp.support.PersonalMenu.UploadCheckInTime" %>
 <%
-
-    String rtnRst = "";
-    ArrangeCheckInTime hPageHandle = new ArrangeCheckInTime();
+	String rtnRst = "";
+    UploadCheckInTime hPageHandle = new UploadCheckInTime();
     String userId = request.getParameter("userId").replace(" ", "");
     String AddDate = request.getParameter("AddDate").replace(" ", "");
     String HolidayType = request.getParameter("HolidayType").replace(" ", "");
