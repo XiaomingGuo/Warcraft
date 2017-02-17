@@ -29,7 +29,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>人员排班</title>
+    <title>考勤数据上传</title>
     
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
@@ -44,7 +44,7 @@
     <script language="javascript" src="JS/jquery-1.11.3.min.js"></script>
     <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
     <script language="javascript" src="Page_JS/PersonalMenuJS/PublicPersonalMenuJS.js"></script>
-    <script language="javascript" src="Page_JS/PersonalMenuJS/ArrangeCheckInTimeJS.js"></script>
+    <script language="javascript" src="Page_JS/PersonalMenuJS/UploadCheckInTimeJS.js"></script>
     <script language="javascript" src="dojojs/dojo.js"></script>
   <body onload="OnloadDisplay()">
     <script type="text/javascript">
@@ -74,9 +74,9 @@
     <br>
     <table align="center">
         <tr>
-            <td><input id="SelectFile1" name="SelectFile" type="file"></td>
-            <td><input name="commit" type="button" value="上传" style="width:100" onclick="BrowseFolder()"></td>
-            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitArrangeCheckIn()"></td>
+            <td><input id="SelectFile" name="SelectFile" type="file"></td>
+            <td><input type="text" name="fileName" id="fileName" value="" /></td>
+            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitUploadCheckIn()"></td>
         </tr>
     </table>
   </body>

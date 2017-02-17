@@ -1,7 +1,9 @@
 /**
  * 
  */
+
 var displayHead = ["ID", "姓名", "工号", "部门", "选择班次", "开始日期", "结束日期", "操作"];
+
 function OnloadDisplay()
 {
     PersonMenuOnloadDisplay("Ajax/PersonalMenu/Query_Arrange_Check_In_Time_Ajax.jsp");
@@ -81,9 +83,24 @@ function EnsureCheckInData(obj)
     }
 }
 
-function SubmitArrangeCheckIn()
+function SubmitUploadCheckIn()
 {
+	alert("123");
+    alert($('input[type=file]').val());
+	alert("456");
+    return;
     var tab = document.getElementById('check_in_list');
+    var filePath = document.getElementById("SelectFile");
+    filePath.select();
+    var realpath = document.selection.createRange().text;
+    
+    alert(filePath);
+    return;
+    var fileName = file;
+    
+    var pos=o.lastIndexOf("\\");
+    return o.substring(pos+1);
+    
     if(tab.rows.length < 2)
     {
         alert("申请人信息填写不完整!");
@@ -104,7 +121,7 @@ function SubmitArrangeCheckIn()
     }
 }
 
-function BrowseFolder()
+/*function BrowseFolder()
 {
 	try
 	{
@@ -122,11 +139,10 @@ function BrowseFolder()
 				Folder = Folder + "//";
 			}
 			document.getElementById("savePath").value=Folder;//savePath是指输出的控件id。
-			return Folder;
 		}
 	}
 	catch(e)
 	{ 
 		alert(e.message);
 	}
-}
+}*/
