@@ -72,7 +72,7 @@
     <br>
     <table id="check_in_list" border='1' align="center"></table>
     <br>
-    <form name="upform" action="UploadFile.jsp" method="post" enctype="multipart/form-data">
+    <form name="upform" action="UploadServlet" method="post" enctype="multipart/form-data">
         <table align="center">
             <tr>
                 <td><input id="SelectFile" name="SelectFile" type="file"></td>

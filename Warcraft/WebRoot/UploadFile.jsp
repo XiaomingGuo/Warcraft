@@ -9,10 +9,11 @@
     File file;
     int maxFileSize = 5000 * 1024;
     int maxMemSize = 5000 * 1024;
-    FileItemIterator fii = sfu.getItemIterator(request);//解析request 请求,并返回FileItemIterator集合  
-    while(fii.hasNext()){  
-        FileItemStream fis = fii.next();
+    //FileItemIterator fii = sfu.getItemIterator(request);//解析request 请求,并返回FileItemIterator集合  
+    //while(fii.hasNext()){  
+    //    FileItemStream fis = fii.next();
 
      // Verify the content type
-     String contentType = request.getContentType();
+    //    String contentType = request.getContentType();
+    //}
 %>
