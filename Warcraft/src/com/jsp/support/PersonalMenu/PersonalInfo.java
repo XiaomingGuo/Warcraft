@@ -106,6 +106,8 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
             rtnRst += Integer.toString(iSumEnsure) + "$";
             rtnRst += CheckPrecedingMonthData(recordList.get(1).get(0), queryDate) + "$";
         }
+        else
+            rtnRst += "error:考勤数据不存在,请确认数据已经上传!";
         return rtnRst;
     }
     
