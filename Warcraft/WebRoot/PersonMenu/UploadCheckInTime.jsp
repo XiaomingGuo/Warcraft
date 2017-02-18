@@ -72,13 +72,14 @@
     <br>
     <table id="check_in_list" border='1' align="center"></table>
     <br>
-    <table align="center">
-        <tr>
-            <td><input id="SelectFile" name="SelectFile" type="file"></td>
-            <td><input type="text" name="fileName" id="fileName" value="" /></td>
-            <td><input name="commit" type="button" value="提交" style="width:100" onclick="SubmitUploadCheckIn()"></td>
-        </tr>
-    </table>
+    <form name="upform" action="UploadFile.jsp" method="post" enctype="multipart/form-data">
+        <table align="center">
+            <tr>
+                <td><input id="SelectFile" name="SelectFile" type="file"></td>
+                <td><input name="commit" type="submit" value="提交" style="width:100"></td>
+            </tr>
+        </table>
+    </form>
   </body>
 </html>
 <%
