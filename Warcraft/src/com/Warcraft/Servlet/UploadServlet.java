@@ -48,7 +48,7 @@ public class UploadServlet extends HttpServlet {
 
         // constructs the folder where uploaded file will be stored
         String uploadFolder = getServletContext().getRealPath("")
-                 + DATA_DIRECTORY;
+                 + "..\\..\\..\\" + "CheckInFileFolder";
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload(factory);

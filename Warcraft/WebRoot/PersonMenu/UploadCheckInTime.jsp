@@ -52,26 +52,6 @@
     </script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
     <br><br>
-    <table align="center">
-        <tr>
-            <td align="center">
-                <h2>
-                    <label>开始时间:</label>
-                    <div dojoType="dropdowndatepicker" name="BeginDate" id="BeginDate" displayFormat="yyyyMMdd" value="<%=currentDate.substring(0,8)+"01" %>"></div>
-                </h2>
-            </td>
-            <td align="center">
-                <h2>
-                    <label>结束时间:</label>
-                    <div dojoType="dropdowndatepicker" name="EndDate" id="EndDate" displayFormat="yyyyMMdd" value="<%=endDayOfMonth %>"></div>
-                </h2>
-            </td>
-        </tr>
-    </table>
-    <table id="display_info" border='1' align="center"></table>
-    <br>
-    <table id="check_in_list" border='1' align="center"></table>
-    <br>
     <form name="upform" action="UploadServlet" method="post" enctype="multipart/form-data">
         <table align="center">
             <tr>
