@@ -18,19 +18,19 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 /**
  * Servlet implementation class UploadServlet
  */
-public class UploadServlet extends HttpServlet {
+public class UploadServlet extends HttpServlet
+{
     private static final long serialVersionUID = 1L;
-
-    private static final String DATA_DIRECTORY = "data";
     private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 10;
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 10;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // Check that we have a file upload request
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        //Check that we have a file upload request
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
-        if (!isMultipart) {
+        if (!isMultipart)
+        {
             return;
         }
 
@@ -47,8 +47,7 @@ public class UploadServlet extends HttpServlet {
         factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 
         // constructs the folder where uploaded file will be stored
-        String uploadFolder = getServletContext().getRealPath("")
-                 + "..\\..\\..\\" + "CheckInFileFolder";
+        String uploadFolder = getServletContext().getRealPath("") + "..\\..\\..\\" + "CheckInFileFolder";
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload(factory);
@@ -56,14 +55,16 @@ public class UploadServlet extends HttpServlet {
         // Set overall request size constraint
         upload.setSizeMax(MAX_REQUEST_SIZE);
 
-        try {
+        try
+        {
             // Parse the request
             List items = upload.parseRequest(request);
             Iterator iter = items.iterator();
-            while (iter.hasNext()) {
+            while (iter.hasNext())
+            {
                 FileItem item = (FileItem) iter.next();
-
-                if (!item.isFormField()) {
+                if (!item.isFormField())
+                {
                     String fileName = new File(item.getName()).getName();
                     String filePath = uploadFolder + File.separator + fileName;
                     File uploadedFile = new File(filePath);
@@ -72,18 +73,20 @@ public class UploadServlet extends HttpServlet {
                     item.write(uploadedFile);
                 }
             }
-
             // displays done.jsp page after upload finished
             request.getSession().setAttribute("error", "上传成功!");
             getServletContext().getRequestDispatcher("/tishi.jsp").forward(
                     request, response);
 
-        } catch (FileUploadException ex) {
-            throw new ServletException(ex);
-        } catch (Exception ex) {
+        }
+        catch (FileUploadException ex)
+        {
             throw new ServletException(ex);
         }
-
+        catch (Exception ex)
+        {
+            throw new ServletException(ex);
+        }
     }
 
 }
