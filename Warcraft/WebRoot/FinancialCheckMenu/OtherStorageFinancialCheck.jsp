@@ -1,9 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.jsp.support.QueryOtherStorageReport" %>
+<%@ page import="com.jsp.support.QueryOtherStorageFinancialCheck" %>
 <jsp:useBean id="mylogon" class="com.safe.UserLogon.DoyouLogon" scope="session"/>
 <%
 	String message="";
-	QueryOtherStorageReport hPageHandle = new QueryOtherStorageReport();
+	QueryOtherStorageFinancialCheck hPageHandle = new QueryOtherStorageFinancialCheck();
 
 	if(session.getAttribute("logonuser")==null)
 	{
