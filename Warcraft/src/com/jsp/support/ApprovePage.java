@@ -13,7 +13,7 @@ public class ApprovePage extends PageParentClass
 	public boolean ApproveApplication(String barcode, String recordID, String usedCount, String applyDate)
 	{
 		int used_count = Integer.parseInt(usedCount);
-		int repertory_count = GetStorageRepertory(barcode, Arrays.asList("Bar_Code"), Arrays.asList(barcode));
+		int repertory_count = GetStorageRepertory(barcode, Arrays.asList("Bar_Code", "isEnsure"), Arrays.asList(barcode, "1"));
 		if (repertory_count >= used_count)
 		{
 			List<List<String>> material_info_List = GetStorageRecordList(barcode);
@@ -106,7 +106,7 @@ public class ApprovePage extends PageParentClass
 		List<List<String>> rtnRst = new ArrayList<List<String>>();
 		DBTableParent hHandle = GenStorageHandle(barcode);
 		String[] keyArray = {"Batch_Lot", "IN_QTY", "OUT_QTY"};
-		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code"), Arrays.asList(barcode));
+		hHandle.QueryRecordByFilterKeyList(Arrays.asList("Bar_code", "isEnsure"), Arrays.asList(barcode, "1"));
 		for(int idx=0; idx < keyArray.length; idx++)
 		{
 			rtnRst.add(hHandle.getDBRecordList(keyArray[idx]));

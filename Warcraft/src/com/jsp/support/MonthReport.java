@@ -71,7 +71,7 @@ public class MonthReport extends PageParentClass implements IPageInterface
 		String[] getKeyWord = new String[] {"Bar_Code", "Batch_Lot", "proposer", "QTY", "user_name", "apply_date"};
 		
         DBTableParent hORHandle = new DatabaseStore("Other_Record");
-        hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("isApprove"), Arrays.asList("1"), "apply_date", beginDate, endDate, Arrays.asList("apply_date"));
+        hORHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("isApprove"), Arrays.asList("1"), "apply_date", Integer.toString(Integer.parseInt(beginDate)-1), Integer.toString(Integer.parseInt(endDate)+1), Arrays.asList("apply_date"));
 		for(int recordIdx=0; recordIdx < getKeyWord.length; recordIdx++)
 			rtnRst.add(hORHandle.getDBRecordList(getKeyWord[recordIdx]));
 		return rtnRst;

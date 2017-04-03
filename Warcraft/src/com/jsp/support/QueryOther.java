@@ -105,7 +105,7 @@ public class QueryOther extends PageParentClass implements IPageInterface
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         DBTableParent hOSHandle = new DatabaseStore("Other_Storage");
-        hOSHandle.QueryRecordByFilterKeyList(Arrays.asList("in_store_date"), Arrays.asList(curDate.replace("-", "")));
+        hOSHandle.QueryRecordByFilterKeyList(Arrays.asList("isEnsure"), Arrays.asList("0"));
         if (hOSHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"Bar_Code", "Batch_Lot", "IN_QTY", "OUT_QTY", "Price_Per_Unit", "Total_Price", "vendor_name", "id", "isEnsure"};

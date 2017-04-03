@@ -115,7 +115,7 @@
 					</tr>
 					<tr>
 						<td align="right">
-							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()">
+							<input type="text" name="barcode" id="barcode" style='width:100px' onblur="InputBarcode()" onkeydown="return enterEvent();">
 						</td>
 						<td align="right">
 							<input type="text" name="productname" id="productname" style='width:200px'>

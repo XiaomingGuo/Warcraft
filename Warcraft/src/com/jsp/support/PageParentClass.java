@@ -318,6 +318,12 @@ public class PageParentClass
         return String.format("%04d%s", mData.get(Calendar.YEAR), strSpan);
     }
     
+    public String GenPrecedingYearMonthString(String yearMonth)
+    {
+        String tempDateString = DateAdapter.getPrecedingMonthString(yearMonth);
+        return tempDateString.substring(0, 4) + "-" + tempDateString.substring(4, 6) + "-";
+    }
+    
     private int GetExAndStorageRecordCount(String strBarcode, String Batch_Lot)
     {
         DBTableParent hHandle = GenStorageHandle(strBarcode);

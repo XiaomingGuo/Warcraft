@@ -51,6 +51,13 @@ function InputBarcode(obj)
 	});
 }
 
+function enterEvent()
+{
+    key=window.event;
+    if (key.keyCode == 0xD)
+        InputBarcode();  
+}
+
 function AddMFGToolsMaterialFun()
 {
 	var tab = document.getElementById('display_add');

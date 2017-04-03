@@ -9,6 +9,7 @@ import java.util.List;
 import com.DB.factory.DatabaseStore;
 import com.Warcraft.Interface.IPageInterface;
 import com.Warcraft.SupportUnit.DBTableParent;
+import com.Warcraft.SupportUnit.DateAdapter;
 
 public class QueryOtherStorageReport extends PageParentClass implements IPageInterface
 {
@@ -134,7 +135,7 @@ public class QueryOtherStorageReport extends PageParentClass implements IPageInt
 		for(String storeVal : new String[]{GetStoreNameBySelectName(storeName), "ex" + GetStoreNameBySelectName(storeName)})
 		{
 			hStorageHandle = GenStorageHandleByStorageName(storeVal);
-			hStorageHandle.QueryRecordBetweenDateSpanAndOrderByListASC("create_date", beginDate, endDate, Arrays.asList("create_date"));
+			hStorageHandle.QueryRecordBetweenDateSpanAndOrderByListASC("in_store_date", beginDate.replace("-", ""), endDate.replace("-", ""), Arrays.asList("in_store_date"));
 			for(int recordIdx=0; recordIdx < getKeyWord.length; recordIdx++)
 			{
 				if(rtnRst.size() == getKeyWord.length)
@@ -349,5 +350,10 @@ public class QueryOtherStorageReport extends PageParentClass implements IPageInt
 		DBTableParent hPIHandle = new DatabaseStore("Product_Info");
 		hPIHandle.QueryAllRecord();
 		return hPIHandle.getDBRecordList("Bar_Code");
+	}
+	
+	public int GetMaxDayOfAMonth(String yearMonth)
+	{
+		return DateAdapter.getDayCountOfAMonth(yearMonth);
 	}
 }

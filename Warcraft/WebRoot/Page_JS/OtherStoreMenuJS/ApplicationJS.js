@@ -53,8 +53,19 @@ $(function()
                 $('#Total_QTY').attr("value", code_list[code_list.length-1]);
             }
         });
-    });                
+    });
 });
+
+function enterEvent()
+{
+    var item=document.getElementById('user_name');
+    key=window.event;
+    if (key.keyCode == 0xD)
+    {
+        InputBarcode();  
+        item.focus();
+    }
+}
 
 function InputBarcode()
 {
@@ -169,7 +180,7 @@ function addappitem(obj)
                 }
                 else if("申请时间" == tab.rows[0].cells[iCol].innerText)
                 {
-                	val = dojo.widget.byId("ApplyDate").inputNode.value.replace(/-/g, "");
+                    val = dojo.widget.byId("ApplyDate").inputNode.value.replace(/-/g, "");
                 }
                 myCurrentRow.appendChild(CreateTabCellContext("td", val));
             }

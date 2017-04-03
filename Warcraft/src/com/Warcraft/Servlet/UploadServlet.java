@@ -21,8 +21,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class UploadServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 10;
-    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 10;
+    private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 100;
+    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 100;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

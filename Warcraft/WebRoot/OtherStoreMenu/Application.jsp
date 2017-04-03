@@ -40,10 +40,10 @@
       <script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
       <script language="javascript" src="Page_JS/OtherStoreMenuJS/ApplicationJS.js"></script>
       <script language="javascript" src="dojojs/dojo.js"></script>
-	<body>
-	<script type="text/javascript">
-		dojo.require("dojo.widget.*");
-	</script>
+    <body>
+    <script type="text/javascript">
+        dojo.require("dojo.widget.*");
+    </script>
     <jsp:include page="../Menu/MainMenu.jsp"/>
       <br>
       <table id="inputTab" align="center" border="1">
@@ -83,7 +83,7 @@
                 </select>
             </td>
             <td align="right">
-                <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px">
+                <input name="bar_code" id="bar_code" onblur="InputBarcode()" style="width:100px" onkeydown=";return enterEvent();">
             </td>
             <td align="right">
                 <input type="text" id="user_name" name="user_name" list="userName" style="width:100px"/>
@@ -104,9 +104,9 @@
             <td align="right">
                 <input name="Total_QTY" id="Total_QTY" style="width:70px" readonly>
             </td>
-			<td align="center">
-    			<div dojoType="dropdowndatepicker" name="ApplyDate" id="ApplyDate" displayFormat="yyyy-MM-dd" value="<%=curDate %>"></div>
-			</td>
+            <td align="center">
+                <div dojoType="dropdowndatepicker" name="ApplyDate" id="ApplyDate" displayFormat="yyyy-MM-dd" value="<%=curDate %>"></div>
+            </td>
             <td align="center"><input align="middle" id="confirm_button" type="button" value="确认" onclick="addappitem(this)"></td>
           </tr>
     </table>

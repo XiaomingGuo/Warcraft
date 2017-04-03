@@ -26,7 +26,7 @@
 			String[] selectKeyList = {"库名", "类别", "名称", "供应商", "到货日期", "操作"};
 			String currentDate = hPageHandle.GenYearMonthString("-");
 			String beginDate = String.format("%s%s", currentDate, "01");
-			String endDate = String.format("%s%s", currentDate, "31");
+			String endDate = String.format("%s%s", currentDate, hPageHandle.GetMaxDayOfAMonth(currentDate.replace("-", "")));
 			
 			List<String> store_nameList = hPageHandle.GetStoreName("TOOLS");
 %>
