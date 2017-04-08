@@ -11,8 +11,12 @@ public class OtherInformation extends PageParentClass
         if (CheckParamValidityEqualsLength(barCode, 8))
         {
             DatabaseStore hPIHandle = new DatabaseStore("Product_Info");
-            hPIHandle.UpdateRecordByKeyList("name", proName, Arrays.asList("Bar_Code"), Arrays.asList(barCode));
-            hPIHandle.UpdateRecordByKeyList("description", description, Arrays.asList("Bar_Code"), Arrays.asList(barCode));
+            hPIHandle.QueryRecordByFilterKeyList(Arrays.asList("name"), Arrays.asList(proName));
+            if(hPIHandle.getTableInstance().RecordDBCount() <= 0)
+            {
+                hPIHandle.UpdateRecordByKeyList("name", proName, Arrays.asList("Bar_Code"), Arrays.asList(barCode));
+                hPIHandle.UpdateRecordByKeyList("description", description, Arrays.asList("Bar_Code"), Arrays.asList(barCode));
+            }
         }
         return false;
     }
