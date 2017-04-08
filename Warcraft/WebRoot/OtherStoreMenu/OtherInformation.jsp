@@ -22,7 +22,7 @@
 			String path = request.getContextPath();
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 			List<String> store_name = hPageHandle.GetStoreName("TOOLS");
-			String[] displayKeyList = new String[] {"ID", "产品名称", "八码", "库名", "产品类型", "单重", "单价", "供应商", "生产能力", "备注"};
+			String[] displayKeyList = new String[] {"ID", "产品名称", "八码", "库名", "产品类型", "单重", "单价", "供应商", "生产能力", "备注", "操作"};
 			List<List<String>> productType = hPageHandle.GetProductTypeList(store_name);
 			List<String> vendorList = hPageHandle.GetAllVendorName();
 %>
@@ -31,7 +31,7 @@
   <head>
     <base href="<%=basePath%>">
     
-    <title>五金库财务核查</title>
+    <title>五金信息</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -72,9 +72,9 @@
   </head>
 	<script language="javascript" src="JS/jquery-2.1.3.min.js"></script>
 	<script language="javascript" src="Page_JS/PagePublicFunJS.js"></script>
-	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherSummaryJS.js"></script>
+	<script language="javascript" src="Page_JS/OtherStoreMenuJS/OtherInformationJS.js"></script>
 	<body>
-    <jsp:include page="../Menu/MainMenu.jsp"/>
+	<jsp:include page="../Menu/MainMenu.jsp"/>
 		<aside class="main-sidebar">
 		<div class="zzsc-container">
 			<div class="content">
@@ -134,6 +134,18 @@
         </td>
 <%
                 }
+                else if("备注" == displayKeyList[iCol-1])
+                {
+%>
+        <td><input name="Description" id="Description" type="text" style="width:80"></td>
+<%
+                }
+                else if("产品名称" == displayKeyList[iCol-1])
+                {
+%>
+        <td><input name="proName" id="proName" type="text" style="width:190"></td>
+<%
+                }
                 else if("八码" == displayKeyList[iCol-1])
                 {
 %>
@@ -144,7 +156,7 @@
                 {
 %>
         <td>
-            <select name="Vendor" id="Vendor" style="width:120px">
+            <select name="VendorName" id="VendorName" style="width:120px">
                 <option value = "--请选择--">--请选择--</option>
 <%
                     for(int i = 0; i < vendorList.size(); i++)

@@ -60,10 +60,11 @@ function ModifyRecord(obj)
     modifytab.rows[1].cells[2].innerText=displaytab.rows[iRow].cells[2].innerText;
     modifytab.rows[1].cells[3].innerText=displaytab.rows[iRow].cells[3].innerText;
     modifytab.rows[1].cells[4].innerText=displaytab.rows[iRow].cells[4].innerText;
+    modifytab.rows[1].cells[5].innerText=displaytab.rows[iRow].cells[5].innerText;
     var index = 0;
     $("#workGroup option").each(function()
     {
-        if($(this).text()==displaytab.rows[iRow].cells[5].innerText)
+        if($(this).text()==displaytab.rows[iRow].cells[6].innerText)
         {
             workGroup.options[index].selected = true;
         }
