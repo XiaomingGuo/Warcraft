@@ -96,24 +96,44 @@ function InputBarcode()
 	{
 		return;
 	}
-	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#bar_code").val()}, function(data, textStatus)
+	var modifytab = document.getElementById('modify_info');
+	$.post("Ajax/Get_ProName_By_Barcode_Ajax.jsp", {"Bar_Code":$("#barcode").val()}, function(data, textStatus)
 	{
 		if (CheckAjaxResult(textStatus, data))
 		{
 			var proInfoList = data.split("$");
-			$("#store_name").val(proInfoList[1]);
-			$("#product_type").empty();
-			AddNewSelectItem("product_type", proInfoList[2]);
-			$("#product_name").empty();
-			AddNewSelectItem("product_name", proInfoList[3]);
-			$("#product_name").change();
+			modifytab.rows[1].cells[3].innerText=proInfoList[1];
+			modifytab.rows[1].cells[4].innerText=proInfoList[2];
+			$("#proName").val(proInfoList[3]);
+		}
+	});
+	$.post("Ajax/Get_ProductInfo_By_Barcode_Ajax.jsp", {"Bar_Code":$("#barcode").val()}, function(data, textStatus)
+	{
+		if (CheckAjaxResult(textStatus, data))
+		{
+			var proInfoList = data.split("$");
+			modifytab.rows[1].cells[0].innerText=proInfoList[1];
+			modifytab.rows[1].cells[5].innerText=proInfoList[5];
+			modifytab.rows[1].cells[6].innerText=proInfoList[6];
+			var index = 0;
+			$("#VendorName").val("--请选择--");
+			$("#VendorName option").each(function()
+			{
+				if($(this).text()==proInfoList[7])
+				{
+					VendorName.options[index].selected = true;
+				}
+				index++;
+			});
+			modifytab.rows[1].cells[8].innerText=proInfoList[9];
+			$("#Description").val(proInfoList[10]);
 		}
 	});
 }
 
 function CheckBarcode()
 {
-	var Barcode = $("#bar_code").val();
+	var Barcode = $("#barcode").val();
 	if(Barcode == null||Barcode.length != 8)
 	{
 		$("#barcode").val("");
@@ -124,40 +144,39 @@ function CheckBarcode()
 
 function ModifyRecord(obj)
 {
-    var iRow = parseInt(obj.name);
-    var modifytab = document.getElementById('modify_info');
-    var displaytab = document.getElementById('display_storage');
-    modifytab.rows[1].cells[0].innerText=iRow;
-    $("#proName").val(displaytab.rows[iRow].cells[1].innerText);
-    $("#barcode").val(displaytab.rows[iRow].cells[2].innerText);
-    
-    modifytab.rows[1].cells[3].innerText=displaytab.rows[iRow].cells[3].innerText;
-    modifytab.rows[1].cells[4].innerText=displaytab.rows[iRow].cells[4].innerText;
-    modifytab.rows[1].cells[5].innerText=displaytab.rows[iRow].cells[5].innerText;
-    modifytab.rows[1].cells[6].innerText=displaytab.rows[iRow].cells[6].innerText;
-    var index = 0;
-    $("#VendorName").val("--请选择--");
-    $("#VendorName option").each(function()
-    {
-        if($(this).text()==displaytab.rows[iRow].cells[7].innerText)
-        {
-            VendorName.options[index].selected = true;
-        }
-        index++;
-    });
-    modifytab.rows[1].cells[8].innerText=displaytab.rows[iRow].cells[8].innerText;
-    $("#Description").val(displaytab.rows[iRow].cells[9].innerText);
-    alert(displaytab.rows[iRow].cells[10].innerText);
+	var iRow = parseInt(obj.name);
+	var modifytab = document.getElementById('modify_info');
+	var displaytab = document.getElementById('display_storage');
+	modifytab.rows[1].cells[0].innerText=iRow;
+	$("#proName").val(displaytab.rows[iRow].cells[1].innerText);
+	$("#barcode").val(displaytab.rows[iRow].cells[2].innerText);
+	
+	modifytab.rows[1].cells[3].innerText=displaytab.rows[iRow].cells[3].innerText;
+	modifytab.rows[1].cells[4].innerText=displaytab.rows[iRow].cells[4].innerText;
+	modifytab.rows[1].cells[5].innerText=displaytab.rows[iRow].cells[5].innerText;
+	modifytab.rows[1].cells[6].innerText=displaytab.rows[iRow].cells[6].innerText;
+	var index = 0;
+	$("#VendorName").val("--请选择--");
+	$("#VendorName option").each(function()
+	{
+		if($(this).text()==displaytab.rows[iRow].cells[7].innerText)
+		{
+			VendorName.options[index].selected = true;
+		}
+		index++;
+	});
+	modifytab.rows[1].cells[8].innerText=displaytab.rows[iRow].cells[8].innerText;
+	$("#Description").val(displaytab.rows[iRow].cells[9].innerText);
 }
 
 function ExecModify()
 {
-    $.post("Ajax/PersonalMenu/Update_OtherInformation_Ajax.jsp", {"Pro_Name":$("#proName").val(), "Bar_Code":$("#barcode").val(), "Description": $("#Description").val()}, function(data, textStatus)
-    {
-        if (!CheckAjaxResult(textStatus, data))
-        {
-            alert("更新记录出错!");
-        }
-        location.reload();
-    });
+	$.post("Ajax/PersonalMenu/Update_OtherInformation_Ajax.jsp", {"Pro_Name":$("#proName").val(), "Bar_Code":$("#barcode").val(), "Description": $("#Description").val()}, function(data, textStatus)
+	{
+		if (!CheckAjaxResult(textStatus, data))
+		{
+			alert("更新记录出错!");
+		}
+		location.reload();
+	});
 }

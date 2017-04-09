@@ -137,19 +137,19 @@
                 else if("备注" == displayKeyList[iCol-1])
                 {
 %>
-        <td><input name="Description" id="Description" type="text" style="width:80"></td>
+        <td><input name="Description" id="Description" type="text" style="width:160"></td>
 <%
                 }
                 else if("产品名称" == displayKeyList[iCol-1])
                 {
 %>
-        <td><input name="proName" id="proName" type="text" style="width:190"></td>
+        <td><input name="proName" id="proName" type="text" style="width:160"></td>
 <%
                 }
                 else if("八码" == displayKeyList[iCol-1])
                 {
 %>
-        <td><input name="barcode" id="barcode" type="text" style="width:100" onblur="InputBarcode()"></td>
+        <td><input name="barcode" id="barcode" type="text" style="width:75" onblur="InputBarcode()"></td>
 <%
                 }
                 else if("供应商" == displayKeyList[iCol-1])
