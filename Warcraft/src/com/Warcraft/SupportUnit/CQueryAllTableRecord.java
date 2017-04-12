@@ -46,7 +46,7 @@ public class CQueryAllTableRecord implements IAllTableRecord
     public List<List<String>> Check_In_Raw_Data_AllByDateSpan(String queryKeyword, String queryDate, List<String> orderList, String[] getKeyWord)
     {
         DBTableParent hTBHandle = new DatabaseStore("Check_In_Raw_Data");
-        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", orderList);
+        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, DateAdapter.getPrecedingMonthString(queryDate.substring(0, 6) + "20"), queryDate.substring(0, 6) + "21", orderList);
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
@@ -54,7 +54,7 @@ public class CQueryAllTableRecord implements IAllTableRecord
     public List<List<String>> Holiday_Mark_AllByDateSpan(String queryKeyword, String queryDate, List<String> orderList, String[] getKeyWord)
     {
         DBTableParent hTBHandle = new DatabaseStore("Holiday_Mark");
-        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", orderList);
+        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, DateAdapter.getPrecedingMonthString(queryDate.substring(0, 6) + "20"), queryDate.substring(0, 6) + "21", orderList);
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     
@@ -62,7 +62,7 @@ public class CQueryAllTableRecord implements IAllTableRecord
     public List<List<String>> Over_Time_Record_AllByDateSpan(String queryKeyword, String queryDate, List<String> orderList, String[] getKeyWord)
     {
         DBTableParent hTBHandle = new DatabaseStore("Over_Time_Record");
-        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, queryDate.substring(0, 6) + "00", queryDate.substring(0, 6) + "32", orderList);
+        hTBHandle.QueryRecordBetweenDateSpanAndOrderByListASC(queryKeyword, DateAdapter.getPrecedingMonthString(queryDate.substring(0, 6) + "20"), queryDate.substring(0, 6) + "21", orderList);
         return GetRecordByKeylist(hTBHandle, getKeyWord);
     }
     

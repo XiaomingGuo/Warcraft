@@ -77,9 +77,9 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             GetAllGlobeRawDataFromDatabase(queryDate);
             if(g_recordList != null&&g_recordList.size() > 0)
             {
-	            List<List<String>> recordList = GetResultStringList(responseFlag, user_id, userName, queryDate);
-	            if(recordList != null&&recordList.size() > 0)
-	                return hAjaxHandle.GenerateAjaxString(recordList);
+                List<List<String>> recordList = GetResultStringList(responseFlag, user_id, userName, queryDate);
+                if(recordList != null&&recordList.size() > 0)
+                    return hAjaxHandle.GenerateAjaxString(recordList);
             }
         }
         return "";
@@ -100,7 +100,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
     
     private List<String> GetAllCheckInDateWithoutHoliday(String queryDate, String checkInId)
     {
-        List<String> rtnRst = DateAdapter.getAllDayStringOfAMonth(queryDate);
+        List<String> rtnRst = DateAdapter.getAllCheckInDayStringOfAMonth(queryDate);
         List<String> tempList = GetPersonHolidayPerMonth(checkInId, queryDate);
         for(int idx=0; idx < tempList.size(); idx++)
         {
@@ -133,7 +133,7 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         rtnRst.add(Integer.toString(overTime/60));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "年假", g_HolidayMarkList));
         rtnRst.add(GetHolidayMark(checkInId, queryDate, "事假", g_HolidayMarkList));
-        rtnRst.add(queryDate+"01~"+queryDate + Integer.toString(DateAdapter.getDayCountOfAMonth(queryDate)));
+        rtnRst.add(DateAdapter.getPrecedingMonthString(queryDate + "21") + "~" + queryDate+"20");
         return rtnRst;
     }
     
@@ -261,12 +261,11 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         List<String> rtnRst = new ArrayList<String>();
         if(g_HolidayMarkList != null&&g_HolidayMarkList.size() > 0)
         {
-            int beginDate = Integer.parseInt(queryDate + "01");
-            int maxDays = DateAdapter.getDayCountOfAMonth(queryDate);
+            List<String> dateList = DateAdapter.getAllCheckInDayStringOfAMonth(queryDate);
             
-            for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+            for(int dateOffset = 0; dateOffset < dateList.size(); dateOffset++ )
             {
-                String checkInDate = Integer.toString(beginDate+dateOffset);
+                String checkInDate = dateList.get(dateOffset);
                 for(int item=0; item < g_HolidayMarkList.get(0).size(); item++)
                 {
                     if(g_HolidayMarkList.get(0).get(item).equals(checkInId)&&g_HolidayMarkList.get(1).get(item).equals(checkInDate)&&
@@ -518,11 +517,11 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
             rtnRst.add(GetOneDaysOverTime(workGroupId, checkINAndOutTime));
         }
         else
-        	rtnRst = Arrays.asList(2L, 0L, 0L);
+            rtnRst = Arrays.asList(2L, 0L, 0L);
         return rtnRst;
     }
     
-	private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
+    private List<String> GetCurWorkGroupList(String checkInId, String checkInDate, List<String> workGroupTimeList)
     {
         List<String> rtnRst = new ArrayList<String>();
         String holidayTime = GetHolidayMarkTime(checkInId, checkInDate, "上午假");

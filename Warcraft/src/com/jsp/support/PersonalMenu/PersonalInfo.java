@@ -28,7 +28,9 @@ public class PersonalInfo extends PageParentClass implements IPageInterface
     {
         List<List<String>> rtnRst = new ArrayList<List<String>>();
         DBTableParent hCIRDHandle = new DatabaseStore("Check_In_Raw_Data");
-        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date", queryDate + "00", queryDate + "32", Arrays.asList("check_in_date", "check_in_time"));
+        hCIRDHandle.QueryRecordByFilterKeyListAndBetweenDateSpanOrderByListASC(Arrays.asList("check_in_id"), 
+        		Arrays.asList(GetAllUserRecordByName(user_name, "check_in_id").get(0)), "check_in_date",
+        		DateAdapter.getPrecedingMonthString(queryDate + "20"), queryDate + "21", Arrays.asList("check_in_date", "check_in_time"));
         if (hCIRDHandle.getTableInstance().RecordDBCount() > 0)
         {
             String[] sqlKeyList = {"id", "check_in_id", "check_in_date", "check_in_time", "work_group", "isEnsure"};

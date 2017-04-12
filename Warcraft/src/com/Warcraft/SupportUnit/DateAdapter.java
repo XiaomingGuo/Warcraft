@@ -83,13 +83,22 @@ public class DateAdapter
         return rtnRst;
     }
     
-    public static List<String> getAllDayStringOfAMonth(String yearMonthDay)
+    public static List<String> getAllCheckInDayStringOfAMonth(String yearMonthDay)
     {
         List<String> rtnRst = new ArrayList<String>();
-        int beginDate = Integer.parseInt(yearMonthDay.length()>6?yearMonthDay.substring(0,6):yearMonthDay + "01");
-        int maxDays = DateAdapter.getDayCountOfAMonth(yearMonthDay);
+        String precedingMonthString = DateAdapter.getPrecedingMonthString(yearMonthDay.substring(0,6) + "21");
+        int beginDate = Integer.parseInt(precedingMonthString);
+        int maxDays = DateAdapter.getDayCountOfAMonth(precedingMonthString.substring(0,6)+"01");
         
-        for(int dateOffset = 0; dateOffset < maxDays; dateOffset++ )
+        for(int dateOffset = 0; dateOffset < maxDays-20; dateOffset++ )
+        {
+            int curDate = beginDate + dateOffset;
+            rtnRst.add(Integer.toString(curDate));
+        }
+        
+        beginDate = Integer.parseInt(yearMonthDay.substring(0,6) + "01");
+        
+        for(int dateOffset = 0; dateOffset < 20; dateOffset++ )
         {
             int curDate = beginDate + dateOffset;
             rtnRst.add(Integer.toString(curDate));
