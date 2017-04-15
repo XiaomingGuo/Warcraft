@@ -277,7 +277,6 @@ public class SummarizeCheckInTime extends PageParentClass implements IPageInterf
         return rtnRst;
     }
     
-
     private int GetADayWorkGroup(String checkInId, String checkInDate)
     {
         int idx=0;
